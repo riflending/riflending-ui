@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import Rbank from '@rsksmart/rbank';
-import rlending from '@riflending/riflending-js';
+import Rlending from '@riflending/riflending-js';
 import App from './App.vue';
 import './registerServiceWorker';
 import router from './router';
@@ -25,6 +25,10 @@ new Vue({
   vuetify,
   render: (h) => h(App),
 }).$mount('#app');
-const cRif = rlending.util.getAddress(rlending.cRif);
-console.log('cRIF default address LALALA', cRif);
+var rlending = new Rlending(window.ethereum); // web browser
+console.log("LALALA rlending obj: ",rlending);
+console.log("LALALA provider", rlending._provider);
+console.log(rlending.RIF);
+const cRif = rlending.util.getAddress(rlending.RIF);
+console.log('RIF default address LALALA', cRif);
 
