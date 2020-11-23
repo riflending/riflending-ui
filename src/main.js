@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import Rbank from '@rsksmart/rbank';
+import rlending from '@riflending/riflending-js';
 import App from './App.vue';
 import './registerServiceWorker';
 import router from './router';
@@ -24,3 +25,6 @@ new Vue({
   vuetify,
   render: (h) => h(App),
 }).$mount('#app');
+const cRif = rlending.util.getAddress(rlending.cRif);
+console.log('cRIF default address LALALA', cRif);
+
