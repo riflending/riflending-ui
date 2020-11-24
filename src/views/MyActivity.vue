@@ -15,7 +15,7 @@
           </v-row>
           <v-row class="ma-0 px-3 d-flex justify-center">
             <p class="text-center">
-              All your collaterals will be liquidated. If you wish to continue trading on RBank,
+              All your collaterals will be liquidated. If you wish to continue trading on rLending,
               feel free to supply new markets on the network.
             </p>
           </v-row>
@@ -67,9 +67,9 @@
                     <v-icon dark color="#FFFFFF">mdi-plus</v-icon>
                   </v-btn>
                 </v-row>
-                <v-row class="mt-2 d-flex justify-center text-center">
+                <!-- <v-row class="mt-2 d-flex justify-center text-center">
                   <span>Add Funds</span>
-                </v-row>
+                </v-row> -->
               </v-col>
             </v-row>
           </v-card>

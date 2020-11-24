@@ -5,7 +5,7 @@
         <h1>My Supply-Borrow Factor:</h1>
       </v-row>
       <v-row class="ma-0">
-        <span>RBank Collateral Factor: </span><span class="ml-4">75%</span>
+        <span>rLending Collateral Factor: </span><span class="ml-4">75%</span>
       </v-row>
       <v-row class="ma-0 pt-1">
         <v-col cols="5" class="pa-0">
