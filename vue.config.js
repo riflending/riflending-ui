@@ -3,4 +3,5 @@ module.exports = {
     'vuetify',
     'VueGoogleCharts',
   ],
+  lintOnSave: false,
 };
