@@ -3,15 +3,15 @@
     <v-row class="d-flex align-center justify-center">
       <v-col cols="6">
         <v-row>
-          <h1> Join the Open Finance revolution on the RSK Network</h1>
+          <h1> Join the DeFi revolution on the RSK Network</h1>
         </v-row>
         <v-row class="my-3 simple-text">
           Enjoy the possibilities that Open Finance offers in a safe, clear and understandable way.
         </v-row>
-        <v-row class="d-flex align-start">
-          <v-btn class="ma-0 button" rounded color="#008CFF" @click="toMyActivity">
-            Go to RBank Ðapp</v-btn>
-        </v-row>
+        <!-- <v-row class="d-flex align-start">
+          <v-btn class="ma-0 button" rounded color="#008CFF" @click="scrollToTop">
+            Go to rLending Dapp</v-btn>
+        </v-row> -->
       </v-col>
       <v-col cols="6" class="d-flex justify-center align-center">
         <img class="landing-1" src="../assets/landing/Ellipse_20.png" alt="">
@@ -32,11 +32,11 @@
           explore what you can do with your crypto assets and be part of the change to a more
           financially inclusive world
         </v-row>
-        <v-row class="d-flex flex-row-reverse">
-          <v-btn class="ma-0 button" rounded color="#008CFF" @click="toMyActivity">
-           Explore the RBank Ðapp
+        <!--<v-row class="d-flex flex-row-reverse">
+          <v-btn class="ma-0 button" rounded color="#008CFF" @click="scrollToTop">
+           Go to top and Connect!
           </v-btn>
-        </v-row>
+        </v-row> -->
       </v-col>
     </v-row>
     <v-row class="my-6 d-flex justify-center">
@@ -118,8 +118,8 @@
           </v-card>
         </v-row>
         <v-row class="d-flex justify-center">
-          <v-btn class="button" rounded color="#008CFF" @click="toMyActivity">
-            Join Rbank Today
+          <v-btn class="button" rounded color="#008CFF" @click="scrollToTop">
+            Go to top and Connect!
           </v-btn>
         </v-row>
       </v-col>
@@ -130,15 +130,15 @@
     <v-row class="d-flex align-center">
       <v-col cols="6">
         <v-row class="text-left">
-          <h3>Build your own DeFi App with our RBank Library for Developers</h3>
+          <h3>Build your own DeFi App with our rLending Library for Developers</h3>
         </v-row>
         <v-row class="text-left">
           We have created a comprehensible library for the upcoming DeFi Developer.
           Available on GitHub.
         </v-row>
         <v-row>
-          <v-btn class="ma-0 button" rounded color="#008CFF" @click="toMyActivity">
-            Visit RBank Library
+          <v-btn class="ma-0 button" rounded color="#008CFF" @click="toGithub">
+            Visit our rLending Library
           </v-btn>
         </v-row>
       </v-col>
@@ -156,6 +156,13 @@ export default {
   methods: {
     toMyActivity() {
       this.$router.push({ name: 'MyActivity' });
+    },
+    toGithub() {
+      window.location.href = 'https://github.com/riflending/';
+      this.$router.push('https://github.com/riflending/');
+    },
+    scrollToTop() {
+      window.scrollTo(0,0);
     },
   },
 };
