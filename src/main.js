@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import Rbank from '@rsksmart/rbank';
 import Rlending from '@riflending/riflending-js';
+import {Middleware} from "./middleware/index.js";
 import App from './App.vue';
 import './registerServiceWorker';
 import router from './router';
@@ -19,16 +20,13 @@ Vue.prototype.$rbank = Vue.rbank = new Rbank(
     [process.env.VUE_APP_NETWORK_ID]: process.env.VUE_APP_WS_PROVIDER,
   },
 );
+// eslint-disable-next-line no-multi-assign
+Vue.prototype.$rlending = Vue.rlending = new Rlending(process.env.VUE_APP_WS_PROVIDER);
+// eslint-disable-next-line no-multi-assign
+Vue.prototype.$middleware = Vue.middleware = new Middleware();
 new Vue({
   router,
   store,
   vuetify,
   render: (h) => h(App),
 }).$mount('#app');
-var rlending = new Rlending(window.ethereum); // web browser
-console.log("LALALA rlending obj: ",rlending);
-console.log("LALALA provider", rlending._provider);
-console.log(rlending.RIF);
-const cRif = rlending.util.getAddress(rlending.RIF);
-console.log('RIF default address LALALA', cRif);
-
