@@ -51,12 +51,18 @@ export default {
       this.$emit("reload");
     },
   },
+    computed: {
+    ...mapState({
+      account: (state) => state.Session.account,
+    }),
+    },
   components: {
     SupplyItem,
   },
   created() {
-    this.markets=this.$middleware.getMarkets;
-
+    //get all markets
+    this.markets = this.$middleware.getMarkets(this.account);
+    
     this.markets.forEach((market) =>
       market.eventualEvents.then((events) =>
         events.liquidateBorrow().on("data", this.reloadItems)

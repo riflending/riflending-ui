@@ -1,4 +1,5 @@
 import Rlending from '@riflending/riflending-js';
+import BigNumber from 'bignumber.js';
 
 
 /**
@@ -6,7 +7,7 @@ import Rlending from '@riflending/riflending-js';
  */
 export default class Market {
   // constructor() {}
-  constructor(cTokenSymbol, tokenSymbol, underlyingName, underlyingDecimals) {
+  constructor(cTokenSymbol, tokenSymbol, underlyingName, underlyingDecimals, account) {
     let config = {
       1337: {
         httpProvider: 'http://127.0.0.1:8545',
@@ -33,21 +34,47 @@ export default class Market {
         Rlending.util.getAbi("cErc20"),
         Rlending.eth._createProvider(window.ethereum)
       );
+      this.token.internalAddress = Rlending.util.getAddress(tokenSymbol).toLowerCase();
     }
-    // market.token.internalAddress = Rlending.util.getAddress(tokenSymbol).toLowerCase();
-    this.token.internalAddress = "0x";
+    // this.token.internalAddress = "0x";
     this.token.symbol = tokenSymbol;
     this.token.name = underlyingName;
     this.token.decimals = underlyingDecimals;
-    this.token.balance = Rlending.eth.getBalance(
-      this.token.internalAddress,
+    //set balance account
+    this.tokenBalance = Rlending.eth.getBalance(
+      account,
       window.ethereum
     ).then((balance) => Number(balance));
-    //TODO
-    this.token.price = 11;
-    this.borrowRate = 12;
-    this.supplyOf = 13;
 
+    //set price
+    this.price =
+      Rlending.eth
+        .read(
+          Rlending.util.getAddress('PriceOracleProxy').toLowerCase(),
+          "function getUnderlyingPrice(address) returns (uint)",
+          [Rlending.util.getAddress(cTokenSymbol).toLowerCase()],
+          { provider: window.ethereum }
+        )
+        .then((price) => {
+          return new BigNumber(price._hex).toNumber();
+        });
+    //set borrow rate 
+    this.factor = 1;
+    this.blocksPerYear = 1051200;
+    this.borrowRate =
+      Rlending.eth
+        .read(
+          this.instanceAddress,
+          "function borrowRatePerBlock() returns (uint)",
+          [],
+          { provider: window.ethereum }
+        ).then((borrowRatePerBlock) => {
+          return new BigNumber(borrowRatePerBlock._hex).times(new BigNumber(100 * this.blocksPerYear)).div(new BigNumber(this.factor)).toNumber();
+        });
+
+    //set supply of
+    // https://github.com/ajlopez/DeFiProt/blob/master/contracts/Market.sol#L246
+    this.supplyOf = 13;
   }
 
   getEventualChainId = async () => 32;
@@ -61,9 +88,9 @@ export default class Market {
    */
   get eventualEvents() {
     return new Promise((resolve, reject) => {
-      "10"
-        .then(resolve)
-        .catch(reject);
+      resolve('10')
+      // .then(resolve)
+      // .catch(reject);
     });
   }
 
@@ -114,7 +141,5 @@ export default class Market {
     //     .catch(reject);
     // });
   }
-
-
 
 }

@@ -63,7 +63,6 @@
 <script>
 import { mapState } from "vuex";
 import SupplyDialog from "@/components/dialog/supply/SupplyDialog.vue";
-import Rlending from "@riflending/riflending-js";
 
 export default {
   name: "SupplyItem",
@@ -108,20 +107,35 @@ export default {
   methods: {
     reset() {
       this.dialog = false;
-      this.$rbank.controller
-        .eventualMarketPrice(this.market.address)
-        .then((marketPrice) => {
-          this.price = marketPrice;
-          return this.market.eventualBorrowRate;
+      this.market.tokenBalance
+        .then((balance) => {
+          this.tokenBalance = balance;
+          return this.market.price;
         })
-        .then((borrowRate) => {
-          this.borrowRate = borrowRate;
-          return this.market.eventualToken;
+        //set price
+        .then((price) => {
+          this.price = price;
+          return this.market.borrowRate;
         })
-        .then((tok) => tok.eventualBalanceOf(this.account))
-        .then((tokenBalance) => {
-          this.tokenBalance = tokenBalance;
+        //set borrow rate block
+        .then((borrowRatePerBlock) => {
+          this.borrowRate = borrowRatePerBlock;
         });
+
+      // this.$rbank.controller
+      //   .eventualMarketPrice(this.market.address)
+      //   .then((marketPrice) => {
+      //     this.price = marketPrice;
+      //     return this.market.eventualBorrowRate;
+      //   })
+      //   .then((borrowRate) => {
+      //     this.borrowRate = borrowRate;
+      //     return this.market.eventualToken;
+      //   })
+      //   .then((tok) => tok.eventualBalanceOf(this.account))
+      //   .then((tokenBalance) => {
+      //     this.tokenBalance = tokenBalance;
+      //   });
       this.$emit("dialogClosed");
     },
   },
@@ -132,19 +146,42 @@ export default {
     this.$parent.$parent.$parent.$on("reload", this.reset);
   },
   created() {
-    console.log("this.market", this.market);
-    this.token.symbol = this.market.token.name;
-    this.token.name = this.market.token.name;
-    this.token.decimals = this.market.token.decimals;
-    this.token.balance = this.market.token.balance;
-    this.price = this.market.token.price;
-    this.borrowRate = this.market.borrowRate;
+    //set data token
+    this.token = this.market.token;
+    //set balance
+    this.market.tokenBalance
+      .then((balance) => {
+        this.tokenBalance = balance;
+        return this.market.price;
+      })
+      //set price
+      .then((price) => {
+        this.price = price;
+        return this.market.borrowRate;
+      })
+      //set borrow rate block
+      .then((borrowRatePerBlock) => {
+        this.borrowRate = borrowRatePerBlock;
+      });
+    //set supply of TODO
     this.supplyOf = this.market.supplyOf;
 
     this.market.eventualEvents.then((events) => {
       events.allEvents().on("data", this.reset);
     });
 
+    // let bla = this.market.token.balance.then(async (balance) => {
+    //   console.log("BALANCE", balance);
+    // });
+
+    // this.market.instance
+    //   .then((results) => Promise.all(results))
+    //   .then(() => {
+    //     return this.market.balance;
+    //   })
+    //   .then((balan) => {
+    //     console.log(balan);
+    //   });
     // this.market.eventualToken
     //   .then((tok) => [
     //     tok.eventualName,
