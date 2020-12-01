@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import Rbank from '@rsksmart/rbank';
 import Rlending from '@riflending/riflending-js';
-import {Middleware} from "./middleware/index.js";
+import { Middleware } from "./middleware/index.js";
 import App from './App.vue';
 import './registerServiceWorker';
 import router from './router';

@@ -6,7 +6,8 @@
       </v-row>
       <v-row class="my-5 d-flex justify-center">
         <div class="text-center">
-          You have successfully supplied <br> this Market with
+          You have successfully supplied <br />
+          this Market with
           <span class="greenish">
             {{ data.supplyBalanceInfo | formatToken(data.token.decimals) }}
           </span>
@@ -16,7 +17,7 @@
     </div>
     <div class="my-5 py-5">
       <v-row class="d-flex align-center">
-        <v-col cols="2"/>
+        <v-col cols="2" />
         <v-col cols="3" class="d-flex justify-end">
           <h3>in your wallet:</h3>
         </v-col>
@@ -27,7 +28,9 @@
             </v-col>
             <v-col cols="5" class="itemInfo">
               <span v-if="data.supplyBalanceInfo">
-                (-{{ data.supplyBalanceInfo  | formatToken(data.token.decimals) }})
+                (-{{
+                  data.supplyBalanceInfo | formatToken(data.token.decimals)
+                }})
               </span>
             </v-col>
           </v-row>
@@ -35,10 +38,10 @@
         <v-col cols="1">
           <span class="itemInfo">{{ data.token.symbol }}</span>
         </v-col>
-        <v-col cols="2"/>
+        <v-col cols="2" />
       </v-row>
       <v-row class="d-flex align-center">
-        <v-col cols="2"/>
+        <v-col cols="2" />
         <v-col cols="3" class="d-flex justify-end">
           <h3>supply balance:</h3>
         </v-col>
@@ -49,7 +52,9 @@
             </v-col>
             <v-col cols="5" class="itemInfo">
               <span v-if="data.supplyBalanceInfo">
-                (+{{ data.supplyBalanceInfo | formatToken(data.token.decimals)  }})
+                (+{{
+                  data.supplyBalanceInfo | formatToken(data.token.decimals)
+                }})
               </span>
             </v-col>
           </v-row>
@@ -57,10 +62,10 @@
         <v-col cols="1">
           <span class="itemInfo">{{ data.token.symbol }}</span>
         </v-col>
-        <v-col cols="2"/>
+        <v-col cols="2" />
       </v-row>
       <v-row class="d-flex align-center">
-        <v-col cols="2"/>
+        <v-col cols="2" />
         <v-col cols="3" class="d-flex align-end justify-end">
           <h3>borrow limit:</h3>
         </v-col>
@@ -79,10 +84,10 @@
         <v-col cols="1">
           <span class="itemInfo">{{ data.token.symbol }}</span>
         </v-col>
-        <v-col cols="2"/>
+        <v-col cols="2" />
       </v-row>
     </div>
-    <transaction-hash :hash="data.hash"/>
+    <transaction-hash :hash="data.hash" />
     <v-row class="my-5 d-flex justify-center">
       <v-btn class="button" rounded color="#008CFF" @click="closeDialog">
         Back to Supply / Borrow
@@ -92,11 +97,11 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
-import TransactionHash from '@/components/common/TransactionHash.vue';
+import { mapState } from "vuex";
+import TransactionHash from "@/components/common/TransactionHash.vue";
 
 export default {
-  name: 'SupplySuccess',
+  name: "SupplySuccess",
   props: {
     data: {
       type: Object,
@@ -120,10 +125,11 @@ export default {
   },
   methods: {
     closeDialog() {
-      this.$emit('closeDialog');
+      this.$emit("closeDialog");
     },
     getMaxAllowed(liquidity, cash) {
-      const allowed = this.price > 0 ? Math.floor(liquidity / (this.price * 2)) : 0;
+      const allowed =
+        this.price > 0 ? Math.floor(liquidity / (this.price * 2)) : 0;
       return allowed >= cash ? cash : allowed;
     },
   },
@@ -143,7 +149,9 @@ export default {
       })
       .then((cash) => {
         this.cash = cash;
-        return this.$rbank.controller.eventualMarketPrice(this.data.market.address);
+        return this.$rbank.controller.eventualMarketPrice(
+          this.data.market.address
+        );
       })
       .then((marketPrice) => {
         this.price = marketPrice;
