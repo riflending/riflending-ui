@@ -89,26 +89,19 @@ export default class Market {
       ).then((balance) => Number(balance));
   }
 
-  getCash(addressMarket) {
-    Rlending.eth
+  getCash() {
+    return Rlending.eth
       .read(
-        addressMarket,
-        "function getCashPrior() returns (uint)",
+        this.instanceAddress,
+        "function getCash() returns (uint)",
         // "function balanceOf(address) returns (uint)",
         // [Rlending.util.getAddress(cTokenSymbol).toLowerCase()],
         [],
         { provider: window.ethereum }
-      )
-      .then((price) => {
-        return new BigNumber(price._hex).toNumber();
-      });
-
-    // return this.tokenBalance = Rlending.eth.getBalance(
-    //   addressMarket,
-    //   window.ethereum
-    // ).then((balance) => Number(balance));
+      ).then((cash) => Number(cash));
   }
 
+<<<<<<< HEAD
   /**
    * Borrows the specified amount from this market. May fail if no collateral has been supplied.
    * onto another market.
@@ -188,22 +181,61 @@ export default class Market {
     //         );
     //     })).then(resolve)
     //     .catch(reject);
+=======
+  getBorrowRate() {
+    return Rlending.eth
+      .read(
+        this.instanceAddress,
+        "function borrowRatePerBlock() returns (uint)",
+        [],
+        { provider: window.ethereum }
+      );
+    // .then((borrowRatePerBlock) => {
+    //   return new BigNumber(borrowRatePerBlock._hex).times(new BigNumber(100 * this.blocksPerYear)).div(new BigNumber(this.factor)).toNumber();
+>>>>>>> adapt lib js to middleware, add enterMarket in supply
     // });
+  }
 
-    // await send(underlyingDai, "approve", [cDai._address, new BigNumber(10000e18)]);
-    // //mint cDai
-    // let mintCDaiCall = await call(cDai, "mint", [new BigNumber(10000e18)]);
-    // await send(cDai, "mint", [new BigNumber(10000e18)]);
+  validateMarketAccount(account, cTokenSymbol) {
+    //TODO add cache.
+    return Rlending.eth
+      .read(
+        Rlending.util.getAddress(Rlending.Unitroller),
+        "function checkMembership(address, address) returns (bool)",
+        [account, this.instanceAddress],
+        { provider: window.ethereum }
+      );
+    //"function getAssetsIn() returns (address[])",
+  }
 
-    // return new Promise((resolve, reject) => {
-    //   this.token
-    //     .then((token) => token.approve(this.instanceAddress, amount, from))
-    //     .then(() => send(this.instance.methods.supply(amount), from))
-    //     .then(resolve)
-    //     .catch(reject);
+  async addMarkets() {
+    return Rlending.eth.trx(
+      Rlending.util.getAddress(Rlending.Unitroller),
+      "function enterMarkets(address[]) returns (bool)",
+      [[this.instanceAddress]],
+      { provider: window.ethereum }
+    );
+    // let instanceRlending = new Rlending(window.ethereum);
+    // instanceRlending.enterMarkets(this.token.symbol).then((ok) => {
+    //   console.log("enters Markets");
+    //   console.log("enters Markets==>", ok);
     // });
+  }
 
-
+  supply(amount, account) {
+    //instace Rleanding js
+    let instanceRlending = new Rlending(window.ethereum);
+    //validate if market exist in account
+    return this.validateMarketAccount(account, this.token.symbol).then((ok) => {
+      //if not exist => enterMarket
+      //then supply
+      if (!ok) {
+        return addMarkets().then((enterMark) => {
+          return instanceRlending.supply(this.token.symbol, amount);
+        });
+      };
+      return instanceRlending.supply(this.token.symbol, amount);
+    });
   }
 
 

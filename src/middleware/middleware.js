@@ -14,4 +14,25 @@ export default class Middleware {
         }
         return markets;
     }
+
+    getAccountLiquidity(account) {
+        return Rlending.eth
+            .read(
+                Rlending.util.getAddress(Rlending.Unitroller),
+                "function getAccountLiquidity(address) returns (uint,uint,uint)",
+                [account],
+                { provider: window.ethereum }
+            )
+            .then(([error, liquidity, shortfall]) => Number(liquidity));
+    }
+
+    getCollateralFactor() {
+        return Rlending.eth
+            .read(
+                Rlending.util.getAddress(Rlending.Unitroller),
+                "function getAccountLiquidity(address) returns (uint)",
+                [account],
+                { provider: window.ethereum }
+            );
+    }
 }
