@@ -10,6 +10,7 @@
           this Market with
           <span class="greenish">
             {{ data.supplyBalanceInfo | formatToken(data.token.decimals) }}
+            <!-- {{ data.supplyBalanceInfo }} -->
           </span>
           <span class="greenish">{{ data.token.symbol }}</span>
         </div>
@@ -24,13 +25,11 @@
         <v-col cols="4">
           <v-row class="ma-0 d-flex align-center">
             <v-col cols="7" class="d-flex justify-center">
-              <h1>{{ tokenBalance | formatToken(data.token.decimals) }}</h1>
+              <h1>{{ tokenBalance }}</h1>
             </v-col>
             <v-col cols="5" class="itemInfo">
               <span v-if="data.supplyBalanceInfo">
-                (-{{
-                  data.supplyBalanceInfo | formatToken(data.token.decimals)
-                }})
+                (-{{ data.supplyBalanceInfo }})
               </span>
             </v-col>
           </v-row>
@@ -137,29 +136,24 @@ export default {
     TransactionHash,
   },
   created() {
-    this.data.market.eventualToken
-      .then((tok) => tok.eventualBalanceOf(this.account))
-      .then((tokenBalance) => {
-        this.tokenBalance = tokenBalance;
-        return this.$rbank.controller.getAccountLiquidity(this.account);
+    this.data.market.tokenBalance
+      .then((balance) => {
+        this.tokenBalance = balance;
+        return this.$middleware.getAccountLiquidity(this.account);
       })
       .then((accountLiquidity) => {
         this.liquidity = accountLiquidity;
-        return this.data.market.eventualCash;
+        return this.data.market.getCash();
       })
       .then((cash) => {
+        console.log("cashCash", cash);
         this.cash = cash;
-        return this.$rbank.controller.eventualMarketPrice(
-          this.data.market.address
-        );
+        return this.data.market.price;
       })
-      .then((marketPrice) => {
-        this.price = marketPrice;
-        return this.data.market.updatedSupplyOf(this.account);
-      })
-      .then((supplyOf) => {
-        this.supplyOf = supplyOf;
+      .then((price) => {
+        this.price = price;
         this.maxBorrowAllowed = this.getMaxAllowed(this.liquidity, this.cash);
+        //TODO supply of
       });
   },
 };

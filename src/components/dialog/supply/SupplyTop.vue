@@ -27,7 +27,8 @@
         <h2>in your wallet:</h2>
       </v-row>
       <v-row class="item d-flex justify-start">
-        {{ tokenBalance | formatToken(data.token.decimals)
+        <!-- {{ tokenBalance | formatToken(data.token.decimals) -->
+        {{ tokenBalance 
         }}<span class="ml-2 itemInfo">usd</span>
       </v-row>
     </v-col>
@@ -36,7 +37,8 @@
         <h2>earnings:</h2>
       </v-row>
       <v-row class="item greenish d-flex justify-start">
-        {{ earnings | formatToken(data.token.decimals) }}
+        <!-- {{ earnings | formatToken(data.token.decimals) }} -->
+        {{ earnings }}
         <span class="ml-2 itemInfo">{{ data.token.symbol }}</span>
       </v-row>
     </v-col>
@@ -76,28 +78,22 @@ export default {
     },
   },
   created() {
-    let refreshDataMarket = this.$middleware
-      .getMarkets(this.account)
-      .find(
-        (market) => market.instanceAddress == this.data.market.instanceAddress
-      );
-
-    this.tokenAddress = refreshDataMarket.instanceAddress;
+    //set token address
+    this.tokenAddress =  this.data.market.token.instace;
     //set token balance
-    this.tokenBalance = refreshDataMarket.tokenBalance
+     this.data.market.tokenBalance
       .then((balance) => {
         this.tokenBalance = balance;
-        return refreshDataMarket.price;
+        console.log("tokenBalance", balance);
+        return this.data.market.price;
       })
       //set price
       .then((price) => {
         this.price = price;
-        return this.market.borrowRate;
+        console.log("price", price);
       });
     //TODO this earnings
     this.earnings = 1;
-
-    // console.log("this.data.market", this.data.market.instanceAddress);
 
     // this.data.market.eventualToken
     //   .then((tok) =>
