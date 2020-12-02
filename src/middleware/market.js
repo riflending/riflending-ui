@@ -124,7 +124,7 @@ export default class Market {
     let instanceRlending = new Rlending(window.ethereum, { account });
     const trxOptions = { mantissa: true };
     return new Promise((resolve, reject) => {
-      instanceRlending.borrow(this.token.symbol, amount, trxOptions)
+      instanceRlending.borrow(this.token.symbol, amount)
         .then((result) => {
           console.log('Ethers.js transaction object', result);
         })

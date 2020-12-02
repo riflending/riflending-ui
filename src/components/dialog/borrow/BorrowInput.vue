@@ -127,9 +127,9 @@ export default {
         decimals: () => this.decimalPositions || `Maximum ${this.data.token
           .decimals} decimal places for ${this.data.token.symbol}.`,
         marketCash: () => this.oldCash >= Number(this
-          .contractAmount) || `This market doesn't have enough ${this.data.token.symbol}`,
+          .tokenBalance) || `This market doesn't have enough ${this.data.token.symbol}`,
         liquidity: () => this.oldLiquidity >= (this.price * 2 * Number(this
-          .contractAmount)) || 'You don\'t have enough liquidity, supply more collateral.',
+          .tokenBalance)) || 'You don\'t have enough liquidity, supply more collateral.',
       },
     };
   },
