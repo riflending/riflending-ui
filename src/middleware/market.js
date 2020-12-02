@@ -109,6 +109,31 @@ export default class Market {
     // ).then((balance) => Number(balance));
   }
 
+  /**
+   * Borrows the specified amount from this market. May fail if no collateral has been supplied.
+   * onto another market.
+   * @param {number} amount of this market's token to be borrowed.
+   * @param {string=} from if specified executes the transaction using this account.
+   * @return {Promise<TXResult>}
+   */
+  borrow(amount, account){
+    console.log("borrow():this.token.symbol", this.token.symbol);
+    console.log("borrow():amount", amount);
+    console.log("borrow():amount", new BigNumber(amount));
+    console.log("borrow(): account", account);
+    let instanceRlending = new Rlending(window.ethereum, { account });
+    const trxOptions = { mantissa: true };
+    return new Promise((resolve, reject) => {
+      instanceRlending.borrow(this.token.symbol, amount, trxOptions)
+        .then((result) => {
+          console.log('Ethers.js transaction object', result);
+        })
+        .then(resolve)
+        .catch(reject);
+    })
+  }
+
+
   supply(amount, account) {
     console.log("this.token.symbol", this.token.symbol);
     console.log("amount", amount);
@@ -128,6 +153,7 @@ export default class Market {
       //   .then(resolve)
       //   .catch(reject);
     });
+
 
 
 

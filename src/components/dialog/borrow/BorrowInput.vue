@@ -137,6 +137,12 @@ export default {
     ...mapState({
       account: (state) => state.Session.account,
     }),
+    apr() {
+      return this.borrowRate.toFixed(2);
+    },
+    balanceAsDouble() {
+      return this.asDouble(this.tokenBalance);
+    },
     contractAmount() {
       return Number(this.amount).toFixed(this.data.token.decimals).replace('.', '');
     },
@@ -161,22 +167,42 @@ export default {
   },
   methods: {
     borrow() {
-      this.waiting = true;
-      this.$emit('wait');
-      this.data.market.borrow(this.contractAmount, this.account)
+  this.waiting = true;
+      this.$emit("wait");
+      this.data.market
+        .borrow(this.amount, this.account)
+        // .borrow(this.contractAmount, this.account)
         .then((res) => {
           this.waiting = false;
-          this.$emit('succeed', {
+          this.$emit("succeed", {
             hash: res.transactionHash,
             borrowLimitInfo: this.borrowLimitInfo,
-            borrowBalanceInfo: this.borrowBalanceInfo,
+            supplyBalanceInfo: this.supplyBalanceInfo,
           });
         })
-        .catch(() => {
+        .catch((error) => {
+          console.log("ERROR borrow()", error);
           this.waiting = false;
-          this.$emit('error');
+          this.$emit("error");
         });
     },
+    // borrow() {
+    //   this.waiting = true;
+    //   this.$emit('wait');
+    //   this.data.market.borrow(this.contractAmount, this.account)
+    //     .then((res) => {
+    //       this.waiting = false;
+    //       this.$emit('succeed', {
+    //         hash: res.transactionHash,
+    //         borrowLimitInfo: this.borrowLimitInfo,
+    //         borrowBalanceInfo: this.borrowBalanceInfo,
+    //       });
+    //     })
+    //     .catch(() => {
+    //       this.waiting = false;
+    //       this.$emit('error');
+    //     });
+    // },
     asDouble(value) {
       return (value / (10 ** this.data.token.decimals))
         .toFixed(this.data.token.decimals);
@@ -227,7 +253,8 @@ export default {
     Loader,
   },
   created() {
-    this.data.market.updatedBorrowBy(this.account)
+    this.data.market
+    .updatedBorrowBy(this.account)
       .then((borrowBy) => {
         this.borrowBy = borrowBy;
         return this.$rbank.controller.getAccountLiquidity(this.account);
