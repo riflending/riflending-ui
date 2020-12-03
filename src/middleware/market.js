@@ -101,7 +101,6 @@ export default class Market {
       ).then((cash) => Number(cash));
   }
 
-<<<<<<< HEAD
   /**
    * Borrows the specified amount from this market. May fail if no collateral has been supplied.
    * onto another market.
@@ -181,18 +180,6 @@ export default class Market {
     //         );
     //     })).then(resolve)
     //     .catch(reject);
-=======
-  getBorrowRate() {
-    return Rlending.eth
-      .read(
-        this.instanceAddress,
-        "function borrowRatePerBlock() returns (uint)",
-        [],
-        { provider: window.ethereum }
-      );
-    // .then((borrowRatePerBlock) => {
-    //   return new BigNumber(borrowRatePerBlock._hex).times(new BigNumber(100 * this.blocksPerYear)).div(new BigNumber(this.factor)).toNumber();
->>>>>>> adapt lib js to middleware, add enterMarket in supply
     // });
   }
 
