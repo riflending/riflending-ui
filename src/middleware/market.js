@@ -99,6 +99,7 @@ export default class Market {
         [],
         { provider: window.ethereum }
       ).then((cash) => Number(cash));
+
   }
 
   getBorrowRate() {
@@ -111,8 +112,90 @@ export default class Market {
       );
     // .then((borrowRatePerBlock) => {
     //   return new BigNumber(borrowRatePerBlock._hex).times(new BigNumber(100 * this.blocksPerYear)).div(new BigNumber(this.factor)).toNumber();
-    // });
   }
+
+  /**
+   * Borrows the specified amount from this market. May fail if no collateral has been supplied.
+   * onto another market.
+   * @param {number} amount of this market's token to be borrowed.
+   * @param {string=} from if specified executes the transaction using this account.
+   * @return {Promise<TXResult>}
+   */
+  borrow(amount, account){
+    console.log("borrow():this.token.symbol", this.token.symbol);
+    console.log("borrow():amount", amount);
+    console.log("borrow():amount", new BigNumber(amount));
+    console.log("borrow():account", account);
+    let instanceRlending = new Rlending(window.ethereum);
+    return instanceRlending.borrow(this.token.symbol, amount);
+  }
+
+
+  supply(amount, account) {
+    console.log("this.token.symbol", this.token.symbol);
+    console.log("amount", amount);
+    console.log("amount", new BigNumber(amount));
+    console.log("account", account);
+    let instanceRlending = new Rlending(window.ethereum, { account });
+    return new Promise((resolve, reject) => {
+      instanceRlending.supply(this.token.symbol, amount)
+        .then((result) => {
+          console.log('Ethers.js transaction object', result);
+        })
+        .then(resolve)
+        .catch(reject);
+      // this.token
+      //   .then((token) => token.approve(this.instanceAddress, amount, from))
+      //   .then(() => send(this.instance.methods.supply(amount), from))
+      //   .then(resolve)
+      //   .catch(reject);
+    });
+  }
+
+
+
+    // instanceRlending
+    // console.log("compound", instanceRlending);
+
+    // delete instanceRlending;
+    // return new Promise((resolve, reject) => {
+    //   Rlending.eth
+    //     .read(
+    //       this.token.internalAddress,
+    //       "function approve(address, uint) returns (bool)",
+    //       // "function balanceOf(address) returns (uint)",
+    //       // [Rlending.util.getAddress(cTokenSymbol).toLowerCase()],
+    //       [this.instanceAddress, amount],
+    //       { provider: window.ethereum }
+    //     )
+    //     .then((aprove) => {
+    //       console.log("aprove", approve);
+    //       // return new BigNumber(price._hex).toNumber();
+    //       return Rlending.eth
+    //         .read(
+    //           approve,
+    //           "function mint(uint) returns (uint)",
+    //           // "function balanceOf(address) returns (uint)",
+    //           // [Rlending.util.getAddress(cTokenSymbol).toLowerCase()],
+    //           [amount],
+    //           { provider: window.ethereum }
+    //         );
+    //     }).then((mint => {
+    //       console.log(mint);
+    //       return Rlending.eth
+    //         .write(
+    //           approve,
+    //           "function mint(uint) returns (uint)",
+    //           // "function balanceOf(address) returns (uint)",
+    //           // [Rlending.util.getAddress(cTokenSymbol).toLowerCase()],
+    //           [amount],
+    //           { provider: window.ethereum }
+    //         );
+    //     })).then(resolve)
+    //     .catch(reject);
+
+    // });
+
 
   validateMarketAccount(account, cTokenSymbol) {
     //TODO add cache.

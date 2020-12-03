@@ -25,6 +25,7 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
 import BorrowItem from '@/components/borrow/BorrowItem.vue';
 
 export default {
@@ -42,16 +43,29 @@ export default {
       this.$emit('reload');
     },
   },
+  computed: {
+  ...mapState({
+      account: (state) => state.Session.account,
+    }),
+  },
   components: {
     BorrowItem,
   },
   created() {
-    this.$rbank.eventualMarkets
-      .then((mkts) => {
-        this.markets = mkts;
-        this.markets.forEach((market) => market.eventualEvents
-          .then((events) => events.liquidateBorrow().on('data', this.reloadItems)));
-      });
+    //get all markets
+    this.markets = this.$middleware.getMarkets(this.account);
+
+    this.markets.forEach((market) =>
+      market.eventualEvents.then((events) =>
+        events.liquidateBorrow().on("data", this.reloadItems)
+      )
+    );
+    // this.$rbank.eventualMarkets
+    //   .then((mkts) => {
+    //     this.markets = mkts;
+    //     this.markets.forEach((market) => market.eventualEvents
+    //       .then((events) => events.liquidateBorrow().on('data', this.reloadItems)));
+    //   });
   },
 };
 </script>
