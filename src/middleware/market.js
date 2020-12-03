@@ -7,7 +7,7 @@ import BigNumber from 'bignumber.js';
  */
 export default class Market {
   // constructor() {}
-  constructor(cTokenSymbol, tokenSymbol, underlyingName, underlyingDecimals, account) {
+  constructor(cTokenSymbol, cTokenDecimals, tokenSymbol, underlyingName, underlyingDecimals, account) {
     let config = {
       1337: {
         httpProvider: 'http://127.0.0.1:8545',
@@ -18,6 +18,7 @@ export default class Market {
     this.eventualWeb3Http = {};
     // market.eventualWeb3WS = getEventualChainId().then((chainId) => new Rlending._ethers.providers.WebsocketProvider(config[chainId].wsProvider)).catch(() => new Error('Something went wrong with the web3 instance over web sockets on Market'));
     // market.eventualWeb3Http = new Rlending._ethers.providers.HttpProvider(config[32].httpProvider);
+    this.decimals = cTokenDecimals;
     this.instanceAddress = Rlending.util.getAddress(cTokenSymbol).toLowerCase();
     this.instance = new Rlending._ethers.Contract(
       Rlending.util.getAddress(cTokenSymbol),
@@ -35,83 +36,96 @@ export default class Market {
       );
       this.token.internalAddress = Rlending.util.getAddress(tokenSymbol).toLowerCase();
     }
-    // this.token.internalAddress = "0x";
+    //set data token
     this.token.symbol = tokenSymbol;
     this.token.name = underlyingName;
     this.token.decimals = underlyingDecimals;
     //set balance account
-    this.tokenBalance = Rlending.eth
-      .read(
-        this.instanceAddress,
-        "function balanceOf(address) returns (uint)",
-        [account],
-        { provider: window.ethereum }
-      ).then((balance) => Rlending._ethers.utils.formatEther(balance));
+    this.tokenBalance = this.getBalenceOfToken(account);
     //set price
-    this.price =
-      Rlending.eth
-        .read(
-          Rlending.util.getAddress('PriceOracleProxy').toLowerCase(),
-          "function getUnderlyingPrice(address) returns (uint)",
-          [Rlending.util.getAddress(cTokenSymbol).toLowerCase()],
-          { provider: window.ethereum }
-        )
-        .then((price) => {
-          // return new BigNumber(price._hex).toNumber();
-          return Rlending._ethers.utils.formatEther(price);
-        });
+    this.price = this.getPrice().then((price) => new BigNumber(price).div(new BigNumber(1e18)));
     //set borrow rate 
     this.factor = 1e18;
     this.blocksPerYear = 1051200;
-    this.borrowRate =
-      Rlending.eth
-        .read(
-          this.instanceAddress,
-          "function borrowRatePerBlock() returns (uint)",
-          [],
-          { provider: window.ethereum }
-        ).then((borrowRatePerBlock) => {
-          return new BigNumber(borrowRatePerBlock._hex).times(new BigNumber(100 * this.blocksPerYear)).div(new BigNumber(this.factor)).toNumber();
-        });
+    this.borrowRate = this.getBorrowRate();
 
-    //set supply of
+    //TODO set supply of
     // https://github.com/ajlopez/DeFiProt/blob/master/contracts/Market.sol#L246
     this.supplyOf = 13;
   }
 
-  getBalenceOfToken(acoount) {
-    Rlending.eth
+  async getValueMoc() {
+    //TODO addres oracle moc in const
+    return Rlending.eth
+      .read(
+        "0x2d39cc54dc44ff27ad23a91a9b5fd750dae4b218",
+        "function peek() returns (bytes32, bool)",
+        [],
+        { provider: window.ethereum }
+      )
+      .then(([value, ok]) => {
+        return value;
+        //TODO comment validation, because in Oracle moc test fails (ok=false)
+        // if (ok) {
+        //   return value;
+        // }
+        // return 0;
+      });
+  }
+
+  async getPrice() {
+    let priceToken;
+    //get price of cToken
+    return Rlending.eth
+      .read(
+        Rlending.util.getAddress('PriceOracleProxy').toLowerCase(),
+        "function getUnderlyingPrice(address) returns (uint)",
+        [this.instanceAddress],
+        { provider: window.ethereum }
+      )
+      .then((priceResult) => {
+        priceToken = priceResult;
+        //get price of rbtc
+        return this.getValueMoc();
+      }).then((valueOracle) => {
+        //set decimals of token
+        let decimals = `1e${this.decimals}`;
+        // price = ( price cToken in rbtc * price of rbtc) / decimals of cToken
+        return new BigNumber(priceToken._hex).multipliedBy(new BigNumber(valueOracle)).div(new BigNumber(decimals)).toNumber();
+      });
+  }
+
+  async getBalenceOfToken(acoount) {
+    return Rlending.eth
       .read(
         this.instanceAddress,
         "function balanceOf(address) returns (uint)",
         [acoount],
         { provider: window.ethereum }
-      ).then((balance) => Number(balance));
+      ).then((balance) => Rlending._ethers.utils.formatEther(balance));
   }
 
-  getCash() {
+  async getCash() {
     return Rlending.eth
       .read(
         this.instanceAddress,
         "function getCash() returns (uint)",
-        // "function balanceOf(address) returns (uint)",
-        // [Rlending.util.getAddress(cTokenSymbol).toLowerCase()],
         [],
         { provider: window.ethereum }
       ).then((cash) => Number(cash));
   }
 
-  getBorrowRate() {
+  async getBorrowRate() {
     return Rlending.eth
       .read(
         this.instanceAddress,
         "function borrowRatePerBlock() returns (uint)",
         [],
         { provider: window.ethereum }
-      );
-    // .then((borrowRatePerBlock) => {
-    //   return new BigNumber(borrowRatePerBlock._hex).times(new BigNumber(100 * this.blocksPerYear)).div(new BigNumber(this.factor)).toNumber();
-    // });
+      )
+      .then((borrowRatePerBlock) => {
+        return new BigNumber(borrowRatePerBlock._hex).times(new BigNumber(100 * this.blocksPerYear)).div(new BigNumber(this.factor)).toNumber();
+      });
   }
 
   validateMarketAccount(account, cTokenSymbol) {
@@ -133,11 +147,6 @@ export default class Market {
       [[this.instanceAddress]],
       { provider: window.ethereum }
     );
-    // let instanceRlending = new Rlending(window.ethereum);
-    // instanceRlending.enterMarkets(this.token.symbol).then((ok) => {
-    //   console.log("enters Markets");
-    //   console.log("enters Markets==>", ok);
-    // });
   }
 
   supply(amount, account) {
@@ -148,7 +157,7 @@ export default class Market {
       //if not exist => enterMarket
       //then supply
       if (!ok) {
-        return addMarkets().then((enterMark) => {
+        return this.addMarkets().then((enterMark) => {
           return instanceRlending.supply(this.token.symbol, amount);
         });
       };
@@ -157,50 +166,14 @@ export default class Market {
   }
 
 
-  getEventualChainId = async () => 32;
-  /**
-   * Returns the list of existing markets.
-   * @return {Promise<[Market]>}
-   */
-
   /**
    * mock events
    */
   get eventualEvents() {
     return new Promise((resolve, reject) => {
       resolve('10')
-      // .then(resolve)
-      // .catch(reject);
     });
   }
-
-  // get eventualEvents() {
-  //   return new Promise((resolve, reject) => {
-  //     // this.eventualWeb3WS
-  //     // .then((web3WS) => {
-  //     //   const ws = new Rlending._ethers.Contract(MarketContract.abi, this.address);
-  //     resolve(
-  //       {
-  //         // supply: (filter = {}, fromBlock = 'latest', cb) => ws
-  //         //   .events.Supply({ filter, fromBlock }, cb),
-  //         // borrow: (filter = {}, fromBlock = 'latest', cb) => ws
-  //         //   .events.Borrow({ filter, fromBlock }, cb),
-  //         // redeem: (filter = {}, fromBlock = 'latest', cb) => ws
-  //         //   .events.Redeem({ filter, fromBlock }, cb),
-  //         // payBorrow: (filter = {}, fromBlock = 'latest', cb) => ws
-  //         //   .events.PayBorrow({ filter, fromBlock }, cb),
-  //         // liquidateBorrow: (filter = {}, fromBlock = 'latest', cb) => ws
-  //         //   .events.LiquidateBorrow({ filter, fromBlock }, cb),
-  //         // allEvents: (cb) => ws.events
-  //         //   .allEvents({ fromBlock: 'latest' }, cb),
-  //         liquidateBorrow: (filter = {}, fromBlock = 'latest', cb),
-  //         allEvents: (cb) => "",
-  //       },
-  //     );
-  //     // })
-  //     // .catch(reject);
-  //   });
-  // }
 
   liquidateBorrow(borrower, amount, collateralMarket, from = '') {
     // return this.token;
@@ -209,17 +182,6 @@ export default class Market {
         .then(resolve)
         .catch(reject);
     });
-    // return new Promise((resolve, reject) => {
-    //   this.token
-    //     .then((token) => token.approve(this.instanceAddress, amount, from))
-    //     .then(() => send(this.instance.methods.liquidateBorrow(
-    //       borrower,
-    //       amount,
-    //       collateralMarket,
-    //     ), from))
-    //     .then(resolve)
-    //     .catch(reject);
-    // });
   }
 
 }
