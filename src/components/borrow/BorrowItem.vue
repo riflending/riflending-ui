@@ -54,6 +54,7 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
 import BorrowDialog from '@/components/dialog/borrow/BorrowDialog.vue';
 
 export default {
@@ -78,6 +79,9 @@ export default {
     };
   },
   computed: {
+    ...mapState({
+      account: (state) => state.Session.account,
+    }),
     apr() {
       return this.borrowRate.toFixed(2);
     },
@@ -94,19 +98,38 @@ export default {
   methods: {
     reset() {
       this.dialog = false;
-      this.$rbank.controller.eventualMarketPrice(this.market.address)
-        .then((marketPrice) => {
-          this.price = marketPrice;
-          return this.market.eventualBorrowRate;
+      this.market.tokenBalance
+        .then((balance) => {
+          this.tokenBalance = balance;
+          return this.market.price;
         })
-        .then((borrowRate) => {
-          this.borrowRate = borrowRate;
+        //set price
+        .then((price) => {
+          this.price = price;
+          return this.market.borrowRate;
+        })
+        //set borrow rate block
+        .then((borrowRatePerBlock) => {
+          this.borrowRate = borrowRatePerBlock;
+          // console.log("borrItem: rate",borrowRate);
           return this.market.eventualCash;
         })
+        //set cash
         .then((cash) => {
-          this.cash = cash;
+          this.cash = 800000000;
+          // this.cash = cash;
         });
       this.$emit('dialogClosed');
+      // this.dialog = false;
+      // this.$rbank.controller.eventualMarketPrice(this.market.address)
+      //   .then((marketPrice) => {
+      //     this.price = marketPrice;
+      //     return this.market.eventualBorrowRate;
+      //   })
+      //   .then((borrowRate) => {
+      //     this.borrowRate = borrowRate;
+      //     return this.market.eventualCash;
+      //   })
     },
   },
   components: {
@@ -116,34 +139,57 @@ export default {
     this.$parent.$parent.$parent.$on('reload', this.reset);
   },
   created() {
-    this.market.eventualEvents
-      .then((events) => {
-        events.allEvents()
-          .on('data', this.reset);
-      });
-    this.market.eventualToken
-      .then((tok) => [
-        tok.eventualName,
-        tok.eventualSymbol,
-        tok.eventualDecimals,
-      ])
-      .then((results) => Promise.all(results))
-      .then(([name, symbol, decimals]) => {
-        this.token.name = name;
-        this.token.symbol = symbol;
-        this.token.decimals = decimals;
-        return this.$rbank.controller.eventualMarketPrice(this.market.address);
+    //set data token
+    this.token = this.market.token;
+    this.market.tokenBalance
+      .then((balance) => {
+        this.tokenBalance = balance;
+        console.log("borrItem: balance",this.tokenBalance);
+        return this.market.price;
       })
-      .then((marketPrice) => {
-        this.price = marketPrice;
-        return this.market.eventualBorrowRate;
+    //set price
+      .then((price) => {
+        this.price = price;
+        console.log("borrItem: price",this.price);
+        return this.market.borrowRate;
       })
-      .then((borrowRate) => {
-        this.borrowRate = borrowRate;
+    //set borrow rate block
+      .then((borrowRatePerBlock) => {
+        this.borrowRate = borrowRatePerBlock;
+        console.log("borrItem: borrRate",this.borrowRate);
         return this.market.eventualCash;
       })
+/********/
+
+    // this.market.eventualEvents
+    //   .then((events) => {
+    //     events.allEvents()
+    //       .on('data', this.reset);
+    //   });
+    // this.market.eventualToken
+    //   .then((tok) => [
+    //     tok.eventualName,
+    //     tok.eventualSymbol,
+    //     tok.eventualDecimals,
+    //   ])
+    //   .then((results) => Promise.all(results))
+    //   .then(([name, symbol, decimals]) => {
+    //     this.token.name = name;
+    //     this.token.symbol = symbol;
+    //     this.token.decimals = decimals;
+    //     return this.$rbank.controller.eventualMarketPrice(this.market.address);
+    //   })
+    //   .then((marketPrice) => {
+    //     this.price = marketPrice;
+    //     return this.market.eventualBorrowRate;
+    //   })
+    //   .then((borrowRate) => {
+    //     this.borrowRate = borrowRate;
+    //     return this.market.eventualCash;
+    //   })
       .then((cash) => {
-        this.cash = cash;
+        // this.cash = cash;
+        this.cash = 800000000;
       });
   },
 };

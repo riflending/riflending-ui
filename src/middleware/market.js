@@ -149,7 +149,7 @@ export default class Market {
     );
   }
 
-  supply(amount, account) {
+  async supply(amount, account) {
     //instace Rleanding js
     let instanceRlending = new Rlending(window.ethereum);
     //validate if market exist in account
@@ -165,6 +165,21 @@ export default class Market {
     });
   }
 
+  /**
+   * Borrows the specified amount from this market. May fail if no collateral has been supplied.
+   * onto another market.
+   * @param {number} amount of this market's token to be borrowed.
+   * @param {string=} from if specified executes the transaction using this account.
+   * @return {Promise<TXResult>}
+   */
+  borrow(amount, account){
+    console.log("borrow():this.token.symbol", this.token.symbol);
+    console.log("borrow():amount", amount);
+    console.log("borrow():amount", new BigNumber(amount));
+    console.log("borrow():account", account);
+    let instanceRlending = new Rlending(window.ethereum);
+    return instanceRlending.borrow(this.token.symbol, amount);
+  }
 
   /**
    * mock events

@@ -71,20 +71,46 @@ export default {
     },
   },
   created() {
-    this.$rbank.controller.eventualMarketPrice(this.data.market.address)
-      .then((marketPrice) => {
-        this.price = marketPrice;
-        return this.data.market.eventualToken;
+    let refreshDataMarket = this.$middleware
+      .getMarkets(this.account)
+      .find(
+        (market) => market.instanceAddress == this.data.market.instanceAddress
+      );
+
+    this.tokenAddress = refreshDataMarket.instanceAddress;
+    //set token balance
+    this.tokenBalance = refreshDataMarket.tokenBalance
+      .then((balance) => {
+        this.tokenBalance = balance;
+        return refreshDataMarket.price;
       })
-      .then((tok) => Promise.all([tok.eventualBalanceOf(this.account), tok.address]))
-      .then(([tokenBalance, tokenAddress]) => {
-        this.tokenAddress = tokenAddress;
-        this.tokenBalance = tokenBalance;
-        return this.data.market.eventualBorrowRate;
+      //set price
+      .then((price) => {
+        this.price = price;
+        return this.market.borrowRate;
       })
       .then((borrowRate) => {
         this.borrowRate = borrowRate;
       });
+    //TODO this earnings
+    this.apr = 1;
+
+
+
+    // this.$rbank.controller.eventualMarketPrice(this.data.market.address)
+    //   .then((marketPrice) => {
+    //     this.price = marketPrice;
+    //     return this.data.market.eventualToken;
+    //   })
+    //   .then((tok) => Promise.all([tok.eventualBalanceOf(this.account), tok.address]))
+    //   .then(([tokenBalance, tokenAddress]) => {
+    //     this.tokenAddress = tokenAddress;
+    //     this.tokenBalance = tokenBalance;
+    //     return this.data.market.eventualBorrowRate;
+    //   })
+    //   .then((borrowRate) => {
+    //     this.borrowRate = borrowRate;
+    //   });
   },
 };
 </script>
