@@ -26,9 +26,10 @@ export default class Middleware {
             .then(([error, liquidity, shortfall]) => Number(liquidity));
     }
 
-    getCollateralFactor() {
+    getCollateralFactor(account) {
+        return 1;
         return Rlending.eth
-            .read(
+            .read( // TODO: update to query proper collateral factor in contract
                 Rlending.util.getAddress(Rlending.Unitroller),
                 "function getAccountLiquidity(address) returns (uint)",
                 [account],
