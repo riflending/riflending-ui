@@ -1,5 +1,6 @@
 import Rlending from '@riflending/riflending-js';
 import BigNumber from 'bignumber.js';
+import Util from './util'
 
 
 /**
@@ -52,25 +53,22 @@ export default class Market {
     //TODO set supply of
     // https://github.com/ajlopez/DeFiProt/blob/master/contracts/Market.sol#L246
     this.supplyOf = 13;
+    //TODO
+    this.util = new Util();
+
   }
 
   async getValueMoc() {
-    //TODO addres oracle moc in const
-    return Rlending.eth
-      .read(
-        "0x2d39cc54dc44ff27ad23a91a9b5fd750dae4b218",
-        "function peek() returns (bytes32, bool)",
-        [],
-        { provider: window.ethereum }
-      )
-      .then(([value, ok]) => {
-        return value;
-        //TODO comment validation, because in Oracle moc test fails (ok=false)
-        // if (ok) {
-        //   return value;
-        // }
-        // return 0;
-      });
+    //set contract
+    let contract = this.util.getContract('RBTCMocOracle');
+    //call contract
+    let [value, ok] = await contract.peek();
+    return value;
+    //TODO comment validation, because in Oracle moc test fails (ok=false)
+    // if (ok) {
+    //   return value;
+    // }
+    // return 0;
   }
 
   async getPrice() {
@@ -172,7 +170,7 @@ export default class Market {
    * @param {string=} from if specified executes the transaction using this account.
    * @return {Promise<TXResult>}
    */
-  borrow(amount, account){
+  borrow(amount, account) {
     console.log("borrow():this.token.symbol", this.token.symbol);
     console.log("borrow():amount", amount);
     console.log("borrow():amount", new BigNumber(amount));
