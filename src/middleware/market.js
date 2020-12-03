@@ -99,6 +99,7 @@ export default class Market {
         [],
         { provider: window.ethereum }
       ).then((cash) => Number(cash));
+
   }
 
   getBorrowRate() {
@@ -149,7 +150,7 @@ export default class Market {
       //   .then(resolve)
       //   .catch(reject);
     });
-
+  }
 
 
 
@@ -192,8 +193,9 @@ export default class Market {
     //         );
     //     })).then(resolve)
     //     .catch(reject);
+
     // });
-  }
+
 
   validateMarketAccount(account, cTokenSymbol) {
     //TODO add cache.
