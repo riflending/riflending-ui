@@ -143,7 +143,10 @@ export default {
           this.decimalPositions ||
           `Maximum ${this.data.token.decimals} decimal places for ${this.data.token.symbol}.`,
         minBalance: () =>
-          this.tokenBalance >= Number(this.contractAmount) ||
+          //TODO see if the tokenBalance is the balance of account or the balance of the account in the protocol
+          // this.tokenBalance >= Number(this.contractAmount) ||
+          // "Not enough funds",
+          this.tokenBalance >= Number(this.amount) ||
           "Not enough funds",
       },
     };
