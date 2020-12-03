@@ -99,7 +99,8 @@ export default {
       this.$emit('closeDialog');
     },
     getMaxAllowed(liquidity, cash) {
-      const allowed = this.price > 0 ? Math.floor(liquidity / (this.price * 2)) : 0;
+      const allowed =
+        this.price > 0 ? Math.floor(liquidity / (this.price * 2)) : 0;
       return allowed >= cash ? cash : allowed;
     },
   },
@@ -111,28 +112,56 @@ export default {
       .then((tok) => tok.eventualBalanceOf(this.account))
       .then((tokenBalance) => {
         this.tokenBalance = tokenBalance;
-        return this.$rbank.controller.getAccountLiquidity(this.account);
+        return this.$middleware.getAccountLiquidity(this.account);
+        //return this.$rbank.controller.getAccountLiquidity(this.account);
       })
+      // sets liquidity
       .then((accountLiquidity) => {
-        this.liquidity = accountLiquidity;
-        return this.data.market.eventualCash;
+        console.log("repaySuccess: liquidity",accountLiquidity);
+        this.liquidity = Number(accountLiquidity);
+        console.log("repaySuccess: Number(liquidity)",this.liquidity);
+        return this.data.market.getCash();
       })
+      //sets cash
       .then((cash) => {
         this.cash = cash;
-        return this.$rbank.controller.eventualMarketPrice(this.data.market.address);
+        console.log("repaySuccess: cash",this.cash);
+        return this.data.market.borrowRate;
       })
-      .then((marketPrice) => {
-        this.price = marketPrice;
-        return this.data.market.updatedBorrowBy(this.account);
+      .then((borrowRate) => {
+        this.borrowRate = borrowRate;
+        console.log("repaySuccess: borrowRate",this.borrowRate);
+        return this.data.market.price;
       })
-      .then((borrowBy) => {
-        this.borrowBy = borrowBy;
-        return this.$rbank.controller.getAccountHealth(this.account);
-      })
-      .then((accountHealth) => {
-        this.accountHealth = accountHealth;
-        this.maxBorrowAllowed = this.getMaxAllowed(this.liquidity, this.cash);
+      //sets price
+      .then((price) => {
+        this.price = price;
+        console.log("repaySuccess: price",this.price);
+        return this.data.market.tokenBalance;
       });
+
+// TODO: double-check that we're not missing anything in this refactor
+      // .then((accountLiquidity) => {
+      //   this.liquidity = accountLiquidity;
+      //   console.log("repaySuccess: liquidity",this.liquidity);
+      //   return this.data.market.eventualCash;
+      // })
+      // .then((cash) => {
+      //   this.cash = cash;
+      //   return this.$rbank.controller.eventualMarketPrice(this.data.market.address);
+      // })
+      // .then((marketPrice) => {
+      //   this.price = marketPrice;
+      //   return this.data.market.updatedBorrowBy(this.account);
+      // })
+      // .then((borrowBy) => {
+      //   this.borrowBy = borrowBy;
+      //   return this.$rbank.controller.getAccountHealth(this.account);
+      // })
+      // .then((accountHealth) => {
+      //   this.accountHealth = accountHealth;
+      //   this.maxBorrowAllowed = this.getMaxAllowed(this.liquidity, this.cash);
+      // });
   },
 };
 </script>
