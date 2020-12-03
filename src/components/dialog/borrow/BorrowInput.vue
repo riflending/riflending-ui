@@ -174,6 +174,7 @@ export default {
         // .borrow(this.contractAmount, this.account)
         .then((res) => {
           this.waiting = false;
+          console.log("transaction sent: ",res);
           this.$emit("succeed", {
             hash: res.transactionHash,
             borrowLimitInfo: this.borrowLimitInfo,

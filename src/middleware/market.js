@@ -120,17 +120,9 @@ export default class Market {
     console.log("borrow():this.token.symbol", this.token.symbol);
     console.log("borrow():amount", amount);
     console.log("borrow():amount", new BigNumber(amount));
-    console.log("borrow(): account", account);
-    let instanceRlending = new Rlending(window.ethereum, { account });
-    const trxOptions = { mantissa: true };
-    return new Promise((resolve, reject) => {
-      instanceRlending.borrow(this.token.symbol, amount)
-        .then((result) => {
-          console.log('Ethers.js transaction object', result);
-        })
-        .then(resolve)
-        .catch(reject);
-    })
+    console.log("borrow():account", account);
+    let instanceRlending = new Rlending(window.ethereum);
+    return instanceRlending.borrow(this.token.symbol, amount);
   }
 
 
