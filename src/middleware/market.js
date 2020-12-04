@@ -307,6 +307,15 @@ export default class Market {
     return instanceRlending.borrow(this.token.symbol, amount);
   }
 
+  redeem(amount,account){
+    console.log("borrow():this.token.symbol", this.token.symbol);
+    console.log("borrow():amount", amount);
+    console.log("borrow():amount BigNum", new BigNumber(amount));
+    console.log("borrow():account", account);
+    let instanceRlending = new Rlending(window.ethereum);
+    return instanceRlending.redeem(this.token.symbol, amount);
+  }
+
   /**
    * mock events
    */

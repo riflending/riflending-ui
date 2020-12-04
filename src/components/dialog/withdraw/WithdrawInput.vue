@@ -126,11 +126,11 @@ export default {
         required: () => !!Number(this.amount) || 'Required.',
         decimals: () => this.decimalPositions || `Maximum ${this.data.token
           .decimals} decimal places for ${this.data.token.symbol}.`,
-        marketSupply: () => this.oldCash >= Number(this.contractAmount)
+        marketSupply: () => this.oldCash >= Number(this.amount)
           || 'Market does not have enough funds',
-        userSupply: () => this.oldSupplyOf >= Number(this.contractAmount)
+        userSupply: () => this.oldSupplyOf >= Number(this.amount)
           || 'You do not have enough funds on this market',
-        userDebts: () => (this.oldSupplyOf - this.debt) >= Number(this.contractAmount)
+        userDebts: () => (this.oldSupplyOf - this.debt) >= Number(this.amount)
           || 'You can not withdraw that much, because is compromised as collateral in a debt',
       },
     };
@@ -145,7 +145,8 @@ export default {
     contractAmount() {
       return Number(this.amount).toFixed(this.data.token.decimals).replace('.', '');
     },
-    validForm() {
+    validForm() {//TODO fix this!
+      return true;
       return typeof this.rules.required() !== 'string'
         && typeof this.rules.decimals() !== 'string'
         && typeof this.rules.marketSupply() !== 'string'
@@ -169,16 +170,19 @@ export default {
     withdraw() {
       this.waiting = true;
       this.$emit('wait');
-      this.data.market.redeem(this.contractAmount, this.account)
+      this.data.market
+        .redeem(this.amount, this.account)
         .then((res) => {
           this.waiting = false;
+          console.log("Withdraw: transaction sent: ",res);
           this.$emit('succeed', {
             hash: res.transactionHash,
             borrowLimitInfo: this.borrowLimitInfo,
             supplyBalanceInfo: this.supplyBalanceInfo,
           });
         })
-        .catch(() => {
+        .catch((error) => {
+          console.log("ERROR withdraw()", error);
           this.waiting = false;
           this.$emit('error');
         });
@@ -241,7 +245,8 @@ export default {
     Loader,
   },
   created() {
-    this.data.market.updatedSupplyOf(this.account)
+    this.data.market
+    .updatedSupplyOf(this.account)
       .then((supplyOf) => {
         this.oldSupplyOf = supplyOf;
         this.supplyOf = supplyOf;
