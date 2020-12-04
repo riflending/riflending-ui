@@ -112,11 +112,11 @@ export default {
         .then((borrowRatePerBlock) => {
           this.borrowRate = borrowRatePerBlock;
           // console.log("borrItem: rate",borrowRate);
-          return this.market.eventualCash;
+          return this.market.getCash();
         })
         //set cash
         .then((cash) => {
-          this.cash = 800000000;
+          this.cash = cash;
           // this.cash = cash;
         });
       this.$emit('dialogClosed');
@@ -157,7 +157,7 @@ export default {
       .then((borrowRatePerBlock) => {
         this.borrowRate = borrowRatePerBlock;
         console.log("borrItem: borrRate",this.borrowRate);
-        return this.market.eventualCash;
+        return this.market.getCash();
       })
 /********/
 
@@ -189,7 +189,7 @@ export default {
     //   })
       .then((cash) => {
         // this.cash = cash;
-        this.cash = 800000000;
+        this.cash = cash;
       });
   },
 };
