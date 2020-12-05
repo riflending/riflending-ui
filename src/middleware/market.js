@@ -41,10 +41,10 @@ export default class Market {
     this.token.name = underlyingName;
     this.token.decimals = underlyingDecimals;
     //set balance account
-    this.tokenBalance = this.getBalenceOfToken(account);
+    this.tokenBalance = this.getBalanceOfToken(account);
     //set price
     this.price = this.getPrice().then((price) => new BigNumber(price).div(new BigNumber(1e18)));
-    //set borrow rate 
+    //set borrow rate
     this.factor = 1e18;
     this.blocksPerYear = 1051200;
     this.borrowRate = this.getBorrowRate();
@@ -95,12 +95,13 @@ export default class Market {
       });
   }
 
-  async getBalenceOfToken(acoount) {
+  async getBalanceOfToken(account) {
+    console.log(`Instance address ${this.instanceAddress}`)
     return Rlending.eth
       .read(
         this.instanceAddress,
         "function balanceOf(address) returns (uint)",
-        [acoount],
+        [account],
         { provider: window.ethereum }
       ).then((balance) => Rlending._ethers.utils.formatEther(balance));
   }
