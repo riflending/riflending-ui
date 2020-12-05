@@ -1,7 +1,7 @@
 import { ethers } from "ethers";
 import { constants, address, abi } from "./constants";
 
-export default class Util {
+export default class factoryContract {
 
     constructor() {
         this.provider = new ethers.providers.Web3Provider(window.ethereum);
