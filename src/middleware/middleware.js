@@ -36,4 +36,22 @@ export default class Middleware {
                 { provider: window.ethereum }
             );
     }
+
+    getWalletAccountBalance(account, tokenAddress) {
+      return Rlending.eth
+        .read(
+          tokenAddress,
+          "function balanceOf(address) returns (uint)",
+          [account],
+          {provider: window.ethereum}
+        ).then((balance) => Rlending._ethers.utils.formatEther(balance));
+    }
+
+    getWalletAccountBalanceForRBTC(account) {
+      return Rlending.eth
+        .getBalance(
+          account,
+          window.ethereum
+        ).then((balance) => Rlending._ethers.utils.formatEther(balance));
+    }
 }
