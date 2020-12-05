@@ -124,8 +124,7 @@ export default class Market {
    */
   async supply(amount, account) {
     //add decimals token
-    amount = amount * Math.pow(10, decimals[this.token.symbol]);
-    amount = ethers.BigNumber.from(amount.toString());
+    amount = this.getAmountDecimals(amount);
     let signer;
     let tx;
     //validate crbtc
@@ -158,19 +157,31 @@ export default class Market {
     return tx.wait();
   }
   /**
-   * Borrows the specified amount from this market. May fail if no collateral has been supplied.
-   * onto another market.
+   * Borrows the specified amount from this market. 
    * @param {number} amount of this market's token to be borrowed.
-   * @param {string=} from if specified executes the transaction using this account.
-   * @return {Promise<TXResult>}
+   * @return {Promise<TXResult>} the wait mined transaction
    */
-  borrow(amount, account) {
-    console.log("borrow():this.token.symbol", this.token.symbol);
-    console.log("borrow():amount", amount);
-    console.log("borrow():amount", new BigNumber(amount));
-    console.log("borrow():account", account);
-    let instanceRlending = new Rlending(window.ethereum);
-    return instanceRlending.borrow(this.token.symbol, amount);
+  async borrow(amount) {
+    //add decimals token
+    amount = this.getAmountDecimals(amount);
+    let signer;
+    //validate crbtc
+    if (!this.isCRBTC) {
+      //set signer token
+      signer = this.token.instace.connect(this.factoryContract.signer);
+    } else {
+      //set signer cRBTC
+      signer = this.instance.connect(this.factoryContract.signer);
+    }
+    let tx = await signer.borrow(amount);
+    //wait for mined transaction
+    return tx.wait();
+  }
+
+  getAmountDecimals(amount) {
+    //add decimals token
+    amount = amount * Math.pow(10, (!this.isCRBTC) ? decimals[this.token.symbol] : decimals[constants.cRBTC]);
+    return ethers.BigNumber.from(amount.toString());
   }
 
   /**
