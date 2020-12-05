@@ -127,6 +127,7 @@ export default {
       maxAmount: false,
       price: 0,
       amount: "0",
+      maxAmountBalanceAllowed: 0,
       supplyOf: 0,
       borrowRate: 0,
       liquidity: 0,
@@ -146,7 +147,7 @@ export default {
           //TODO see if the tokenBalance is the balance of account or the balance of the account in the protocol
           // this.tokenBalance >= Number(this.contractAmount) ||
           // "Not enough funds",
-          this.tokenBalance >= Number(this.amount) ||
+          this.maxAmountBalanceAllowed >= Number(this.amount) ||
           "Not enough funds",
       },
     };
@@ -282,13 +283,13 @@ export default {
   watch: {
     amount() {
       this.getValues();
-      if (this.maxAmount && this.amount !== this.balanceAsDouble)
+      if (this.maxAmount && this.amount !== this.maxAmountBalanceAllowed)
         this.maxAmount = false;
-      if (this.amount === this.balanceAsDouble) this.maxAmount = true;
+      if (this.amount === this.maxAmountBalanceAllowed) this.maxAmount = true;
     },
     maxAmount() {
-      if (this.maxAmount) this.amount = this.balanceAsDouble;
-      if (!this.maxAmount && this.amount === this.balanceAsDouble)
+      if (this.maxAmount) this.amount = this.maxAmountBalanceAllowed;
+      if (!this.maxAmount && this.amount === this.maxAmountBalanceAllowed)
         this.amount = null;
     },
   },
@@ -325,6 +326,14 @@ export default {
           this.liquidity,
           this.cash
         );
+
+        const internalAddressOfToken = this.data.market.token?.internalAddress
+        return internalAddressOfToken ?
+          this.$middleware.getWalletAccountBalance(this.account, this.data.market.token?.internalAddress) :
+          this.$middleware.getWalletAccountBalanceForRBTC(this.account)
+      }).then((balanceOfToken) => {
+        console.log(`Wallet balance: ${balanceOfToken}`)
+        this.maxAmountBalanceAllowed = balanceOfToken
       });
 
     // this.data.market
