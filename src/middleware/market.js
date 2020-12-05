@@ -83,7 +83,7 @@ export default class Market {
     //set balance of account
     let balance = await this.instance.balanceOf(account);
     //return format (without wei)
-    return Rlending._ethers.utils.formatEther(balance);
+    return ethers.utils.formatEther(balance);
   }
 
   async getCash() {
@@ -182,6 +182,22 @@ export default class Market {
     //add decimals token
     amount = amount * Math.pow(10, (!this.isCRBTC) ? decimals[this.token.symbol] : decimals[constants.cRBTC]);
     return ethers.BigNumber.from(amount.toString());
+  }
+
+  /**
+   * getCollateralFactorMantissa for cToken. 
+   * @return human number collateralFactorMantisa | error beacuse the cToken is not listed on protocol
+   */
+  async getCollateralFactorMantissa() {
+    //set contract Comptroller delegate (Unitroller)
+    let contract = this.factoryContract.getContractByNameAndAbiName(constants.Unitroller, constants.Comptroller);
+    //get is member (bool)
+    let [isListed, collateralFactorMantissa, isComped] = await contract.markets(this.instanceAddress);
+    //validate token listed
+    if (isListed) {
+      return ethers.utils.formatEther(collateralFactorMantissa);
+    }
+    console.error("cToken is not listed")
   }
 
   /**
