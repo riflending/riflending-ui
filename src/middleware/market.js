@@ -1,6 +1,6 @@
 import Rlending from '@riflending/riflending-js';
 import BigNumber from 'bignumber.js';
-import Util from './util'
+import factoryContract from './factoryContract'
 import { constants, decimals } from "./constants";
 import { ethers } from "ethers";
 
@@ -11,8 +11,8 @@ import { ethers } from "ethers";
 export default class Market {
   // constructor() {}
   constructor(cTokenSymbol, cTokenDecimals, tokenSymbol, underlyingName, underlyingDecimals, account) {
-    //TODO see if util go to middleware class
-    this.util = new Util();
+    //TODO see if factoryContract go to middleware class
+    this.factoryContract = new factoryContract();
     this.isCRBTC = (cTokenSymbol == 'cRBTC');
     let config = {
       1337: {
@@ -25,14 +25,14 @@ export default class Market {
     // market.eventualWeb3WS = getEventualChainId().then((chainId) => new Rlending._ethers.providers.WebsocketProvider(config[chainId].wsProvider)).catch(() => new Error('Something went wrong with the web3 instance over web sockets on Market'));
     // market.eventualWeb3Http = new Rlending._ethers.providers.HttpProvider(config[32].httpProvider);
     this.decimals = cTokenDecimals;
-    this.instanceAddress = this.util.addressContract[cTokenSymbol];
-    this.instance = this.util.getContractCtoken(cTokenSymbol);
+    this.instanceAddress = this.factoryContract.addressContract[cTokenSymbol];
+    this.instance = this.factoryContract.getContractCtoken(cTokenSymbol);
 
     this.token = Object();
     //TODO
     //validate cRBTC
     if (cTokenSymbol != 'cRBTC') {
-      this.token.instace = this.util.getContractCtoken(cTokenSymbol)
+      this.token.instace = this.factoryContract.getContractCtoken(cTokenSymbol)
       this.token.internalAddress = Rlending.util.getAddress(tokenSymbol).toLowerCase();
     }
     //set data token
@@ -55,7 +55,7 @@ export default class Market {
 
   async getValueMoc() {
     //set contract
-    let contract = this.util.getContract('RBTCMocOracle');
+    let contract = this.factoryContract.getContract('RBTCMocOracle');
     //call contract
     let [value, ok] = await contract.peek();
     return value;
@@ -68,7 +68,7 @@ export default class Market {
 
   async getPrice() {
     //set contract
-    let contract = this.util.getContract('PriceOracleProxy');
+    let contract = this.factoryContract.getContract('PriceOracleProxy');
     //get price of cToken
     let priceToken = await contract.getUnderlyingPrice(this.instanceAddress);
     //get price of rbtc
@@ -100,62 +100,62 @@ export default class Market {
 
   async validateMarketAccount(account) {
     //set contract Comptroller delegate (Unitroller)
-    let contract = this.util.getContractByNameAndAbiName(constants.Unitroller, constants.Comptroller);
+    let contract = this.factoryContract.getContractByNameAndAbiName(constants.Unitroller, constants.Comptroller);
     //get is member (bool)
     return await contract.checkMembership(account, this.instanceAddress);
   }
 
   async addMarkets() {
     //set contract
-    let contract = this.util.getContractByNameAndAbiName(constants.Unitroller, constants.Comptroller);
+    let contract = this.factoryContract.getContractByNameAndAbiName(constants.Unitroller, constants.Comptroller);
     //set signer
-    let contractWithSigner = contract.connect(this.util.signer);
+    let contractWithSigner = contract.connect(this.factoryContract.signer);
     //send transaction
     let tx = await contractWithSigner.enterMarkets([p.addressContract.cRIF]);
     //await result transaction
     return tx.wait();
   }
 
+  /**
+   * Supply the specified amount from this market. 
+   * @param {number} amount of this market's token to be supply.
+   * @param {address} account the address of the account
+   * @return {Promise<TXResult>} the wait mined transaction
+   */
   async supply(amount, account) {
-    //instace Rleanding js
-    let instanceRlending = new Rlending(window.ethereum);
-    //validate if market exist in account
-    return this.validateMarketAccount(account).then((ok) => {
-      //if not exist => enterMarket
-      //then supply
-      if (!ok) {
-        //TODO remove this addMarkets and add it in supply button UI
-        return this.addMarkets().then((enterMark) => {
-          return instanceRlending.supply(this.token.symbol, amount);
-        });
-      };
-      return instanceRlending.supply(this.token.symbol, amount);
-    });
-  }
-
-  //TODO this 
-  async supplyV2(amount, account) {
     //add decimals token
     amount = amount * Math.pow(10, decimals[this.token.symbol]);
     amount = ethers.BigNumber.from(amount.toString());
-    const parameters = [];
-
+    let signer;
+    let tx;
+    //validate crbtc
     if (!this.isCRBTC) {
-      //check allow
+      //check allowance
       const allowance = await this.token.instace.allowance(account, this.instanceAddress);
-      const verify = allowance.lt(amount);
-      if (verify) {
+      //validate if enough
+      const notEnough = allowance.lt(amount);
+      //set signer token
+      signer = this.token.instace.connect(this.factoryContract.signer);
+
+      if (notEnough) {
         //approve
-        let signer = this.token.instace.connect(this.util.signer);
         await signer.approve(this.instanceAddress, amount);
       }
+      //mint token
+      tx = await signer.mint(amount);
     }
-    if (cTokenName === constants.cRBTC) {
-      options.value = amount;
-    } else {
-      parameters.push(amount);
+    else {
+      //set signer cRBTC
+      signer = this.instance.connect(this.factoryContract.signer);
+      //set value 
+      let overrides = {
+        value: amount,
+      };
+      //mint crbtc
+      tx = await signer.mint(overrides);
     }
-
+    //wait for mined transaction
+    return tx.wait();
   }
   /**
    * Borrows the specified amount from this market. May fail if no collateral has been supplied.
