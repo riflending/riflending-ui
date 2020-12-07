@@ -40,7 +40,7 @@ export default class Market {
     this.token.name = underlyingName;
     this.token.decimals = underlyingDecimals;
     //set balance account
-    this.tokenBalance = this.getBalenceOfToken(account);
+    this.tokenBalance = this.getBalanceOfToken(account);
     //set price
     this.price = this.getPrice().then((price) => new BigNumber(price).div(new BigNumber(1e18)));
     //set borrow rate
@@ -79,7 +79,7 @@ export default class Market {
     return new BigNumber(priceToken._hex).multipliedBy(new BigNumber(valueOracle)).div(new BigNumber(decimals)).toNumber();
   }
 
-  async getBalenceOfToken(account) {
+  async getBalanceOfToken(account) {
     //set balance of account
     let balance = await this.instance.balanceOf(account);
     //return format (without wei)
