@@ -301,35 +301,16 @@ export default class Market {
     return (666,666);
   }
 
-  /** TODO: update to contract factory
-   * Gets the equivalent of rbank updatedBorrowBy() ¯\_(ツ)_/¯
-   * (perhaps this is similar to accrued() on borrow interests )
-   * @dev research DefiProt contracts to understand what this does
+  /**
+   * calls borrowBalanceCurrent()
+   * @dev replaces DefiProt updatedBorrowBy()
    * @param {address} account the address of the account
-   * @return borrowBy - I think this returns the total borrow supply across all markets (??)
+   * @return returns the total borrow balance including accrued interests
    */
-  async updatedBorrowBy(account){
-    ///borrowBalanceCurrent() // TODO refactor this call
-    return await Rlending.eth.read(
-          this.instanceAddress,
-          "function borrowBalanceCurrent(address) returns (uint)",
-          [account],
-          { provider: window.ethereum }
-    );
-    /////TESTS/////
-    //contract = new ethers.Contract("dai.tokens.ethers.eth", abi, signer)
-    // let contract = this.factoryContract.getContract(constants.cRBTC);
-    // let contractWithSigner =  this.factoryContract.getContract(constants.cRBTC).connect(signer);
-    //let contractWithSigner =  this.instance.connect(signer);
-    // let borrowBy = await contractWithSigner.borrowBalanceCurrent(account);
-    ///////////////
-    // let signer = new ethers.VoidSigner(this.instanceAddress,this.factoryContract.provider);
-    // console.log("llegoACA1");
-    // let contractWithSigner = new ethers.Contract(this.instanceAddress,abi.CToken,signer)
-    // console.log("llegoACA2");
-    // let borrowBy = await contractWithSigner.borrowBalanceStored(account);
-    // console.log("market.js updatedBorrowBy",Number(borrowBy));
-    // return Number(borrowBy);
+  async borrowBalanceCurrent(account){
+    let balance = await this.instance.callStatic.borrowBalanceCurrent(account);
+    console.log("market.js borrowBalanceCurrent()",balance);
+    return balance;
   }
 
   /**
@@ -338,9 +319,9 @@ export default class Market {
    * @param account Address of the account to snapshot
    * @return (possible error, accrued ctoken balance, borrow balance, current exchange rate mantissa) all in BigNumber
    */
-  getSnapshot(account) {
+  async getSnapshot(account) {
     // calls cToken contract
-    let snap = this.instance.getAccountSnapshot(account);
+    let snap = await this.instance.getAccountSnapshot(account);
     return snap;
   }
 

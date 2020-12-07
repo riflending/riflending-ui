@@ -121,10 +121,10 @@ export default {
       })
       .then((marketPrice) => {
         this.price = marketPrice;
-        return this.data.market.updatedBorrowBy(this.account);
+        return this.data.market.borrowBalanceCurrent(this.account);
       })
       .then((borrowBy) => {
-        this.borrowBy = borrowBy;
+        this.borrowBy = Number(borrowBy);
         this.maxBorrowAllowed = this.getMaxAllowed(this.liquidity, this.cash);
       });
   },
