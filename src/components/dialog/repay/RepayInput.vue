@@ -212,7 +212,7 @@ export default {
       console.log("RepayBorrow: getValues");
       let oldLiquidity;
       let oldCash;
-      await this.data.market.updatedBorrowBy(this.account)
+      await this.data.market.borrowBalanceCurrent(this.account)
         .catch((error) => {
           console.log("ERROR Repay()", error);
           this.waiting = false;

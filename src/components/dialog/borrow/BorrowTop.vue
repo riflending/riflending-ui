@@ -87,7 +87,7 @@ export default {
       //set price
       .then((price) => {
         this.price = price;
-        return this.market.borrowRate;
+        return this.data.market.borrowRate;
       })
       .then((borrowRate) => {
         this.borrowRate = borrowRate;

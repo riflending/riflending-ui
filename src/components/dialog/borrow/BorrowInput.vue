@@ -213,9 +213,9 @@ export default {
       return allowed >= cash ? cash : allowed;
     },
     async getValues() {
-      await this.data.market.updatedBorrowBy(this.account)
+      await this.data.market.borrowBalanceCurrent(this.account)
         .then((borrowBy) => {
-          this.borrowBy = borrowBy + Number(this.contractAmount);
+          this.borrowBy = Number(borrowBy) + Number(this.contractAmount);
           return this.$middleware.getAccountLiquidity(this.account);
           // return this.$rbank.controller.getAccountLiquidity(this.account);
         })
@@ -257,9 +257,10 @@ export default {
   },
   created() {
     this.data.market
-    .updatedBorrowBy(this.account)
+    .borrowBalanceCurrent(this.account)
       .then((borrowBy) => {
-        this.borrowBy = borrowBy;
+        console.log("borrInput borrowBalanceCurrent",Number(borrowBy));
+        this.borrowBy = Number(borrowBy);
         return this.$middleware.getAccountLiquidity(this.account);
         // return this.$rbank.controller.getAccountLiquidity(this.account);
       })
@@ -272,7 +273,7 @@ export default {
       .then((cash) => {
         this.oldCash = cash;
         this.cash = cash;
-        return this.market.borrowRate;
+        return this.data.market.borrowRate;
         // return this.data.market.eventualBorrowRate;
       })
       .then((borrowRate) => {
@@ -285,7 +286,7 @@ export default {
         /*return this.data.market.eventualToken;
       }) // we don't need this anymore
       .then((tok) => {*/
-        return this.market.tokenBalance;
+        return this.data.market.tokenBalance;
         //tok.eventualBalanceOf(this.account)
       })
       .then((tokenBalance) => {
