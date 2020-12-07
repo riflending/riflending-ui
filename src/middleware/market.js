@@ -74,7 +74,7 @@ export default class Market {
     //get price of rbtc
     let valueOracle = await this.getValueMoc();
     //set decimals of cToken
-    let decimals = `1e${this.decimals}`;
+    let decimals = `1e${this.token.decimals}`;
     // price = ( price cToken in rbtc * price of rbtc) / decimals of cToken
     return new BigNumber(priceToken._hex).multipliedBy(new BigNumber(valueOracle)).div(new BigNumber(decimals)).toNumber();
   }

@@ -24,12 +24,11 @@
     </v-col>
     <v-col cols="3">
       <v-row>
-        <h2>in your wallet:</h2>
+        <h2>supplied to contract:</h2>
       </v-row>
-      <v-row class="item d-flex justify-start">
+      <v-row class="item d-flex justify-start" :title="[`Balance ${tokenBalance} ${data.token.symbol}`]">
         <!-- {{ tokenBalance | formatToken(data.token.decimals) -->
-        {{ tokenBalance 
-        }}<span class="ml-2 itemInfo">usd</span>
+        {{ tokenBalancePrice | formatPrice }}<span class="ml-2 itemInfo">usd</span>
       </v-row>
     </v-col>
     <v-col cols="2">
@@ -47,6 +46,7 @@
 
 <script>
 import { mapState } from "vuex";
+import BigNumber from 'bignumber.js';
 
 export default {
   name: "SupplyTop",
@@ -61,6 +61,7 @@ export default {
       earnings: 0,
       price: 0,
       tokenBalance: 0,
+      tokenBalancePrice: 0,
       tokenAddress: 0,
     };
   },
@@ -91,6 +92,9 @@ export default {
       .then((price) => {
         this.price = price;
         console.log("price", price);
+        this.tokenBalancePrice =  new BigNumber(this.tokenBalance).multipliedBy(new BigNumber(this.price))
+
+        debugger
       });
     //TODO this earnings
     this.earnings = 1;

@@ -20,7 +20,7 @@
       <v-row class="d-flex align-center">
         <v-col cols="2" />
         <v-col cols="3" class="d-flex justify-end">
-          <h3>in your wallet:</h3>
+          <h3>supplied to contract:</h3>
         </v-col>
         <v-col cols="4">
           <v-row class="ma-0 d-flex align-center">
