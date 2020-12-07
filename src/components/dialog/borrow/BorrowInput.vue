@@ -259,6 +259,7 @@ export default {
     this.data.market
     .updatedBorrowBy(this.account)
       .then((borrowBy) => {
+        console.log("borrInput borrowBy",Number(borrowBy));
         this.borrowBy = borrowBy;
         return this.$middleware.getAccountLiquidity(this.account);
         // return this.$rbank.controller.getAccountLiquidity(this.account);

@@ -1,7 +1,7 @@
 import Rlending from '@riflending/riflending-js';
 import BigNumber from 'bignumber.js';
 import factoryContract from './factoryContract'
-import { constants, decimals } from "./constants";
+import { constants, decimals, abi } from "./constants";
 import { ethers } from "ethers";
 import { account } from '@riflending/riflending-js/dist/nodejs/api';
 
@@ -211,6 +211,25 @@ export default class Market {
   }
 
   /**
+   * TODO: clean this function
+   * TODO: update to contract factory
+   * rePays off the specified amount from an existing debt in this market.
+   * May fail if there is no debt to be paid or if the user doesn't have enough
+   * tokens to pay the amount entered.
+   * @param {number} amount of the debt of this market's token to be paid.
+   * @param {string=} from if specified executes the transaction using this account.
+   * @return {Promise<TXResult>}
+   */
+  payBorrow(amount, from = '') {
+    console.log("RepayBorrow(): this.token.symbol", this.token.symbol);
+    console.log("RepayBorrow(): amount", amount);
+    console.log("RepayBorrow(): amount", new BigNumber(amount));
+    let instanceRlending = new Rlending(window.ethereum);
+    // return instanceRlending.repayBorrow(this.token.symbol, new BigNumber(amount),null);
+    return instanceRlending.repayBorrow(this.token.symbol, amount ,null);
+  }
+
+  /**
    * mock events
    */
   get eventualEvents() {
@@ -237,6 +256,15 @@ export default class Market {
    * @return 0 if allowed, numerical error otherwise
    */
   async withdrawAllowed(amount,account){
+    amount = this.getAmountDecimals(amount);
+    let isAllowed =  await Rlending.eth.read(
+      this.instanceAddress,
+      "function redeemAllowed(address, address, uint) returns (uint)",
+      [this.instanceAddress, account, amount],
+      { provider: window.ethereum }
+    );
+    console.log("market.js isWithdrawAllowed",isAllowed);
+    return isAllowed;
     //TODO fix this function. error: Duplicate definition in ABI?
     // gets Comptroller
     console.log("withdrawAllowed? Market.js");
@@ -253,7 +281,7 @@ export default class Market {
     let contractWithSigner = contract.connect(this.factoryContract.signer);
     //TODO need to research signed call to contract ethers
     // doc: https://docs.ethers.io/v4/api-contract.html#providers-vs-signers
-    // signer(with a provider)
+    // signer(with a provider) https://docs.ethers.io/v5/api/signer/#VoidSigner
     let allow = await contractWithSigner.redeemAllowed(this.instanceAddress, account, amount);
     // let allow= await contract.redeemAllowed(this.instanceAddress, account, amount);
     console.log("Market.js withdrawAllowed? allowed LALALA",allow);
@@ -273,17 +301,35 @@ export default class Market {
     return (666,666);
   }
 
-  /** TODO
+  /** TODO: update to contract factory
    * Gets the equivalent of rbank updatedBorrowBy() ¯\_(ツ)_/¯
    * (perhaps this is similar to accrued() on borrow interests )
    * @dev research DefiProt contracts to understand what this does
    * @param {address} account the address of the account
    * @return borrowBy - I think this returns the total borrow supply across all markets (??)
    */
-  updatedBorrowBy(account){
-    console.log("market.js updatedBorrowBy TODO THIS FUNCTION");
-    let borrowBy = 999;
-    return borrowBy;
+  async updatedBorrowBy(account){
+    ///borrowBalanceCurrent() // TODO refactor this call
+    return await Rlending.eth.read(
+          this.instanceAddress,
+          "function borrowBalanceCurrent(address) returns (uint)",
+          [account],
+          { provider: window.ethereum }
+    );
+    /////TESTS/////
+    //contract = new ethers.Contract("dai.tokens.ethers.eth", abi, signer)
+    // let contract = this.factoryContract.getContract(constants.cRBTC);
+    // let contractWithSigner =  this.factoryContract.getContract(constants.cRBTC).connect(signer);
+    //let contractWithSigner =  this.instance.connect(signer);
+    // let borrowBy = await contractWithSigner.borrowBalanceCurrent(account);
+    ///////////////
+    // let signer = new ethers.VoidSigner(this.instanceAddress,this.factoryContract.provider);
+    // console.log("llegoACA1");
+    // let contractWithSigner = new ethers.Contract(this.instanceAddress,abi.CToken,signer)
+    // console.log("llegoACA2");
+    // let borrowBy = await contractWithSigner.borrowBalanceStored(account);
+    // console.log("market.js updatedBorrowBy",Number(borrowBy));
+    // return Number(borrowBy);
   }
 
   /**
@@ -292,9 +338,9 @@ export default class Market {
    * @param account Address of the account to snapshot
    * @return (possible error, accrued ctoken balance, borrow balance, current exchange rate mantissa) all in BigNumber
    */
-  async getSnapshot(account) {
+  getSnapshot(account) {
     // calls cToken contract
-    let snap = await this.instance.getAccountSnapshot(account);
+    let snap = this.instance.getAccountSnapshot(account);
     return snap;
   }
 
