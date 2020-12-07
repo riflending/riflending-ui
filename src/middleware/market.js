@@ -40,10 +40,10 @@ export default class Market {
     this.token.name = underlyingName;
     this.token.decimals = underlyingDecimals;
     //set balance account
-    this.tokenBalance = this.getBalenceOfToken(account);
+    this.tokenBalance = this.getBalanceOfToken(account);
     //set price
     this.price = this.getPrice().then((price) => new BigNumber(price).div(new BigNumber(1e18)));
-    //set borrow rate 
+    //set borrow rate
     this.factor = 1e18;
     this.blocksPerYear = 1051200;
     this.borrowRate = this.getBorrowRate();
@@ -79,7 +79,7 @@ export default class Market {
     return new BigNumber(priceToken._hex).multipliedBy(new BigNumber(valueOracle)).div(new BigNumber(decimals)).toNumber();
   }
 
-  async getBalenceOfToken(account) {
+  async getBalanceOfToken(account) {
     //set balance of account
     let balance = await this.instance.balanceOf(account);
     //return format (without wei)
@@ -117,7 +117,7 @@ export default class Market {
   }
 
   /**
-   * Supply the specified amount from this market. 
+   * Supply the specified amount from this market.
    * @param {number} amount of this market's token to be supply.
    * @param {address} account the address of the account
    * @return {Promise<TXResult>} the wait mined transaction
@@ -146,7 +146,7 @@ export default class Market {
     else {
       //set signer cRBTC
       signer = this.instance.connect(this.factoryContract.signer);
-      //set value 
+      //set value
       let overrides = {
         value: amount,
       };
@@ -157,7 +157,7 @@ export default class Market {
     return tx.wait();
   }
   /**
-   * Borrows the specified amount from this market. 
+   * Borrows the specified amount from this market.
    * @param {number} amount of this market's token to be borrowed.
    * @return {Promise<TXResult>} the wait mined transaction
    */
@@ -185,7 +185,7 @@ export default class Market {
   }
 
   /**
-   * getCollateralFactorMantissa for cToken. 
+   * getCollateralFactorMantissa for cToken.
    * @return human number collateralFactorMantisa | error beacuse the cToken is not listed on protocol
    */
   async getCollateralFactorMantissa() {
