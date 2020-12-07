@@ -3,6 +3,7 @@ import BigNumber from 'bignumber.js';
 import factoryContract from './factoryContract'
 import { constants, decimals } from "./constants";
 import { ethers } from "ethers";
+import { account } from '@riflending/riflending-js/dist/nodejs/api';
 
 
 /**
@@ -227,4 +228,84 @@ export default class Market {
     });
   }
 
+  /**
+   * withdrawAllowed Calls Comptroller to check if redeem is
+   *   allowed for this user in this market with this amount
+   * @dev to be used in withdraw modal
+   * @param amount of ctoken to be redeemed for underlying
+   * @param {address} account the address of the account
+   * @return 0 if allowed, numerical error otherwise
+   */
+  async withdrawAllowed(amount,account){
+    //TODO fix this function. error: Duplicate definition in ABI?
+    // gets Comptroller
+    console.log("withdrawAllowed? Market.js");
+    console.log("Market.js acc",account);
+    console.log("Market.js addr",this.instanceAddress);
+    console.log("Market.js amount",amount);
+    amount = this.getAmountDecimals(amount);
+    console.log("Market.js amount DECIMALS",amount);
+    let contract = this.factoryContract.getContractByNameAndAbiName(constants.Unitroller, constants.Comptroller);
+    // let contract = this.factoryContract.getContract(constants.Comptroller);
+    console.log("Market.js redeemAllowed? contract",contract);
+    //function redeemAllowed(address cToken, address redeemer, uint redeemTokens) external returns (uint);
+    //query the contract
+    let contractWithSigner = contract.connect(this.factoryContract.signer);
+    //TODO need to research signed call to contract ethers
+    // doc: https://docs.ethers.io/v4/api-contract.html#providers-vs-signers
+    // signer(with a provider)
+    let allow = await contractWithSigner.redeemAllowed(this.instanceAddress, account, amount);
+    // let allow= await contract.redeemAllowed(this.instanceAddress, account, amount);
+    console.log("Market.js withdrawAllowed? allowed LALALA",allow);
+    // return allow.wait();
+    return allow;
+  }
+
+  /** TODO
+   * Gets the equivalent of rbank getAccountValues() ¯\_(ツ)_/¯
+   * @dev research DefiProt contracts to understand what this does
+   * @param {address} account the address of the account
+   * @return (supplyValue, borrowValue)
+   */
+  getAccountValues(account){
+    console.log("market.js getAccountValues TODO THIS FUNCTION");
+    let supplyValue, borrowValue;
+    return (666,666);
+  }
+
+  /** TODO
+   * Gets the equivalent of rbank updatedBorrowBy() ¯\_(ツ)_/¯
+   * (perhaps this is similar to accrued() on borrow interests )
+   * @dev research DefiProt contracts to understand what this does
+   * @param {address} account the address of the account
+   * @return borrowBy - I think this returns the total borrow supply across all markets (??)
+   */
+  updatedBorrowBy(account){
+    console.log("market.js updatedBorrowBy TODO THIS FUNCTION");
+    let borrowBy = 999;
+    return borrowBy;
+  }
+
+  /**
+   * getSnapshot returns the current status of a given account in this market
+   * @dev to be used in
+   * @param account Address of the account to snapshot
+   * @return (possible error, accrued ctoken balance, borrow balance, current exchange rate mantissa) all in BigNumber
+   */
+  async getSnapshot(account) {
+    // calls cToken contract
+    let snap = await this.instance.getAccountSnapshot(account);
+    return snap;
+  }
+
+  /**
+   * currentExchangeRate mantissa for a given cToken.
+   * @return human number currentExchangeRate
+   */
+  async getCurrentExchangeRate() {
+    //set balance of account
+    let currentExchangeRate = await this.instance.exchangeRateStored();
+    // console.log("getCurExRate:",currentExchangeRate);
+    return Number(currentExchangeRate);
+  }
 }
