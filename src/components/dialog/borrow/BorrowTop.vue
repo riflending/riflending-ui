@@ -23,7 +23,7 @@
     </v-col>
     <v-col cols="3">
       <v-row>
-        <h2>supplied to contract:</h2>
+        <h2>liquidity provided:</h2>
       </v-row>
       <v-row class="item d-flex justify-start">
         {{ tokenBalance | formatToken(data.token.decimals) }}<span class="ml-2 itemInfo">usd</span>

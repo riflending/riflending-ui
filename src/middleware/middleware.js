@@ -92,4 +92,11 @@ export default class Middleware {
 
       return totalsReduced;
     }
+
+    // getAccountHealth(){ // TODO: SEND TO MIDDLEWARE
+    //   if(this.supplyValue== 0 || this.borrowed == 0) return 0;
+    //   let borrowValue= this.borrowed*this.mantissa;
+    //   return this.supplyValue * this.mantissa / borrowValue;
+    // },
+
 }

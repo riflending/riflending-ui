@@ -113,6 +113,7 @@ export default {
       borrowRate: 0,
       liquidity: 0,
       cash: 0,
+      isBorrowAllowed: false,
       oldMaxBorrowAllowed: 0,
       maxBorrowAllowed: 0,
       borrowBalanceInfo: null,
@@ -123,6 +124,12 @@ export default {
       oldCash: 0,
       oldLiquidity: 0,
       rules: {
+        allowed: () => this.data.market
+                    .borrowAllowed(this.amount,this.account)
+                    .then((allowed) => {
+                      console.log("borrowInput isBorrowAllowed?",Number(allowed) == 0);
+                      return Number(allowed) == 0;
+                    }) || 'NotAllowed',
         required: () => !!Number(this.amount) || 'Required.',
         decimals: () => this.decimalPositions || `Maximum ${this.data.token
           .decimals} decimal places for ${this.data.token.symbol}.`,
@@ -147,8 +154,11 @@ export default {
       return Number(this.amount).toFixed(this.data.token.decimals).replace('.', '');
     },
     validForm() {
-      return true;
-      return typeof this.rules.liquidity() !== 'string'
+      let allowedBorrow = this.rules.allowed()
+                      .then(res => this.isBorrowAllowed = res);
+
+      return this.isBorrowAllowed
+        && typeof this.rules.liquidity() !== 'string'
         && typeof this.rules.decimals() !== 'string'
         && typeof this.rules.required() !== 'string'
         && typeof this.rules.marketCash() !== 'string';

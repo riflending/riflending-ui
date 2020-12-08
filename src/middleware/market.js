@@ -289,6 +289,25 @@ export default class Market {
     return allow;
   }
 
+/**
+   * borrowAllowed Calls Comptroller to check if borrow is
+   *   allowed for this user in this market with this amount
+   * @dev to be used in borrow modal
+   * @param amount of underlying to be borrowed
+   * @param {address} account the address of the account
+   * @return 0 if allowed, numerical error otherwise
+   */
+  async borrowAllowed(amount,account){
+    amount = this.getAmountDecimals(amount);
+    // console.log("market.js borrowAllowed");
+    let contract = this.factoryContract.getContractByNameAndAbiName(constants.Unitroller, constants.Comptroller);
+    // console.log("market.js borrowAllowed contract", contract);
+    let isAllowed = await contract.callStatic.borrowAllowed(this.instanceAddress,account,amount);
+    // console.log("market.js borrowAllowed allowed?", isAllowed);
+    return isAllowed;
+
+  }
+
   /** TODO
    * Gets the equivalent of rbank getAccountValues() ¯\_(ツ)_/¯
    * @dev research DefiProt contracts to understand what this does
