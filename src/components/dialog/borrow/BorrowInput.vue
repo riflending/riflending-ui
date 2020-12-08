@@ -19,7 +19,7 @@
         <v-row class="d-flex align-center">
           <v-col cols="2"/>
           <v-col cols="3" class="d-flex justify-end">
-            <h3>current cash:</h3>
+            <h3>Contract liquidity:</h3>
           </v-col>
           <v-col cols="4">
             <v-row class="ma-0 d-flex align-center">
@@ -147,6 +147,7 @@ export default {
       return Number(this.amount).toFixed(this.data.token.decimals).replace('.', '');
     },
     validForm() {
+      return true;
       return typeof this.rules.liquidity() !== 'string'
         && typeof this.rules.decimals() !== 'string'
         && typeof this.rules.required() !== 'string'
@@ -221,17 +222,19 @@ export default {
         })
         .then((accountLiquidity) => {
           this.oldLiquidity = accountLiquidity;
-          return this.data.market.eventualCash;
+          return this.data.market.getCash();
+          // return this.data.market.eventualCash;
         })
         .then((cash) => {
           this.oldCash = cash;
           this.cash = cash - Number(this.contractAmount);
-          return this.data.market.getAccountValues(this.account);
+          return this.data.market.borrowBalanceCurrent(this.account);
           // return this.$rbank.controller.getAccountValues(this.account);
         })
-        .then(({ supplyValue, borrowValue }) => {
+        .then(( borrowValue ) => {
           const newBorrowValue = ((borrowValue + (Number(this.contractAmount) * this.price)) * (this
             .collateralFactor + this.mantissa)) / this.mantissa;
+          const supplyValue = 999;
           const newSupplyValue = supplyValue;
           this.liquidity = newBorrowValue < newSupplyValue ? newSupplyValue - newBorrowValue : 0;
           this.maxBorrowAllowed = this.getMaxBorrowAllowed(this.liquidity, this.cash);
@@ -267,6 +270,7 @@ export default {
       .then((accountLiquidity) => {
         this.oldLiquidity = accountLiquidity;
         this.liquidity = accountLiquidity;
+        console.log("borrowInput liquidity",accountLiquidity);
         return this.data.market.getCash();
         // return this.data.market.eventualCash;
       })

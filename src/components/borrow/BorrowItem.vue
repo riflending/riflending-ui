@@ -30,7 +30,7 @@
           <v-row class="ma-0">
             <v-col cols="9" class="pa-0 d-flex align-center">
               <v-list-item-subtitle class="item">
-                {{ cash | formatToken(token.decimals) }}
+                {{ tokenBalance | formatToken(token.decimals) }}
               </v-list-item-subtitle>
             </v-col>
             <v-col cols="3" class="pa-0">
@@ -139,11 +139,11 @@ export default {
     this.$parent.$parent.$parent.$on('reload', this.reset);
   },
   created() {
-    //set data token
+    //set data token this.data.market.borrowBalanceCurrent(this.account)
     this.token = this.market.token;
-    this.market.tokenBalance
+    this.market.borrowBalanceCurrent(this.account)
       .then((balance) => {
-        this.tokenBalance = balance;
+        this.tokenBalance = Number(balance);
         console.log("borrItem: balance",this.tokenBalance);
         return this.market.price;
       })
@@ -153,6 +153,7 @@ export default {
         console.log("borrItem: price",this.price);
         return this.market.borrowRate;
       })
+
     //set borrow rate block
       .then((borrowRatePerBlock) => {
         this.borrowRate = borrowRatePerBlock;

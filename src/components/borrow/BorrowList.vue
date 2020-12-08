@@ -13,7 +13,7 @@
             <v-list-item-subtitle class="listTitle">APR</v-list-item-subtitle>
           </v-col>
           <v-col cols="4">
-            <v-list-item-subtitle class="listTitle">Balance in contract</v-list-item-subtitle>
+            <v-list-item-subtitle class="listTitle">Borrow Balance</v-list-item-subtitle>
           </v-col>
         </v-row>
       </v-list-item>
