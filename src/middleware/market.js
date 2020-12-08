@@ -308,7 +308,7 @@ export default class Market {
    */
   async borrowBalanceCurrent(account){
     let balance = await this.instance.callStatic.borrowBalanceCurrent(account);
-    console.log("market.js borrowBalanceCurrent()",balance);
+    console.log("market.js borrowBalanceCurrent()",Number(balance));
     return balance;
   }
 
