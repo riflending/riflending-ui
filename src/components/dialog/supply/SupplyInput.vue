@@ -52,7 +52,7 @@
           <v-col cols="4">
             <v-row class="ma-0 d-flex align-center">
               <v-col cols="7" class="d-flex justify-center">
-                <h1>{{ supplyOf | formatToken(data.token.decimals) }}</h1>
+                <h1 :title="[`Balance ${tokenBalance} ${data.token.symbol}`]">{{ +tokenBalance | formatNumber() }}</h1>
               </v-col>
               <v-col cols="5" class="itemInfo d-flex justify-center">
                 <span class="text-right" v-if="supplyBalanceInfo">

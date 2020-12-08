@@ -68,8 +68,11 @@ export default {
     },
   },
   created() {
-    this.data.market.eventualToken
-      .then((tok) => {
+      this.data.market.price.then((price) => {
+        this.price = price;
+        console.log("price", price);
+        return this.data.market.eventualToken
+      }).then((tok) => {
         this.tokenAddress = tok.address;
         return tok.eventualDecimals;
       })
@@ -79,10 +82,6 @@ export default {
       })
       .then((borrowRate) => {
         this.borrowRate = borrowRate;
-        return this.$rbank.controller.eventualMarketPrice(this.data.market.address);
-      })
-      .then((marketPrice) => {
-        this.price = marketPrice;
         return this.data.market.eventualAccountEarnings(this.account);
       })
       .then((accountEarnings) => {

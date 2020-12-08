@@ -94,7 +94,6 @@ export default {
         console.log("price", price);
         this.tokenBalancePrice =  new BigNumber(this.tokenBalance).multipliedBy(new BigNumber(this.price))
 
-        debugger
       });
     //TODO this earnings
     this.earnings = 1;
