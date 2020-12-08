@@ -322,7 +322,6 @@ export default {
       })
       .then((tokenBalance) => {
         this.tokenBalance = tokenBalance;
-        this.tokenBalanceFixed =   tokenBalance.toFixed && tokenBalance.toFixed(6);
         this.maxBorrowAllowed = this.getMaxBorrowAllowed(
           this.liquidity,
           this.cash
