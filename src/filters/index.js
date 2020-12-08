@@ -18,4 +18,6 @@ Vue.filter('formatToken', (value, decimals) => {
     .replace(/\B(?=(\d{3})+(?!\d))/g, ',')}`;
 });
 
+Vue.filter('formatNumber', (value, decimals = 6) => value.toFixed(decimals));
+
 Vue.filter('formatPercentage', (value) => `${Number(value).toFixed(2)} %`);

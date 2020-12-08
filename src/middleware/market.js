@@ -295,10 +295,9 @@ export default class Market {
    * @param {address} account the address of the account
    * @return (supplyValue, borrowValue)
    */
-  getAccountValues(account){
-    console.log("market.js getAccountValues TODO THIS FUNCTION");
-    let supplyValue, borrowValue;
-    return (666,666);
+  async getAccountValues(account){
+    const borrowValue = await this.borrowBalanceCurrent(account)
+    return (this.tokenBalance, borrowValue);
   }
 
   /**
@@ -310,6 +309,11 @@ export default class Market {
   async borrowBalanceCurrent(account){
     let balance = await this.instance.callStatic.borrowBalanceCurrent(account);
     console.log("market.js borrowBalanceCurrent()",balance);
+    return balance;
+  }
+
+  async supplyBalanceCurrent(account){
+    let balance = await this.instance.callStatic.borrowBalanceCurrent(account);
     return balance;
   }
 
