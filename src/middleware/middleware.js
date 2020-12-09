@@ -1,14 +1,9 @@
 import Market from './market';
 import Rlending from '@riflending/riflending-js';
 import BigNumber from 'bignumber.js';
-import { ethers } from "ethers";
 
 export default class Middleware {
-  constructor() {
-    this.eth = ethers;
-  }
-
-
+  
   getMarkets(account) {
     let markets = Array();
     for (let index = 0; index < Rlending.cTokensDetails.length; index++) {

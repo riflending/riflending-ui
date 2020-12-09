@@ -117,6 +117,7 @@
 <script>
 import { mapState } from "vuex";
 import Loader from "@/components/common/Loader.vue";
+import { ethers } from "ethers";
 
 export default {
   name: "WithdrawInput",
@@ -236,6 +237,7 @@ export default {
       return allowed >= cash ? cash : allowed;
     },
     async getValues() {
+      this.supplyBalanceInfo = Number(this.amount);
       return;
       // TODO this functon
       let oldLiquidity;
@@ -319,9 +321,6 @@ export default {
   created() {
     //TODO getAccountValues
     // this.supplyValue = supplyValue;
-    this.data.market.withdrawAllowed(0.001, this.account).then((res) => {
-      console.log("withdrawAllowed",res);
-    });
     //sets oldCash and cash
     this.data.market
       .getCash()
@@ -336,9 +335,9 @@ export default {
         return this.data.market.borrowBalanceCurrent(this.account);
       })
       .then((borrowValue) => {
-        this.data.market.contractAmount
-       //TODO format
-        this.borrowValue =  this.$middleware.eth.utils.formatEther(borrowValue);
+        this.data.market.contractAmount;
+        //TODO format
+        this.borrowValue = ethers.utils.formatEther(borrowValue);
         return this.data.market.tokenBalance;
       })
       .then((balance) => {
