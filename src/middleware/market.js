@@ -3,7 +3,6 @@ import BigNumber from 'bignumber.js';
 import factoryContract from './factoryContract'
 import { constants, decimals, abi } from "./constants";
 import { ethers } from "ethers";
-import { account } from '@riflending/riflending-js/dist/nodejs/api';
 
 
 /**
@@ -40,8 +39,10 @@ export default class Market {
     this.token.symbol = tokenSymbol;
     this.token.name = underlyingName;
     this.token.decimals = underlyingDecimals;
-    //set balance account
-    this.tokenBalance = this.getBalanceOfToken(account);
+    //set token balance account
+    this.tokenBalance = this.getBalanceOfUnderlying(account);
+    //set cToken balance account
+    this.cTokenBalance = this.getBalanceOfCtoken(account);
     //set price
     this.price = this.getPrice().then((price) => new BigNumber(price).div(new BigNumber(1e18)));
     //set borrow rate
@@ -80,9 +81,16 @@ export default class Market {
     return new BigNumber(priceToken._hex).multipliedBy(new BigNumber(valueOracle)).div(new BigNumber(decimals)).toNumber();
   }
 
-  async getBalanceOfToken(account) {
+  async getBalanceOfCtoken(account) {
     //set balance of account
     let balance = await this.instance.balanceOf(account);
+    //return format (without wei)
+    return ethers.utils.formatEther(balance);
+  }
+
+  async getBalanceOfUnderlying(account) {
+    //set balance of account
+    let balance = await this.instance.callStatic.balanceOfUnderlying(account);
     //return format (without wei)
     return ethers.utils.formatEther(balance);
   }
@@ -277,37 +285,12 @@ export default class Market {
    * @return 0 if allowed, numerical error otherwise
    */
   async withdrawAllowed(amount, account) {
+    //set
     amount = this.getAmountDecimals(amount);
-    let isAllowed = await Rlending.eth.read(
-      this.instanceAddress,
-      "function redeemAllowed(address, address, uint) returns (uint)",
-      [this.instanceAddress, account, amount],
-      { provider: window.ethereum }
-    );
-    console.log("market.js isWithdrawAllowed", isAllowed);
-    return isAllowed;
-    //TODO fix this function. error: Duplicate definition in ABI?
-    // gets Comptroller
-    console.log("withdrawAllowed? Market.js");
-    console.log("Market.js acc", account);
-    console.log("Market.js addr", this.instanceAddress);
-    console.log("Market.js amount", amount);
-    amount = this.getAmountDecimals(amount);
-    console.log("Market.js amount DECIMALS", amount);
+    // console.log("amount redeem=>", amount.toNumber());
+    //set contract Comptroller delegate (Unitroller)
     let contract = this.factoryContract.getContractByNameAndAbiName(constants.Unitroller, constants.Comptroller);
-    // let contract = this.factoryContract.getContract(constants.Comptroller);
-    console.log("Market.js redeemAllowed? contract", contract);
-    //function redeemAllowed(address cToken, address redeemer, uint redeemTokens) external returns (uint);
-    //query the contract
-    let contractWithSigner = contract.connect(this.factoryContract.signer);
-    //TODO need to research signed call to contract ethers
-    // doc: https://docs.ethers.io/v4/api-contract.html#providers-vs-signers
-    // signer(with a provider) https://docs.ethers.io/v5/api/signer/#VoidSigner
-    let allow = await contractWithSigner.redeemAllowed(this.instanceAddress, account, amount);
-    // let allow= await contract.redeemAllowed(this.instanceAddress, account, amount);
-    console.log("Market.js withdrawAllowed? allowed LALALA", allow);
-    // return allow.wait();
-    return allow;
+    return contract.callStatic.redeemAllowed(this.instanceAddress, account, amount).then((response) => response == 0);
   }
 
   /** TODO
