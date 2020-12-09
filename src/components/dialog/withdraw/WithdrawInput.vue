@@ -177,8 +177,6 @@ export default {
         .replace(".", "");
     },
     validForm() {
-      //TODO fix this!
-      return true;
       return (
         typeof this.rules.required() !== "string" &&
         typeof this.rules.decimals() !== "string" &&
@@ -211,7 +209,6 @@ export default {
         .withdraw(this.amount, false)
         .then((res) => {
           this.waiting = false;
-          console.log("Withdraw: transaction sent: ", res);
           this.$emit("succeed", {
             hash: res.transactionHash,
             borrowLimitInfo: this.borrowLimitInfo,
@@ -219,7 +216,6 @@ export default {
           });
         })
         .catch((error) => {
-          console.log("ERROR withdraw()", error);
           this.waiting = false;
           this.$emit("error");
         });
@@ -231,7 +227,8 @@ export default {
     },
     getMaxWithdrawAllowed(supplyOf, cash) {
       const allowed = cash > supplyOf - this.debt ? supplyOf - this.debt : cash;
-      return this.asDouble(allowed);
+      // return this.asDouble(allowed);
+      return allowed;
     },
     getMaxBorrowAllowed(liquidity, cash) {
       const allowed =
@@ -239,8 +236,10 @@ export default {
       return allowed >= cash ? cash : allowed;
     },
     async getValues() {
-
+      return;
+      // TODO this functon
       let oldLiquidity;
+      let auxBorrowValue;
       this.$middleware
         .getAccountLiquidity(this.account)
         .then((accountLiquidity) => {
@@ -250,33 +249,54 @@ export default {
         .then((cash) => {
           this.oldCash = cash;
           this.cash = cash - Number(this.contractAmount);
+          return this.data.market.borrowBalanceCurrent(this.account);
+        })
+        .then((borrowValue) => {
+          auxBorrowValue = borrowValue;
+          return this.data.market.tokenBalance;
+        })
+        .then((balanceSupply) => {
+          const newBorrowValue =
+            (auxBorrowValue * (this.collateralFactor + this.mantissa)) /
+            this.mantissa;
+          const newSupplyValue =
+            balanceSupply - Number(this.contractAmount) * this.price;
+
+          this.liquidity =
+            newBorrowValue < newSupplyValue
+              ? newSupplyValue - newBorrowValue
+              : 0;
         });
-        //TODO getAccountValues
-          // return this.data.market.getAccountValues(this.account);
-        // .then(({ supplyValue, borrowValue }) => {
-        //   const newBorrowValue =
-        //     (borrowValue * (this.collateralFactor + this.mantissa)) /
-        //     this.mantissa;
-        //   const newSupplyValue =
-        //     supplyValue - Number(this.contractAmount) * this.price;
-        //   this.liquidity =
-        //     newBorrowValue < newSupplyValue
-        //       ? newSupplyValue - newBorrowValue
-        //       : 0;
-        //   this.maxWithdrawAllowed = this.getMaxWithdrawAllowed(
-        //     this.oldSupplyOf,
-        //     this.oldCash
-        //   );
-        //   this.maxBorrowAllowed = this.getMaxBorrowAllowed(
-        //     this.liquidity,
-        //     this.cash
-        //   );
-        //   this.supplyBalanceInfo = Number(this.contractAmount);
-        //   this.borrowLimitInfo = Number(
-        //     this.getMaxBorrowAllowed(oldLiquidity, this.oldCash) -
-        //       this.maxBorrowAllowed
-        //   );
-        // });
+      this.maxWithdrawAllowed = this.getMaxWithdrawAllowed(
+        this.oldSupplyOf,
+        this.oldCash
+      );
+      // TODO getAccountValues
+      // return this.data.market.getAccountValues(this.account);
+      // .then(({ supplyValue, borrowValue }) => {
+      //   const newBorrowValue =
+      //     (borrowValue * (this.collateralFactor + this.mantissa)) /
+      //     this.mantissa;
+      //   const newSupplyValue =
+      //     supplyValue - Number(this.contractAmount) * this.price;
+      //   this.liquidity =
+      //     newBorrowValue < newSupplyValue
+      //       ? newSupplyValue - newBorrowValue
+      //       : 0;
+      //   this.maxWithdrawAllowed = this.getMaxWithdrawAllowed(
+      //     this.oldSupplyOf,
+      //     this.oldCash
+      //   );
+      //   this.maxBorrowAllowed = this.getMaxBorrowAllowed(
+      //     this.liquidity,
+      //     this.cash
+      //   );
+      //   this.supplyBalanceInfo = Number(this.contractAmount);
+      //   this.borrowLimitInfo = Number(
+      //     this.getMaxBorrowAllowed(oldLiquidity, this.oldCash) -
+      //       this.maxBorrowAllowed
+      //   );
+      // });
     },
   },
   watch: {
@@ -299,8 +319,9 @@ export default {
   created() {
     //TODO getAccountValues
     // this.supplyValue = supplyValue;
-    // this.borrowValue = borrowValue;
-
+    this.data.market.withdrawAllowed(0.001, this.account).then((res) => {
+      console.log("withdrawAllowed",res);
+    });
     //sets oldCash and cash
     this.data.market
       .getCash()
@@ -309,9 +330,21 @@ export default {
         this.cash = cash;
         return this.data.market.price;
       })
-      //sets price
+      //set price
       .then((marketPrice) => {
         this.price = marketPrice;
+        return this.data.market.borrowBalanceCurrent(this.account);
+      })
+      .then((borrowValue) => {
+        this.data.market.contractAmount
+       //TODO format
+        this.borrowValue =  this.$middleware.eth.utils.formatEther(borrowValue);
+        return this.data.market.tokenBalance;
+      })
+      .then((balance) => {
+        this.tokenBalance = balance;
+        this.supplyOf = this.tokenBalance;
+        this.oldSupplyOf = this.tokenBalance;
         return this.$middleware.getAccountLiquidity(this.account);
       })
       //sets liquidity
@@ -341,48 +374,7 @@ export default {
           this.liquidity,
           this.cash
         );
-        return this.data.market.tokenBalance;
-      })
-      .then((balance) => {
-        this.tokenBalance = balance;
       });
-
-    // this.data.market
-    // .updatedSupplyOf(this.account)
-    //   .then((supplyOf) => {
-    //     this.oldSupplyOf = supplyOf;
-    //     this.supplyOf = supplyOf;
-    //     return this.$rbank.controller.getAccountValues(this.account);
-    //   })
-    //   .then(({ supplyValue, borrowValue }) => {
-    //     this.supplyValue = supplyValue;
-    //     this.borrowValue = borrowValue;
-    //     return this.data.market.eventualCash;
-    //   })
-    //   .then((cash) => {
-    //     this.oldCash = cash;
-    //     this.cash = cash;
-    //     return this.$rbank.controller.eventualMarketPrice(this.data.market.address);
-    //   })
-    //   .then((marketPrice) => {
-    //     this.price = marketPrice;
-    //     return this.$rbank.controller.getAccountLiquidity(this.account);
-    //   })
-    //   .then((accountLiquidity) => {
-    //     this.liquidity = accountLiquidity;
-    //     return this.$rbank.controller.eventualMantissa;
-    //   })
-    //   .then((mantissa) => {
-    //     this.mantissa = mantissa;
-    //     return this.$rbank.controller.eventualCollateralFactor;
-    //   })
-    //   .then((collateralFactor) => {
-    //     this.collateralFactor = collateralFactor * this.mantissa;
-    //     this.debt = ((this.borrowValue * (this.mantissa + this.collateralFactor)) / this
-    //       .mantissa) / this.price;
-    //     this.maxWithdrawAllowed = this.getMaxWithdrawAllowed(this.supplyOf, this.cash);
-    //     this.maxBorrowAllowed = this.getMaxBorrowAllowed(this.liquidity, this.cash);
-    //   });
   },
 };
 </script>
