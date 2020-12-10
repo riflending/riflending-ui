@@ -32,7 +32,7 @@ export default class Market {
     //TODO
     //validate cRBTC
     if (cTokenSymbol != 'cRBTC') {
-      this.token.instace = this.factoryContract.getContractCtoken(cTokenSymbol)
+      this.token.instace = this.factoryContract.getContractToken(tokenSymbol)
       this.token.internalAddress = Rlending.util.getAddress(tokenSymbol).toLowerCase();
     }
     //set data token
@@ -120,7 +120,7 @@ export default class Market {
     //set signer
     let contractWithSigner = contract.connect(this.factoryContract.signer);
     //send transaction
-    let tx = await contractWithSigner.enterMarkets([p.addressContract.cRIF]);
+    let tx = await contractWithSigner.enterMarkets([this.instanceAddress]);
     //await result transaction
     return tx.wait();
   }
@@ -134,7 +134,6 @@ export default class Market {
   async supply(amount, account) {
     //add decimals token
     amount = this.getAmountDecimals(amount);
-    let signer;
     let tx;
     //validate crbtc
     if (!this.isCRBTC) {
@@ -142,19 +141,19 @@ export default class Market {
       const allowance = await this.token.instace.allowance(account, this.instanceAddress);
       //validate if enough
       const notEnough = allowance.lt(amount);
-      //set signer token
-      signer = this.token.instace.connect(this.factoryContract.signer);
-
       if (notEnough) {
+        //set signer token
+        let signer = this.token.instace.connect(this.factoryContract.signer);
         //approve
-        await signer.approve(this.instanceAddress, amount);
+        await signer.approve(this.instanceAddress, ethers.constants.MaxUint256);
       }
       //mint token
-      tx = await signer.mint(amount);
+      let signerCtoken = this.instance.connect(this.factoryContract.signer);
+      tx = await signerCtoken.mint(amount);
     }
     else {
       //set signer cRBTC
-      signer = this.instance.connect(this.factoryContract.signer);
+      let signer = this.instance.connect(this.factoryContract.signer);
       //set value
       let overrides = {
         value: amount,
