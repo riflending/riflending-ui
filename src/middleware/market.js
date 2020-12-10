@@ -301,11 +301,11 @@ export default class Market {
    */
   async borrowAllowed(amount,account){
     amount = this.getAmountDecimals(amount);
-    console.log("market.js borrowAllowed");
+    // console.log("market.js borrowAllowed");
     let contract = this.factoryContract.getContractByNameAndAbiName(constants.Unitroller, constants.Comptroller);
-    console.log("market.js borrowAllowed contract", contract);
+    // console.log("market.js borrowAllowed contract", contract);
     let isAllowed = await contract.callStatic.borrowAllowed(this.instanceAddress,account,amount);
-    console.log("market.js borrowAllowed allowed?", isAllowed);
+    // console.log("market.js borrowAllowed allowed?", isAllowed);
     return isAllowed;
   }
 
