@@ -18,6 +18,14 @@ Vue.filter('formatToken', (value, decimals) => {
     .replace(/\B(?=(\d{3})+(?!\d))/g, ',')}`;
 });
 
+Vue.filter('shortenDecimals', (value) => {
+  const decimals = 6
+  const separatorIndex = value.indexOf('.')
+  const int = decimals > 0 ? value.substring(0, separatorIndex) : value;
+  const decimal = value.substring(separatorIndex + 1, separatorIndex + 1 + 6);
+  return `${int}.${decimal}`;
+});
+
 Vue.filter('formatNumber', (value, decimals = 6) => value.toFixed(decimals));
 
 Vue.filter('formatPercentage', (value) => `${Number(value).toFixed(2)} %`);
