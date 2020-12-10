@@ -98,9 +98,9 @@
               </v-col>
             </v-row>
             <v-row class="px-1 mt-6 d-flex justify-center">
-              <h5>
+              <h5 class="buyMoreTokens">
                 Would you like to
-                <a href="">buy more tokens?</a>
+                <a target="_blank" href="https://app.rskswap.com/">buy more tokens?</a>
               </h5>
             </v-row>
           </v-col>
