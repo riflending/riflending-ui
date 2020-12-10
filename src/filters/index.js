@@ -21,7 +21,7 @@ Vue.filter('formatToken', (value, decimals) => {
 
 Vue.filter('shortenDecimals', (value) => {
   const d = new Decimal(value)
-  return d.toPrecision(6)
+  return d.toSignificantDigits(6)
 });
 
 Vue.filter('formatNumber', (value, decimals = 6) => value.toFixed(decimals));
