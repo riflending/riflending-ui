@@ -1,7 +1,7 @@
 <template>
   <v-row class="ma-0 d-flex align-center">
     <v-col cols="2" class="d-flex justify-center">
-      <v-img class="ml-5" src="../../../assets/rif.png" width="60"/>
+      <v-img class="ml-5" src="../../../assets/rif.png" width="60" />
     </v-col>
     <v-col cols="2">
       <v-row class="item">
@@ -18,16 +18,15 @@
         <h2>price:</h2>
       </v-row>
       <v-row class="item d-flex justify-start">
-        <span>{{ price | formatPrice }}</span><span class="ml-2 itemInfo">usd</span>
+        <span>{{ price | formatPrice }}</span
+        ><span class="ml-2 itemInfo">usd</span>
       </v-row>
     </v-col>
     <v-col cols="3">
       <v-row>
         <h2>apr:</h2>
       </v-row>
-      <v-row class="item d-flex justify-start">
-        {{ apr }}%
-      </v-row>
+      <v-row class="item d-flex justify-start"> {{ apr }}% </v-row>
     </v-col>
     <v-col cols="2">
       <v-row>
@@ -43,7 +42,7 @@
 
 <script>
 export default {
-  name: 'WithdrawTop',
+  name: "WithdrawTop",
   props: {
     data: {
       type: Object,
@@ -68,24 +67,16 @@ export default {
     },
   },
   created() {
-      this.data.market.price.then((price) => {
+    //TODO this.earnings = accountEarnings;
+    this.data.market.price
+      .then((price) => {
         this.price = price;
-        console.log("price", price);
-        return this.data.market.eventualToken
-      }).then((tok) => {
-        this.tokenAddress = tok.address;
-        return tok.eventualDecimals;
-      })
-      .then((tokDecimals) => {
-        this.tokenDecimals = tokDecimals;
-        return this.data.market.eventualBorrowRate;
+        this.tokenAddress = this.data.market.token.address;
+        this.tokenDecimals = this.data.market.token.decimals;
+        return this.data.market.borrowRate;
       })
       .then((borrowRate) => {
         this.borrowRate = borrowRate;
-        return this.data.market.eventualAccountEarnings(this.account);
-      })
-      .then((accountEarnings) => {
-        this.earnings = accountEarnings;
       });
   },
 };
