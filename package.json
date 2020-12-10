@@ -14,6 +14,7 @@
     "@riflending/riflending-js": "../rlending-js",
     "@rsksmart/rbank": "^1.0.1",
     "core-js": "^3.6.4",
+    "decimal.js": "3.0.0",
     "ethers": "^5.0.23",
     "lodash": "^4.17.15",
     "register-service-worker": "^1.7.1",
