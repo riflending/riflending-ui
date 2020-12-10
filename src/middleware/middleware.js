@@ -16,6 +16,14 @@ export default class Middleware {
         return markets;
     }
 
+    /**
+     * getAccountLiquidity gets account liquidity information
+     * @dev This only works for accounts that have entered a borrow market, othewise returns (0,0,0)
+     * @param account Address of the account to snapshot
+     * @return (possible error code (semi-opaque),
+     *          account liquidity in excess of collateral requirements,
+     *          account shortfall below collateral requirements)
+     */
     getAccountLiquidity(account) {
         return Rlending.eth
             .read(
@@ -93,10 +101,19 @@ export default class Middleware {
       return totalsReduced;
     }
 
+    /**
+     * getMaxBorrowAllowed gets account max borrow allowed for a given market
+     * @param account Address of the account
+     * @param tokenAddress Address of the market
+     * @return the sum of this account's available liquidities accros all markets
+     */
+    // async getMaxBorrowAllowed(account,tokenAddress){
+    //   const markets = this.getMarkets(account);
+    // }
+
     // getAccountHealth(){ // TODO: SEND TO MIDDLEWARE
     //   if(this.supplyValue== 0 || this.borrowed == 0) return 0;
     //   let borrowValue= this.borrowed*this.mantissa;
     //   return this.supplyValue * this.mantissa / borrowValue;
     // },
-
 }

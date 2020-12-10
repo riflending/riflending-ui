@@ -41,7 +41,8 @@ export default class Market {
     this.token.name = underlyingName;
     this.token.decimals = underlyingDecimals;
     //set balance account
-    this.tokenBalance = this.getBalanceOfToken(account);
+    this.ctokenBalance = this.getBalanceOfToken(account);
+    this.tokenBalance = this.getBalanceOfUnderlying(account);
     //set price
     this.price = this.getPrice().then((price) => new BigNumber(price).div(new BigNumber(1e18)));
     //set borrow rate
@@ -88,7 +89,7 @@ export default class Market {
   }
 
   async getCash() {
-    //set balance of account
+    //get balance of contract expressed in underlying
     let cash = await this.instance.getCash();
     return Number(cash);
   }
@@ -163,6 +164,7 @@ export default class Market {
    * @return {Promise<TXResult>} the wait mined transaction
    */
   async borrow(amount) {
+    //TODO: add validation. Account has to have entered market prior to borrowing.
     //add decimals token
     amount = this.getAmountDecimals(amount);
     let signer;
@@ -299,13 +301,12 @@ export default class Market {
    */
   async borrowAllowed(amount,account){
     amount = this.getAmountDecimals(amount);
-    // console.log("market.js borrowAllowed");
+    console.log("market.js borrowAllowed");
     let contract = this.factoryContract.getContractByNameAndAbiName(constants.Unitroller, constants.Comptroller);
-    // console.log("market.js borrowAllowed contract", contract);
+    console.log("market.js borrowAllowed contract", contract);
     let isAllowed = await contract.callStatic.borrowAllowed(this.instanceAddress,account,amount);
-    // console.log("market.js borrowAllowed allowed?", isAllowed);
+    console.log("market.js borrowAllowed allowed?", isAllowed);
     return isAllowed;
-
   }
 
   /** TODO
@@ -315,7 +316,8 @@ export default class Market {
    * @return (supplyValue, borrowValue)
    */
   async getAccountValues(account){
-    const borrowValue = await this.borrowBalanceCurrent(account)
+    const borrowValue = await this.borrowBalanceCurrent(account);
+    console.log("market.js getAccountValues supplyValue ", this.tokenBalance, "balanceUnderlying ", this.getBalanceOfUnderlying(account), " borrowValue ",borrowValue);
     return (this.tokenBalance, borrowValue);
   }
 
@@ -357,5 +359,12 @@ export default class Market {
     let currentExchangeRate = await this.instance.exchangeRateStored();
     // console.log("getCurExRate:",currentExchangeRate);
     return Number(currentExchangeRate);
+  }
+
+  async getBalanceOfUnderlying(account) {
+    //set balance of account
+    let balance = await this.instance.callStatic.balanceOfUnderlying(account);
+    //return format (without wei)
+    return ethers.utils.formatEther(balance);
   }
 }

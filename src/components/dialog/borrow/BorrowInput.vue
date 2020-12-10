@@ -94,6 +94,7 @@
 <script>
 import { mapState } from 'vuex';
 import Loader from '@/components/common/Loader.vue';
+import BigNumber from 'bignumber.js';
 
 export default {
   name: 'BorrowInput',
@@ -105,31 +106,34 @@ export default {
   },
   data() {
     return {
-      waiting: false,
-      maxAmount: false,
+      waiting: false, // ???
+      maxAmount: false, // ??? if MAX button was clicked
       price: 0,
-      amount: '0',
-      borrowBy: 0,
+      amount: '0',  // user generated input
+      borrowBy: 0,  // borrowBalanceCurrent() The borrowed balance of current acount in this market with accrued interests
       borrowRate: 0,
-      liquidity: 0,
-      cash: 0,
-      isBorrowAllowed: false,
+      liquidity: 0, //users liquid assets in the protocol
+      oldLiquidity: 0, //users liquid assets in the protocol
+      usdPrice:0,
+      cash: 0, //current underlying balance stored in contract. AKA "CONTRACT LIQUIDITY"
+      oldCash: 0, // balance of ctoken expressed in underlying
+      tokenBalance: 0,    // getBalanceOfUnderlying(this.account) balance of this account in underlying
+      isBorrowAllowed: false, // checks whether or not the Comptroller will allow the borrow
       oldMaxBorrowAllowed: 0,
-      maxBorrowAllowed: 0,
+      maxBorrowAllowed: 0,  // BORROW LIMIT getMaxBorrowAllowed() calculates the maximun borrow allowance. User should never borrow close to this amount, otherwise runs risk of getting automatically liquidated
       borrowBalanceInfo: null,
       borrowLimitInfo: null,
-      tokenBalance: 0,
-      collateralFactor: 0,
-      mantissa: 0,
-      oldCash: 0,
-      oldLiquidity: 0,
+      collateralFactor: 0,  // getCollateralFactorMantissa()
+      mantissa: 0,  // getCurrentExchangeRate() current exchange rate mantissa to convert underlying to ctoken
       rules: {
         allowed: () => this.data.market
-                    .borrowAllowed(this.amount,this.account)
+                    // .borrowAllowed(this.amount,this.account)
+                    .borrowAllowed(this.contractAmount,this.account)
                     .then((allowed) => {
                       console.log("borrowInput isBorrowAllowed?",Number(allowed) == 0);
+                      this.isBorrowAllowed = Number(allowed) == 0;
                       return Number(allowed) == 0;
-                    }) || 'NotAllowed',
+                    }),
         required: () => !!Number(this.amount) || 'Required.',
         decimals: () => this.decimalPositions || `Maximum ${this.data.token
           .decimals} decimal places for ${this.data.token.symbol}.`,
@@ -148,15 +152,17 @@ export default {
       return this.borrowRate.toFixed(2);
     },
     balanceAsDouble() {
-      return this.asDouble(this.tokenBalance);
+    return (this.tokenBalance / 10 ** this.data.token.decimals).toFixed(
+      this.data.token.decimals)
     },
-    contractAmount() {
+    // balanceAsDouble() {
+    //   return this.asDouble(this.tokenBalance);
+    // },
+    contractAmount() { //TODO: check, is this the right way to convert from user input to contract data
       return Number(this.amount).toFixed(this.data.token.decimals).replace('.', '');
     },
     validForm() {
-      let allowedBorrow = this.rules.allowed()
-                      .then(res => this.isBorrowAllowed = res);
-
+      return true;
       return this.isBorrowAllowed
         && typeof this.rules.liquidity() !== 'string'
         && typeof this.rules.decimals() !== 'string'
@@ -182,6 +188,7 @@ export default {
       this.$emit("wait");
       this.data.market
         .borrow(this.amount, this.account)
+        // .borrow(this.contractAmount)
         // .borrow(this.contractAmount, this.account)
         .then((res) => {
           this.waiting = false;
@@ -189,7 +196,7 @@ export default {
           this.$emit("succeed", {
             hash: res.transactionHash,
             borrowLimitInfo: this.borrowLimitInfo,
-            supplyBalanceInfo: this.supplyBalanceInfo,
+            borrowBalanceInfo: this.borrowBalanceInfo,
           });
         })
         .catch((error) => {
@@ -219,46 +226,103 @@ export default {
       return (value / (10 ** this.data.token.decimals))
         .toFixed(this.data.token.decimals);
     },
-    getMaxBorrowAllowed(liquidity, cash) {
-      const allowed = this.price > 0 ? Math.floor(liquidity / (this.price * 2)) : 0;
-      return allowed >= cash ? cash : allowed;
+    getMaxBorrowAllowed(liquidity, underlyingPrice) {
+      // let refreshDataMarket = this.$middleware
+      // .getMarkets(this.account)
+      // .find(
+      //   (market) => market.instanceAddress == this.data.market.instanceAddress
+      // );
+
+      // this.usdPrice = refreshDataMarket.price
+      //   .then((price) => {console.log("++++++++++++++++++++++++ price",this.usdPrice);})
+
+      // BORROW ONLY AVAILABLE IF ENTERED-MARKET
+      //returns account's liquidity in usd, divided by (amount of token to be borrowed multiplied by usd price of token)
+      // source: https://medium.com/compound-finance/borrowing-assets-from-compound-quick-start-guide-f5e69af4b8f4
+      // const allowed = this.price > 0 ? Math.floor(new BigNumber(liquidity).multipliedBy(new BigNumber(this.price)) / (this.price)) : 0;
+      // console.log("PRICEPRICEPRICEPRICE",Number(this.price));
+      // console.log("LIQLIQLIQLIQ",liquidity);
+      // console.log("ALLOWEDALLOWEDALLOWED",allowed);
+      // return allowed >= underlyingPrice ? underlyingPrice  : allowed;
+      // return liquidity*underlyingPrice;
+      //let result = (this.liquidity/1e18) * this.mantissa / (this.price/1e8);
+      let liquid = liquidity / 1e18;
+      // let collateralFactors = (this.collateralFactor / 1e18) * 100
+      console.log("COLATERALFACTORRRR",this.collateralFactor);
+      let underlyingPriceInUsd = underlyingPriceInUsd / 1e6;
+      let result = liquid / this.price;
+      console.log("getMaxBorrowAllowed: RESULTADO",result);
+      return result;
     },
     async getValues() {
       await this.data.market.borrowBalanceCurrent(this.account)
         .then((borrowBy) => {
+          console.log("____borrowBy___",borrowBy," borrowBalanceCurrentAccount");
           this.borrowBy = Number(borrowBy) + Number(this.contractAmount);
+          console.log("____borrowBy___",borrowBy," borrowBalanceCurrentAccount + user input converted to uint");
           return this.$middleware.getAccountLiquidity(this.account);
           // return this.$rbank.controller.getAccountLiquidity(this.account);
         })
         .then((accountLiquidity) => {
-          this.oldLiquidity = accountLiquidity;
-          return this.data.market.getCash();
+          this.oldLiquidity = accountLiquidity; // user's liquid assets in the protocol
+          return this.data.market.getCash(); // gets underlying balance stored in contract
           // return this.data.market.eventualCash;
         })
         .then((cash) => {
-          this.oldCash = cash;
-          this.cash = cash - Number(this.contractAmount);
-          return this.data.market.borrowBalanceCurrent(this.account);
+          this.oldCash = cash; // balance of contract underlying AKA "CONTRACT LIQUIDITY"
+          this.cash = cash - Number(this.contractAmount); // WHY ??? perhaps they're updating the underlying balance upon user input?
+          console.log("_______this.contractAmount____::::____",this.contractAmount,"user input converted to uint");
+          console.log("_______this.cash____::::____",cash,"current underlying balance stored in contract");
+          console.log("_______this.amount__________",this.amount, "literal user input");
+          return this.data.market.getAccountValues(this.account);
           // return this.$rbank.controller.getAccountValues(this.account);
         })
-        .then(( borrowValue ) => {
+        .then((  supplyValue, borrowValue  ) => {
+          console.log("borrowInput getValues supplyValue===>?",supplyValue," borrowValue ", borrowValue);
           const newBorrowValue = ((borrowValue + (Number(this.contractAmount) * this.price)) * (this
             .collateralFactor + this.mantissa)) / this.mantissa;
-          const supplyValue = 999;
           const newSupplyValue = supplyValue;
           this.liquidity = newBorrowValue < newSupplyValue ? newSupplyValue - newBorrowValue : 0;
+          console.log("__@@@@@@@@ user's liquidity @@@@@@@___",this.liquidity);
           this.maxBorrowAllowed = this.getMaxBorrowAllowed(this.liquidity, this.cash);
           this.borrowBalanceInfo = Number(this.contractAmount);
           this.borrowLimitInfo = Number(this
             .getMaxBorrowAllowed(this.oldLiquidity, this.oldCash) - this.maxBorrowAllowed);
         });
+
+        // await this.data.market.updatedBorrowBy(this.account)
+        // .then((borrowBy) => {
+        //   this.borrowBy = borrowBy + Number(this.contractAmount);
+        //   return this.$rbank.controller.getAccountLiquidity(this.account);
+        // })
+        // .then((accountLiquidity) => {
+        //   this.oldLiquidity = accountLiquidity;
+        //   return this.data.market.eventualCash;
+        // })
+        // .then((cash) => {
+        //   this.oldCash = cash;
+        //   this.cash = cash - Number(this.contractAmount);
+        //   return this.$rbank.controller.getAccountValues(this.account);
+        // })
+        // .then(({ supplyValue, borrowValue }) => {
+        //   const newBorrowValue = ((borrowValue + (Number(this.contractAmount) * this.price)) * (this
+        //     .collateralFactor + this.mantissa)) / this.mantissa;
+        //   const newSupplyValue = supplyValue;
+        //   this.liquidity = newBorrowValue < newSupplyValue ? newSupplyValue - newBorrowValue : 0;
+        //   this.maxBorrowAllowed = this.getMaxBorrowAllowed(this.liquidity, this.cash);
+        //   this.borrowBalanceInfo = Number(this.contractAmount);
+        //   this.borrowLimitInfo = Number(this
+        //     .getMaxBorrowAllowed(this.oldLiquidity, this.oldCash) - this.maxBorrowAllowed);
+        // });
     },
   },
   watch: {
     amount() {
       this.getValues();
       if (this.maxAmount && this.amount !== this.oldMaxBorrowAllowed) this.maxAmount = false;
-      if (this.amount === this.oldMaxBorrowAllowed) this.maxAmount = true;
+      if (this.amount === this.oldMaxBorrowAllowed){
+        console.log("borrowInput amount() getvalues() amount", this.amount, " oldMaxBorrAll ", this.oldMaxBorrowAllowed);
+        this.maxAmount = true;}
     },
     maxAmount() {
       if (this.maxAmount) this.amount = this.oldMaxBorrowAllowed;
@@ -278,46 +342,67 @@ export default {
         // return this.$rbank.controller.getAccountLiquidity(this.account);
       })
       .then((accountLiquidity) => {
-        this.oldLiquidity = accountLiquidity;
-        this.liquidity = accountLiquidity;
-        console.log("borrowInput liquidity",accountLiquidity);
+        this.oldLiquidity = accountLiquidity; //liquid assets in the protocol
+        this.liquidity = accountLiquidity; //liquid assets in the protocol
+        // this.liquidity= this.data.market.tokenBalance;
+        console.log("borrowInput liquidity-------------------------------------------------------------",this.liquidity);
         return this.data.market.getCash();
         // return this.data.market.eventualCash;
       })
       .then((cash) => {
-        this.oldCash = cash;
-        this.cash = cash;
+        // the amount of underlying stored in contract AKA "CONTRACT LIQUIDITY"
+        console.log("borrowInput cash",cash);
+        this.oldCash = cash; // the amount of underlying stored in contract AKA "CONTRACT LIQUIDITY"
+        this.cash = cash; // the amount of underlying stored in contract AKA "CONTRACT LIQUIDITY"
         return this.data.market.borrowRate;
         // return this.data.market.eventualBorrowRate;
       })
       .then((borrowRate) => {
+        console.log("borrowInput rate per block",borrowRate);
         this.borrowRate = borrowRate;
-        return this.data.market.price;
+        // return this.data.market.price;
+        return this.data.market.getPrice(this.data.market.address);
         // return this.$rbank.controller.eventualMarketPrice(this.data.market.address);
       })
       .then((marketPrice) => {
+        console.log("borrowInput price",Number(marketPrice));
         this.price = marketPrice;
         /*return this.data.market.eventualToken;
       }) // we don't need this anymore
       .then((tok) => {*/
-        return this.data.market.tokenBalance;
+        return this.data.market.getBalanceOfUnderlying(this.account);
+        //return this.data.market.tokenBalance;
         //tok.eventualBalanceOf(this.account)
       })
       .then((tokenBalance) => {
+        console.log("borrowInput tokenBalance-------getBalanceOfUnderlying(this.account)-----------",tokenBalance);
         this.tokenBalance = tokenBalance;
         return this.data.market.getCurrentExchangeRate()
         // return this.$rbank.controller.eventualMantissa;
       })
       .then((mantissa) => {
+        console.log("borrowInput exchRate mantissa",mantissa);
         this.mantissa = mantissa;
+        this.maxBorrowAllowed = this.getMaxBorrowAllowed(this.liquidity, this.cash);
+        //this.maxBorrowAllowed = this.tokenBalance*1e18; // this sortof works, but it actually doesn't
+        // this.maxBorrowAllowed = (this.liquidity/1e18) * mantissa / (this.price/1e6); // \REVISAR CUENTA - CASI QUE ANDA
+        // account's liquidity in usd, divided by (amount of token to be borrowed multiplied by usd price of token)
+        console.log("''''''''''''''''''''''''''''''''''''''''");
+        console.log("liquidity:",this.liquidity,"mantissa",mantissa,"tokenPrice",this.price);
+        console.log("maxborrowed",this.maxBorrowAllowed);
+        console.log("''''''''''''''''''''''''''''''''''''''''");
+        console.log("___liq___",this.liquidity,"___cash___",this.cash,"___maxBorrAll___",this.maxBorrowAllowed );
+        this.oldMaxBorrowAllowed = this.asDouble(this.getMaxBorrowAllowed(this.liquidity, this.cash));
         return this.data.market.getCollateralFactorMantissa();
         //return this.$rbank.controller.eventualCollateralFactor;
       })
-      .then((collateralFactor) => {
-        this.collateralFactor = collateralFactor * this.mantissa;
-        this.oldMaxBorrowAllowed = this.asDouble(this
-          .getMaxBorrowAllowed(this.liquidity, this.cash));
+       .then((collateralFactor) => {
+         console.log("borrowInput collateralfactorMantissa", collateralFactor);
+        this.collateralFactor = collateralFactor ;//* this.mantissa; /// WHY??
+        console.log("borrowInput collateralFactorMantissa ",collateralFactor," collateralfactor* mantissa ", this.collateralFactor);
         this.maxBorrowAllowed = this.getMaxBorrowAllowed(this.liquidity, this.cash);
+        console.log("___liq___",this.liquidity,"___cash___",this.cash,"___maxBorrAll___",this.maxBorrowAllowed );
+        this.oldMaxBorrowAllowed = this.asDouble(this.getMaxBorrowAllowed(this.liquidity, this.cash));
       });
     //       this.data.market
     // .updatedBorrowBy(this.account)
