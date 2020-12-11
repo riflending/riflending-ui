@@ -1,4 +1,5 @@
 import Vue from 'vue';
+import Decimal from 'decimal.js';
 
 Vue.filter('formatPrice', (value) => {
   const val = (value / 1).toFixed(2)
@@ -16,6 +17,11 @@ Vue.filter('formatToken', (value, decimals) => {
   return decimals > 0 ? `${int
     .replace(/\B(?=(\d{3})+(?!\d))/g, ',')}.${decimal}` : `${int
     .replace(/\B(?=(\d{3})+(?!\d))/g, ',')}`;
+});
+
+Vue.filter('shortenDecimals', (value) => {
+  const d = new Decimal(value)
+  return d.toSignificantDigits(6)
 });
 
 Vue.filter('formatNumber', (value, decimals = 6) => value.toFixed(decimals));

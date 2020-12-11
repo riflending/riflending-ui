@@ -24,7 +24,12 @@
           <v-col cols="4">
             <v-row class="ma-0 d-flex align-center">
               <v-col cols="7" class="d-flex justify-center">
-                <h1>{{ cash | formatToken(data.token.decimals) }}</h1>
+                <v-tooltip top>
+                  <template v-slot:activator="{ on, attrs }">
+                    <h1 v-bind="attrs" v-on="on">{{ cash | formatToken(data.token.decimals) | shortenDecimals }}</h1>
+                  </template>
+                  <span>{{ cash | formatToken(data.token.decimals) }}</span>
+                </v-tooltip>
               </v-col>
               <v-col cols="5"/>
             </v-row>
@@ -130,7 +135,7 @@ export default {
       rules: {
         required: () => !!Number(this.amount) || 'Required.',
         // TODO: fix bug: triggers when maxBorrowAllowed is inputed by MAX button
-        allowed: () => Number(this.maxBorrowAllowed) > Number(this.amount) || 'You shouldn\'t borrow over the max allowed!',
+        allowed: () => Number(this.maxBorrowAllowed) > Number(this.amount)/* || 'You shouldn\'t borrow over the max allowed!'*/,
         decimals: () => this.decimalPositions || `Maximum ${this.data.token
           .decimals} decimal places for ${this.data.token.symbol}.`,
         marketCash: () => this.oldCash >= Number(this

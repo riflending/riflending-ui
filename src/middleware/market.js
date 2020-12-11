@@ -3,7 +3,6 @@ import BigNumber from 'bignumber.js';
 import factoryContract from './factoryContract'
 import { constants, decimals, abi } from "./constants";
 import { ethers } from "ethers";
-import { account } from '@riflending/riflending-js/dist/nodejs/api';
 
 
 /**
@@ -33,16 +32,17 @@ export default class Market {
     //TODO
     //validate cRBTC
     if (cTokenSymbol != 'cRBTC') {
-      this.token.instace = this.factoryContract.getContractCtoken(cTokenSymbol)
+      this.token.instace = this.factoryContract.getContractToken(tokenSymbol)
       this.token.internalAddress = Rlending.util.getAddress(tokenSymbol).toLowerCase();
     }
     //set data token
     this.token.symbol = tokenSymbol;
     this.token.name = underlyingName;
     this.token.decimals = underlyingDecimals;
-    //set balance account
-    this.ctokenBalance = this.getBalanceOfToken(account);
+    //set token balance account
     this.tokenBalance = this.getBalanceOfUnderlying(account);
+    //set cToken balance account
+    this.cTokenBalance = this.getBalanceOfCtoken(account);
     //set price
     this.price = this.getPrice().then((price) => new BigNumber(price).div(new BigNumber(1e18)));
     //set borrow rate
@@ -81,9 +81,16 @@ export default class Market {
     return new BigNumber(priceToken._hex).multipliedBy(new BigNumber(valueOracle)).div(new BigNumber(decimals)).toNumber();
   }
 
-  async getBalanceOfToken(account) {
+  async getBalanceOfCtoken(account) {
     //set balance of account
     let balance = await this.instance.balanceOf(account);
+    //return format (without wei)
+    return ethers.utils.formatEther(balance);
+  }
+
+  async getBalanceOfUnderlying(account) {
+    //set balance of account
+    let balance = await this.instance.callStatic.balanceOfUnderlying(account);
     //return format (without wei)
     return ethers.utils.formatEther(balance);
   }
@@ -113,7 +120,7 @@ export default class Market {
     //set signer
     let contractWithSigner = contract.connect(this.factoryContract.signer);
     //send transaction
-    let tx = await contractWithSigner.enterMarkets([p.addressContract.cRIF]);
+    let tx = await contractWithSigner.enterMarkets([this.instanceAddress]);
     //await result transaction
     return tx.wait();
   }
@@ -127,7 +134,6 @@ export default class Market {
   async supply(amount, account) {
     //add decimals token
     amount = this.getAmountDecimals(amount);
-    let signer;
     let tx;
     //validate crbtc
     if (!this.isCRBTC) {
@@ -135,19 +141,19 @@ export default class Market {
       const allowance = await this.token.instace.allowance(account, this.instanceAddress);
       //validate if enough
       const notEnough = allowance.lt(amount);
-      //set signer token
-      signer = this.token.instace.connect(this.factoryContract.signer);
-
       if (notEnough) {
+        //set signer token
+        let signer = this.token.instace.connect(this.factoryContract.signer);
         //approve
-        await signer.approve(this.instanceAddress, amount);
+        await signer.approve(this.instanceAddress, ethers.constants.MaxUint256);
       }
       //mint token
-      tx = await signer.mint(amount);
+      let signerCtoken = this.instance.connect(this.factoryContract.signer);
+      tx = await signerCtoken.mint(amount);
     }
     else {
       //set signer cRBTC
-      signer = this.instance.connect(this.factoryContract.signer);
+      let signer = this.instance.connect(this.factoryContract.signer);
       //set value
       let overrides = {
         value: amount,
@@ -203,13 +209,34 @@ export default class Market {
     console.error("cToken is not listed")
   }
 
-  redeem(amount,account){
-    console.log("borrow():this.token.symbol", this.token.symbol);
-    console.log("borrow():amount", amount);
-    console.log("borrow():amount BigNum", new BigNumber(amount));
-    console.log("borrow():account", account);
-    let instanceRlending = new Rlending(window.ethereum);
-    return instanceRlending.redeem(this.token.symbol, amount);
+  async redeemUnderlying(amount) {
+    //set signer token
+    let signer = this.token.instace.connect(this.factoryContract.signer);
+    //send redeemUnderlying
+    let tx = await signer.redeemUnderlying(amount);
+    //wait for mined transaction
+    return tx.wait();
+  }
+
+  async redeem(amount) {
+    //set signer token
+    let signer = this.instance.connect(this.factoryContract.signer);
+    //send redeemUnderlying
+    let tx = await signer.redeem(amount);
+    //wait for mined transaction
+    return tx.wait();
+  }
+
+  withdraw(amount, max = false) {
+    //add decimals token
+    amount = this.getAmountDecimals(amount);
+    //validate if max sets and is crbtc
+    if ((max) || (this.isCRBTC)) {
+      //amount cToken
+      return this.redeem(amount);
+    }
+    //amount token
+    return this.redeemUnderlying(amount);
   }
 
   /**
@@ -228,7 +255,7 @@ export default class Market {
     console.log("RepayBorrow(): amount", new BigNumber(amount));
     let instanceRlending = new Rlending(window.ethereum);
     // return instanceRlending.repayBorrow(this.token.symbol, new BigNumber(amount),null);
-    return instanceRlending.repayBorrow(this.token.symbol, amount ,null);
+    return instanceRlending.repayBorrow(this.token.symbol, amount, null);
   }
 
   /**
@@ -257,38 +284,13 @@ export default class Market {
    * @param {address} account the address of the account
    * @return 0 if allowed, numerical error otherwise
    */
-  async withdrawAllowed(amount,account){
+  async withdrawAllowed(amount, account) {
+    //set
     amount = this.getAmountDecimals(amount);
-    let isAllowed =  await Rlending.eth.read(
-      this.instanceAddress,
-      "function redeemAllowed(address, address, uint) returns (uint)",
-      [this.instanceAddress, account, amount],
-      { provider: window.ethereum }
-    );
-    console.log("market.js isWithdrawAllowed",isAllowed);
-    return isAllowed;
-    //TODO fix this function. error: Duplicate definition in ABI?
-    // gets Comptroller
-    console.log("withdrawAllowed? Market.js");
-    console.log("Market.js acc",account);
-    console.log("Market.js addr",this.instanceAddress);
-    console.log("Market.js amount",amount);
-    amount = this.getAmountDecimals(amount);
-    console.log("Market.js amount DECIMALS",amount);
+    // console.log("amount redeem=>", amount.toNumber());
+    //set contract Comptroller delegate (Unitroller)
     let contract = this.factoryContract.getContractByNameAndAbiName(constants.Unitroller, constants.Comptroller);
-    // let contract = this.factoryContract.getContract(constants.Comptroller);
-    console.log("Market.js redeemAllowed? contract",contract);
-    //function redeemAllowed(address cToken, address redeemer, uint redeemTokens) external returns (uint);
-    //query the contract
-    let contractWithSigner = contract.connect(this.factoryContract.signer);
-    //TODO need to research signed call to contract ethers
-    // doc: https://docs.ethers.io/v4/api-contract.html#providers-vs-signers
-    // signer(with a provider) https://docs.ethers.io/v5/api/signer/#VoidSigner
-    let allow = await contractWithSigner.redeemAllowed(this.instanceAddress, account, amount);
-    // let allow= await contract.redeemAllowed(this.instanceAddress, account, amount);
-    console.log("Market.js withdrawAllowed? allowed LALALA",allow);
-    // return allow.wait();
-    return allow;
+    return contract.callStatic.redeemAllowed(this.instanceAddress, account, amount).then((response) => response == 0);
   }
 
 /**
@@ -315,9 +317,8 @@ export default class Market {
    * @param {address} account the address of the account
    * @return (supplyValue, borrowValue)
    */
-  async getAccountValues(account){
-    const borrowValue = await this.borrowBalanceCurrent(account);
-    console.log("market.js getAccountValues supplyValue ", this.tokenBalance, "balanceUnderlying ", this.getBalanceOfUnderlying(account), " borrowValue ",borrowValue);
+  async getAccountValues(account) {
+    const borrowValue = await this.borrowBalanceCurrent(account)
     return (this.tokenBalance, borrowValue);
   }
 
@@ -327,13 +328,13 @@ export default class Market {
    * @param {address} account the address of the account
    * @return returns the total borrow balance including accrued interests
    */
-  async borrowBalanceCurrent(account){
+  async borrowBalanceCurrent(account) {
     let balance = await this.instance.callStatic.borrowBalanceCurrent(account);
-    console.log("market.js borrowBalanceCurrent()",Number(balance));
+    console.log("market.js borrowBalanceCurrent()", Number(balance));
     return balance;
   }
 
-  async supplyBalanceCurrent(account){
+  async supplyBalanceCurrent(account) {
     let balance = await this.instance.callStatic.borrowBalanceCurrent(account);
     return balance;
   }
@@ -357,7 +358,6 @@ export default class Market {
   async getCurrentExchangeRate() {
     //set balance of account
     let currentExchangeRate = await this.instance.exchangeRateStored();
-    // console.log("getCurExRate:",currentExchangeRate);
     return Number(currentExchangeRate);
   }
 

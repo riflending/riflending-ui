@@ -35,7 +35,13 @@ export default class factoryContract {
         }
         return;
     }
-
+    
+    getContractToken(name) {
+        if (this.validateContractName(name)) {
+            return this.createContract(this.addressContract[name], abi["Erc20"], this.provider);
+        }
+        return;
+    }
 
     getContractCtoken(name) {
         if (this.validateContractName(name)) {
