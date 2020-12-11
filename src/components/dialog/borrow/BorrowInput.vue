@@ -6,7 +6,7 @@
           <v-text-field class="inputText" full-width single-line solo flat
                         type="number" v-model="amount" required
                         :rules="[rules.required, rules.decimals,
-                        rules.marketCash, rules.liquidity]"/>
+                        rules.marketCash, rules.liquidity,rules.allowed]"/>
         </v-col>
         <v-col cols="2">
           <v-btn @click="maxAmount = true" class="mb-12" text color="#008CFF">max</v-btn>
@@ -128,21 +128,16 @@ export default {
       collateralFactor: 0,  // getCollateralFactorMantissa()
       mantissa: 0,  // getCurrentExchangeRate() current exchange rate mantissa to convert underlying to ctoken
       rules: {
-        allowed: () => this.data.market
-                    // .borrowAllowed(this.amount,this.account)
-                    .borrowAllowed(this.contractAmount,this.account)
-                    .then((allowed) => {
-                      console.log("borrowInput isBorrowAllowed?",Number(allowed) == 0);
-                      this.isBorrowAllowed = Number(allowed) == 0;
-                      return Number(allowed) == 0;
-                    }),
         required: () => !!Number(this.amount) || 'Required.',
+        // TODO: fix bug: triggers when maxBorrowAllowed is inputed by MAX button
+        allowed: () => Number(this.maxBorrowAllowed) > Number(this.amount) || 'You shouldn\'t borrow over the max allowed!',
         decimals: () => this.decimalPositions || `Maximum ${this.data.token
           .decimals} decimal places for ${this.data.token.symbol}.`,
         marketCash: () => this.oldCash >= Number(this
           .tokenBalance) || `This market doesn't have enough ${this.data.token.symbol}`,
         liquidity: () => this.oldLiquidity >= (this.price * 2 * Number(this
           .tokenBalance)) || 'You don\'t have enough liquidity, supply more collateral.',
+        enteredMarket: () => true || '',
       },
     };
   },
@@ -163,9 +158,9 @@ export default {
     contractAmount() { //TODO: check, is this the right way to convert from user input to contract data
       return Number(this.amount).toFixed(this.data.token.decimals).replace('.', '');
     },
-    validForm() {
-      return true;
-      return this.isBorrowAllowed
+    validForm() {// TODO: double-check validations
+      return typeof this.rules.enteredMarket() !== 'string'
+        && typeof this.rules.allowed() !== 'string'
         && typeof this.rules.liquidity() !== 'string'
         && typeof this.rules.decimals() !== 'string'
         && typeof this.rules.required() !== 'string'
@@ -228,9 +223,12 @@ export default {
       return (value / (10 ** this.data.token.decimals))
         .toFixed(this.data.token.decimals);
     },
-    getMaxBorrowAllowed() {
+    getMaxBorrowAllowed() { // TODO: double check, this might have a bug: under-calculating max
+                            // TODO: fix bug: sometimes returns more than 18 decimals!
       // source: https://medium.com/compound-finance/borrowing-assets-from-compound-quick-start-guide-f5e69af4b8f4
       const res = this.price > 0 ? (this.liquidity/1e18) / (this.price/1e18) : -1;
+      console.log("getMaxBorrowAllowed() maxBorrow ",res, "type ", typeof res);
+      console.log("getMaxBorrowAllowed() this.amount ",this.amount, " type ", typeof this.amount);
       return res;
     //////// Original code ///////////////
     // getMaxBorrowAllowed(liquidity, cash) {
@@ -240,14 +238,14 @@ export default {
     async getValues() {
       await this.data.market.borrowBalanceCurrent(this.account)
         .then((borrowBy) => {
-          console.log("____borrowBy___",borrowBy," borrowBalanceCurrentAccount");
+          // console.log("____borrowBy___",borrowBy," borrowBalanceCurrentAccount");
           this.borrowBy = Number(borrowBy) + Number(this.contractAmount);
-          console.log("____borrowBy___",borrowBy," borrowBalanceCurrentAccount + user input converted to uint");
+          // console.log("____borrowBy___",borrowBy," borrowBalanceCurrentAccount + user input converted to uint");
           return this.$middleware.getAccountLiquidity(this.account);
           // return this.$rbank.controller.getAccountLiquidity(this.account);
         })
         .then((accountLiquidity) => {
-          console.log("getValues() liquidity:",accountLiquidity);
+          // console.log("getValues() liquidity:",accountLiquidity);
           this.oldLiquidity = accountLiquidity; // user's liquid assets in the protocol
           return this.data.market.getCash(); // gets underlying balance stored in contract
           // return this.data.market.eventualCash;
@@ -310,7 +308,7 @@ export default {
       this.getValues();
       if (this.maxAmount && this.amount !== this.oldMaxBorrowAllowed) this.maxAmount = false;
       if (this.amount === this.oldMaxBorrowAllowed){
-        // console.log("borrowInput amount() getvalues() amount", this.amount, " oldMaxBorrAll ", this.oldMaxBorrowAllowed);
+        console.log("borrowInput amount() ", this.amount, " oldMaxBorrAll ", this.oldMaxBorrowAllowed);
         this.maxAmount = true;}
     },
     maxAmount() {
