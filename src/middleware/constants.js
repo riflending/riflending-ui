@@ -219,31 +219,12 @@ export const constants = {
   export const opfAssets = ['RBTC','RIF','rDAI'];
   
   export const decimals = {
-    'COMP': 18,
-    'cBAT': 8,
-    'cDAI': 8,
-    'cETH': 8,
-    'cREP': 8,
-    'cSAI': 8,
-    'cUSDC': 8,
-    'cUSDT': 8,
-    'cWBTC': 8,
-    'cZRX': 8,
-    'BAT': 18,
     'DAI': 18,
-    'ETH': 18,
-    'REP': 18,
-    'SAI': 18,
-    'USDC': 6,
-    'USDT': 6,
-    'WBTC': 8,
-    'ZRX': 18,
-    'cRBTC': 18,
-    'cRIF': 18,
-    'crDAI': 18,
+    'crDAI': 8,
     'RBTC': 18,
+    'cRBTC': 8,
     'RIF': 18,
-    'rDAI': 18,
+    'cRIF': 8,
     'RLEN': 18
   };
   
