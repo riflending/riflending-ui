@@ -30,7 +30,7 @@
           <v-row class="ma-0">
             <v-col cols="9" class="pa-0 d-flex align-center">
               <v-list-item-subtitle class="item">
-                {{ tokenBalance | formatToken(token.decimals) }}
+                {{ borrowBalance | formatToken(token.decimals) }}
               </v-list-item-subtitle>
             </v-col>
             <v-col cols="3" class="pa-0">
@@ -98,9 +98,9 @@ export default {
   methods: {
     reset() {
       this.dialog = false;
-      this.market.tokenBalance
+      this.market.borrowBalanceCurrent(this.account)
         .then((balance) => {
-          this.tokenBalance = balance;
+          this.borrowBalance = balance;
           return this.market.price;
         })
         //set price
@@ -143,8 +143,8 @@ export default {
     this.token = this.market.token;
     this.market.borrowBalanceCurrent(this.account)
       .then((balance) => {
-        this.tokenBalance = Number(balance);
-        console.log("borrItem: balance",this.tokenBalance);
+        this.borrowBalance = Number(balance);
+        console.log("borrItem: balance",this.borrowBalance);
         return this.market.price;
       })
     //set price

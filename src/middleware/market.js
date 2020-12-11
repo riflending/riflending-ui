@@ -32,7 +32,7 @@ export default class Market {
     //TODO
     //validate cRBTC
     if (cTokenSymbol != 'cRBTC') {
-      this.token.instace = this.factoryContract.getContractToken(tokenSymbol)
+      this.token.instace = this.factoryContract.getContractCtoken(cTokenSymbol);
       this.token.internalAddress = Rlending.util.getAddress(tokenSymbol).toLowerCase();
     }
     //set data token
@@ -96,7 +96,7 @@ export default class Market {
   }
 
   async getCash() {
-    //set balance of account
+    //get balance of contract expressed in underlying
     let cash = await this.instance.getCash();
     return Number(cash);
   }
@@ -170,6 +170,7 @@ export default class Market {
    * @return {Promise<TXResult>} the wait mined transaction
    */
   async borrow(amount) {
+    //TODO: add validation. Account has to have entered market prior to borrowing.
     //add decimals token
     amount = this.getAmountDecimals(amount);
     let signer;
@@ -292,6 +293,24 @@ export default class Market {
     return contract.callStatic.redeemAllowed(this.instanceAddress, account, amount).then((response) => response == 0);
   }
 
+/**
+   * borrowAllowed Calls Comptroller to check if borrow is
+   *   allowed for this user in this market with this amount
+   * @dev to be used in borrow modal
+   * @param amount of underlying to be borrowed
+   * @param {address} account the address of the account
+   * @return 0 if allowed, numerical error otherwise
+   */
+  async borrowAllowed(amount,account){
+    amount = this.getAmountDecimals(amount);
+    // console.log("market.js borrowAllowed");
+    let contract = this.factoryContract.getContractByNameAndAbiName(constants.Unitroller, constants.Comptroller);
+    // console.log("market.js borrowAllowed contract", contract);
+    let isAllowed = await contract.callStatic.borrowAllowed(this.instanceAddress,account,amount);
+    // console.log("market.js borrowAllowed allowed?", isAllowed);
+    return isAllowed;
+  }
+
   /** TODO
    * Gets the equivalent of rbank getAccountValues() ¯\_(ツ)_/¯
    * @dev research DefiProt contracts to understand what this does
@@ -340,5 +359,12 @@ export default class Market {
     //set balance of account
     let currentExchangeRate = await this.instance.exchangeRateStored();
     return Number(currentExchangeRate);
+  }
+
+  async getBalanceOfUnderlying(account) {
+    //set balance of account
+    let balance = await this.instance.callStatic.balanceOfUnderlying(account);
+    //return format (without wei)
+    return ethers.utils.formatEther(balance);
   }
 }

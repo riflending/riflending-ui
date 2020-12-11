@@ -3,7 +3,7 @@ import Rlending from '@riflending/riflending-js';
 import BigNumber from 'bignumber.js';
 
 export default class Middleware {
-  
+
   getMarkets(account) {
     let markets = Array();
     for (let index = 0; index < Rlending.cTokensDetails.length; index++) {
@@ -14,15 +14,23 @@ export default class Middleware {
     return markets;
   }
 
+  /**
+   * getAccountLiquidity gets account liquidity information
+   * @dev This only works for accounts that have entered a borrow market, othewise returns (0,0,0)
+   * @param account Address of the account to snapshot
+   * @return (possible error code (semi-opaque),
+   *          account liquidity in excess of collateral requirements,
+   *          account shortfall below collateral requirements)
+   */
   getAccountLiquidity(account) {
-    return Rlending.eth
-      .read(
-        Rlending.util.getAddress(Rlending.Unitroller),
-        "function getAccountLiquidity(address) returns (uint,uint,uint)",
-        [account],
-        { provider: window.ethereum }
-      )
-      .then(([error, liquidity, shortfall]) => Number(liquidity));
+      return Rlending.eth
+          .read(
+              Rlending.util.getAddress(Rlending.Unitroller),
+              "function getAccountLiquidity(address) returns (uint,uint,uint)",
+              [account],
+              { provider: window.ethereum }
+          )
+          .then(([error, liquidity, shortfall]) => Number(liquidity));
   }
 
   getCollateralFactor(account) {
@@ -90,4 +98,5 @@ export default class Middleware {
 
     return totalsReduced;
   }
+
 }

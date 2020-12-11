@@ -23,10 +23,11 @@
     </v-col>
     <v-col cols="3">
       <v-row>
-        <h2>supplied to contract:</h2>
+        <h2>liquidity provided:</h2>
       </v-row>
-      <v-row class="item d-flex justify-start">
-        {{ tokenBalance | formatToken(data.token.decimals) }}<span class="ml-2 itemInfo">usd</span>
+      <v-row class="item d-flex justify-start" :title="[`Balance ${tokenBalance} ${data.token.symbol}`]">
+        <!-- {{ tokenBalance | formatToken(data.token.decimals) -->
+        {{ tokenBalancePrice | formatPrice }}<span class="ml-2 itemInfo">usd</span>
       </v-row>
     </v-col>
     <v-col cols="2">
@@ -42,6 +43,7 @@
 
 <script>
 import { mapState } from 'vuex';
+import BigNumber from 'bignumber.js';
 
 export default {
   name: 'BorrowTop',
@@ -55,7 +57,9 @@ export default {
     return {
       price: 0,
       tokenBalance: 0,
+      tokenBalancePrice: 0,
       borrowRate: 0,
+      liqProvided:0,
       tokenAddress: 0,
     };
   },
@@ -82,18 +86,20 @@ export default {
     this.tokenBalance = refreshDataMarket.tokenBalance
       .then((balance) => {
         this.tokenBalance = balance;
+        console.log("borrowTop: tokenBalance", this.tokenBalance);
         return refreshDataMarket.price;
       })
       //set price
       .then((price) => {
         this.price = price;
+        this.tokenBalancePrice =  new BigNumber(this.tokenBalance).multipliedBy(new BigNumber(this.price));
         return this.data.market.borrowRate;
       })
       .then((borrowRate) => {
         this.borrowRate = borrowRate;
       });
     //TODO this earnings
-    this.apr = 1;
+    //this.apr = 1;
 
 
 
