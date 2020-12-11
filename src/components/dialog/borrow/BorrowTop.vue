@@ -23,7 +23,7 @@
     </v-col>
     <v-col cols="3">
       <v-row>
-        <h2>supplied to contract:</h2>
+        <h2>liquidity provided:</h2>
       </v-row>
       <v-row class="item d-flex justify-start" :title="[`Balance ${tokenBalance} ${data.token.symbol}`]">
         {{ tokenBalancePrice | formatPrice }}<span class="ml-2 itemInfo">usd</span>
@@ -58,6 +58,7 @@ export default {
       tokenBalance: 0,
       tokenBalancePrice: 0,
       borrowRate: 0,
+      liqProvided:0,
       tokenAddress: 0,
     };
   },
@@ -73,23 +74,35 @@ export default {
     },
   },
   created() {
+    let refreshDataMarket = this.$middleware
+      .getMarkets(this.account)
+      .find(
+        (market) => market.instanceAddress == this.data.market.instanceAddress
+      );
+
     //set token balance
     this.data.market.tokenBalance
       .then((tokenBalance) => {
         this.tokenBalance = tokenBalance;
         return this.data.market.price;
+    this.tokenBalance = refreshDataMarket.tokenBalance
+      .then((balance) => {
+        this.tokenBalance = balance;
+        console.log("borrowTop: tokenBalance", this.tokenBalance);
+        return refreshDataMarket.price;
       })
       //set price
       .then((price) => {
         this.price = price;
         this.tokenBalancePrice =  new BigNumber(this.tokenBalance).multipliedBy(new BigNumber(this.price))
+        this.tokenBalancePrice =  new BigNumber(this.tokenBalance).multipliedBy(new BigNumber(this.price));
         return this.data.market.borrowRate;
       })
       .then((borrowRate) => {
         this.borrowRate = borrowRate;
       });
     //TODO this earnings
-    this.apr = 1;
+    //this.apr = 1;
 
 
 

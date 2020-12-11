@@ -16,6 +16,7 @@ yarn install --check-files
 Then you need to update the node_module FROM WITHIN THE UI FOLDER
 ```bash
 yarn add ../rlending-js/
+yarn add decimal.js
 ```
 
 Then you check the dependencies are updated

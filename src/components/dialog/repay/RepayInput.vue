@@ -276,7 +276,11 @@ export default {
   created() {
     this.mantissa = Number(1e6);
     this.collateralFactor = Number(0.5e18);
-
+    this.data.market.borrowBalanceCurrent(this.account)
+    .then((balance) => {
+      this.oldBorrowBy = Number(balance);
+      this.borrowBy = Number(balance);
+    })
     // TODO: updateBorrowBy pending !!!!
     // gets liquidity
     this.$middleware.getAccountLiquidity(this.account)

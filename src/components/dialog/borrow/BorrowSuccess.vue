@@ -35,7 +35,8 @@
           <h3>supplied to contract:</h3>
         </v-col>
         <v-col cols="3">
-          <h1 class="text-center">{{ tokenBalance | formatToken(data.token.decimals) }}</h1>
+          <h1 class="text-center">{{ tokenBalance }}</h1>
+          <!-- <h1 class="text-center">{{ tokenBalance | formatToken(data.token.decimals) }}</h1> -->
         </v-col>
         <v-col cols="2">
           <span class="itemInfo">{{ data.token.symbol }}</span>
@@ -96,36 +97,50 @@ export default {
     closeDialog() {
       this.$emit('closeDialog');
     },
-    getMaxAllowed(liquidity, cash) {
-      const allowed = this.price > 0 ? Math.floor(liquidity / (this.price * 2)) : 0;
-      return allowed >= cash ? cash : allowed;
+    getMaxBorrowAllowed() {
+      // source: https://medium.com/compound-finance/borrowing-assets-from-compound-quick-start-guide-f5e69af4b8f4
+      const res = this.price > 0 ? (this.liquidity/1e18) / (this.price/1e18) : -1;
+      return res;
     },
+    //////// Original code ///////////////
+    // getMaxAllowed(liquidity, cash) {
+    //   const allowed = this.price > 0 ? Math.floor(liquidity / (this.price * 2)) : 0;
+    //   return allowed >= cash ? cash : allowed;
+    // },
   },
   components: {
     TransactionHash,
   },
   created() {
-    this.data.market.eventualToken
-      .then((tok) => tok.eventualBalanceOf(this.account))
-      .then((tokenBalance) => {
-        this.tokenBalance = tokenBalance;
-        return this.$rbank.controller.getAccountLiquidity(this.account);
+    this.data.market.tokenBalance
+      .then((balance) => {
+        this.tokenBalance = balance;
+        console.log("success! balance",this.tokenBalance);
+        return this.$middleware.getAccountLiquidity(this.account);
+        // return this.$rbank.controller.getAccountLiquidity(this.account);
       })
       .then((accountLiquidity) => {
         this.liquidity = accountLiquidity;
-        return this.data.market.eventualCash;
+        return this.data.market.getCash();
+        // return this.data.market.eventualCash;
       })
       .then((cash) => {
         this.cash = cash;
-        return this.$rbank.controller.eventualMarketPrice(this.data.market.address);
+        console.log("success! cash",this.cash);
+        // return this.data.market.getPrice(this.data.market.address);
+        return this.data.market.price;
+        // return this.$rbank.controller.eventualMarketPrice(this.data.market.address);
       })
       .then((marketPrice) => {
-        this.price = marketPrice;
+        this.price = Number(marketPrice);
+        console.log("success! marketprice",this.price);
         return this.data.market.borrowBalanceCurrent(this.account);
+        // return this.data.market.borrowBalanceCurrent(this.account);
       })
       .then((borrowBy) => {
         this.borrowBy = Number(borrowBy);
-        this.maxBorrowAllowed = this.getMaxAllowed(this.liquidity, this.cash);
+        console.log("success! borrowby",this.borrowBy);
+        this.maxBorrowAllowed = this.getMaxBorrowAllowed();
       });
   },
 };
