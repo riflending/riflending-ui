@@ -32,7 +32,7 @@ export default class Market {
     //TODO
     //validate cRBTC
     if (cTokenSymbol != 'cRBTC') {
-      this.token.instace = this.factoryContract.getContractCtoken(cTokenSymbol);
+      this.token.instace = this.factoryContract.getContractToken(tokenSymbol);
       this.token.internalAddress = Rlending.util.getAddress(tokenSymbol).toLowerCase();
     }
     //set data token
@@ -173,15 +173,9 @@ export default class Market {
     //TODO: add validation. Account has to have entered market prior to borrowing.
     //add decimals token
     amount = this.getAmountDecimals(amount);
-    let signer;
-    //validate crbtc
-    if (!this.isCRBTC) {
-      //set signer token
-      signer = this.token.instace.connect(this.factoryContract.signer);
-    } else {
-      //set signer cRBTC
-      signer = this.instance.connect(this.factoryContract.signer);
-    }
+    // connect to cerc20
+    let signer = this.instance.connect(this.factoryContract.signer);
+    // perform borrow()
     let tx = await signer.borrow(amount);
     //wait for mined transaction
     return tx.wait();
