@@ -74,27 +74,16 @@ export default {
     },
   },
   created() {
-    let refreshDataMarket = this.$middleware
-      .getMarkets(this.account)
-      .find(
-        (market) => market.instanceAddress == this.data.market.instanceAddress
-      );
-
     //set token balance
     this.data.market.tokenBalance
-      .then((tokenBalance) => {
-        this.tokenBalance = tokenBalance;
-        return this.data.market.price;
-    this.tokenBalance = refreshDataMarket.tokenBalance
       .then((balance) => {
         this.tokenBalance = balance;
         console.log("borrowTop: tokenBalance", this.tokenBalance);
-        return refreshDataMarket.price;
+        return this.data.market.price;
       })
       //set price
       .then((price) => {
         this.price = price;
-        this.tokenBalancePrice =  new BigNumber(this.tokenBalance).multipliedBy(new BigNumber(this.price))
         this.tokenBalancePrice =  new BigNumber(this.tokenBalance).multipliedBy(new BigNumber(this.price));
         return this.data.market.borrowRate;
       })
@@ -120,7 +109,6 @@ export default {
     //   .then((borrowRate) => {
     //     this.borrowRate = borrowRate;
     //   });
-    })
   }
 }
 </script>
