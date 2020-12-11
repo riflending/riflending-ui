@@ -22,11 +22,9 @@
         </v-col>
       </v-row>
       <v-row class="ma-0 my-5 d-flex justify-center">
-        <p>
+        <p class="buyMoreTokens">
           Would you like to
-          <a target="_blank" href="https://coinmarketcap.com/"
-            >buy more tokens</a
-          >
+          <a target="_blank" href="https://app.rskswap.com/">buy more tokens?</a>
         </p>
       </v-row>
       <div class="my-5 py-5">
