@@ -32,7 +32,7 @@ export default class Market {
     //TODO
     //validate cRBTC
     if (cTokenSymbol != 'cRBTC') {
-      this.token.instace = this.factoryContract.getContractToken(tokenSymbol)
+      this.token.instace = this.factoryContract.getContractCtoken(cTokenSymbol);
       this.token.internalAddress = Rlending.util.getAddress(tokenSymbol).toLowerCase();
     }
     //set data token
