@@ -120,6 +120,7 @@ export default {
     //   .then((borrowRate) => {
     //     this.borrowRate = borrowRate;
     //   });
-  },
-};
+    })
+  }
+}
 </script>
