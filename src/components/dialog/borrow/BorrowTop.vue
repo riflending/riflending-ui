@@ -26,7 +26,6 @@
         <h2>liquidity provided:</h2>
       </v-row>
       <v-row class="item d-flex justify-start" :title="[`Balance ${tokenBalance} ${data.token.symbol}`]">
-        <!-- {{ tokenBalance | formatToken(data.token.decimals) -->
         {{ tokenBalancePrice | formatPrice }}<span class="ml-2 itemInfo">usd</span>
       </v-row>
     </v-col>
@@ -81,8 +80,11 @@ export default {
         (market) => market.instanceAddress == this.data.market.instanceAddress
       );
 
-    this.tokenAddress = refreshDataMarket.instanceAddress;
     //set token balance
+    this.data.market.tokenBalance
+      .then((tokenBalance) => {
+        this.tokenBalance = tokenBalance;
+        return this.data.market.price;
     this.tokenBalance = refreshDataMarket.tokenBalance
       .then((balance) => {
         this.tokenBalance = balance;
@@ -92,6 +94,7 @@ export default {
       //set price
       .then((price) => {
         this.price = price;
+        this.tokenBalancePrice =  new BigNumber(this.tokenBalance).multipliedBy(new BigNumber(this.price))
         this.tokenBalancePrice =  new BigNumber(this.tokenBalance).multipliedBy(new BigNumber(this.price));
         return this.data.market.borrowRate;
       })
