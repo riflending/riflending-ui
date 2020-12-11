@@ -37,11 +37,11 @@
           <v-col cols="4">
             <v-row class="ma-0 d-flex align-center">
               <v-col cols="7" class="d-flex justify-center">
-                <h1>{{ borrowBy | shortenDecimals() }}</h1>
+                <h1>{{ borrowBy | formatToken(data.token.decimals)  }}</h1>
               </v-col>
               <v-col cols="5" class="itemInfo">
                 <span class="text-center" v-if="borrowBalanceInfo">
-                  (-{{ borrowBalanceInfo | shortenDecimals() }})
+                  (-{{ borrowBalanceInfo | formatToken(data.token.decimals)  }})
                 </span>
               </v-col>
             </v-row>
