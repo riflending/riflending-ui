@@ -80,7 +80,7 @@ export default {
   },
   created() {
     //set token address
-    this.tokenAddress =  this.data.market.token.instace;
+    this.tokenAddress =  this.data.market.token.instance;
     //set token balance
      this.data.market.tokenBalance
       .then((balance) => {

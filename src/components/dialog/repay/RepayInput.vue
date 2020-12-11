@@ -37,11 +37,11 @@
           <v-col cols="4">
             <v-row class="ma-0 d-flex align-center">
               <v-col cols="7" class="d-flex justify-center">
-                <h1>{{ borrowBy | formatToken(data.token.decimals) }}</h1>
+                <h1>{{ borrowBy | shortenDecimals() }}</h1>
               </v-col>
               <v-col cols="5" class="itemInfo">
                 <span class="text-center" v-if="borrowBalanceInfo">
-                  (-{{ borrowBalanceInfo | formatToken(data.token.decimals) }})
+                  (-{{ borrowBalanceInfo | shortenDecimals() }})
                 </span>
               </v-col>
             </v-row>
@@ -89,6 +89,7 @@
 <script>
 import { mapState } from 'vuex';
 import Loader from '@/components/common/Loader.vue';
+import { ethers } from "ethers";
 
 export default {
   name: 'RepayInput',
@@ -117,16 +118,16 @@ export default {
       accountHealth: 0,
       collateralFactor: 0,
       mantissa: 0,
+      maxAmountBalanceAllowed: 0,
       rules: {
         required: () => !!Number(this.amount) || 'Required.',
         decimals: () => this.decimalPositions || `Maximum ${this
           .data.token.decimals} decimal places for ${this.data.token.symbol}.`,
-        debtExists: () => (this.oldBorrowBy > 0 && !!this.contractAmount)
+        debtExists: () => (this.maxRepayAllowed > 0 && !!this.contractAmount)
           || 'You do not have a debt on this market.',
-        hasEnoughTokens: () => this.tokenBalance >= this.contractAmount
+        hasEnoughTokens: () => this.maxAmountBalanceAllowed >= Number(this.amount)
           || `You do not have enough ${this.data.token.symbol}`,
-        notBiggerThanDebt: () => this.oldBorrowBy >= this.contractAmount
-          || 'You do not owe that much.',
+        notBiggerThanDebt: () => this.maxRepayAllowed >= Number(this.amount) || 'You do not owe that much.',
       },
     };
   },
@@ -150,7 +151,6 @@ export default {
       return Number(this.amount).toFixed(this.data.token.decimals).replace('.', '');
     },
     validForm() {
-      return true; // TODO FIX THIS
       return typeof this.rules.required() !== 'string'
         && typeof this.rules.decimals() !== 'string'
         && typeof this.rules.debtExists() !== 'string'
@@ -174,7 +174,7 @@ export default {
     repay() {
       this.waiting = true;
       this.$emit('wait');
-      this.data.market.payBorrow(this.amount, this.account)
+      this.data.market.payBorrow(this.amount)
         .then((res) => {
           this.waiting = false;
           this.$emit('succeed', {
@@ -199,10 +199,6 @@ export default {
     asDouble(value) {
       return (value / (10 ** this.data.token.decimals))
         .toFixed(this.data.token.decimals);
-    },
-    getMaxRepayAllowed(borrowBy, tokenBalance) {
-      const allowed = borrowBy > tokenBalance ? tokenBalance : borrowBy;
-      return this.asDouble(allowed);
     },
     getMaxBorrowAllowed(liquidity, cash) {
       const allowed = this.price > 0 ? Math.floor(liquidity / (this.price * 2)) : 0;
@@ -280,7 +276,7 @@ export default {
   created() {
     this.mantissa = Number(1e6);
     this.collateralFactor = Number(0.5e18);
-    
+
     // TODO: updateBorrowBy pending !!!!
     // gets liquidity
     this.$middleware.getAccountLiquidity(this.account)
@@ -293,7 +289,7 @@ export default {
       // gets borrowRate
       .then((cash) => {
         this.cash = cash;
-        console.log("Repay: thiscash",this.cash);
+        console.log("Repay: this.cash",this.cash);
         return this.data.market.borrowRate;
       })
       //gets marketPrice
@@ -311,6 +307,7 @@ export default {
       //sets account balance and health
       .then((tokenBalance) => {
         this.tokenBalance = tokenBalance;
+        this.supplyValue = tokenBalance;
         this.maxBorrowAllowed = this.getMaxBorrowAllowed(
           this.liquidity,
           this.cash
@@ -321,7 +318,6 @@ export default {
       })
       //sets health & gets collateralFactor
       .then((health) => {
-        if(health <= 0) console.log("Repay: this.health=", this.accountHealth, " health",health);
         this.accountHealth=health;
         console.log("Repay: this.health",this.accountHealth);
         return this.$middleware.getCollateralFactor();
@@ -329,8 +325,18 @@ export default {
       // sets
       .then((collateralFactor) => {
         this.collateralFactor = collateralFactor * this.mantissa;
-        this.maxRepayAllowed = this.getMaxRepayAllowed(this.borrowBy, this.tokenBalance);
-        this.maxBorrowAllowed = this.getMaxBorrowAllowed(this.liquidity, this.cash);
+        return this.data.market.borrowBalanceCurrentFormatted(this.account);
+      })
+      .then((maxRepayAllowed) => {
+        this.maxRepayAllowed = maxRepayAllowed;
+        this.borrowBy = maxRepayAllowed
+        const internalAddressOfToken = this.data.market.token?.internalAddress
+        return internalAddressOfToken ?
+          this.$middleware.getWalletAccountBalance(this.account, this.data.market.token?.internalAddress) :
+          this.$middleware.getWalletAccountBalanceForRBTC(this.account)
+      }).then((balanceOfToken) => {
+        console.log(`Wallet balance: ${balanceOfToken}`)
+        this.maxAmountBalanceAllowed = balanceOfToken
       });
 
     // this.data.market.updatedBorrowBy(this.account)

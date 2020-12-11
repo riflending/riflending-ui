@@ -32,7 +32,7 @@ export default class Market {
     //TODO
     //validate cRBTC
     if (cTokenSymbol != 'cRBTC') {
-      this.token.instace = this.factoryContract.getContractToken(tokenSymbol)
+      this.token.instance = this.factoryContract.getContractToken(tokenSymbol)
       this.token.internalAddress = Rlending.util.getAddress(tokenSymbol).toLowerCase();
     }
     //set data token
@@ -138,12 +138,12 @@ export default class Market {
     //validate crbtc
     if (!this.isCRBTC) {
       //check allowance
-      const allowance = await this.token.instace.allowance(account, this.instanceAddress);
+      const allowance = await this.token.instance.allowance(account, this.instanceAddress);
       //validate if enough
       const notEnough = allowance.lt(amount);
       if (notEnough) {
         //set signer token
-        let signer = this.token.instace.connect(this.factoryContract.signer);
+        let signer = this.token.instance.connect(this.factoryContract.signer);
         //approve
         await signer.approve(this.instanceAddress, ethers.constants.MaxUint256);
       }
@@ -176,7 +176,7 @@ export default class Market {
     //validate crbtc
     if (!this.isCRBTC) {
       //set signer token
-      signer = this.token.instace.connect(this.factoryContract.signer);
+      signer = this.token.instance.connect(this.factoryContract.signer);
     } else {
       //set signer cRBTC
       signer = this.instance.connect(this.factoryContract.signer);
@@ -210,7 +210,7 @@ export default class Market {
 
   async redeemUnderlying(amount) {
     //set signer token
-    let signer = this.token.instace.connect(this.factoryContract.signer);
+    let signer = this.token.instance.connect(this.factoryContract.signer);
     //send redeemUnderlying
     let tx = await signer.redeemUnderlying(amount);
     //wait for mined transaction
@@ -220,7 +220,7 @@ export default class Market {
   async redeem(amount) {
     //set signer token
     let signer = this.instance.connect(this.factoryContract.signer);
-    //send redeemUnderlying
+    //send redeem
     let tx = await signer.redeem(amount);
     //wait for mined transaction
     return tx.wait();
@@ -239,8 +239,6 @@ export default class Market {
   }
 
   /**
-   * TODO: clean this function
-   * TODO: update to contract factory
    * rePays off the specified amount from an existing debt in this market.
    * May fail if there is no debt to be paid or if the user doesn't have enough
    * tokens to pay the amount entered.
@@ -248,13 +246,21 @@ export default class Market {
    * @param {string=} from if specified executes the transaction using this account.
    * @return {Promise<TXResult>}
    */
-  payBorrow(amount, from = '') {
-    console.log("RepayBorrow(): this.token.symbol", this.token.symbol);
-    console.log("RepayBorrow(): amount", amount);
-    console.log("RepayBorrow(): amount", new BigNumber(amount));
-    let instanceRlending = new Rlending(window.ethereum);
-    // return instanceRlending.repayBorrow(this.token.symbol, new BigNumber(amount),null);
-    return instanceRlending.repayBorrow(this.token.symbol, amount, null);
+  async payBorrow(amount) {
+    let contractWithSigner;
+    let tx;
+    //validate crbtc
+    if (this.isCRBTC) {
+      //set signer token
+      contractWithSigner = this.instance.connect(this.factoryContract.signer);
+      tx = await contractWithSigner.repayBorrow({ value: ethers.utils.parseEther(amount + '')});
+    } else {
+      //set signer cRBTC
+      contractWithSigner = this.instance.connect(this.factoryContract.signer);
+      tx = await contractWithSigner.repayBorrow(amount);
+    }
+    //wait for mined transaction
+    return tx.wait();
   }
 
   /**
@@ -313,6 +319,11 @@ export default class Market {
     let balance = await this.instance.callStatic.borrowBalanceCurrent(account);
     console.log("market.js borrowBalanceCurrent()", Number(balance));
     return balance;
+  }
+
+  async borrowBalanceCurrentFormatted(account) {
+    let balance = await this.borrowBalanceCurrent(account);
+    return ethers.utils.formatEther(balance);
   }
 
   async supplyBalanceCurrent(account) {
