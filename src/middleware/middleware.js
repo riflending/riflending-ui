@@ -1,6 +1,7 @@
 import Market from './market';
 import Rlending from '@riflending/riflending-js';
 import BigNumber from 'bignumber.js';
+import { errorCodes } from "./constants";
 
 export default class Middleware {
 
@@ -99,4 +100,10 @@ export default class Middleware {
     return totalsReduced;
   }
 
+  getMsjErrorCodeComptroller(errorNumber, isErroInfo = false) {
+    errorNumber = new BigNumber(errorNumber).toNumber();
+    let retorno = errorCodes['comptroller'][(isErroInfo) ? 'info' : 'codes'][errorNumber];
+    return (!retorno) ? '' : retorno.description;
+
+  }
 }
