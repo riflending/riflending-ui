@@ -14,22 +14,16 @@ export default class Market {
     //TODO see if factoryContract go to middleware class
     this.factoryContract = new factoryContract();
     this.isCRBTC = (cTokenSymbol == 'cRBTC');
-    let config = {
-      1337: {
-        httpProvider: 'http://127.0.0.1:8545',
-        wsProvider: 'ws://127.0.0.1:8545',
-      }
-    };
+    //TODO see delete eventuan web, uses in vue
     this.eventualWeb3WS = {};
     this.eventualWeb3Http = {};
-    // market.eventualWeb3WS = getEventualChainId().then((chainId) => new Rlending._ethers.providers.WebsocketProvider(config[chainId].wsProvider)).catch(() => new Error('Something went wrong with the web3 instance over web sockets on Market'));
-    // market.eventualWeb3Http = new Rlending._ethers.providers.HttpProvider(config[32].httpProvider);
+    //set data cToken
     this.decimals = cTokenDecimals;
     this.instanceAddress = this.factoryContract.addressContract[cTokenSymbol];
     this.instance = this.factoryContract.getContractCtoken(cTokenSymbol);
+    this.symbol = cTokenSymbol;
 
     this.token = Object();
-    //TODO
     //validate cRBTC
     if (cTokenSymbol != 'cRBTC') {
       this.token.instance = this.factoryContract.getContractToken(tokenSymbol)
@@ -181,9 +175,9 @@ export default class Market {
     return tx.wait();
   }
 
-  getAmountDecimals(amount) {
+  getAmountDecimals(amount, isCtoken = false) {
     //add decimals token
-    amount = amount * Math.pow(10, (!this.isCRBTC) ? decimals[this.token.symbol] : decimals[constants.cRBTC]);
+    amount = amount * Math.pow(10, (!isCtoken) ? decimals[this.token.symbol] : decimals[this.symbol]);
     return ethers.BigNumber.from(amount.toString());
   }
 
@@ -205,7 +199,7 @@ export default class Market {
 
   async redeemUnderlying(amount) {
     //set signer token
-    let signer = this.token.instance.connect(this.factoryContract.signer);
+    let signer = this.instance.connect(this.factoryContract.signer);
     //send redeemUnderlying
     let tx = await signer.redeemUnderlying(amount);
     //wait for mined transaction
@@ -225,10 +219,10 @@ export default class Market {
     //add decimals token
     amount = this.getAmountDecimals(amount);
     //validate if max sets and is crbtc
-    if ((max) || (this.isCRBTC)) {
-      //amount cToken
-      return this.redeem(amount);
-    }
+    // if ((max) || (this.isCRBTC)) {
+    //   //amount cToken
+    //   return this.redeem(amount);
+    // }
     //amount token
     return this.redeemUnderlying(amount);
   }
@@ -248,7 +242,7 @@ export default class Market {
     if (this.isCRBTC) {
       //set signer token
       contractWithSigner = this.instance.connect(this.factoryContract.signer);
-      tx = await contractWithSigner.repayBorrow({ value: ethers.utils.parseEther(amount + '')});
+      tx = await contractWithSigner.repayBorrow({ value: ethers.utils.parseEther(amount + '') });
     } else {
       //set signer cRBTC
       contractWithSigner = this.instance.connect(this.factoryContract.signer);
@@ -282,31 +276,30 @@ export default class Market {
    * @dev to be used in withdraw modal
    * @param amount of ctoken to be redeemed for underlying
    * @param {address} account the address of the account
-   * @return 0 if allowed, numerical error otherwise
+   * @return {response, code} response: (bool) if allowed or not, code: numerical error otherwise
    */
   async withdrawAllowed(amount, account) {
     //set
     amount = this.getAmountDecimals(amount);
-    // console.log("amount redeem=>", amount.toNumber());
     //set contract Comptroller delegate (Unitroller)
     let contract = this.factoryContract.getContractByNameAndAbiName(constants.Unitroller, constants.Comptroller);
-    return contract.callStatic.redeemAllowed(this.instanceAddress, account, amount).then((response) => response == 0);
+    return contract.callStatic.redeemAllowed(this.instanceAddress, account, amount).then((response) => ({ "allowed": response == 0, "errorCode": response }));
   }
 
-/**
-   * borrowAllowed Calls Comptroller to check if borrow is
-   *   allowed for this user in this market with this amount
-   * @dev to be used in borrow modal
-   * @param amount of underlying to be borrowed
-   * @param {address} account the address of the account
-   * @return 0 if allowed, numerical error otherwise
-   */
-  async borrowAllowed(amount,account){
+  /**
+     * borrowAllowed Calls Comptroller to check if borrow is
+     *   allowed for this user in this market with this amount
+     * @dev to be used in borrow modal
+     * @param amount of underlying to be borrowed
+     * @param {address} account the address of the account
+     * @return 0 if allowed, numerical error otherwise
+     */
+  async borrowAllowed(amount, account) {
     amount = this.getAmountDecimals(amount);
     // console.log("market.js borrowAllowed");
     let contract = this.factoryContract.getContractByNameAndAbiName(constants.Unitroller, constants.Comptroller);
     // console.log("market.js borrowAllowed contract", contract);
-    let isAllowed = await contract.callStatic.borrowAllowed(this.instanceAddress,account,amount);
+    let isAllowed = await contract.callStatic.borrowAllowed(this.instanceAddress, account, amount);
     // console.log("market.js borrowAllowed allowed?", isAllowed);
     return isAllowed;
   }
