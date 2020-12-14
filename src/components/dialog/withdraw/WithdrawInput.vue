@@ -213,7 +213,9 @@ export default {
     },
   },
   methods: {
-    withdrawAllowed() {
+    async withdrawAllowed() {
+      //TODO get de ammount in cToken values
+      return "";
       return this.data.market
         .withdrawAllowed(this.amount, this.account)
         .then((allowed) => {
