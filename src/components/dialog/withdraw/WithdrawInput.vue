@@ -39,7 +39,13 @@
               <v-col cols="7" class="d-flex justify-center">
                 <v-tooltip top>
                   <template v-slot:activator="{ on, attrs }">
-                    <h1 v-bind="attrs" v-on="on">{{ cash | formatToken(data.token.decimals) | shortenDecimals }}</h1>
+                    <h1 v-bind="attrs" v-on="on">
+                      {{
+                        cash
+                          | formatToken(data.token.decimals)
+                          | shortenDecimals
+                      }}
+                    </h1>
                   </template>
                   <span>{{ cash | formatToken(data.token.decimals) }}</span>
                 </v-tooltip>
@@ -207,12 +213,29 @@ export default {
     },
   },
   methods: {
+    withdrawAllowed() {
+      return this.data.market
+        .withdrawAllowed(this.amount, this.account)
+        .then((allowed) => {
+          if (!allowed.allowed) {
+            return this.$middleware.getMsjErrorCodeComptroller(
+              allowed.errorCode._hex
+            );
+          }
+          return "";
+        });
+    },
     withdraw() {
       this.waiting = true;
       this.$emit("wait");
-      this.data.market
-        //TODO false is tru if max press(validate)
-        .withdraw(this.amount, false)
+      //validate withdrawAllowed
+      this.withdrawAllowed()
+        .then((allowed) => {
+          if (!allowed) {
+            return this.data.market.withdraw(this.amount, false);
+          }
+          throw allowed;
+        })
         .then((res) => {
           this.waiting = false;
           this.$emit("succeed", {
@@ -223,7 +246,12 @@ export default {
         })
         .catch((error) => {
           this.waiting = false;
-          this.$emit("error");
+          //validate user error message
+          let userError =
+            typeof error === "string" ? error : error.message || "";
+          this.$emit("error", {
+            userErrorMessage: userError,
+          });
         });
     },
     asDouble(value) {

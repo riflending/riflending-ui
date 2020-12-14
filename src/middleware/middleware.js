@@ -1,6 +1,7 @@
 import Market from './market';
 import Rlending from '@riflending/riflending-js';
 import BigNumber from 'bignumber.js';
+import { errorCodes } from "./constants";
 
 export default class Middleware {
 
@@ -23,14 +24,14 @@ export default class Middleware {
    *          account shortfall below collateral requirements)
    */
   getAccountLiquidity(account) {
-      return Rlending.eth
-          .read(
-              Rlending.util.getAddress(Rlending.Unitroller),
-              "function getAccountLiquidity(address) returns (uint,uint,uint)",
-              [account],
-              { provider: window.ethereum }
-          )
-          .then(([error, liquidity, shortfall]) => Number(liquidity));
+    return Rlending.eth
+      .read(
+        Rlending.util.getAddress(Rlending.Unitroller),
+        "function getAccountLiquidity(address) returns (uint,uint,uint)",
+        [account],
+        { provider: window.ethereum }
+      )
+      .then(([error, liquidity, shortfall]) => Number(liquidity));
   }
 
   getCollateralFactor(account) {
@@ -99,4 +100,9 @@ export default class Middleware {
     return totalsReduced;
   }
 
+  getMsjErrorCodeComptroller(errorNumber, isErroInfo = false) {
+    let retorno = errorCodes['comptroller'][(isErroInfo) ? 'info' : 'codes'][Number(errorNumber)];
+    return (!retorno) ? '' : retorno.description;
+
+  }
 }
