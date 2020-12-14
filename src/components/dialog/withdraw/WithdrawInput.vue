@@ -231,7 +231,6 @@ export default {
       //validate withdrawAllowed
       this.withdrawAllowed()
         .then((allowed) => {
-          console.log(allowed);
           if (!allowed) {
             return this.data.market.withdraw(this.amount, false);
           }
