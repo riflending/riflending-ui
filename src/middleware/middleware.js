@@ -24,14 +24,14 @@ export default class Middleware {
    *          account shortfall below collateral requirements)
    */
   getAccountLiquidity(account) {
-      return Rlending.eth
-          .read(
-              Rlending.util.getAddress(Rlending.Unitroller),
-              "function getAccountLiquidity(address) returns (uint,uint,uint)",
-              [account],
-              { provider: window.ethereum }
-          )
-          .then(([error, liquidity, shortfall]) => Number(liquidity));
+    return Rlending.eth
+      .read(
+        Rlending.util.getAddress(Rlending.Unitroller),
+        "function getAccountLiquidity(address) returns (uint,uint,uint)",
+        [account],
+        { provider: window.ethereum }
+      )
+      .then(([error, liquidity, shortfall]) => Number(liquidity));
   }
 
   getCollateralFactor(account) {
@@ -101,8 +101,7 @@ export default class Middleware {
   }
 
   getMsjErrorCodeComptroller(errorNumber, isErroInfo = false) {
-    errorNumber = new BigNumber(errorNumber).toNumber();
-    let retorno = errorCodes['comptroller'][(isErroInfo) ? 'info' : 'codes'][errorNumber];
+    let retorno = errorCodes['comptroller'][(isErroInfo) ? 'info' : 'codes'][Number(errorNumber)];
     return (!retorno) ? '' : retorno.description;
 
   }
