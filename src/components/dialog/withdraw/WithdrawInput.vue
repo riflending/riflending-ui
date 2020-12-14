@@ -247,7 +247,7 @@ export default {
         .catch((error) => {
           this.waiting = false;
           //validate user error message
-          let userError = typeof error === "string" ? error : null;
+          let userError = typeof error === "string" ? error : error.message;
           this.$emit("error", {
             userErrorMessage: userError,
           });
