@@ -118,7 +118,7 @@ export default {
       this.succeed = false;
       this.waiting = false;
       this.errorDialog = true;
-      this.userErrorMessage = (!errorObject.userErrorMessage) ? null : errorObject.userErrorMessage;
+      this.userErrorMessage = errorObject.userErrorMessage || '';
 
     },
     actionSucceed(succeedObject) {
