@@ -50,9 +50,9 @@
                 <h1>{{ maxBorrowAllowed | formatNumber(data.token.decimals) }}</h1>
               </v-col>
               <v-col cols="5" class="itemInfo">
-                <span class="text-center" v-if="borrowLimitInfo">
+                <!-- <span class="text-center" v-if="borrowLimitInfo">
                   (-{{ borrowLimitInfo | formatToken(data.token.decimals) }})
-                </span>
+                </span> -->
               </v-col>
             </v-row>
           </v-col>
@@ -189,12 +189,10 @@ export default {
   this.waiting = true;
       this.$emit("wait");
       this.data.market
-        .borrow(this.amount, this.account)
-        // .borrow(this.contractAmount)
-        // .borrow(this.contractAmount, this.account)
+      .borrow(this.amount)
         .then((res) => {
           this.waiting = false;
-          console.log("transaction sent: ",res);
+          // console.log("transaction sent: ",res);
           this.$emit("succeed", {
             hash: res.transactionHash,
             borrowLimitInfo: this.borrowLimitInfo,
@@ -232,8 +230,8 @@ export default {
                             // TODO: fix bug: sometimes returns more than 18 decimals!
       // source: https://medium.com/compound-finance/borrowing-assets-from-compound-quick-start-guide-f5e69af4b8f4
       const res = this.price > 0 ? (this.liquidity/1e18) / (this.price/1e18) : -1;
-      console.log("getMaxBorrowAllowed() maxBorrow ",res, "type ", typeof res);
-      console.log("getMaxBorrowAllowed() this.amount ",this.amount, " type ", typeof this.amount);
+      // console.log("getMaxBorrowAllowed() maxBorrow ",res, "type ", typeof res);
+      // console.log("getMaxBorrowAllowed() this.amount ",this.amount, " type ", typeof this.amount);
       return res;
     //////// Original code ///////////////
     // getMaxBorrowAllowed(liquidity, cash) {
