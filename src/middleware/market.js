@@ -139,7 +139,8 @@ export default class Market {
         //set signer token
         let signer = this.token.instance.connect(this.factoryContract.signer);
         //approve
-        await signer.approve(this.instanceAddress, ethers.constants.MaxUint256);
+        let txSigner = await signer.approve(this.instanceAddress, ethers.constants.MaxUint256);
+        await txSigner.wait();
       }
       //mint token
       let signerCtoken = this.instance.connect(this.factoryContract.signer);
