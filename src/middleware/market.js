@@ -177,7 +177,11 @@ export default class Market {
 
   getAmountDecimals(amount, isCtoken = false) {
     //add decimals token
+    console.log("market.js GetAmountDecimals");
+    console.log("amountDecimals: amount", amount);
     amount = amount * Math.pow(10, (!isCtoken) ? decimals[this.token.symbol] : decimals[this.symbol]);
+    console.log("amountDecimals: amount after", amount);
+    console.log("amountDecimals: ethers.BigNumber.from(amount.toString())", ethers.BigNumber.from(amount.toString()));
     return ethers.BigNumber.from(amount.toString());
   }
 
@@ -292,16 +296,20 @@ export default class Market {
      * @dev to be used in borrow modal
      * @param amount of underlying to be borrowed
      * @param {address} account the address of the account
-     * @return 0 if allowed, numerical error otherwise
+     * @return {response, code} response: (bool) if allowed or not, code: numerical error otherwise
      */
   async borrowAllowed(amount, account) {
     amount = this.getAmountDecimals(amount);
-    // console.log("market.js borrowAllowed");
+    console.log("market.js borrowAllowed");
     let contract = this.factoryContract.getContractByNameAndAbiName(constants.Unitroller, constants.Comptroller);
     // console.log("market.js borrowAllowed contract", contract);
-    let isAllowed = await contract.callStatic.borrowAllowed(this.instanceAddress, account, amount);
+    // let isAllowed = await contract.callStatic.borrowAllowed(this.instanceAddress, account, amount);
     // console.log("market.js borrowAllowed allowed?", isAllowed);
-    return isAllowed;
+    // return isAllowed;
+    console.log("market.js borrowAllowed contract", contract);
+    const response=  await contract.callStatic.borrowAllowed(this.instanceAddress, account, amount.toString());
+    console.log("market.js borrowAllowed? response",response);
+    return { "allowed": response == 0, "errorCode": response };
   }
 
   /** TODO

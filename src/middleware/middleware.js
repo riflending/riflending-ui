@@ -26,9 +26,12 @@ export default class Middleware {
    */
 
   async getAccountLiquidity(account) {
+    console.log("getAccountLiquidity ",account);
     const factoryContractInstance = new factoryContract();
     let contract = factoryContractInstance.getContractByNameAndAbiName(constants.Unitroller, constants.Comptroller);
-    const [ err, accountLiquidityInExcess, accountShortfall ] = await contract.getAccountLiquidity(account)
+    console.log("getAccountLiquidity contract",contract);
+    const [ err, accountLiquidityInExcess, accountShortfall ] = await contract.getAccountLiquidity(account);
+    console.log("getAccountLiquidity accountLiquidity",accountLiquidityInExcess);
     return {
       err,
       accountLiquidityInExcess,
