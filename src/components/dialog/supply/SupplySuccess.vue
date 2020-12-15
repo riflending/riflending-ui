@@ -9,8 +9,7 @@
           You have successfully supplied <br />
           this Market with
           <span class="greenish">
-            {{ data.supplyBalanceInfo | formatToken(data.token.decimals) }}
-            <!-- {{ data.supplyBalanceInfo }} -->
+            {{ data.supplyBalanceInfo }}
           </span>
           <span class="greenish">{{ data.token.symbol }}</span>
         </div>
@@ -25,7 +24,9 @@
         <v-col cols="4">
           <v-row class="ma-0 d-flex align-center">
             <v-col cols="7" class="d-flex justify-center">
-              <h1>{{ tokenBalance }}</h1>
+              <h1>
+                {{ cash | formatToken(data.token.decimals) | shortenDecimals }}
+              </h1>
             </v-col>
             <v-col cols="5" class="itemInfo">
               <span v-if="data.supplyBalanceInfo">
@@ -47,13 +48,11 @@
         <v-col cols="4">
           <v-row class="ma-0 d-flex align-center">
             <v-col cols="7" class="d-flex justify-center">
-              <h1>{{ supplyOf | formatToken(data.token.decimals) }}</h1>
+              <h1>{{ supplyOf | shortenDecimals }}</h1>
             </v-col>
             <v-col cols="5" class="itemInfo">
               <span v-if="data.supplyBalanceInfo">
-                (+{{
-                  data.supplyBalanceInfo | formatToken(data.token.decimals)
-                }})
+                (+{{ data.supplyBalanceInfo }})
               </span>
             </v-col>
           </v-row>
@@ -71,7 +70,7 @@
         <v-col cols="4">
           <v-row class="ma-0 d-flex align-center">
             <v-col cols="7" class="d-flex justify-center">
-              <h1>{{ maxBorrowAllowed | formatToken(data.token.decimals) }}</h1>
+              <h1>{{ maxBorrowAllowed | formatToken(data.token.decimals)| shortenDecimals}}</h1>
             </v-col>
             <v-col cols="5" class="itemInfo">
               <span v-if="data.borrowLimitInfo">
@@ -136,9 +135,11 @@ export default {
     TransactionHash,
   },
   created() {
-    this.data.market.tokenBalance
+    this.data.market
+      .getBalanceOfUnderlying(this.account)
       .then((balance) => {
         this.tokenBalance = balance;
+        this.supplyOf = balance;
         return this.$middleware.getAccountLiquidity(this.account);
       })
       .then(({ accountLiquidityInExcess }) => {
@@ -146,14 +147,13 @@ export default {
         return this.data.market.getCash();
       })
       .then((cash) => {
-        console.log("cashCash", cash);
         this.cash = cash;
         return this.data.market.price;
       })
       .then((price) => {
         this.price = price;
         this.maxBorrowAllowed = this.getMaxAllowed(this.liquidity, this.cash);
-        //TODO supply of
+        return this.data.market.tokenBalance;
       });
   },
 };

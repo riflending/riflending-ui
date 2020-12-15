@@ -1,7 +1,7 @@
 <template>
   <v-row class="mx-5 d-flex align-center justify-center">
     <v-col cols="2" class="d-flex justify-center">
-      <v-img class="ml-5" src="../../assets/rif.png" width="60"/>
+      <v-img class="ml-5" src="../../assets/rif.png" width="60" />
     </v-col>
     <v-col cols="3" class="item">
       <h1 class="ma-0">{{ data.token.symbol }}</h1>
@@ -11,23 +11,22 @@
         <h2>price:</h2>
       </v-row>
       <v-row class="item d-flex justify-start">
-        <span>{{ price | formatPrice }}</span><span class="ml-2 itemInfo">usd</span>
+        <span>{{ price | formatPrice }}</span
+        ><span class="ml-2 itemInfo">usd</span>
       </v-row>
     </v-col>
     <v-col cols="2">
       <v-row>
         <h2>apr:</h2>
       </v-row>
-      <v-row class="item d-flex justify-start">
-        {{ apr }}%
-      </v-row>
+      <v-row class="item d-flex justify-start"> {{ apr }}% </v-row>
     </v-col>
   </v-row>
 </template>
 
 <script>
 export default {
-  name: 'SuccessTop',
+  name: "SuccessTop",
   props: {
     data: {
       type: Object,
@@ -46,10 +45,10 @@ export default {
     },
   },
   created() {
-    this.$rbank.controller.eventualMarketPrice(this.data.market.address)
+    this.data.market.price
       .then((marketPrice) => {
         this.price = marketPrice;
-        return this.data.market.eventualBorrowRate;
+        return this.data.market.borrowRate;
       })
       .then((borrowRate) => {
         this.borrowRate = borrowRate;

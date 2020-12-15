@@ -9,7 +9,7 @@
             single-line
             solo
             flat
-            type="number"
+            type="text"
             v-model="amount"
             required
             :rules="[rules.required, rules.decimals, rules.minBalance]"
@@ -24,7 +24,9 @@
       <v-row class="ma-0 my-5 d-flex justify-center">
         <p class="buyMoreTokens">
           Would you like to
-          <a target="_blank" href="https://app.rskswap.com/">buy more tokens?</a>
+          <a target="_blank" href="https://app.rskswap.com/"
+            >buy more tokens?</a
+          >
         </p>
       </v-row>
       <div class="my-5 py-5">
@@ -50,7 +52,9 @@
           <v-col cols="4">
             <v-row class="ma-0 d-flex align-center">
               <v-col cols="7" class="d-flex justify-center">
-                <h1 :title="[`Balance ${tokenBalance} ${data.token.symbol}`]">{{ +tokenBalance | formatNumber() }}</h1>
+                <h1 :title="[`Balance ${tokenBalance} ${data.token.symbol}`]">
+                  {{ +tokenBalance | formatNumber() }}
+                </h1>
               </v-col>
               <v-col cols="5" class="itemInfo d-flex justify-center">
                 <span class="text-right" v-if="supplyBalanceInfo">
@@ -73,7 +77,11 @@
             <v-row class="ma-0 d-flex align-center">
               <v-col cols="7" class="d-flex justify-center">
                 <h1>
-                  {{ maxBorrowAllowed | formatToken(data.token.decimals) }}
+                  {{
+                    maxBorrowAllowed
+                      | formatToken(data.token.decimals)
+                      | shortenDecimals
+                  }}
                 </h1>
               </v-col>
               <v-col cols="5" class="itemInfo d-flex justify-center">
@@ -166,7 +174,6 @@ export default {
         .replace(".", "");
     },
     validForm() {
-      return true;
       return (
         typeof this.rules.minBalance() !== "string" &&
         typeof this.rules.required() !== "string" &&
@@ -200,11 +207,10 @@ export default {
           this.$emit("succeed", {
             hash: res.transactionHash,
             borrowLimitInfo: this.borrowLimitInfo,
-            supplyBalanceInfo: this.supplyBalanceInfo,
+            supplyBalanceInfo: Number(this.amount),
           });
         })
         .catch((error) => {
-          console.log("ERROR", error);
           this.waiting = false;
           this.$emit("error");
         });
@@ -220,13 +226,16 @@ export default {
       return allowed >= cash ? cash : allowed;
     },
     async getValues() {
-      console.log("getValues");
       let oldLiquidity;
       let oldCash;
       await this.$middleware
         .getAccountLiquidity(this.account)
         .then(({ accountLiquidityInExcess }) => {
           oldLiquidity = accountLiquidityInExcess;
+          return this.data.market.tokenBalance;
+        })
+        .then((balance) => {
+          this.supplyOf = balance + Number(this.contractAmount);
           return this.data.market.getCash();
         })
         .then((cash) => {
@@ -234,28 +243,8 @@ export default {
           this.cash = oldCash + Number(this.contractAmount);
           return this.data.market.borrowRate;
         });
-      const newSupplyValue =
-        supplyValue + Number(this.contractAmount) * this.price;
-      this.supplyBalanceInfo = Number(this.amount);
 
-      console.log("this.supplyBalanceInfo", this.supplyBalanceInfo);
-
-      // await this.data.market
-      //   .updatedSupplyOf(this.account)
-      //   .then((supplyOf) => {
-      //     this.supplyOf = supplyOf + Number(this.contractAmount);
-      //     return this.$rbank.controller.getAccountLiquidity(this.account);
-      //   })
-      //   .then((accountLiquidity) => {
-      //     oldLiquidity = accountLiquidity;
-      //     return this.data.market.eventualCash;
-      //   })
-      //   .then((cash) => {
-      //     oldCash = cash;
-      //     this.cash = oldCash + Number(this.contractAmount);
-      //     return this.$rbank.controller.getAccountValues(this.account);
-      //   })
-      //   //TODO all this !!
+      //TODO all this !!
       //   .then(({ supplyValue, borrowValue }) => {
       //     const newBorrowValue =
       //       (borrowValue * (this.collateralFactor + this.mantissa)) /
@@ -295,11 +284,6 @@ export default {
     Loader,
   },
   created() {
-    //TODO mantissa
-    this.mantissa = Number(1e6);
-    //TODO collateralFactor
-    this.collateralFactor = Number(0.5e18);
-
     this.$middleware
       .getAccountLiquidity(this.account)
       .then(({ accountLiquidityInExcess }) => {
@@ -320,60 +304,30 @@ export default {
       })
       .then((tokenBalance) => {
         this.tokenBalance = tokenBalance;
+        this.supplyOf = tokenBalance;
         this.maxBorrowAllowed = this.getMaxBorrowAllowed(
           this.liquidity,
           this.cash
         );
-
-        const internalAddressOfToken = this.data.market.token?.internalAddress
-        return internalAddressOfToken ?
-          this.$middleware.getWalletAccountBalance(this.account, this.data.market.token?.internalAddress) :
-          this.$middleware.getWalletAccountBalanceForRBTC(this.account)
-      }).then((balanceOfToken) => {
-        console.log(`Wallet balance: ${balanceOfToken}`)
-        this.maxAmountBalanceAllowed = balanceOfToken
+        const internalAddressOfToken = this.data.market.token?.internalAddress;
+        return internalAddressOfToken
+          ? this.$middleware.getWalletAccountBalance(
+              this.account,
+              this.data.market.token?.internalAddress
+            )
+          : this.$middleware.getWalletAccountBalanceForRBTC(this.account);
+      })
+      .then((balanceOfToken) => {
+        this.maxAmountBalanceAllowed = balanceOfToken;
+        return this.data.market.getCurrentExchangeRate();
+      })
+      .then((mantissa) => {
+        this.mantissa = mantissa;
+        return this.data.market.getCollateralFactorMantissa();
+      })
+      .then((collateralFactor) => {
+        this.collateralFactor = collateralFactor;
       });
-
-    // this.data.market
-    //   .updatedSupplyOf(this.account)
-    //   .then((supplyOf) => {
-    //     this.supplyOf = supplyOf;
-    //     return this.$rbank.controller.getAccountLiquidity(this.account);
-    //   })
-    //   .then((accountLiquidity) => {
-    //     this.liquidity = accountLiquidity;
-    //     return this.data.market.eventualCash;
-    //   })
-    //   .then((cash) => {
-    //     this.cash = cash;
-    //     return this.data.market.eventualBorrowRate;
-    //   })
-    //   .then((borrowRate) => {
-    //     this.borrowRate = borrowRate;
-    //     return this.$rbank.controller.eventualMarketPrice(
-    //       this.data.market.address
-    //     );
-    //   })
-    //   .then((marketPrice) => {
-    //     this.price = marketPrice;
-    //     return this.data.market.eventualToken;
-    //   })
-    //   .then((tok) => tok.eventualBalanceOf(this.account))
-    //   .then((tokenBalance) => {
-    //     this.tokenBalance = tokenBalance;
-    //     return this.$rbank.controller.eventualMantissa;
-    //   })
-    //   .then((mantissa) => {
-    //     this.mantissa = mantissa;
-    //     return this.$rbank.controller.eventualCollateralFactor;
-    //   })
-    //   .then((collateralFactor) => {
-    //     this.collateralFactor = collateralFactor * this.mantissa;
-    //     this.maxBorrowAllowed = this.getMaxBorrowAllowed(
-    //       this.liquidity,
-    //       this.cash
-    //     );
-    //   });
   },
 };
 </script>

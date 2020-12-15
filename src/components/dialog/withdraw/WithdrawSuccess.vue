@@ -8,7 +8,7 @@
         <div class="text-center">
           You have successfully withdrawn <br />
           <span class="greenish">
-            {{ data.supplyBalanceInfo | formatToken(data.token.decimals) }}
+            {{ data.supplyBalanceInfo | shortenDecimals }}
           </span>
           <span class="greenish">{{ data.token.symbol }}</span>
           from this Market
@@ -38,7 +38,7 @@
         </v-col>
         <v-col cols="3">
           <h1 class="text-center">
-            {{ supplyOf | formatToken(data.token.decimals) }}
+            {{ supplyOf | shortenDecimals }}
           </h1>
         </v-col>
         <v-col cols="2">
@@ -53,7 +53,11 @@
         </v-col>
         <v-col cols="3">
           <h1 class="text-center">
-            {{ maxBorrowAllowed | formatToken(data.token.decimals) }}
+            {{
+              maxBorrowAllowed
+                | formatToken(data.token.decimals)
+                | shortenDecimals
+            }}
           </h1>
         </v-col>
         <v-col cols="2">
@@ -126,6 +130,10 @@ export default {
       .then((price) => {
         this.price = price;
         this.maxBorrowAllowed = this.getMaxAllowed(this.liquidity, this.cash);
+        return this.data.market.getBalanceOfUnderlying(this.account);
+      })
+      .then((balance) => {
+        this.supplyOf = balance;
       });
   },
 };
