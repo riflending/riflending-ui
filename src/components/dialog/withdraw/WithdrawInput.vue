@@ -279,8 +279,8 @@ export default {
       let auxBorrowValue;
       this.$middleware
         .getAccountLiquidity(this.account)
-        .then((accountLiquidity) => {
-          oldLiquidity = accountLiquidity;
+        .then(({ accountLiquidityInExcess }) => {
+          oldLiquidity = accountLiquidityInExcess;
           return this.data.market.getCash();
         })
         .then((cash) => {
@@ -382,8 +382,8 @@ export default {
         return this.$middleware.getAccountLiquidity(this.account);
       })
       //sets liquidity
-      .then((accountLiquidity) => {
-        this.liquidity = accountLiquidity;
+      .then(({ accountLiquidityInExcess }) => {
+        this.liquidity = accountLiquidityInExcess;
         return this.data.market.getCurrentExchangeRate();
       })
       //sets mantissa

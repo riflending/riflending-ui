@@ -1,7 +1,8 @@
 import Market from './market';
 import Rlending from '@riflending/riflending-js';
 import BigNumber from 'bignumber.js';
-import { errorCodes } from "./constants";
+import factoryContract from "./factoryContract";
+import {constants, errorCodes} from "./constants";
 
 export default class Middleware {
 
@@ -23,15 +24,16 @@ export default class Middleware {
    *          account liquidity in excess of collateral requirements,
    *          account shortfall below collateral requirements)
    */
-  getAccountLiquidity(account) {
-    return Rlending.eth
-      .read(
-        Rlending.util.getAddress(Rlending.Unitroller),
-        "function getAccountLiquidity(address) returns (uint,uint,uint)",
-        [account],
-        { provider: window.ethereum }
-      )
-      .then(([error, liquidity, shortfall]) => Number(liquidity));
+
+  async getAccountLiquidity(account) {
+    const factoryContractInstance = new factoryContract();
+    let contract = factoryContractInstance.getContractByNameAndAbiName(constants.Unitroller, constants.Comptroller);
+    const [ err, accountLiquidityInExcess, accountShortfall ] = await contract.getAccountLiquidity(account)
+    return {
+      err,
+      accountLiquidityInExcess,
+      accountShortfall,
+    }
   }
 
   getCollateralFactor(account) {
@@ -69,8 +71,8 @@ export default class Middleware {
     const marketsPromises = markets.map(market => new Promise((resolve, reject) => {
       (async () => {
         try {
-          const borrowBalanceCurrent = await market.borrowBalanceCurrent(account);
-          const borrowBalanceCurrentBN = new BigNumber(borrowBalanceCurrent.toNumber());
+          const borrowBalanceCurrent = await market.borrowBalanceCurrentFormatted(account);
+          const borrowBalanceCurrentBN = new BigNumber(borrowBalanceCurrent);
 
           const marketPriceFromOracleBN = await market.price;
           const marketPriceBN = marketPriceFromOracleBN ? marketPriceFromOracleBN : new BigNumber(0);

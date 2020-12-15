@@ -105,7 +105,7 @@ export default class Market {
     //set contract Comptroller delegate (Unitroller)
     let contract = this.factoryContract.getContractByNameAndAbiName(constants.Unitroller, constants.Comptroller);
     //get is member (bool)
-    return await contract.checkMembership(account, this.instanceAddress);
+    return contract.checkMembership(account, this.instanceAddress);
   }
 
   async addMarkets() {
@@ -246,7 +246,7 @@ export default class Market {
     } else {
       //set signer cRBTC
       contractWithSigner = this.instance.connect(this.factoryContract.signer);
-      tx = await contractWithSigner.repayBorrow(amount);
+      tx = await contractWithSigner.repayBorrow(ethers.utils.parseEther(amount + ''));
     }
     //wait for mined transaction
     return tx.wait();
@@ -323,18 +323,12 @@ export default class Market {
    */
   async borrowBalanceCurrent(account) {
     let balance = await this.instance.callStatic.borrowBalanceCurrent(account);
-    console.log("market.js borrowBalanceCurrent()", Number(balance));
     return balance;
   }
 
   async borrowBalanceCurrentFormatted(account) {
     let balance = await this.borrowBalanceCurrent(account);
     return ethers.utils.formatEther(balance);
-  }
-
-  async supplyBalanceCurrent(account) {
-    let balance = await this.instance.callStatic.borrowBalanceCurrent(account);
-    return balance;
   }
 
   /**

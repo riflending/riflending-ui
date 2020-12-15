@@ -186,13 +186,20 @@ export default {
   },
   methods: {
     borrow() {
-  this.waiting = true;
+      this.waiting = true;
       this.$emit("wait");
-      this.data.market
-      .borrow(this.amount)
+      this.data.market.validateMarketAccount(this.account, this.data.market.token.symbol)
+        .then((ok) => {
+          //if not exist => enterMarket
+          if (!ok) {
+            return this.data.market.addMarkets();
+          }
+          return ok;
+        })
+        .then(() => this.data.market.borrow(this.amount))
         .then((res) => {
           this.waiting = false;
-          // console.log("transaction sent: ",res);
+          console.log("transaction sent: ",res);
           this.$emit("succeed", {
             hash: res.transactionHash,
             borrowLimitInfo: this.borrowLimitInfo,
@@ -247,9 +254,9 @@ export default {
           return this.$middleware.getAccountLiquidity(this.account);
           // return this.$rbank.controller.getAccountLiquidity(this.account);
         })
-        .then((accountLiquidity) => {
+        .then(({ accountLiquidityInExcess }) => {
           // console.log("getValues() liquidity:",accountLiquidity);
-          this.oldLiquidity = accountLiquidity; // user's liquid assets in the protocol
+          this.oldLiquidity = accountLiquidityInExcess; // user's liquid assets in the protocol
           return this.data.market.getCash(); // gets underlying balance stored in contract
           // return this.data.market.eventualCash;
         })
@@ -331,9 +338,9 @@ export default {
         return this.$middleware.getAccountLiquidity(this.account);
         // return this.$rbank.controller.getAccountLiquidity(this.account);
       })
-      .then((accountLiquidity) => {
-        this.oldLiquidity = accountLiquidity; //liquid assets in the protocol
-        this.liquidity = accountLiquidity; //liquid assets in the protocol
+      .then(({ accountLiquidityInExcess }) => {
+        this.oldLiquidity = accountLiquidityInExcess; //liquid assets in the protocol
+        this.liquidity = accountLiquidityInExcess; //liquid assets in the protocol
         // this.liquidity= this.data.market.tokenBalance;
         // console.log("borrowInput liquidity-------------------------------------------------------------",this.liquidity);
         return this.data.market.getCash();
