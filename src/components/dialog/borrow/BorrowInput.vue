@@ -41,6 +41,28 @@
         </v-row>
         <v-row class="d-flex align-center">
           <v-col cols="2"/>
+          <v-col cols="3" class="d-flex justify-end">
+            <h3>borrow balance:</h3>
+          </v-col>
+          <v-col cols="4">
+            <v-row class="ma-0 d-flex align-center">
+              <v-col cols="7" class="d-flex justify-center">
+                <h1>{{ borrowBy | formatToken(data.token.decimals) }}</h1>
+              </v-col>
+              <!-- <v-col cols="5" class="itemInfo">
+                <span class="text-center" v-if="borrowBalanceInfo">
+                  (+{{ borrowBalanceInfo | formatToken(data.token.decimals) }})
+                </span>
+              </v-col> -->
+            </v-row>
+          </v-col>
+          <v-col cols="1">
+            <span class="itemInfo">{{ data.token.symbol }}</span>
+          </v-col>
+          <v-col cols="2"/>
+        </v-row>
+        <v-row class="d-flex align-center">
+          <v-col cols="2"/>
           <v-col cols="3" class="d-flex align-end justify-end">
             <h3>borrow limit:</h3>
           </v-col>
@@ -53,28 +75,6 @@
                 <!-- <span class="text-center" v-if="borrowLimitInfo">
                   (-{{ borrowLimitInfo | formatToken(data.token.decimals) }})
                 </span> -->
-              </v-col>
-            </v-row>
-          </v-col>
-          <v-col cols="1">
-            <span class="itemInfo">{{ data.token.symbol }}</span>
-          </v-col>
-          <v-col cols="2"/>
-        </v-row>
-        <v-row class="d-flex align-center">
-          <v-col cols="2"/>
-          <v-col cols="3" class="d-flex justify-end">
-            <h3>borrow balance:</h3>
-          </v-col>
-          <v-col cols="4">
-            <v-row class="ma-0 d-flex align-center">
-              <v-col cols="7" class="d-flex justify-center">
-                <h1>{{ borrowBy | formatToken(data.token.decimals) }}</h1>
-              </v-col>
-              <v-col cols="5" class="itemInfo">
-                <span class="text-center" v-if="borrowBalanceInfo">
-                  (+{{ borrowBalanceInfo | formatToken(data.token.decimals) }})
-                </span>
               </v-col>
             </v-row>
           </v-col>
@@ -124,7 +124,7 @@ export default {
       cash: 0, //current underlying balance stored in contract. AKA "CONTRACT LIQUIDITY"
       oldCash: 0, // balance of ctoken expressed in underlying
       tokenBalance: 0,    // getBalanceOfUnderlying(this.account) balance of this account in underlying
-      isBorrowAllowed: false, // checks whether or not the Comptroller will allow the borrow
+      isBorrowAllowed: true, // checks whether or not the Comptroller will allow the borrow
       oldMaxBorrowAllowed: 0,
       maxBorrowAllowed: 0,  // BORROW LIMIT getMaxBorrowAllowed() calculates the maximun borrow allowance. User should never borrow close to this amount, otherwise runs risk of getting automatically liquidated
       borrowAllowance:0,
@@ -135,7 +135,8 @@ export default {
       rules: {
         required: () => !!Number(this.amount) || 'Required.',
         // TODO: fix bug: triggers when maxBorrowAllowed is inputed by MAX button
-        allowed: () => Number(this.maxBorrowAllowed) > Number(this.amount)/* || 'You shouldn\'t borrow over the max allowed!'*/,
+        // allowed: () => Number(this.maxBorrowAllowed) > Number(this.amount)/* || 'You shouldn\'t borrow over the max allowed!'*/,
+        allowed: () => this.isBorrowAllowed || 'You shouldn\'t borrow over the max allowed!',
         decimals: () => this.decimalPositions || `Maximum ${this.data.token
           .decimals} decimal places for ${this.data.token.symbol}.`,
         marketCash: () => this.oldCash >= Number(this
@@ -185,21 +186,48 @@ export default {
     },
   },
   methods: {
+    async borrowAllowed() {
+      //TODO get de ammount in cToken values
+      return "";
+      return this.data.market
+        .borrowAllowed(this.amount, this.account)
+        .then((allowed) => {
+          if (!allowed.allowed) {
+            this.isBorrowAllowed = false; // if not allowed, sets internal variable to false
+            return this.$middleware.getMsjErrorCodeComptroller(
+              allowed.errorCode._hex
+            );
+          }
+          return "";
+        });
+    },
     borrow() {
       this.waiting = true;
       this.$emit("wait");
+      // checks if enteredMarket
       this.data.market.validateMarketAccount(this.account, this.data.market.token.symbol)
         .then((ok) => {
           //if not exist => enterMarket
           if (!ok) {
+            console.log("BorrowInput: Need to enter market first");
             return this.data.market.addMarkets();
           }
           return ok;
         })
-        .then(() => this.data.market.borrow(this.amount))
+        // checks if borrowAllowed
+        .then(()=> this.borrowAllowed())
+        .then((allowed) => {
+          console.log("borrow() BorrowAllowed?",allowed);
+          if (!allowed) {
+            this.isBorrowAllowed = true; // probably get rid of this variable alltogether.
+            console.log("borrow() borrow was allowed. Sending tx...");
+            return this.data.market.borrow(this.amount);
+          }
+          throw allowed;
+        })
         .then((res) => {
           this.waiting = false;
-          console.log("transaction sent: ",res);
+          console.log("BorrowInput() transaction sent: ",res);
           this.$emit("succeed", {
             hash: res.transactionHash,
             borrowLimitInfo: this.borrowLimitInfo,
@@ -208,9 +236,19 @@ export default {
         })
         .catch((error) => {
           console.log("ERROR borrow()", error);
+          //validate user error message
+          let userError =
+            typeof error === "string" ? error : error.message || "";
+          this.$emit("error", {
+            userErrorMessage: userError,
+          });
           this.waiting = false;
-          this.$emit("error");
         });
+        // .catch((error) => {
+        //   console.log("ERROR borrow()", error);
+        //   this.waiting = false;
+        //   this.$emit("error");
+        // });
     },
     // borrow() {
     //   this.waiting = true;

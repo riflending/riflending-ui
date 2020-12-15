@@ -115,7 +115,7 @@ export default {
     this.data.market.tokenBalance
       .then((balance) => {
         this.tokenBalance = balance;
-        console.log("success! balance",this.tokenBalance);
+        console.log("success! balance",this.tokenBalance, " account: ", this.account);
         return this.$middleware.getAccountLiquidity(this.account);
         // return this.$rbank.controller.getAccountLiquidity(this.account);
       })
