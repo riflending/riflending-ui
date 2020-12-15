@@ -3,6 +3,7 @@ import BigNumber from 'bignumber.js';
 import factoryContract from './factoryContract'
 import { constants, decimals, abi } from "./constants";
 import { ethers } from "ethers";
+import Middleware from './middleware';
 
 
 /**
@@ -177,11 +178,11 @@ export default class Market {
 
   getAmountDecimals(amount, isCtoken = false) {
     //add decimals token
-    console.log("market.js GetAmountDecimals");
-    console.log("amountDecimals: amount", amount);
+    // console.log("market.js GetAmountDecimals");
+    // console.log("amountDecimals: amount", amount);
     amount = amount * Math.pow(10, (!isCtoken) ? decimals[this.token.symbol] : decimals[this.symbol]);
-    console.log("amountDecimals: amount after", amount);
-    console.log("amountDecimals: ethers.BigNumber.from(amount.toString())", ethers.BigNumber.from(amount.toString()));
+    // console.log("amountDecimals: amount after", amount);
+    // console.log("amountDecimals: ethers.BigNumber.from(amount.toString())", ethers.BigNumber.from(amount.toString()));
     return ethers.BigNumber.from(amount.toString());
   }
 
@@ -300,16 +301,46 @@ export default class Market {
      */
   async borrowAllowed(amount, account) {
     amount = this.getAmountDecimals(amount);
-    console.log("market.js borrowAllowed");
+    // console.log("market.js borrowAllowed");
     let contract = this.factoryContract.getContractByNameAndAbiName(constants.Unitroller, constants.Comptroller);
     // console.log("market.js borrowAllowed contract", contract);
     // let isAllowed = await contract.callStatic.borrowAllowed(this.instanceAddress, account, amount);
     // console.log("market.js borrowAllowed allowed?", isAllowed);
     // return isAllowed;
-    console.log("market.js borrowAllowed contract", contract);
+    // console.log("market.js borrowAllowed contract", contract);
     const response=  await contract.callStatic.borrowAllowed(this.instanceAddress, account, amount.toString());
     console.log("market.js borrowAllowed? response",response);
     return { "allowed": response == 0, "errorCode": response };
+  }
+
+  /**
+   * getMaxBorrowAllowed Calculates max borrow allowance for this account in this market
+   * @dev to be used in supply, borrow and repay modals
+   * @param {address} account the address of the account
+   * @return {Number} res the max borrowable amount
+   */
+  getMaxBorrowAllowed(account) { // TODO: double check, this might have a bug: under-calculating max
+    // source: https://medium.com/compound-finance/borrowing-assets-from-compound-quick-start-guide-f5e69af4b8f4
+    // res = max(res,0)
+    // console.log("market.js getMaxBorrowAllowed()");
+    let mid = new Middleware();
+    // console.log("market.js getMaxBorrowAllowed() mid",mid);
+    let price;
+    return this.price
+      .then((pri) => {
+        price = pri;
+        return mid.getAccountLiquidity(account)
+      })
+      .then(({err, accountLiquidityInExcess,accountShortfall}) => {
+        // console.log("market.js getMaxBorrowAllowed() accountLiquidityInExcess",accountLiquidityInExcess);
+        // console.log("market.js getMaxBorrowAllowed() accountLiquidityInExcess/1e18",accountLiquidityInExcess/1e18);
+        // console.log("market.js getMaxBorrowAllowed() price",price);
+        const res = price > 0 ? (accountLiquidityInExcess/1e18) / (price/1e18) : 0;
+        // console.log("market.js getMaxBorrowAllowed() res",res);
+        // console.log("getMaxBorrowAllowed() maxBorrow ",res, "type ", typeof res);
+        // console.log("getMaxBorrowAllowed() this.amount ",this.amount, " type ", typeof this.amount);
+        return res;
+      })
   }
 
   /** TODO
