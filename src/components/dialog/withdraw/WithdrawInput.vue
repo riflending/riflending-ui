@@ -52,7 +52,7 @@
                       }}
                     </h1>
                   </template>
-                  <span>{{ cash | formatToken(data.token.decimals) }}</span>
+                  <!-- <span>{{ cash | formatToken(data.token.decimals) }}</span> -->
                 </v-tooltip>
               </v-col>
               <v-col cols="5" />
@@ -76,9 +76,9 @@
                 </h1>
               </v-col>
               <v-col cols="5" class="itemInfo">
-                <span class="text-center" v-if="supplyBalanceInfo">
+                <!-- <span class="text-center" v-if="supplyBalanceInfo">
                   (-{{ supplyBalanceInfo }})
-                </span>
+                </span> -->
               </v-col>
             </v-row>
           </v-col>
@@ -104,9 +104,9 @@
                 </h1>
               </v-col>
               <v-col cols="5" class="itemInfo">
-                <span class="text-center" v-if="borrowLimitInfo">
+                <!-- <span class="text-center" v-if="borrowLimitInfo">
                   (-{{ borrowLimitInfo | formatToken(data.token.decimals) }})
-                </span>
+                </span> -->
               </v-col>
             </v-row>
           </v-col>
@@ -169,7 +169,8 @@ export default {
       borrowValue: 0,
       debt: 0,
       rules: {
-        required: () => !!Number(this.amount) || "Required.",
+        required: () =>
+          (!!Number(this.amount) && Math.sign(this.amount) == 1) || "Required.",
         decimals: () =>
           this.decimalPositions ||
           `Maximum ${this.data.token.decimals} decimal places for ${this.data.token.symbol}.`,

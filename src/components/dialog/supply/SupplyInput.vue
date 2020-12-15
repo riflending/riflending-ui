@@ -61,11 +61,11 @@
                   {{ +tokenBalance | formatNumber() }}
                 </h1>
               </v-col>
-              <v-col cols="5" class="itemInfo d-flex justify-center">
+              <!-- <v-col cols="5" class="itemInfo d-flex justify-center">
                 <span class="text-right" v-if="supplyBalanceInfo">
                   (+{{ supplyBalanceInfo | formatToken(data.token.decimals) }})
                 </span>
-              </v-col>
+              </v-col> -->
             </v-row>
           </v-col>
           <v-col cols="1">
@@ -90,9 +90,9 @@
                 </h1>
               </v-col>
               <v-col cols="5" class="itemInfo d-flex justify-center">
-                <span class="text-right" v-if="borrowLimitInfo">
+                <!-- <span class="text-right" v-if="borrowLimitInfo">
                   (+{{ borrowLimitInfo | formatToken(data.token.decimals) }})
-                </span>
+                </span> -->
               </v-col>
             </v-row>
           </v-col>
@@ -150,7 +150,7 @@ export default {
       collateralFactor: 0,
       mantissa: 0,
       rules: {
-        required: () => !!Number(this.amount) || "Required.",
+        required: () => (!!Number(this.amount) && Math.sign(this.amount) == 1) || "Required.",
         decimals: () =>
           this.decimalPositions ||
           `Maximum ${this.data.token.decimals} decimal places for ${this.data.token.symbol}.`,
