@@ -72,7 +72,7 @@
               </v-col>
               <v-col cols="5" class="itemInfo">
                 <span class="text-center" v-if="supplyBalanceInfo">
-                  (+{{ supplyBalanceInfo | shortenDecimals }})
+                  (-{{ supplyBalanceInfo }})
                 </span>
               </v-col>
             </v-row>
