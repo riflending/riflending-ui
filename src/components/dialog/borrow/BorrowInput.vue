@@ -324,6 +324,19 @@ export default {
           // this.borrowLimitInfo = Number(this //TODO enable this
           //   .getMaxBorrowAllowed(this.oldLiquidity, this.oldCash) - this.maxBorrowAllowed);
         });
+          // Toggle this block to test getValues update on borrowAllowed
+          ///////////////////////////
+          //  return this.borrowAllowed(); 
+        // })
+        // .then((allowed) => {
+        //   if (!allowed.allowed) {
+        //     this.isBorrowAllowed = false; // if not allowed, sets internal variable to false
+        //     return this.$middleware.getMsjErrorCodeComptroller(
+        //       allowed.errorCode._hex
+        //     );
+        //   }
+        //   this.isBorrowAllowed = true;
+        // }); ///////////////////////////
 
         // await this.data.market.updatedBorrowBy(this.account)
         // .then((borrowBy) => {
@@ -360,7 +373,7 @@ export default {
         this.maxAmount = true;}
     },
     maxAmount() {
-      if (this.maxAmount) this.amount = this.oldMaxBorrowAllowed;
+      if (this.maxAmount) this.amount = this.oldMaxBorrowAllowed.toFixed(18);
       if (!this.maxAmount && this.amount === this.oldMaxBorrowAllowed) this.amount = null;
     },
   },
