@@ -187,8 +187,6 @@ export default {
   },
   methods: {
     async borrowAllowed() {
-      //TODO get de ammount in cToken values
-      return "";
       return this.data.market
         .borrowAllowed(this.amount, this.account)
         .then((allowed) => {
