@@ -22,7 +22,12 @@
           />
         </v-col>
         <v-col cols="2">
-          <v-btn @click="maxAmount = true" class="mb-12" text color="#008CFF"
+          <v-btn
+            @click="maxAmount = true"
+            class="mb-12"
+            text
+            color="#008CFF"
+            :disabled="!maxBorrowAllowed"
             >max</v-btn
           >
         </v-col>
@@ -91,7 +96,11 @@
             <v-row class="ma-0 d-flex align-center">
               <v-col cols="7" class="d-flex justify-center">
                 <h1>
-                  {{ maxBorrowAllowed | formatToken(data.token.decimals)|shortenDecimals }}
+                  {{
+                    maxBorrowAllowed
+                      | formatToken(data.token.decimals)
+                      | shortenDecimals
+                  }}
                 </h1>
               </v-col>
               <v-col cols="5" class="itemInfo">

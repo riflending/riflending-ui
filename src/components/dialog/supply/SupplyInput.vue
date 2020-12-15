@@ -16,7 +16,12 @@
           />
         </v-col>
         <v-col cols="2">
-          <v-btn @click="maxAmount = true" class="mb-12" text color="#008CFF"
+          <v-btn
+            @click="maxAmount = true"
+            class="mb-12"
+            text
+            color="#008CFF"
+            :disabled="!maxBorrowAllowed"
             >max</v-btn
           >
         </v-col>
