@@ -8,7 +8,7 @@
         <div class="text-center">
           You have successfully withdrawn <br />
           <span class="greenish">
-            {{ data.supplyBalanceInfo | shortenDecimals }}
+            {{ data.supplyBalanceInfo }}
           </span>
           <span class="greenish">{{ data.token.symbol }}</span>
           from this Market
