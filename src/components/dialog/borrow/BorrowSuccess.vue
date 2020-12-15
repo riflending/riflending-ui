@@ -119,8 +119,8 @@ export default {
         return this.$middleware.getAccountLiquidity(this.account);
         // return this.$rbank.controller.getAccountLiquidity(this.account);
       })
-      .then((accountLiquidity) => {
-        this.liquidity = accountLiquidity;
+      .then(({ accountLiquidityInExcess }) => {
+        this.liquidity = accountLiquidityInExcess;
         return this.data.market.getCash();
         // return this.data.market.eventualCash;
       })

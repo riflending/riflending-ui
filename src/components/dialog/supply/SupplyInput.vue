@@ -225,8 +225,8 @@ export default {
       let oldCash;
       await this.$middleware
         .getAccountLiquidity(this.account)
-        .then((liquidity) => {
-          oldLiquidity = liquidity;
+        .then(({ accountLiquidityInExcess }) => {
+          oldLiquidity = accountLiquidityInExcess;
           return this.data.market.getCash();
         })
         .then((cash) => {
@@ -302,8 +302,8 @@ export default {
 
     this.$middleware
       .getAccountLiquidity(this.account)
-      .then((liquidity) => {
-        this.liquidity = Number(liquidity);
+      .then(({ accountLiquidityInExcess }) => {
+        this.liquidity = Number(accountLiquidityInExcess);
         return this.data.market.getCash();
       })
       .then((cash) => {

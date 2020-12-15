@@ -115,8 +115,8 @@ export default {
     //TODO this.earnings = accountEarnings;
     this.$middleware
       .getAccountLiquidity(this.account)
-      .then((liquidity) => {
-        this.liquidity = Number(liquidity);
+      .then(({ accountLiquidityInExcess }) => {
+        this.liquidity = Number(accountLiquidityInExcess);
         return this.data.market.getCash();
       })
       .then((cash) => {

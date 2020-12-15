@@ -116,9 +116,9 @@ export default {
         //return this.$rbank.controller.getAccountLiquidity(this.account);
       })
       // sets liquidity
-      .then((accountLiquidity) => {
-        console.log("repaySuccess: liquidity",accountLiquidity);
-        this.liquidity = Number(accountLiquidity);
+      .then(({ accountLiquidityInExcess }) => {
+        console.log("repaySuccess: liquidity",accountLiquidityInExcess);
+        this.liquidity = Number(accountLiquidityInExcess);
         console.log("repaySuccess: Number(liquidity)",this.liquidity);
         return this.data.market.getCash();
       })

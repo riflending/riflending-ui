@@ -40,9 +40,9 @@
                 <h1>{{ borrowBy | formatToken(data.token.decimals)  }}</h1>
               </v-col>
               <v-col cols="5" class="itemInfo">
-                <span class="text-center" v-if="borrowBalanceInfo">
-                  (-{{ borrowBalanceInfo | formatToken(data.token.decimals)  }})
-                </span>
+                <!--<span class="text-center" v-if="borrowBalanceInfo">-->
+                  <!--(-{{ borrowBalanceInfo | formatToken(data.token.decimals)  }})-->
+                <!--</span>-->
               </v-col>
             </v-row>
           </v-col>
@@ -62,9 +62,9 @@
                 <h1>{{ maxBorrowAllowed | formatToken(data.token.decimals) }}</h1>
               </v-col>
               <v-col cols="5" class="itemInfo">
-                <span class="text-center" v-if="borrowLimitInfo">
-                  (+{{ borrowLimitInfo | formatToken(data.token.decimals) }})
-                </span>
+                <!--<span class="text-center" v-if="borrowLimitInfo">-->
+                  <!--(+{{ borrowLimitInfo | formatToken(data.token.decimals) }})-->
+                <!--</span>-->
               </v-col>
             </v-row>
           </v-col>
@@ -204,19 +204,17 @@ export default {
       const allowed = this.price > 0 ? Math.floor(liquidity / (this.price * 2)) : 0;
       return allowed >= cash ? cash : allowed;
     },
-    async getValues() {
+    getValues() {
       console.log("RepayBorrow: getValues");
       let oldLiquidity;
       let oldCash;
-      await this.data.market.borrowBalanceCurrent(this.account)
-        .catch((error) => {
-          console.log("ERROR Repay()", error);
-          this.waiting = false;
-          this.$emit("error");
-        })
-      .then(() => {return this.$middleware.getAccountLiquidity(this.account)})
-      .then((liquidity) => {
-          oldLiquidity = liquidity;
+      this.data.market.borrowBalanceCurrent(this.account)
+      .then((borrowBy) => {
+        this.borrowBy = Number(borrowBy);
+      })
+      .then(() => this.$middleware.getAccountLiquidity(this.account))
+      .then(({ accountLiquidityInExcess }) => {
+          oldLiquidity = accountLiquidityInExcess;
           return this.data.market.getCash();
         })
         .then((cash) => {
@@ -224,8 +222,8 @@ export default {
           this.cash = oldCash + Number(this.contractAmount);
           return this.data.market.borrowRate;
         });
-      const newSupplyValue =
-        supplyValue + Number(this.contractAmount) * this.price;
+      // const newSupplyValue =
+      //   supplyValue + Number(this.contractAmount) * this.price;
       this.supplyBalanceInfo = Number(this.amount);
 
       console.log("RepayBorrow: this.supplyBalanceInfo", this.supplyBalanceInfo);
@@ -276,17 +274,12 @@ export default {
   created() {
     this.mantissa = Number(1e6);
     this.collateralFactor = Number(0.5e18);
-    this.data.market.borrowBalanceCurrent(this.account)
-    .then((balance) => {
-      this.oldBorrowBy = Number(balance);
-      this.borrowBy = Number(balance);
-    })
+
     // TODO: updateBorrowBy pending !!!!
     // gets liquidity
     this.$middleware.getAccountLiquidity(this.account)
-      // gets cash
-      .then((liquidity) => {
-        this.liquidity = Number(liquidity);
+      .then(({ accountLiquidityInExcess }) => {
+        this.liquidity = accountLiquidityInExcess;
         console.log("Repay: this.liquidity",this.liquidity);
         return this.data.market.getCash();
       })
@@ -329,11 +322,13 @@ export default {
       // sets
       .then((collateralFactor) => {
         this.collateralFactor = collateralFactor * this.mantissa;
-        return this.data.market.borrowBalanceCurrentFormatted(this.account);
+        return this.data.market.borrowBalanceCurrent(this.account);
       })
-      .then((maxRepayAllowed) => {
-        this.maxRepayAllowed = maxRepayAllowed;
-        this.borrowBy = maxRepayAllowed
+      .then((borrowBy) => {
+        this.maxRepayAllowed =  ethers.utils.formatEther(borrowBy);
+        this.borrowBy = Number(borrowBy);
+        this.oldBorrowBy = Number(borrowBy
+);
         const internalAddressOfToken = this.data.market.token?.internalAddress
         return internalAddressOfToken ?
           this.$middleware.getWalletAccountBalance(this.account, this.data.market.token?.internalAddress) :

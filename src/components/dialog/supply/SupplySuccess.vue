@@ -141,8 +141,8 @@ export default {
         this.tokenBalance = balance;
         return this.$middleware.getAccountLiquidity(this.account);
       })
-      .then((accountLiquidity) => {
-        this.liquidity = accountLiquidity;
+      .then(({ accountLiquidityInExcess }) => {
+        this.liquidity = accountLiquidityInExcess;
         return this.data.market.getCash();
       })
       .then((cash) => {
