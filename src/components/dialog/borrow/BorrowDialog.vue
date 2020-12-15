@@ -23,7 +23,7 @@
         </template>
       </template>
       <template v-if="errorDialog && !succeed">
-        <error-dialog @closeDialog="close"/>
+        <error-dialog @closeDialog="close" :data="errorObject"/>
       </template>
       <template v-if="succeed">
         <success-top :data="marketTokenObject"/>
@@ -60,6 +60,7 @@ export default {
       borrowBalanceInfo: null,
       hash: null,
       errorDialog: null,
+      userErrorMessage: null,
     };
   },
   computed: {
@@ -77,6 +78,13 @@ export default {
         hash: this.hash,
       };
     },
+    errorObject() {
+      return {
+        market: this.data.market,
+        token: this.data.token,
+        userErrorMessage:this.userErrorMessage
+      };
+    },
   },
   methods: {
     reset() {
@@ -87,11 +95,13 @@ export default {
       this.borrowBalanceInfo = null;
       this.hash = null;
       this.errorDialog = null;
+      this.userErrorMessage = null;
     },
-    actionError() {
+    actionError(errorObject) {
       this.succeed = false;
       this.waiting = false;
       this.errorDialog = true;
+      this.userErrorMessage = errorObject.userErrorMessage || '';
     },
     actionSucceed(succeedObject) {
       this.hash = succeedObject.hash;
