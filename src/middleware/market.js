@@ -109,7 +109,7 @@ export default class Market {
     return contract.checkMembership(account, this.instanceAddress);
   }
 
-  async addMarkets() {
+  async addMarket() {
     //set contract
     let contract = this.factoryContract.getContractByNameAndAbiName(constants.Unitroller, constants.Comptroller);
     //set signer
