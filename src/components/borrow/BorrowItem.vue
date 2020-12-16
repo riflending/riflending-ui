@@ -30,7 +30,7 @@
           <v-row class="ma-0">
             <v-col cols="9" class="pa-0 d-flex align-center">
               <v-list-item-subtitle class="item">
-                {{ borrowBalance | formatToken(token.decimals) }}
+                {{ (borrowBalance || 0) | formatToken(token.decimals) }}
               </v-list-item-subtitle>
             </v-col>
             <v-col cols="3" class="pa-0">
