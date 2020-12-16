@@ -208,7 +208,7 @@ export default {
           //if not exist => enterMarket
           if (!ok) {
             console.log("BorrowInput: Need to enter market first");
-            return this.data.market.addMarkets();
+            return this.data.market.addMarket();
           }
           return ok;
         })

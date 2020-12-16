@@ -59,7 +59,7 @@
           <v-col cols="4">
             <v-row class="ma-0 d-flex align-center">
               <v-col cols="7" class="d-flex justify-center">
-                <h1>{{ maxBorrowAllowed | formatToken(data.token.decimals) }}</h1>
+                <h1>{{ maxBorrowAllowed | formatToken(data.token.decimals)  | shortenDecimals }}</h1>
               </v-col>
               <v-col cols="5" class="itemInfo">
                 <!--<span class="text-center" v-if="borrowLimitInfo">-->
@@ -342,7 +342,10 @@ export default {
       }).then((balanceOfToken) => {
         console.log(`Wallet balance: ${balanceOfToken}`)
         this.maxAmountBalanceAllowed = balanceOfToken
-      });
+        return this.data.market.getMaxBorrowAllowed(this.account)
+      }).then((maxBorrowAllowed) => {
+        this.maxBorrowAllowed = maxBorrowAllowed
+      })
 
     // this.data.market.updatedBorrowBy(this.account)
     //   .then((borrowBy) => {

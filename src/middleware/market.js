@@ -109,7 +109,7 @@ export default class Market {
     return contract.checkMembership(account, this.instanceAddress);
   }
 
-  async addMarkets() {
+  async addMarket() {
     //set contract
     let contract = this.factoryContract.getContractByNameAndAbiName(constants.Unitroller, constants.Comptroller);
     //set signer
@@ -312,19 +312,12 @@ export default class Market {
    * @return {Number} res the max borrowable amount
    */
   async getMaxBorrowAllowed(account) {
-    let mid = new Middleware();
-    let price;
-    let rbtcPrice = await this.getValueMoc();
-    rbtcPrice = rbtcPrice / 1e18 ;
-    return this.price
-      .then((pri) => {
-        price = pri;
-        return mid.getAccountLiquidity(account)
-      })
-      .then(({err, accountLiquidityInExcess, accountShortfall}) => {
-        const res = price > 0 ? rbtcPrice * (accountLiquidityInExcess/1e18) / (price/1e18) : 0;
-        return res;
-      })
+    const middleware = new Middleware(); // maybe not necesary to load a whole Middleware here
+    const price = await this.price // current market price
+    let rbtcPrice = await this.getValueMoc(); // rbtc price
+    rbtcPrice = rbtcPrice / 1e18 ; // in usd
+    const { accountLiquidityInExcess } = await middleware.getAccountLiquidity(account)
+    return  price > 0 ? rbtcPrice * (accountLiquidityInExcess/1e18) / (price/1e18) : 0; // return max(0,borrowLimit)
   }
 
   /** TODO
