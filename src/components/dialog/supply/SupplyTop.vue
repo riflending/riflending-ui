@@ -31,16 +31,16 @@
         {{ tokenBalancePrice | formatPrice }}<span class="ml-2 itemInfo">usd</span>
       </v-row>
     </v-col>
-    <v-col cols="2">
+    <!-- <v-col cols="2">
       <v-row>
         <h2>earnings:</h2>
       </v-row>
       <v-row class="item greenish d-flex justify-start">
-        <!-- {{ earnings | formatToken(data.token.decimals) }} -->
+        <! -- {{ earnings | formatToken(data.token.decimals) }} - ->
         {{ earnings }}
         <span class="ml-2 itemInfo">{{ data.token.symbol }}</span>
       </v-row>
-    </v-col>
+    </v-col> -->
   </v-row>
 </template>
 

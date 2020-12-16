@@ -35,8 +35,7 @@
           <h3>supplied to contract:</h3>
         </v-col>
         <v-col cols="3">
-          <h1 class="text-center">{{ tokenBalance }}</h1>
-          <!-- <h1 class="text-center">{{ tokenBalance | formatToken(data.token.decimals) }}</h1> -->
+          <h1 class="text-center">{{ tokenBalance | formatNumber}}</h1>
         </v-col>
         <v-col cols="2">
           <span class="itemInfo">{{ data.token.symbol }}</span>
