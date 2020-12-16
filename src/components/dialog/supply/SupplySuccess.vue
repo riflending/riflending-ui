@@ -29,9 +29,9 @@
               </h1>
             </v-col>
             <v-col cols="5" class="itemInfo">
-              <span v-if="data.supplyBalanceInfo">
+              <!-- <span v-if="data.supplyBalanceInfo">
                 (-{{ data.supplyBalanceInfo }})
-              </span>
+              </span> -->
             </v-col>
           </v-row>
         </v-col>
@@ -51,9 +51,9 @@
               <h1>{{ supplyOf | shortenDecimals }}</h1>
             </v-col>
             <v-col cols="5" class="itemInfo">
-              <span v-if="data.supplyBalanceInfo">
+              <!-- <span v-if="data.supplyBalanceInfo">
                 (+{{ data.supplyBalanceInfo }})
-              </span>
+              </span> -->
             </v-col>
           </v-row>
         </v-col>
