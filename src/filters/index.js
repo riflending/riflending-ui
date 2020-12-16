@@ -1,5 +1,5 @@
 import Vue from 'vue';
-import Decimal from 'decimal.js';
+import { Decimal } from 'decimal.js-light';
 
 Vue.filter('formatPrice', (value) => {
   const val = (value / 1).toFixed(2)
@@ -8,22 +8,16 @@ Vue.filter('formatPrice', (value) => {
     .replace(/\B(?=(\d{3})+(?!\d))/g, ',')}`;
 });
 
-Vue.filter('formatToken', (value, decimals) => {
+function toSD(value, digits = 6) {
+  Decimal.set({ rounding: Decimal.ROUND_UP, toExpNeg: -18, toExpPos: 36 });
+  return new Decimal(Number(value).toFixed(digits)).toSignificantDigits(digits);
+}
+
+Vue.filter('formatToken', (value, decimals, digits = 6) => {
   const val = (value / (10 ** decimals)).toFixed(decimals);
-  const int = decimals > 0 ? val.substring(0, val.indexOf('.')) : val;
-  const decimalZeros = val.substring(val.indexOf('.') + 1, val.length);
-  const decimal = Number(decimalZeros) === 0 ? Number(decimalZeros)
-    .toString() : decimalZeros.replace(/\.?0+$/, '');
-  return decimals > 0 ? `${int
-    .replace(/\B(?=(\d{3})+(?!\d))/g, ',')}.${decimal}` : `${int
-    .replace(/\B(?=(\d{3})+(?!\d))/g, ',')}`;
+  return toSD(val, digits);
 });
 
-Vue.filter('shortenDecimals', (value) => {
-  const d = new Decimal(value)
-  return d.toSignificantDigits(6)
-});
-
-Vue.filter('formatNumber', (value, decimals = 6) => value.toFixed(decimals));
+Vue.filter('formatNumber', toSD);
 
 Vue.filter('formatPercentage', (value) => `${Number(value).toFixed(2)} %`);

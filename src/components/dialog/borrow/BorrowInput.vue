@@ -26,7 +26,7 @@
               <v-col cols="7" class="d-flex justify-center">
                 <v-tooltip top>
                   <template v-slot:activator="{ on, attrs }">
-                    <h1 v-bind="attrs" v-on="on">{{ cash | formatToken(data.token.decimals) | shortenDecimals }}</h1>
+                    <h1 v-bind="attrs" v-on="on">{{ cash | formatToken(data.token.decimals) }}</h1>
                   </template>
                   <span>{{ cash | formatToken(data.token.decimals) }}</span>
                 </v-tooltip>
@@ -47,7 +47,7 @@
           <v-col cols="4">
             <v-row class="ma-0 d-flex align-center">
               <v-col cols="7" class="d-flex justify-center">
-                <h1>{{ borrowBy | formatToken(data.token.decimals) | shortenDecimals}}</h1>
+                <h1>{{ borrowBy | formatToken(data.token.decimals)}}</h1>
               </v-col>
               <!-- <v-col cols="5" class="itemInfo">
                 <span class="text-center" v-if="borrowBalanceInfo">
@@ -69,7 +69,7 @@
           <v-col cols="4">
             <v-row class="ma-0 d-flex align-center">
               <v-col cols="7" class="d-flex justify-center">
-                <h1>{{ maxBorrowAllowed | formatToken(data.token.decimals) | shortenDecimals}}</h1>
+                <h1>{{ maxBorrowAllowed | formatToken(data.token.decimals)}}</h1>
               </v-col>
               <v-col cols="5" class="itemInfo">
                 <!-- <span class="text-center" v-if="borrowLimitInfo">

@@ -38,7 +38,7 @@
         </v-col>
         <v-col cols="3">
           <h1 class="text-center">
-            {{ supplyOf | shortenDecimals }}
+            {{ supplyOf | formatNumber }}
           </h1>
         </v-col>
         <v-col cols="2">
@@ -56,7 +56,6 @@
             {{
               maxBorrowAllowed
                 | formatToken(data.token.decimals)
-                | shortenDecimals
             }}
           </h1>
         </v-col>
