@@ -310,20 +310,13 @@ export default class Market {
    * @param {address} account the address of the account
    * @return {Number} res the max borrowable amount
    */
-  getMaxBorrowAllowed(account) { // TODO: double check, this might have a bug: under-calculating max
+  async getMaxBorrowAllowed(account) {
+    // TODO: double check, this might have a bug: under-calculating max
     // source: https://medium.com/compound-finance/borrowing-assets-from-compound-quick-start-guide-f5e69af4b8f4
-    // res = max(res,0)
-    let mid = new Middleware();
-    let price;
-    return this.price
-      .then((pri) => {
-        price = pri;
-        return mid.getAccountLiquidity(account)
-      })
-      .then(({err, accountLiquidityInExcess,accountShortfall}) => {
-        const res = price > 0 ? (accountLiquidityInExcess/1e18) / (price/1e18) : 0;
-        return res;
-      })
+    const middleware = new Middleware();
+    const price = await this.price
+    const { accountLiquidityInExcess } = await middleware.getAccountLiquidity(account)
+    return  price > 0 ? price * (accountLiquidityInExcess/1e18) / (price/1e18) : 0;
   }
 
   /** TODO
