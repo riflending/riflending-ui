@@ -342,7 +342,7 @@ export default {
         this.maxAmount = true;}
     },
     maxAmount() {
-      if (this.maxAmount) this.amount = this.oldMaxBorrowAllowed;
+      if (this.maxAmount) this.amount = Math.min(this.oldMaxBorrowAllowed,this.cash/1e18);
       if (!this.maxAmount && this.amount === this.oldMaxBorrowAllowed) this.amount = null;
     },
   },
