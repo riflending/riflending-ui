@@ -221,19 +221,22 @@ export default {
       })
       .then(() => this.$middleware.getAccountLiquidity(this.account))
       .then(({ accountLiquidityInExcess }) => {
-          oldLiquidity = accountLiquidityInExcess;
-          return this.data.market.getCash();
-        })
-        .then((cash) => {
-          oldCash = cash;
-          this.cash = oldCash + Number(this.contractAmount);
-          return this.data.market.borrowRate;
-        });
-      // const newSupplyValue =
-      //   supplyValue + Number(this.contractAmount) * this.price;
+        oldLiquidity = accountLiquidityInExcess;
+        return this.data.market.getCash();
+      })
+      .then((cash) => {
+        oldCash = cash;
+        this.cash = oldCash + Number(this.contractAmount);
+        return this.data.market.borrowRate;
+      });
+
       this.supplyBalanceInfo = Number(this.amount);
+      this.borrowBalanceInfo = Number(this.contractAmount);
 
       console.log("RepayBorrow: this.supplyBalanceInfo", this.supplyBalanceInfo);
+
+      // const newSupplyValue =
+      //   supplyValue + Number(this.contractAmount) * this.price;
       // let oldLiquidity;
       // let oldCash;
       // await this.data.market.updatedBorrowBy(this.account)
