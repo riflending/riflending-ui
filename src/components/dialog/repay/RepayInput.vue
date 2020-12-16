@@ -185,8 +185,13 @@ export default {
         })
         .catch((error) => {
           console.log("ERROR repayBorrow()", error);
+          //validate user error message
+          let userError =
+            typeof error === "string" ? error : error.message || "";
+          this.$emit("error", {
+            userErrorMessage: userError,
+          });
           this.waiting = false;
-          this.$emit('error');
         });
     },
 
@@ -210,7 +215,9 @@ export default {
       let oldCash;
       this.data.market.borrowBalanceCurrent(this.account)
       .then((borrowBy) => {
-        this.borrowBy = Number(borrowBy);
+        if(Number(borrowBy) - Number(this.contractAmount) > 0 ) {
+          this.borrowBy = Number(borrowBy) - Number(this.contractAmount);
+        }
       })
       .then(() => this.$middleware.getAccountLiquidity(this.account))
       .then(({ accountLiquidityInExcess }) => {
