@@ -97,11 +97,11 @@ export default {
     closeDialog() {
       this.$emit('closeDialog');
     },
-    getMaxBorrowAllowed() {
-      // source: https://medium.com/compound-finance/borrowing-assets-from-compound-quick-start-guide-f5e69af4b8f4
-      const res = this.price > 0 ? (this.liquidity/1e18) / (this.price/1e18) : -1;
-      return res;
-    },
+    // getMaxBorrowAllowed() {
+    //   // source: https://medium.com/compound-finance/borrowing-assets-from-compound-quick-start-guide-f5e69af4b8f4
+    //   const res = this.price > 0 ? (this.liquidity/1e18) / (this.price/1e18) : -1;
+    //   return res;
+    // },
     //////// Original code ///////////////
     // getMaxAllowed(liquidity, cash) {
     //   const allowed = this.price > 0 ? Math.floor(liquidity / (this.price * 2)) : 0;
@@ -140,7 +140,10 @@ export default {
       .then((borrowBy) => {
         this.borrowBy = Number(borrowBy);
         console.log("success! borrowby",this.borrowBy);
-        this.maxBorrowAllowed = this.getMaxBorrowAllowed();
+        return this.data.market.getMaxBorrowAllowed(this.account);
+      })
+      .then((maxBorrowAllowed) =>{
+        this.maxBorrowAllowed = maxBorrowAllowed;
       });
   },
 };

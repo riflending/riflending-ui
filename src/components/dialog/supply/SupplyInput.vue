@@ -225,11 +225,11 @@ export default {
         this.data.token.decimals
       );
     },
-    getMaxBorrowAllowed(liquidity, cash) {
-      const allowed =
-        this.price > 0 ? Math.floor(liquidity / (this.price * 2)) : 0;
-      return allowed >= cash ? cash : allowed;
-    },
+    // getMaxBorrowAllowed(liquidity, cash) {
+    //   const allowed =
+    //     this.price > 0 ? Math.floor(liquidity / (this.price * 2)) : 0;
+    //   return allowed >= cash ? cash : allowed;
+    // },
     async getValues() {
       let oldLiquidity;
       let oldCash;
@@ -310,10 +310,10 @@ export default {
       .then((tokenBalance) => {
         this.tokenBalance = tokenBalance;
         this.supplyOf = tokenBalance;
-        this.maxBorrowAllowed = this.getMaxBorrowAllowed(
-          this.liquidity,
-          this.cash
-        );
+        return this.data.market.getMaxBorrowAllowed(this.account);
+      })
+      .then((maxBorrowAllowed) =>{
+        this.maxBorrowAllowed = maxBorrowAllowed;
         const internalAddressOfToken = this.data.market.token?.internalAddress;
         return internalAddressOfToken
           ? this.$middleware.getWalletAccountBalance(
