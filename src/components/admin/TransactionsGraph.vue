@@ -1,5 +1,5 @@
 <template>
-  <div class="time-balance">
+  <div class="transaction-graph time-balance">
     <v-row class="ma-2 px-2 admin">
       <v-col cols="6">
         <v-row class="ma-1">

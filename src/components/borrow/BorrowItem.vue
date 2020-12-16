@@ -1,5 +1,5 @@
 <template>
-  <div class="dialog">
+  <div class="borrow-item dialog">
     <v-list-item>
       <v-row class="my-5 mx-0 d-flex align-center">
         <v-col cols="3">

@@ -1,5 +1,5 @@
 <template>
-  <v-row class="d-flex justify-center align-center">
+  <v-row class="transaction-hash d-flex justify-center align-center">
     <v-col cols="2"/>
     <v-col class="itemInfo">
       transaction hash: {{ hashCutOff }}
