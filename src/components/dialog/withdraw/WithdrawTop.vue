@@ -28,7 +28,7 @@
       </v-row>
       <v-row class="item d-flex justify-start"> {{ apr }}% </v-row>
     </v-col>
-    <v-col cols="2">
+    <!-- <v-col cols="2">
       <v-row>
         <h2>earnings:</h2>
       </v-row>
@@ -36,7 +36,7 @@
         {{ earnings | formatToken(tokenDecimals) }}
         <span class="ml-2 itemInfo">{{ data.token.symbol }}</span>
       </v-row>
-    </v-col>
+    </v-col> -->
   </v-row>
 </template>
 
