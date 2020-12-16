@@ -17,11 +17,11 @@ Vue.config.productionTip = false;
 // eslint-disable-next-line no-multi-assign
 Vue.prototype.$rbank = Vue.rbank = new Rbank(
   {
-    [process.env.VUE_APP_NETWORK_ID]: process.env.VUE_APP_WS_PROVIDER,
+    [process.env.VUE_APP_NETWORK_ID]: process.env.VUE_APP_HTTP_PROVIDER,
   },
 );
 // eslint-disable-next-line no-multi-assign
-Vue.prototype.$rlending = Vue.rlending = new Rlending(process.env.VUE_APP_WS_PROVIDER);
+Vue.prototype.$rlending = Vue.rlending = new Rlending(process.env.VUE_APP_HTTP_PROVIDER);
 // eslint-disable-next-line no-multi-assign
 Vue.prototype.$middleware = Vue.middleware = new Middleware();
 new Vue({

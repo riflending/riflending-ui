@@ -22,7 +22,7 @@
           <h3>borrow balance:</h3>
         </v-col>
         <v-col cols="3">
-          <h1 class="text-center">{{ borrowBy | formatToken(data.token.decimals) | shortenDecimals}}</h1>
+          <h1 class="text-center">{{ borrowBy | formatToken(data.token.decimals)}}</h1>
         </v-col>
         <v-col cols="2">
           <span class="itemInfo">{{ data.token.symbol }}</span>
@@ -49,7 +49,7 @@
           <h3>borrow limit:</h3>
         </v-col>
         <v-col cols="3">
-          <h1 class="text-center">{{ maxBorrowAllowed | formatToken(data.token.decimals) | shortenDecimals}}</h1>
+          <h1 class="text-center">{{ maxBorrowAllowed | formatToken(data.token.decimals)}}</h1>
         </v-col>
         <v-col cols="2">
           <span class="itemInfo">{{ data.token.symbol }}</span>

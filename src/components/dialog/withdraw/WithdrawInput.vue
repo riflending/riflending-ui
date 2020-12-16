@@ -48,7 +48,6 @@
                       {{
                         cash
                           | formatToken(data.token.decimals)
-                          | shortenDecimals
                       }}
                     </h1>
                   </template>
@@ -72,7 +71,7 @@
             <v-row class="ma-0 d-flex align-center">
               <v-col cols="7" class="d-flex justify-center">
                 <h1 :title="[`Balance ${tokenBalance} ${data.token.symbol}`]">
-                  {{ +tokenBalance | formatNumber() }}
+                  {{ tokenBalance | formatNumber }}
                 </h1>
               </v-col>
               <v-col cols="5" class="itemInfo">
@@ -99,7 +98,6 @@
                   {{
                     maxBorrowAllowed
                       | formatToken(data.token.decimals)
-                      | shortenDecimals
                   }}
                 </h1>
               </v-col>

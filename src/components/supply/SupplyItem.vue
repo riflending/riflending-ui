@@ -28,7 +28,7 @@
           <v-row class="ma-0">
             <v-col cols="9" class="pa-0 d-flex align-center">
               <v-list-item-subtitle class="item">
-                {{ tokenBalance }}
+                {{ tokenBalance | formatNumber }}
                 <!-- {{ tokenBalance | formatToken(token.decimals) }} -->
               </v-list-item-subtitle>
             </v-col>

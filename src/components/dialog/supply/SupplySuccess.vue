@@ -25,7 +25,7 @@
           <v-row class="ma-0 d-flex align-center">
             <v-col cols="7" class="d-flex justify-center">
               <h1>
-                {{ cash | formatToken(data.token.decimals) | shortenDecimals }}
+                {{ cash | formatToken(data.token.decimals) }}
               </h1>
             </v-col>
             <v-col cols="5" class="itemInfo">
@@ -48,7 +48,7 @@
         <v-col cols="4">
           <v-row class="ma-0 d-flex align-center">
             <v-col cols="7" class="d-flex justify-center">
-              <h1>{{ supplyOf | shortenDecimals }}</h1>
+              <h1>{{ supplyOf | formatNumber }}</h1>
             </v-col>
             <v-col cols="5" class="itemInfo">
               <!-- <span v-if="data.supplyBalanceInfo">
@@ -70,7 +70,7 @@
         <v-col cols="4">
           <v-row class="ma-0 d-flex align-center">
             <v-col cols="7" class="d-flex justify-center">
-              <h1>{{ maxBorrowAllowed | formatToken(data.token.decimals)| shortenDecimals}}</h1>
+              <h1>{{ maxBorrowAllowed | formatToken(data.token.decimals) }}</h1>
             </v-col>
             <v-col cols="5" class="itemInfo">
               <span v-if="data.borrowLimitInfo">
