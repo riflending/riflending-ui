@@ -1,5 +1,5 @@
 <template>
-  <div class="time-balance">
+  <div class="time-balance-graph time-balance">
     <v-row class="ma-0">
       <v-col cols="8" class="pa-0">
         <v-row class="ma-0">

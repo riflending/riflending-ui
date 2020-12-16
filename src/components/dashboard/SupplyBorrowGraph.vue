@@ -1,5 +1,5 @@
 <template>
-  <div class="supply-borrow-chart">
+  <div class="supply-borrow-graph">
     <div>
       <v-row class="ma-0">
         <h1>My Supply-Borrow Factor:</h1>

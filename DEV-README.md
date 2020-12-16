@@ -1,4 +1,4 @@
-# RBank demo ÐApp
+# rLending demo ÐApp
 This is the Developer's README on how to integrate [rLending library][1] to rLending UI
 
 ## Requirements

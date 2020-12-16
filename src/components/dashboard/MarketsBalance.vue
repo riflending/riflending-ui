@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="markets-balance">
     <div class="d-flex justify-center">
       <h1>Balance</h1>
     </div>

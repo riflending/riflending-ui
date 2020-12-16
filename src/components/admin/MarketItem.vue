@@ -1,5 +1,5 @@
 <template>
-  <div class="dialog">
+  <div class="market-item dialog">
     <v-list-item class="pa-0">
       <v-row class="my-5 mx-0 d-flex align-center">
         <v-col cols="2">
