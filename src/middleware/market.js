@@ -306,17 +306,18 @@ export default class Market {
 
   /**
    * getMaxBorrowAllowed Calculates max borrow allowance for this account in this market
+   * @notice this function will may only be used when entered market, otherwise liquidity will be 0
    * @dev to be used in supply, borrow and repay modals
    * @param {address} account the address of the account
    * @return {Number} res the max borrowable amount
    */
   async getMaxBorrowAllowed(account) {
-    // TODO: double check, this might have a bug: under-calculating max
-    // source: https://medium.com/compound-finance/borrowing-assets-from-compound-quick-start-guide-f5e69af4b8f4
-    const middleware = new Middleware();
-    const price = await this.price
+    const middleware = new Middleware(); // maybe not necesary to load a whole Middleware here
+    const price = await this.price // current market price
+    let rbtcPrice = await this.getValueMoc(); // rbtc price
+    rbtcPrice = rbtcPrice / 1e18 ; // in usd
     const { accountLiquidityInExcess } = await middleware.getAccountLiquidity(account)
-    return  price > 0 ? price * (accountLiquidityInExcess/1e18) / (price/1e18) : 0;
+    return  price > 0 ? rbtcPrice * (accountLiquidityInExcess/1e18) / (price/1e18) : 0; // return max(0,borrowLimit)
   }
 
   /** TODO

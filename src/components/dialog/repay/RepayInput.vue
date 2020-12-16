@@ -205,10 +205,6 @@ export default {
       return (value / (10 ** this.data.token.decimals))
         .toFixed(this.data.token.decimals);
     },
-    getMaxBorrowAllowed(liquidity, cash) {
-      const allowed = this.price > 0 ? Math.floor(liquidity / (this.price * 2)) : 0;
-      return allowed >= cash ? cash : allowed;
-    },
     getValues() {
       console.log("RepayBorrow: getValues");
       let oldLiquidity;
@@ -315,6 +311,12 @@ export default {
       .then((tokenBalance) => {
         this.tokenBalance = tokenBalance;
         this.supplyValue = tokenBalance;
+        return this.data.market.getMaxBorrowAllowed(this.account);
+      })
+      .then((maxBorrowAllowed) =>{
+        this.maxBorrowAllowed = maxBorrowAllowed;
+        console.log("Repay: this.tokenBalance", this.tokenBalance);
+        console.log("Repay: this.maxBorrowAllowed", this.maxBorrowAllowed);
         return this.getAccountHealth(this.account);
       })
       //sets health & gets collateralFactor

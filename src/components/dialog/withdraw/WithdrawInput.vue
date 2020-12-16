@@ -276,11 +276,6 @@ export default {
       // return this.asDouble(allowed);
       return allowed;
     },
-    getMaxBorrowAllowed(liquidity, cash) {
-      const allowed =
-        this.price > 0 ? Math.floor(liquidity / (this.price * 2)) : 0;
-      return allowed >= cash ? cash : allowed;
-    },
     async getValues() {
       this.supplyBalanceInfo = Number(this.amount);
       return;
@@ -408,16 +403,15 @@ export default {
         //sets debt
         this.debt =
           (this.borrowValue * (this.mantissa + this.collateralFactor)) /
-          this.mantissa /
-          this.price;
+          this.mantissa;
         this.maxWithdrawAllowed = this.getMaxWithdrawAllowed(
           this.supplyOf,
           this.cash
         );
-        this.maxBorrowAllowed = this.getMaxBorrowAllowed(
-          this.liquidity,
-          this.cash
-        );
+        return this.data.market.getMaxBorrowAllowed(this.account);
+        })
+      .then((maxBorrowAllowed) =>{
+        this.maxBorrowAllowed = maxBorrowAllowed;
       });
   },
 };
