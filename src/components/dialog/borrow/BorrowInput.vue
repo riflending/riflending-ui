@@ -235,7 +235,7 @@ export default {
           console.log("ERROR borrow()", error);
           //validate user error message
           let userError =
-            typeof error === "string" ? error : error.message || "";
+          typeof error === "string" ? error : error.message || "";
           this.$emit("error", {
             userErrorMessage: userError,
           });
