@@ -408,8 +408,7 @@ export default {
         //sets debt
         this.debt =
           (this.borrowValue * (this.mantissa + this.collateralFactor)) /
-          this.mantissa /
-          this.price;
+          this.mantissa;
         this.maxWithdrawAllowed = this.getMaxWithdrawAllowed(
           this.supplyOf,
           this.cash

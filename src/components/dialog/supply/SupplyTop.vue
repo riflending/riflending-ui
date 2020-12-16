@@ -85,13 +85,11 @@ export default {
      this.data.market.tokenBalance
       .then((balance) => {
         this.tokenBalance = balance;
-        console.log("tokenBalance", balance);
         return this.data.market.price;
       })
       //set price
       .then((price) => {
         this.price = price;
-        console.log("price", price);
         this.tokenBalancePrice =  new BigNumber(this.tokenBalance).multipliedBy(new BigNumber(this.price))
 
       });
