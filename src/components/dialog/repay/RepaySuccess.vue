@@ -33,7 +33,7 @@
           <h3>borrow balance:</h3>
         </v-col>
         <v-col cols="3">
-          <h1 class="text-center">{{ borrowBy | formatToken(data.token.decimals) }}</h1>
+          <h1 class="text-center">{{ borrowBy | formatToken(data.token.decimals) | shortenDecimals }}</h1>
         </v-col>
         <v-col cols="2">
           <span class="itemInfo">{{ data.token.symbol }}</span>
@@ -108,13 +108,7 @@ export default {
     TransactionHash,
   },
   created() {
-    this.data.market.eventualToken
-      .then((tok) => tok.eventualBalanceOf(this.account))
-      .then((tokenBalance) => {
-        this.tokenBalance = tokenBalance;
-        return this.$middleware.getAccountLiquidity(this.account);
-        //return this.$rbank.controller.getAccountLiquidity(this.account);
-      })
+    this.$middleware.getAccountLiquidity(this.account)
       // sets liquidity
       .then(({ accountLiquidityInExcess }) => {
         console.log("repaySuccess: liquidity",accountLiquidityInExcess);
@@ -137,7 +131,12 @@ export default {
       .then((price) => {
         this.price = price;
         console.log("repaySuccess: price",this.price);
-        return this.data.market.tokenBalance;
+        return this.data.market.borrowBalanceCurrent(this.account);
+      })
+      .then((borrowBy) => {
+        this.borrowBy = Number(borrowBy);
+        console.log("success! borrowby",this.borrowBy);
+        this.borrowBalanceInfo = Number(this.contractAmount);
       });
 
 // TODO: double-check that we're not missing anything in this refactor
