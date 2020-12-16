@@ -9,7 +9,7 @@
                         rules.notBiggerThanDebt, rules.hasEnoughTokens]"/>
         </v-col>
         <v-col cols="2">
-          <v-btn @click="maxAmount = true" class="mb-12" text color="#008CFF">max</v-btn>
+          <v-btn @click="maxAmount = true" class="mb-12" text color="#008CFF" :disabled="!maxRepayAllowed">max</v-btn>
         </v-col>
       </v-row>
       <div class="my-5 py-5">
@@ -37,7 +37,7 @@
           <v-col cols="4">
             <v-row class="ma-0 d-flex align-center">
               <v-col cols="7" class="d-flex justify-center">
-                <h1>{{ borrowBy | formatToken(data.token.decimals)  }}</h1>
+                <h1>{{ borrowBy | formatToken(data.token.decimals) | shortenDecimals }}</h1>
               </v-col>
               <v-col cols="5" class="itemInfo">
                 <!--<span class="text-center" v-if="borrowBalanceInfo">-->
@@ -185,8 +185,13 @@ export default {
         })
         .catch((error) => {
           console.log("ERROR repayBorrow()", error);
+          //validate user error message
+          let userError =
+            typeof error === "string" ? error : error.message || "";
+          this.$emit("error", {
+            userErrorMessage: userError,
+          });
           this.waiting = false;
-          this.$emit('error');
         });
     },
 
@@ -210,23 +215,28 @@ export default {
       let oldCash;
       this.data.market.borrowBalanceCurrent(this.account)
       .then((borrowBy) => {
-        this.borrowBy = Number(borrowBy);
+        if(Number(borrowBy) - Number(this.contractAmount) > 0 ) {
+          this.borrowBy = Number(borrowBy) - Number(this.contractAmount);
+        }
       })
       .then(() => this.$middleware.getAccountLiquidity(this.account))
       .then(({ accountLiquidityInExcess }) => {
-          oldLiquidity = accountLiquidityInExcess;
-          return this.data.market.getCash();
-        })
-        .then((cash) => {
-          oldCash = cash;
-          this.cash = oldCash + Number(this.contractAmount);
-          return this.data.market.borrowRate;
-        });
-      // const newSupplyValue =
-      //   supplyValue + Number(this.contractAmount) * this.price;
+        oldLiquidity = accountLiquidityInExcess;
+        return this.data.market.getCash();
+      })
+      .then((cash) => {
+        oldCash = cash;
+        this.cash = oldCash + Number(this.contractAmount);
+        return this.data.market.borrowRate;
+      });
+
       this.supplyBalanceInfo = Number(this.amount);
+      this.borrowBalanceInfo = Number(this.contractAmount);
 
       console.log("RepayBorrow: this.supplyBalanceInfo", this.supplyBalanceInfo);
+
+      // const newSupplyValue =
+      //   supplyValue + Number(this.contractAmount) * this.price;
       // let oldLiquidity;
       // let oldCash;
       // await this.data.market.updatedBorrowBy(this.account)
@@ -328,7 +338,7 @@ export default {
         this.maxRepayAllowed =  ethers.utils.formatEther(borrowBy);
         this.borrowBy = Number(borrowBy);
         this.oldBorrowBy = Number(borrowBy
-);
+      );
         const internalAddressOfToken = this.data.market.token?.internalAddress
         return internalAddressOfToken ?
           this.$middleware.getWalletAccountBalance(this.account, this.data.market.token?.internalAddress) :

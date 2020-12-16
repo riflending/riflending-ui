@@ -9,7 +9,7 @@
                         rules.marketCash, rules.liquidity,rules.allowed]"/>
         </v-col>
         <v-col cols="2">
-          <v-btn @click="maxAmount = true" class="mb-12" text color="#008CFF">max</v-btn>
+          <v-btn @click="maxAmount = true" class="mb-12" text color="#008CFF" :disabled="!oldMaxBorrowAllowed">max</v-btn>
         </v-col>
       </v-row>
       <v-row class="ma-0 my-5 d-flex justify-center">
@@ -235,7 +235,7 @@ export default {
           console.log("ERROR borrow()", error);
           //validate user error message
           let userError =
-            typeof error === "string" ? error : error.message || "";
+          typeof error === "string" ? error : error.message || "";
           this.$emit("error", {
             userErrorMessage: userError,
           });
@@ -289,9 +289,9 @@ export default {
           this.liquidity = newBorrowValue < newSupplyValue ? newSupplyValue - newBorrowValue : 0;
           return this.data.market.getMaxBorrowAllowed(this.account);
         })
-        .then((maxbor) =>{
-          this.maxBorrowAllowed = maxbor;
-          this.borrowAllowance = maxbor;
+        .then((maxBorrowAllowed) =>{
+          this.maxBorrowAllowed = maxBorrowAllowed;
+          this.borrowAllowance = maxBorrowAllowed;
           this.borrowBalanceInfo = Number(this.contractAmount);
         });
           // Toggle this block to test getValues update on borrowAllowed
@@ -388,12 +388,12 @@ export default {
         this.mantissa = mantissa;
         return this.data.market.getMaxBorrowAllowed(this.account);
         })
-        .then((maxbor) =>{
-          this.maxBorrowAllowed = maxbor;
-          this.oldMaxBorrowAllowed = this.asDouble(maxbor);
-          this.borrowAllowance = maxbor;
-          this.borrowBalanceInfo = Number(this.contractAmount);
-          console.log("borrowInput this.borrowBalanceInfo:",this.borrowBalanceInfo);
+      .then((maxBorrowAllowed) =>{
+        this.maxBorrowAllowed = maxBorrowAllowed;
+        this.oldMaxBorrowAllowed = this.asDouble(maxBorrowAllowed);
+        this.borrowAllowance = maxBorrowAllowed;
+        this.borrowBalanceInfo = Number(this.contractAmount);
+        console.log("borrowInput this.borrowBalanceInfo:",this.borrowBalanceInfo);
       });
 
     //       this.data.market
