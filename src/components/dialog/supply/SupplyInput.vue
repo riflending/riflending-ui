@@ -225,11 +225,6 @@ export default {
         this.data.token.decimals
       );
     },
-    // getMaxBorrowAllowed(liquidity, cash) {
-    //   const allowed =
-    //     this.price > 0 ? Math.floor(liquidity / (this.price * 2)) : 0;
-    //   return allowed >= cash ? cash : allowed;
-    // },
     async getValues() {
       let oldLiquidity;
       let oldCash;
