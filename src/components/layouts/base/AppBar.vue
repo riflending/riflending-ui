@@ -1,17 +1,20 @@
 <template>
-  <v-app-bar class="appBar ma-5" color="transparent" flat>
+  <v-app-bar class="app-bar ma-5" color="transparent" flat>
     <h1 class="mx-5">rLending</h1>
     <h2>{{ title }}</h2>
     <v-spacer/>
     <div v-if="isLogged">
-      <template v-if="!isOwner">
-        <router-link class="mx-5" :to="{ name: 'MyActivity' }">
-          Home
+      <router-link class="mx-5" :to="{ name: 'MyActivity' }">
+        Home
+      </router-link>
+      <router-link class="mx-5" :to="{ name: 'SupplyBorrow' }">
+        Supply/Borrow
+      </router-link>
+      <!-- <template v-if="isOwner"> -->
+        <router-link class="mx-5" :to="{ name: 'Admin' }">
+          Admin
         </router-link>
-        <router-link class="mx-5" :to="{ name: 'SupplyBorrow' }">
-          Supply/Borrow
-        </router-link>
-      </template>
+      <!-- </template> -->
       <v-btn class="mx-5" rounded outlined color="#008CFF">
         {{ accountCutOff }}
       </v-btn>
@@ -39,7 +42,7 @@ export default {
     title() {
       if (this.$route.path === '/supplyBorrow') return 'Supply / Borrow';
       if (this.$route.path === '/myActivity') return 'My Activity';
-      if (this.$route.path === '/admin') return 'My Activity';//disabled admin
+      if (this.$route.path === '/admin') return 'Admin Dashboard';
       return '';
     },
     accountCutOff() {
@@ -63,7 +66,7 @@ export default {
   },
   watch: {
     isOwner(val) {
-      if (val) this.$router.push({ name: 'MyActivity' });//disabled admin
+      if (val) this.$router.push({ name: 'Admin' });
     },
     isLogged() {
       this.$router.push({ name: 'MyActivity' });

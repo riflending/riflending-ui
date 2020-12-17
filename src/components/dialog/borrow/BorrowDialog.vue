@@ -1,6 +1,6 @@
 <template>
   <v-dialog v-model="flag" width="700" :persistent="waiting || succeed">
-    <v-card class="dialog container" v-click-outside="onClickOutside">
+    <v-card class="borrow-dialog dialog container" v-click-outside="onClickOutside">
       <template v-if="!succeed && !errorDialog">
         <borrow-top :data="marketTokenObject"/>
         <template v-if="!waiting">

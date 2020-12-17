@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import Rbank from '@rsksmart/rbank';
 import Rlending from '@riflending/riflending-js';
-import { Middleware } from "./middleware/index.js";
+import { Middleware } from './middleware/index';
 import App from './App.vue';
 import './registerServiceWorker';
 import router from './router';
@@ -17,7 +17,10 @@ Vue.config.productionTip = false;
 // eslint-disable-next-line no-multi-assign
 Vue.prototype.$rbank = Vue.rbank = new Rbank(
   {
-    [process.env.VUE_APP_NETWORK_ID]: process.env.VUE_APP_HTTP_PROVIDER,
+    [process.env.VUE_APP_NETWORK_ID]: {
+      httpProvider: process.env.VUE_APP_HTTP_PROVIDER,
+      wsProvider: process.env.VUE_APP_WSS_PROVIDER,
+    },
   },
 );
 // eslint-disable-next-line no-multi-assign

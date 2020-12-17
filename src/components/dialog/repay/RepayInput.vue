@@ -286,25 +286,21 @@ export default {
     this.$middleware.getAccountLiquidity(this.account)
       .then(({ accountLiquidityInExcess }) => {
         this.liquidity = accountLiquidityInExcess;
-        console.log("Repay: this.liquidity",this.liquidity);
         return this.data.market.getCash();
       })
       // gets borrowRate
       .then((cash) => {
         this.cash = cash;
-        console.log("Repay: this.cash",this.cash);
         return this.data.market.borrowRate;
       })
       //gets marketPrice
       .then((borrowRate) => {
         this.borrowRate = borrowRate;
-        console.log("Repay: this.borrowRate",this.borrowRate);
         return this.data.market.price;
       })
       //gets token balance
       .then((price) => {
         this.price = price;
-        console.log("Repay: this.price",this.price);
         return this.data.market.tokenBalance;
       })
       //sets account balance and health
@@ -315,14 +311,11 @@ export default {
       })
       .then((maxBorrowAllowed) =>{
         this.maxBorrowAllowed = maxBorrowAllowed;
-        console.log("Repay: this.tokenBalance", this.tokenBalance);
-        console.log("Repay: this.maxBorrowAllowed", this.maxBorrowAllowed);
         return this.getAccountHealth(this.account);
       })
       //sets health & gets collateralFactor
       .then((health) => {
         this.accountHealth=health;
-        console.log("Repay: this.health",this.accountHealth);
         return this.$middleware.getCollateralFactor();
       })
       // sets
@@ -340,7 +333,6 @@ export default {
           this.$middleware.getWalletAccountBalance(this.account, this.data.market.token?.internalAddress) :
           this.$middleware.getWalletAccountBalanceForRBTC(this.account)
       }).then((balanceOfToken) => {
-        console.log(`Wallet balance: ${balanceOfToken}`)
         this.maxAmountBalanceAllowed = balanceOfToken
         return this.data.market.getMaxBorrowAllowed(this.account)
       }).then((maxBorrowAllowed) => {

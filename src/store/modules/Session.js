@@ -3,6 +3,8 @@ import * as constants from '@/store/constants';
 import store from '@/store';
 
 if (window.ethereum) {
+  // disable autoRefreshOnNetworkChange warning
+  window.ethereum.autoRefreshOnNetworkChange = false;
   window.ethereum.on('accountsChanged', () => {
     store.dispatch(constants.SESSION_CONNECT_WEB3);
   });
