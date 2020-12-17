@@ -1,5 +1,5 @@
-# RBank demo ÐApp
-This is a demo on how to integrate [RBank library][1] into a Vue.js project.
+# rLending demo ÐApp
+This is a demo on how to integrate [rLending library][1] into a Vue.js project.
 
 | ![Admin](./src/assets/readme/admin.jpeg) | ![My Activity](./src/assets/readme/my_activity.jpeg) |
 | --- | --- |

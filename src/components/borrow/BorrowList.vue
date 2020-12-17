@@ -1,5 +1,5 @@
 <template>
-  <v-card width="50%" flat>
+  <v-card class="borrow-list" width="50%" flat>
     <v-list>
       <v-list-item>
         <v-row>
@@ -13,7 +13,7 @@
             <v-list-item-subtitle class="listTitle">APR</v-list-item-subtitle>
           </v-col>
           <v-col cols="4">
-            <v-list-item-subtitle class="listTitle">Current Cash</v-list-item-subtitle>
+            <v-list-item-subtitle class="listTitle">Borrow Balance</v-list-item-subtitle>
           </v-col>
         </v-row>
       </v-list-item>
@@ -25,6 +25,7 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
 import BorrowItem from '@/components/borrow/BorrowItem.vue';
 
 export default {
@@ -42,16 +43,29 @@ export default {
       this.$emit('reload');
     },
   },
+  computed: {
+  ...mapState({
+      account: (state) => state.Session.account,
+    }),
+  },
   components: {
     BorrowItem,
   },
   created() {
-    this.$rbank.eventualMarkets
-      .then((mkts) => {
-        this.markets = mkts;
-        this.markets.forEach((market) => market.eventualEvents
-          .then((events) => events.liquidateBorrow().on('data', this.reloadItems)));
-      });
+    //get all markets
+    this.markets = this.$middleware.getMarkets(this.account);
+
+    this.markets.forEach((market) =>
+      market.eventualEvents.then((events) =>
+        events.liquidateBorrow().on("data", this.reloadItems)
+      )
+    );
+    // this.$rbank.eventualMarkets
+    //   .then((mkts) => {
+    //     this.markets = mkts;
+    //     this.markets.forEach((market) => market.eventualEvents
+    //       .then((events) => events.liquidateBorrow().on('data', this.reloadItems)));
+    //   });
   },
 };
 </script>

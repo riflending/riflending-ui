@@ -1,5 +1,5 @@
 <template>
-  <div class="dialog">
+  <div class="borrow-item dialog">
     <v-list-item>
       <v-row class="my-5 mx-0 d-flex align-center">
         <v-col cols="3">
@@ -30,7 +30,7 @@
           <v-row class="ma-0">
             <v-col cols="9" class="pa-0 d-flex align-center">
               <v-list-item-subtitle class="item">
-                {{ cash | formatToken(token.decimals) }}
+                {{ (borrowBalance || 0) | formatToken(token.decimals) }}
               </v-list-item-subtitle>
             </v-col>
             <v-col cols="3" class="pa-0">
@@ -54,6 +54,7 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
 import BorrowDialog from '@/components/dialog/borrow/BorrowDialog.vue';
 
 export default {
@@ -78,6 +79,9 @@ export default {
     };
   },
   computed: {
+    ...mapState({
+      account: (state) => state.Session.account,
+    }),
     apr() {
       return this.borrowRate.toFixed(2);
     },
@@ -94,19 +98,38 @@ export default {
   methods: {
     reset() {
       this.dialog = false;
-      this.$rbank.controller.eventualMarketPrice(this.market.address)
-        .then((marketPrice) => {
-          this.price = marketPrice;
-          return this.market.eventualBorrowRate;
+      this.market.borrowBalanceCurrent(this.account)
+        .then((balance) => {
+          this.borrowBalance = balance;
+          return this.market.price;
         })
-        .then((borrowRate) => {
-          this.borrowRate = borrowRate;
-          return this.market.eventualCash;
+        //set price
+        .then((price) => {
+          this.price = price;
+          return this.market.borrowRate;
         })
+        //set borrow rate block
+        .then((borrowRatePerBlock) => {
+          this.borrowRate = borrowRatePerBlock;
+          // console.log("borrItem: rate",borrowRate);
+          return this.market.getCash();
+        })
+        //set cash
         .then((cash) => {
           this.cash = cash;
+          // this.cash = cash;
         });
       this.$emit('dialogClosed');
+      // this.dialog = false;
+      // this.$rbank.controller.eventualMarketPrice(this.market.address)
+      //   .then((marketPrice) => {
+      //     this.price = marketPrice;
+      //     return this.market.eventualBorrowRate;
+      //   })
+      //   .then((borrowRate) => {
+      //     this.borrowRate = borrowRate;
+      //     return this.market.eventualCash;
+      //   })
     },
   },
   components: {
@@ -116,33 +139,57 @@ export default {
     this.$parent.$parent.$parent.$on('reload', this.reset);
   },
   created() {
-    this.market.eventualEvents
-      .then((events) => {
-        events.allEvents()
-          .on('data', this.reset);
-      });
-    this.market.eventualToken
-      .then((tok) => [
-        tok.eventualName,
-        tok.eventualSymbol,
-        tok.eventualDecimals,
-      ])
-      .then((results) => Promise.all(results))
-      .then(([name, symbol, decimals]) => {
-        this.token.name = name;
-        this.token.symbol = symbol;
-        this.token.decimals = decimals;
-        return this.$rbank.controller.eventualMarketPrice(this.market.address);
+    //set data token this.data.market.borrowBalanceCurrent(this.account)
+    this.token = this.market.token;
+    this.market.borrowBalanceCurrent(this.account)
+      .then((balance) => {
+        this.borrowBalance = Number(balance);
+        console.log("borrItem: balance",this.borrowBalance);
+        return this.market.price;
       })
-      .then((marketPrice) => {
-        this.price = marketPrice;
-        return this.market.eventualBorrowRate;
+    //set price
+      .then((price) => {
+        this.price = price;
+        console.log("borrItem: price",this.price);
+        return this.market.borrowRate;
       })
-      .then((borrowRate) => {
-        this.borrowRate = borrowRate;
-        return this.market.eventualCash;
+
+    //set borrow rate block
+      .then((borrowRatePerBlock) => {
+        this.borrowRate = borrowRatePerBlock;
+        console.log("borrItem: borrRate",this.borrowRate);
+        return this.market.getCash();
       })
+/********/
+
+    // this.market.eventualEvents
+    //   .then((events) => {
+    //     events.allEvents()
+    //       .on('data', this.reset);
+    //   });
+    // this.market.eventualToken
+    //   .then((tok) => [
+    //     tok.eventualName,
+    //     tok.eventualSymbol,
+    //     tok.eventualDecimals,
+    //   ])
+    //   .then((results) => Promise.all(results))
+    //   .then(([name, symbol, decimals]) => {
+    //     this.token.name = name;
+    //     this.token.symbol = symbol;
+    //     this.token.decimals = decimals;
+    //     return this.$rbank.controller.eventualMarketPrice(this.market.address);
+    //   })
+    //   .then((marketPrice) => {
+    //     this.price = marketPrice;
+    //     return this.market.eventualBorrowRate;
+    //   })
+    //   .then((borrowRate) => {
+    //     this.borrowRate = borrowRate;
+    //     return this.market.eventualCash;
+    //   })
       .then((cash) => {
+        // this.cash = cash;
         this.cash = cash;
       });
   },

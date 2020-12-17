@@ -1,4 +1,4 @@
-# RBank demo ÐApp
+# rLending demo ÐApp
 This is the Developer's README on how to integrate [rLending library][1] to rLending UI
 
 ## Requirements
@@ -16,6 +16,7 @@ yarn install --check-files
 Then you need to update the node_module FROM WITHIN THE UI FOLDER
 ```bash
 yarn add ../rlending-js/
+yarn add decimal.js
 ```
 
 Then you check the dependencies are updated

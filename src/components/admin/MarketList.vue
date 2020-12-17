@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="market-list">
     <v-list>
       <v-list-item>
         <v-row>

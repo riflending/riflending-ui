@@ -6,7 +6,7 @@
           <v-row class="d-flex align-center">
             <v-col cols="6" class="pa-0 d-flex justify-end">
               <v-list-item-avatar tile size="40">
-                <v-img src="../../assets/rif.png"/>
+                <v-img src="../../assets/rif.png" />
               </v-list-item-avatar>
             </v-col>
             <v-col cols="6" class="pa-0 d-flex justify-start">
@@ -22,23 +22,31 @@
           </v-list-item-subtitle>
         </v-col>
         <v-col cols="2">
-          <v-list-item-subtitle class="item">
-            {{ apr }}%
-          </v-list-item-subtitle>
+          <v-list-item-subtitle class="item"> {{ apr }}% </v-list-item-subtitle>
         </v-col>
         <v-col cols="4" class="px-0">
           <v-row class="ma-0">
             <v-col cols="9" class="pa-0 d-flex align-center">
               <v-list-item-subtitle class="item">
-                {{ tokenBalance | formatToken(token.decimals) }}
+                {{ tokenBalance | formatNumber }}
+                <!-- {{ tokenBalance | formatToken(token.decimals) }} -->
               </v-list-item-subtitle>
             </v-col>
             <v-col cols="3" class="pa-0">
               <v-btn class="pa-0" @click="dialog = !dialog" icon>
-                <svg width="11" height="32" viewBox="0 0 11 32" fill="none"
-                     xmlns="http://www.w3.org/2000/svg">
-                  <path d="M1 1L9 16L1 31" stroke="#008CFF" stroke-width="2"
-                        stroke-linecap="round"/>
+                <svg
+                  width="11"
+                  height="32"
+                  viewBox="0 0 11 32"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M1 1L9 16L1 31"
+                    stroke="#008CFF"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                  />
                 </svg>
               </v-btn>
             </v-col>
@@ -46,19 +54,19 @@
         </v-col>
       </v-row>
     </v-list-item>
-    <v-divider/>
+    <v-divider />
     <template v-if="dialog">
-      <supply-dialog :data="dataObject" @closed="reset"/>
+      <supply-dialog :data="dataObject" @closed="reset" />
     </template>
   </div>
 </template>
 
 <script>
-import { mapState } from 'vuex';
-import SupplyDialog from '@/components/dialog/supply/SupplyDialog.vue';
+import { mapState } from "vuex";
+import SupplyDialog from "@/components/dialog/supply/SupplyDialog.vue";
 
 export default {
-  name: 'SupplyItem',
+  name: "SupplyItem",
   props: {
     market: {
       type: Object,
@@ -76,7 +84,7 @@ export default {
       borrowRate: 0,
       dialog: false,
       tokenBalance: 0,
-      currentComponent: 'SupplyList',
+      currentComponent: "SupplyList",
       supplyValue: 0,
     };
   },
@@ -100,60 +108,107 @@ export default {
   methods: {
     reset() {
       this.dialog = false;
-      this.$rbank.controller.eventualMarketPrice(this.market.address)
-        .then((marketPrice) => {
-          this.price = marketPrice;
-          return this.market.eventualBorrowRate;
+      this.market.tokenBalance
+        .then((balance) => {
+          this.tokenBalance = balance;
+          return this.market.price;
         })
-        .then((borrowRate) => {
-          this.borrowRate = borrowRate;
-          return this.market.eventualToken;
+        //set price
+        .then((price) => {
+          this.price = price;
+          return this.market.borrowRate;
         })
-        .then((tok) => tok.eventualBalanceOf(this.account))
-        .then((tokenBalance) => {
-          this.tokenBalance = tokenBalance;
+        //set borrow rate block
+        .then((borrowRatePerBlock) => {
+          this.borrowRate = borrowRatePerBlock;
         });
-      this.$emit('dialogClosed');
+
+      // this.$rbank.controller
+      //   .eventualMarketPrice(this.market.address)
+      //   .then((marketPrice) => {
+      //     this.price = marketPrice;
+      //     return this.market.eventualBorrowRate;
+      //   })
+      //   .then((borrowRate) => {
+      //     this.borrowRate = borrowRate;
+      //     return this.market.eventualToken;
+      //   })
+      //   .then((tok) => tok.eventualBalanceOf(this.account))
+      //   .then((tokenBalance) => {
+      //     this.tokenBalance = tokenBalance;
+      //   });
+      this.$emit("dialogClosed");
     },
   },
   components: {
     SupplyDialog,
   },
   mounted() {
-    this.$parent.$parent.$parent.$on('reload', this.reset);
+    this.$parent.$parent.$parent.$on("reload", this.reset);
   },
   created() {
-    this.market.eventualEvents
-      .then((events) => {
-        events.allEvents()
-          .on('data', this.reset);
-      });
-    this.market.eventualToken
-      .then((tok) => [
-        tok.eventualName,
-        tok.eventualSymbol,
-        tok.eventualDecimals,
-        tok.eventualBalanceOf(this.account),
-      ])
-      .then((results) => Promise.all(results))
-      .then(([name, symbol, decimals, balance]) => {
-        this.token.name = name;
-        this.token.symbol = symbol;
-        this.token.decimals = decimals;
+    //set data token
+    this.token = this.market.token;
+    this.market.tokenBalance
+      .then((balance) => {
         this.tokenBalance = balance;
-        return this.$rbank.controller.eventualMarketPrice(this.market.address);
+        return this.market.price;
       })
-      .then((marketPrice) => {
-        this.price = marketPrice;
-        return this.market.eventualBorrowRate;
+      //set price
+      .then((price) => {
+        this.price = price;
+        return this.market.borrowRate;
       })
-      .then((borrowRate) => {
-        this.borrowRate = borrowRate;
-        return this.market.updatedSupplyOf(this.account);
-      })
-      .then((supplyOf) => {
-        this.supplyOf = supplyOf;
+      //set borrow rate block
+      .then((borrowRatePerBlock) => {
+        this.borrowRate = borrowRatePerBlock;
       });
+    //set supply of TODO
+    this.supplyOf = this.market.supplyOf;
+
+    this.market.eventualEvents.then((events) => {
+      events.allEvents().on("data", this.reset);
+    });
+
+    // let bla = this.market.token.balance.then(async (balance) => {
+    //   console.log("BALANCE", balance);
+    // });
+
+    // this.market.instance
+    //   .then((results) => Promise.all(results))
+    //   .then(() => {
+    //     return this.market.balance;
+    //   })
+    //   .then((balan) => {
+    //     console.log(balan);
+    //   });
+    // this.market.eventualToken
+    //   .then((tok) => [
+    //     tok.eventualName,
+    //     tok.eventualSymbol,
+    //     tok.eventualDecimals,
+    //     tok.eventualBalanceOf(this.account),
+    //   ])
+    //   .then((results) => Promise.all(results))
+    //   .then(async ([name, symbol, decimals, balance]) => {
+    //     console.log("name", name);
+    //     // this.token.name = name;
+    //     // this.token.symbol = symbol;
+    //     // this.token.decimals = decimals;
+    //     // this.tokenBalance = balance;
+    //     return this.$rbank.controller.eventualMarketPrice(this.market.address);
+    //   })
+    //   .then((marketPrice) => {
+    //     // this.price = marketPrice;
+    //     return this.market.eventualBorrowRate;
+    //   })
+    //   .then((borrowRate) => {
+    //     this.borrowRate = borrowRate;
+    //     return this.market.updatedSupplyOf(this.account);
+    //   })
+    //   .then((supplyOf) => {
+    //     this.supplyOf = supplyOf;
+    //   });
   },
 };
 </script>

@@ -1,5 +1,5 @@
 <template>
-  <v-card class="ma-5" max-width="344" outlined>
+  <v-card class="market-balance-item ma-5" max-width="344" outlined>
     <v-list-item three-line>
       <v-list-item-content>
         <v-list-item-title class="headline mb-1">
