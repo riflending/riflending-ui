@@ -28,15 +28,6 @@
       </v-row>
       <v-row class="item d-flex justify-start"> {{ apr }}% </v-row>
     </v-col>
-    <!-- <v-col cols="2">
-      <v-row>
-        <h2>earnings:</h2>
-      </v-row>
-      <v-row class="item greenish d-flex justify-start">
-        {{ earnings | formatToken(tokenDecimals) }}
-        <span class="ml-2 itemInfo">{{ data.token.symbol }}</span>
-      </v-row>
-    </v-col> -->
   </v-row>
 </template>
 
@@ -51,7 +42,6 @@ export default {
   },
   data() {
     return {
-      earnings: 0,
       price: 0,
       borrowRate: 0,
       tokenAddress: 0,
@@ -67,7 +57,6 @@ export default {
     },
   },
   created() {
-    //TODO this.earnings = accountEarnings;
     this.data.market.price
       .then((price) => {
         this.price = price;

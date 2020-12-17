@@ -90,7 +90,6 @@ export default {
       .then((borrowRate) => {
         this.borrowRate = borrowRate;
       });
-    //TODO this earnings
     //this.apr = 1;
 
 
