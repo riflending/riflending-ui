@@ -1,6 +1,6 @@
 <template>
   <v-dialog v-model="flag" width="650" :persistent="waiting || succeed">
-    <v-card class="container" v-click-outside="onClickOutside">
+    <v-card class="market-create-dialog container" v-click-outside="onClickOutside">
       <div v-show="!waiting && !errorDialog" class="marketDialog">
         <market-create-top :success="succeed"/>
         <component :is="currentComponent" :marketAddress="marketAddress" @error="actionError"

@@ -30,7 +30,7 @@
           <v-row class="ma-0">
             <v-col cols="9" class="pa-0 d-flex align-center">
               <v-list-item-subtitle class="item">
-                {{ (borrowBalance || 0) | formatToken(token.decimals) }}
+                {{ (borrowBalance ) | formatToken(token.decimals) }}
               </v-list-item-subtitle>
             </v-col>
             <v-col cols="3" class="pa-0">
@@ -76,6 +76,7 @@ export default {
       borrowRate: 0,
       cash: 0,
       dialog: false,
+      borrowBalance: 0,
     };
   },
   computed: {
@@ -111,7 +112,6 @@ export default {
         //set borrow rate block
         .then((borrowRatePerBlock) => {
           this.borrowRate = borrowRatePerBlock;
-          // console.log("borrItem: rate",borrowRate);
           return this.market.getCash();
         })
         //set cash
@@ -139,25 +139,22 @@ export default {
     this.$parent.$parent.$parent.$on('reload', this.reset);
   },
   created() {
-    //set data token this.data.market.borrowBalanceCurrent(this.account)
+    // set data token this.data.market.borrowBalanceCurrent(this.account)
     this.token = this.market.token;
     this.market.borrowBalanceCurrent(this.account)
       .then((balance) => {
         this.borrowBalance = Number(balance);
-        console.log("borrItem: balance",this.borrowBalance);
         return this.market.price;
       })
-    //set price
+    // set price
       .then((price) => {
         this.price = price;
-        console.log("borrItem: price",this.price);
         return this.market.borrowRate;
       })
 
-    //set borrow rate block
+    // set borrow rate block
       .then((borrowRatePerBlock) => {
         this.borrowRate = borrowRatePerBlock;
-        console.log("borrItem: borrRate",this.borrowRate);
         return this.market.getCash();
       })
 /********/

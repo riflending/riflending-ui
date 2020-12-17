@@ -1,6 +1,6 @@
 <template>
   <v-dialog v-model="flag" width="800">
-    <v-card class="dialog container" v-click-outside="onClickOutside">
+    <v-card class="market-dialog dialog container" v-click-outside="onClickOutside">
       <div class="container">
         <v-row class="ma-0 d-flex align-center">
           <v-col cols="1" class="d-flex justify-center">

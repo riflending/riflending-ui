@@ -1,11 +1,11 @@
 <template>
   <v-app light>
     <app-bar/>
-    <v-content>
+    <v-main>
       <v-container fluid>
         <slot></slot>
       </v-container>
-    </v-content>
+    </v-main>
     <footing></footing>
   </v-app>
 </template>

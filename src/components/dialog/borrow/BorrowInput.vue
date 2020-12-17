@@ -393,7 +393,6 @@ export default {
         this.oldMaxBorrowAllowed = this.asDouble(maxBorrowAllowed);
         this.borrowAllowance = maxBorrowAllowed;
         this.borrowBalanceInfo = Number(this.contractAmount);
-        console.log("borrowInput this.borrowBalanceInfo:",this.borrowBalanceInfo);
       });
 
     //       this.data.market
