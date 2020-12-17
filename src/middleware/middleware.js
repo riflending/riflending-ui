@@ -94,10 +94,9 @@ export default class Middleware {
     const totalsReduced = totals.reduce((previousValue, currentValue) => {
       return {
         borrowValue: previousValue.borrowValue.plus(currentValue.borrowValue),
-        supplyValue: previousValue.supplyValue.plus(currentValue.supplyValue),
-        earningValue: new BigNumber(0)
+        supplyValue: previousValue.supplyValue.plus(currentValue.supplyValue)
       }
-    }, { borrowValue: new BigNumber(0), supplyValue: new BigNumber(0), earningValue: new BigNumber(0) });
+    }, { borrowValue: new BigNumber(0), supplyValue: new BigNumber(0)});
 
     return totalsReduced;
   }

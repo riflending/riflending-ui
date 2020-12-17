@@ -31,16 +31,6 @@
         {{ tokenBalancePrice | formatPrice }}<span class="ml-2 itemInfo">usd</span>
       </v-row>
     </v-col>
-    <!-- <v-col cols="2">
-      <v-row>
-        <h2>earnings:</h2>
-      </v-row>
-      <v-row class="item greenish d-flex justify-start">
-        <! -- {{ earnings | formatToken(data.token.decimals) }} - ->
-        {{ earnings }}
-        <span class="ml-2 itemInfo">{{ data.token.symbol }}</span>
-      </v-row>
-    </v-col> -->
   </v-row>
 </template>
 
@@ -58,7 +48,6 @@ export default {
   },
   data() {
     return {
-      earnings: 0,
       price: 0,
       tokenBalance: 0,
       tokenBalancePrice: 0,
@@ -93,27 +82,6 @@ export default {
         this.tokenBalancePrice =  new BigNumber(this.tokenBalance).multipliedBy(new BigNumber(this.price))
 
       });
-    //TODO this earnings
-    this.earnings = 1;
-
-    // this.data.market.eventualToken
-    //   .then((tok) =>
-    //     Promise.all([tok.eventualBalanceOf(this.account), tok.address])
-    //   )
-    //   .then(([tokenBalance, tokenAddress]) => {
-    //     this.tokenAddress = tokenAddress;
-    //     this.tokenBalance = tokenBalance;
-    //     return this.$rbank.controller.eventualMarketPrice(
-    //       this.data.market.address
-    //     );
-    //   })
-    //   .then((marketPrice) => {
-    //     this.price = marketPrice;
-    //     return this.data.market.eventualAccountEarnings(this.account);
-    //   })
-    //   .then((accountEarnings) => {
-    //     this.earnings = accountEarnings;
-    //   });
   },
 };
 </script>

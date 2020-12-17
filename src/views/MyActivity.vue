@@ -40,13 +40,6 @@
                   <v-divider/>
                 </v-row>
                 <v-row>
-                  <v-col cols="6" class="px-0"><h3>Overall Earnings:</h3></v-col>
-                  <v-col cols="5" class="px-0">
-                    <h3 class="text-center">{{ totalEarnings | formatPrice }}</h3>
-                  </v-col>
-                  <v-col cols="1" class="pa-0"><span class="text-left">USD</span></v-col>
-                </v-row>
-                <v-row>
                   <v-col cols="6" class="px-0"><h4>Total Supplied:</h4></v-col>
                   <v-col cols="5" class="px-0">
                     <h4 class="text-center">{{ totalSupplied | formatPrice }}</h4>
@@ -111,11 +104,6 @@
       </v-row>
       <v-row class="ma-0">
         <v-col class="pa-0">
-          <v-card class="graphics-card container" width="94%" height="100%">
-            <time-balance-graph/>
-          </v-card>
-        </v-col>
-        <v-col class="pa-0">
           <v-card class="graphics-card container" width="94%">
             <supply-borrow-graph/>
           </v-card>
@@ -130,7 +118,6 @@
 
 <script>
 import SupplyBorrowGraph from '@/components/dashboard/SupplyBorrowGraph.vue';
-import TimeBalanceGraph from '@/components/dashboard/TimeBalanceGraph.vue';
 import TxList from '@/components/dashboard/TxList.vue';
 import { mapState } from 'vuex';
 
@@ -140,7 +127,6 @@ export default {
     return {
       healthFactor: 0,
       totalBalance: 0,
-      totalEarnings: 0,
       totalSupplied: 0,
       totalBorrowed: 0,
       showHealthWarning: null,
@@ -170,15 +156,14 @@ export default {
   },
   components: {
     SupplyBorrowGraph,
-    TimeBalanceGraph,
     TxList,
   },
   created() {
     this.$middleware.getTotals(this.account)
-      .then(({borrowValue, supplyValue, earningValue}) => {
+      .then(({borrowValue, supplyValue}) => {
         this.totalBorrowed = borrowValue;
         this.totalSupplied = supplyValue;
-        this.totalBalance = supplyValue.plus(earningValue).minus(borrowValue);
+        this.totalBalance = supplyValue.minus(borrowValue);
         return this.$rbank.controller.getAccountHealth(this.account);
       })
       .then((health) => {

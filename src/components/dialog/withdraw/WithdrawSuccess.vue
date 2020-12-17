@@ -19,21 +19,6 @@
       <v-row class="d-flex align-center">
         <v-col cols="2" />
         <v-col cols="3" class="d-flex justify-end">
-          <h3 class="greenish">earnings:</h3>
-        </v-col>
-        <v-col cols="3">
-          <h1 class="greenish text-center">
-            {{ earnings | formatToken(data.token.decimals) }}
-          </h1>
-        </v-col>
-        <v-col cols="2">
-          <span class="itemInfo">{{ data.token.symbol }}</span>
-        </v-col>
-        <v-col cols="2" />
-      </v-row>
-      <v-row class="d-flex align-center">
-        <v-col cols="2" />
-        <v-col cols="3" class="d-flex justify-end">
           <h3>supply balance:</h3>
         </v-col>
         <v-col cols="3">
@@ -88,7 +73,6 @@ export default {
   },
   data() {
     return {
-      earnings: 0,
       liquidity: 0,
       cash: 0,
       price: 0,
@@ -115,7 +99,6 @@ export default {
     TransactionHash,
   },
   created() {
-    //TODO this.earnings = accountEarnings;
     this.$middleware
       .getAccountLiquidity(this.account)
       .then(({ accountLiquidityInExcess }) => {
