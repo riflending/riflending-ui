@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="market-price-success container">
     <v-row class="mt-12 d-flex justify-center">
       <h1 class="blueish">Success!</h1>
     </v-row>

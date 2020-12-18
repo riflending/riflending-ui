@@ -54,7 +54,7 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
+import { mapState } from 'vuex';
 import BorrowDialog from '@/components/dialog/borrow/BorrowDialog.vue';
 
 export default {
@@ -102,12 +102,12 @@ export default {
       this.market.borrowBalanceCurrent(this.account)
         .then((balance) => {
           this.borrowBalance = balance;
-          return this.market.price;
+          return this.market.getPriceInDecimals();
         })
         //set price
         .then((price) => {
           this.price = price;
-          return this.market.borrowRate;
+          return this.market.getBorrowRate();
         })
         //set borrow rate block
         .then((borrowRatePerBlock) => {
@@ -144,12 +144,12 @@ export default {
     this.market.borrowBalanceCurrent(this.account)
       .then((balance) => {
         this.borrowBalance = Number(balance);
-        return this.market.price;
+        return this.market.getPriceInDecimals();
       })
     // set price
       .then((price) => {
         this.price = price;
-        return this.market.borrowRate;
+        return this.market.getBorrowRate();
       })
 
     // set borrow rate block

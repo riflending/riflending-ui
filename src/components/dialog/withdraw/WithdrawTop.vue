@@ -57,12 +57,12 @@ export default {
     },
   },
   created() {
-    this.data.market.price
+    this.data.market.getPriceInDecimals()
       .then((price) => {
         this.price = price;
         this.tokenAddress = this.data.market.token.address;
         this.tokenDecimals = this.data.market.token.decimals;
-        return this.data.market.borrowRate;
+        return this.data.market.getBorrowRate();
       })
       .then((borrowRate) => {
         this.borrowRate = borrowRate;

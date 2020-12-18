@@ -100,7 +100,7 @@ export const constants = {
     'RLEN': 18
   };
 
-  export const cTokensDetails = [{"symbol":"cRBTC","name":"ctoken rbtc","decimals":decimals["cRBTC"], "underlying":{"symbol":"RBTC", "name":"RSK Smart Bitcoin","decimals":decimals["RBTC"]}}, {"symbol":"cRIF","name":"ctoken rLending Rif","decimals":decimals["cRIF"], "underlying":{"symbol":"RIF", "name":"rLending Rif","decimals":decimals["RIF"]}}, {"symbol":"crDAI","name":"ctoken rLending Dai","decimals":decimals["crDAI"], "underlying":{"symbol":"rDAI", "name":"rLending Dai","decimals":decimals["DAI"]}}];
+  export const cTokensDetails = [{"symbol":"cRBTC","name":"ctoken rbtc","decimals":decimals["cRBTC"], "underlying":{"symbol":"RBTC", "name":"RSK Smart Bitcoin","decimals":decimals["RBTC"]}}, {"symbol":"cRIF","name":"ctoken rLending Rif","decimals":decimals["cRIF"], "underlying":{"symbol":"RIF", "name":"rLending Rif","decimals":decimals["RIF"]}}, {"symbol":"crDAI","name":"ctoken rLending Dai","decimals":decimals["crDAI"], "underlying":{"symbol":"rDAI", "name":"rLending Dai","decimals":decimals["rDAI"]}}];
 
   export const errorCodes = {
     'comptroller': {

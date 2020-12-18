@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="supply-success">
     <div class="successBox">
       <v-row class="my-5 d-flex justify-center">
         <h1 class="blueish">Success!</h1>
@@ -133,12 +133,12 @@ export default {
       })
       .then((cash) => {
         this.cash = cash;
-        return this.data.market.price;
+        return this.data.market.getPriceInDecimals();
       })
       .then((price) => {
         this.price = price;
         this.maxBorrowAllowed = this.getMaxAllowed(this.liquidity, this.cash);
-        return this.data.market.tokenBalance;
+        return this.data.market.getUserBalanceOfUnderlying();
       });
   },
 };

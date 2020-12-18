@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="market-create-success container">
     <h2 class="mb-2">Summary</h2>
     <v-divider color="#008CFF"/>
     <v-card flat width="50%" class="container pa-0">

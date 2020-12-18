@@ -1,6 +1,7 @@
 import Vue from 'vue';
+import RLogin from '@rsksmart/rlogin';
+import WalletConnectProvider from '@walletconnect/web3-provider';
 import Rbank from '@rsksmart/rbank';
-import Rlending from '@riflending/riflending-js';
 import { Middleware } from './middleware/index';
 import App from './App.vue';
 import './registerServiceWorker';
@@ -24,9 +25,27 @@ Vue.prototype.$rbank = Vue.rbank = new Rbank(
   },
 );
 // eslint-disable-next-line no-multi-assign
-Vue.prototype.$rlending = Vue.rlending = new Rlending(process.env.VUE_APP_HTTP_PROVIDER);
-// eslint-disable-next-line no-multi-assign
 Vue.prototype.$middleware = Vue.middleware = new Middleware();
+// eslint-disable-next-line no-multi-assign
+Vue.prototype.$rLogin = Vue.rLogin = new RLogin({
+  cachedProvider: false,
+  providerOptions: {
+    walletconnect: {
+      package: WalletConnectProvider,
+      options: {
+        rpc: {
+          // 30: 'https://public-node.rsk.co',
+          31: 'https://public-node.testnet.rsk.co',
+        },
+      },
+    },
+  },
+  supportedChains: [31], // 30
+});
+
+Vue.prototype.$provider = null;
+Vue.prototype.$web3Provider = null;
+
 new Vue({
   router,
   store,

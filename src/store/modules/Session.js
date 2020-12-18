@@ -1,14 +1,5 @@
 import Vue from 'vue';
 import * as constants from '@/store/constants';
-import store from '@/store';
-
-if (window.ethereum) {
-  // disable autoRefreshOnNetworkChange warning
-  window.ethereum.autoRefreshOnNetworkChange = false;
-  window.ethereum.on('accountsChanged', () => {
-    store.dispatch(constants.SESSION_CONNECT_WEB3);
-  });
-}
 
 const state = {
   account: null,
@@ -19,17 +10,19 @@ const state = {
 const actions = {
   // eslint-disable-next-line no-shadow
   [constants.SESSION_CONNECT_WEB3]: ({ commit, state }) => {
-    Vue.rbank.web3.eth.getAccounts()
-      .then(([account]) => {
-        commit(constants.SESSION_SET_PROPERTY, { account });
-        return Vue.rbank.controller.eventualOwner;
-      })
-      .then((owner) => {
-        commit(constants.SESSION_SET_PROPERTY, { isOwner: owner === state.account });
-      })
-      .catch(() => {
-        commit(constants.SESSION_SET_PROPERTY, { isOwner: false });
-      });
+    if (Vue.web3Provider) {
+      Vue.web3Provider.listAccounts()
+        .then(([account]) => {
+          commit(constants.SESSION_SET_PROPERTY, { account });
+          return Vue.rbank.controller.eventualOwner;
+        })
+        .then((owner) => {
+          commit(constants.SESSION_SET_PROPERTY, { isOwner: owner === state.account });
+        })
+        .catch(() => {
+          commit(constants.SESSION_SET_PROPERTY, { isOwner: false });
+        });
+    }
   },
 };
 

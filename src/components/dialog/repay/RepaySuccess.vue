@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="repay-success">
     <div class="successBox">
       <v-row class="my-5 d-flex justify-center">
         <h1 class="blueish">Success!</h1>
@@ -120,12 +120,12 @@ export default {
       .then((cash) => {
         this.cash = cash;
         console.log("repaySuccess: cash",this.cash);
-        return this.data.market.borrowRate;
+        return this.data.market.getBorrowRate();
       })
       .then((borrowRate) => {
         this.borrowRate = borrowRate;
         console.log("repaySuccess: borrowRate",this.borrowRate);
-        return this.data.market.price;
+        return this.data.market.getPriceInDecimals();
       })
       //sets price
       .then((price) => {

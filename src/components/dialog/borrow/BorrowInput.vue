@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="borrow-input">
     <template v-if="!waiting">
       <v-row class="inputBox">
         <v-col cols="10">
@@ -81,7 +81,7 @@
       </v-row>
     </template>
     <template v-else>
-      <loader class="my-15"/>
+      <loader/>
     </template>
   </div>
 </template>
@@ -89,7 +89,6 @@
 <script>
 import { mapState } from 'vuex';
 import Loader from '@/components/common/Loader.vue';
-import BigNumber from 'bignumber.js';
 
 export default {
   name: 'BorrowInput',
@@ -357,7 +356,7 @@ export default {
         // the amount of underlying stored in contract AKA "CONTRACT LIQUIDITY"
         this.oldCash = cash; // the amount of underlying stored in contract AKA "CONTRACT LIQUIDITY"
         this.cash = cash; // the amount of underlying stored in contract AKA "CONTRACT LIQUIDITY"
-        return this.data.market.borrowRate;
+        return this.data.market.getBorrowRate();
         // return this.data.market.eventualBorrowRate;
       })
       .then((borrowRate) => { // TODO: double check, perhaps this is not being used

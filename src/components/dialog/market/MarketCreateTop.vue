@@ -1,5 +1,5 @@
 <template>
-  <div class="mt-5 mb-3">
+  <div class="market-create-top mt-5 mb-3">
     <template v-if="success">
       <h1 class="blueish text-center">Success!</h1>
       <p class="mt-1">You have successfully created a<br> new Market.</p>

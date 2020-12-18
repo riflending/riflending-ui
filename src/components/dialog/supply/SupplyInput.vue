@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class ="supply-input">
     <template v-if="!waiting">
       <v-row class="inputBox">
         <v-col cols="10">
@@ -104,7 +104,7 @@
       </v-row>
     </template>
     <template v-else>
-      <loader class="my-15" />
+      <loader/>
     </template>
   </div>
 </template>
@@ -206,7 +206,9 @@ export default {
         })
         .catch((error) => {
           this.waiting = false;
-          this.$emit("error");
+          console.error('ERROR supply()', error);
+          const userError = typeof error === 'string' ? error : error.message || '';
+          this.$emit('error', { userErrorMessage: userError });
         });
     },
     asDouble(value) {
@@ -221,7 +223,7 @@ export default {
         .getAccountLiquidity(this.account)
         .then(({ accountLiquidityInExcess }) => {
           oldLiquidity = accountLiquidityInExcess;
-          return this.data.market.tokenBalance;
+          return this.data.market.getUserBalanceOfUnderlying();
         })
         .then((balance) => {
           this.supplyOf = balance + Number(this.contractAmount);
@@ -230,7 +232,7 @@ export default {
         .then((cash) => {
           oldCash = cash;
           this.cash = oldCash + Number(this.contractAmount);
-          return this.data.market.borrowRate;
+          return this.data.market.getBorrowRate();
         });
 
       //TODO all this !!
@@ -281,15 +283,15 @@ export default {
       })
       .then((cash) => {
         this.cash = cash;
-        return this.data.market.borrowRate;
+        return this.data.market.getBorrowRate();
       })
       .then((borrowRate) => {
         this.borrowRate = borrowRate;
-        return this.data.market.price;
+        return this.data.market.getPriceInDecimals();
       })
       .then((price) => {
         this.price = price;
-        return this.data.market.tokenBalance;
+        return this.data.market.getUserBalanceOfUnderlying();
       })
       .then((tokenBalance) => {
         this.tokenBalance = tokenBalance;

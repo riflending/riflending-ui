@@ -124,28 +124,6 @@
         </v-row>
       </v-col>
     </v-row>
-    <v-row class="my-6 py-6 d-flex justify-center">
-      <div class="divider my-6"></div>
-    </v-row>
-    <v-row class="d-flex align-center">
-      <v-col cols="6">
-        <v-row class="text-left">
-          <h3>Build your own DeFi App with our rLending Library for Developers</h3>
-        </v-row>
-        <v-row class="text-left">
-          We have created a comprehensible library for the upcoming DeFi Developer.
-          Available on GitHub.
-        </v-row>
-        <v-row>
-          <v-btn class="ma-0 button" rounded color="#008CFF" @click="toGithub">
-            Visit our rLending Library
-          </v-btn>
-        </v-row>
-      </v-col>
-      <v-col cols="6" class="d-flex justify-center">
-        <img src="../assets/landing/Ellipse_29.png" alt="">
-      </v-col>
-    </v-row>
   </div>
 </template>
 

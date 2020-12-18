@@ -1,4 +1,4 @@
-<template>
+<template class="index" >
   <v-app light>
     <app-bar/>
     <v-main>
