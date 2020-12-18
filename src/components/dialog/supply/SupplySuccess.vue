@@ -28,11 +28,6 @@
                 {{ cash | formatToken(data.token.decimals) }}
               </h1>
             </v-col>
-            <v-col cols="5" class="itemInfo">
-              <!-- <span v-if="data.supplyBalanceInfo">
-                (-{{ data.supplyBalanceInfo }})
-              </span> -->
-            </v-col>
           </v-row>
         </v-col>
         <v-col cols="1">
@@ -50,11 +45,6 @@
             <v-col cols="7" class="d-flex justify-center">
               <h1>{{ supplyOf | formatNumber }}</h1>
             </v-col>
-            <v-col cols="5" class="itemInfo">
-              <!-- <span v-if="data.supplyBalanceInfo">
-                (+{{ data.supplyBalanceInfo }})
-              </span> -->
-            </v-col>
           </v-row>
         </v-col>
         <v-col cols="1">
@@ -71,11 +61,6 @@
           <v-row class="ma-0 d-flex align-center">
             <v-col cols="7" class="d-flex justify-center">
               <h1>{{ maxBorrowAllowed | formatToken(data.token.decimals) }}</h1>
-            </v-col>
-            <v-col cols="5" class="itemInfo">
-              <span v-if="data.borrowLimitInfo">
-                (+{{ data.borrowLimitInfo | formatToken(data.token.decimals) }})
-              </span>
             </v-col>
           </v-row>
         </v-col>

@@ -61,11 +61,6 @@
                   {{ tokenBalance | formatNumber }}
                 </h1>
               </v-col>
-              <!-- <v-col cols="5" class="itemInfo d-flex justify-center">
-                <span class="text-right" v-if="supplyBalanceInfo">
-                  (+{{ supplyBalanceInfo | formatToken(data.token.decimals) }})
-                </span>
-              </v-col> -->
             </v-row>
           </v-col>
           <v-col cols="1">
@@ -87,11 +82,6 @@
                       | formatToken(data.token.decimals)
                   }}
                 </h1>
-              </v-col>
-              <v-col cols="5" class="itemInfo d-flex justify-center">
-                <!-- <span class="text-right" v-if="borrowLimitInfo">
-                  (+{{ borrowLimitInfo | formatToken(data.token.decimals) }})
-                </span> -->
               </v-col>
             </v-row>
           </v-col>
