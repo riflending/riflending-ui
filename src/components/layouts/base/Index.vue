@@ -1,12 +1,12 @@
 <template class="index">
   <v-app light>
-    <app-bar />
+    <AppBar />
     <v-main>
       <v-container fluid>
         <slot></slot>
       </v-container>
     </v-main>
-    <footing></footing>
+    <Footing></Footing>
   </v-app>
 </template>
 

@@ -9,24 +9,24 @@ import BaseLayout from '@/components/layouts/base/Index.vue'
 
 export default {
   name: 'App',
+  components: {
+    BaseLayout,
+  },
   data() {
     return {
       layout: 'Base',
-      layouts: ['Base']
-    }
+      layouts: ['Base'],
+    };
   },
   computed: {
     currentComponent() {
-      return `${this.layout.toLowerCase()}-layout`
-    }
-  },
-  methods: {},
-  components: {
-    BaseLayout
+      return `${this.layout.toLowerCase()}-layout`;
+    },
   },
   created() {
-    const ctrl = process.env.VUE_APP_RBANK_CONTROLLER
-    this.$rbank.controller = ctrl.toLowerCase()
-  }
+    const ctrl = process.env.VUE_APP_RBANK_CONTROLLER;
+    this.$rbank.controller = ctrl.toLowerCase();
+  },
+  methods: {},
 }
 </script>

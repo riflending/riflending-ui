@@ -4,24 +4,24 @@
       <v-row class="inputBox">
         <v-col cols="10">
           <v-text-field
+            v-model="amount"
             class="inputText"
             full-width
             single-line
             solo
             flat
             type="text"
-            v-model="amount"
             required
             :rules="[rules.required, rules.decimals, rules.minBalance]"
           />
         </v-col>
         <v-col cols="2">
           <v-btn
-            @click="maxAmount = true"
             class="mb-12"
             text
             color="#008CFF"
             :disabled="!maxBorrowAllowed"
+            @click="maxAmount = true"
             >max</v-btn
           >
         </v-col>
@@ -87,13 +87,13 @@
         </v-row>
       </div>
       <v-row class="my-5 d-flex justify-center">
-        <v-btn class="button" rounded color="#008CFF" @click="supply" :disabled="!validForm">
+        <v-btn class="button" rounded color="#008CFF" :disabled="!validForm" @click="supply">
           Supply tokens
         </v-btn>
       </v-row>
     </template>
     <template v-else>
-      <loader />
+      <Loader />
     </template>
   </div>
 </template>
@@ -133,7 +133,7 @@ export default {
           this.decimalPositions ||
           `Maximum ${this.data.token.decimals} decimal places for ${this.data.token.symbol}.`,
         minBalance: () =>
-          //TODO see if the tokenBalance is the balance of account or the balance of the account in the protocol
+          // TODO see if the tokenBalance is the balance of account or the balance of the account in the protocol
           // this.tokenBalance >= Number(this.contractAmount) ||
           // "Not enough funds",
           this.maxAmountBalanceAllowed >= Number(this.amount) || 'Not enough funds'
@@ -174,6 +174,63 @@ export default {
       const amount = this.amount.toString()
       return this.hasDecimals ? this.numberOfDecimals : !amount.includes('.')
     }
+  },
+  watch: {
+    amount() {
+      this.getValues();
+      if (this.maxAmount && this.amount !== this.maxAmountBalanceAllowed) this.maxAmount = false;
+      if (this.amount === this.maxAmountBalanceAllowed) this.maxAmount = true;
+    },
+    maxAmount() {
+      if (this.maxAmount) this.amount = this.maxAmountBalanceAllowed;
+      if (!this.maxAmount && this.amount === this.maxAmountBalanceAllowed) this.amount = null;
+    },
+  },
+  created() {
+    this.$middleware
+      .getAccountLiquidity(this.account)
+      .then(({ accountLiquidityInExcess }) => {
+        this.liquidity = Number(accountLiquidityInExcess);
+        return this.data.market.getCash();
+      })
+      .then((cash) => {
+        this.cash = cash;
+        return this.data.market.getBorrowRate();
+      })
+      .then((borrowRate) => {
+        this.borrowRate = borrowRate;
+        return this.data.market.getPriceInDecimals();
+      })
+      .then((price) => {
+        this.price = price;
+        return this.data.market.getUserBalanceOfUnderlying();
+      })
+      .then((tokenBalance) => {
+        this.tokenBalance = tokenBalance;
+        this.supplyOf = tokenBalance;
+        return this.data.market.getMaxBorrowAllowed(this.account);
+      })
+      .then((maxBorrowAllowed) => {
+        this.maxBorrowAllowed = maxBorrowAllowed;
+        const internalAddressOfToken = this.data.market.token?.internalAddress;
+        return internalAddressOfToken
+          ? this.$middleware.getWalletAccountBalance(
+            this.account,
+              this.data.market.token?.internalAddress,
+          )
+          : this.$middleware.getWalletAccountBalanceForRBTC(this.account);
+      })
+      .then((balanceOfToken) => {
+        this.maxAmountBalanceAllowed = balanceOfToken;
+        return this.data.market.getCurrentExchangeRate();
+      })
+      .then((mantissa) => {
+        this.mantissa = mantissa;
+        return this.data.market.getCollateralFactorMantissa();
+      })
+      .then((collateralFactor) => {
+        this.collateralFactor = collateralFactor;
+      });
   },
   methods: {
     supply() {
@@ -219,7 +276,7 @@ export default {
           return this.data.market.getBorrowRate()
         })
 
-      //TODO all this !!
+      // TODO all this !!
       //   .then(({ supplyValue, borrowValue }) => {
       //     const newBorrowValue =
       //       (borrowValue * (this.collateralFactor + this.mantissa)) /
@@ -242,65 +299,8 @@ export default {
       //   });
     }
   },
-  watch: {
-    amount() {
-      this.getValues()
-      if (this.maxAmount && this.amount !== this.maxAmountBalanceAllowed) this.maxAmount = false
-      if (this.amount === this.maxAmountBalanceAllowed) this.maxAmount = true
-    },
-    maxAmount() {
-      if (this.maxAmount) this.amount = this.maxAmountBalanceAllowed
-      if (!this.maxAmount && this.amount === this.maxAmountBalanceAllowed) this.amount = null
-    }
-  },
   components: {
-    Loader
+    Loader,
   },
-  created() {
-    this.$middleware
-      .getAccountLiquidity(this.account)
-      .then(({ accountLiquidityInExcess }) => {
-        this.liquidity = Number(accountLiquidityInExcess)
-        return this.data.market.getCash()
-      })
-      .then((cash) => {
-        this.cash = cash
-        return this.data.market.getBorrowRate()
-      })
-      .then((borrowRate) => {
-        this.borrowRate = borrowRate
-        return this.data.market.getPriceInDecimals()
-      })
-      .then((price) => {
-        this.price = price
-        return this.data.market.getUserBalanceOfUnderlying()
-      })
-      .then((tokenBalance) => {
-        this.tokenBalance = tokenBalance
-        this.supplyOf = tokenBalance
-        return this.data.market.getMaxBorrowAllowed(this.account)
-      })
-      .then((maxBorrowAllowed) => {
-        this.maxBorrowAllowed = maxBorrowAllowed
-        const internalAddressOfToken = this.data.market.token?.internalAddress
-        return internalAddressOfToken
-          ? this.$middleware.getWalletAccountBalance(
-              this.account,
-              this.data.market.token?.internalAddress
-            )
-          : this.$middleware.getWalletAccountBalanceForRBTC(this.account)
-      })
-      .then((balanceOfToken) => {
-        this.maxAmountBalanceAllowed = balanceOfToken
-        return this.data.market.getCurrentExchangeRate()
-      })
-      .then((mantissa) => {
-        this.mantissa = mantissa
-        return this.data.market.getCollateralFactorMantissa()
-      })
-      .then((collateralFactor) => {
-        this.collateralFactor = collateralFactor
-      })
-  }
 }
 </script>

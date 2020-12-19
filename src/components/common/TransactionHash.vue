@@ -3,7 +3,7 @@
     <v-col cols="2" />
     <v-col class="itemInfo"> transaction hash: {{ hashCutOff }} </v-col>
     <v-col class="ml-1">
-      <v-icon @click="copyHash" small> content_copy </v-icon>
+      <v-icon small @click="copyHash"> content_copy </v-icon>
       <a class="ml-2 listTitle" target="_blank" :href="rskExplorerUrl">View on RSKExplorer</a>
     </v-col>
     <v-col cols="1" />

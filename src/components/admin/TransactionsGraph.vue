@@ -57,33 +57,36 @@ import * as constants from '@/store/constants'
 
 export default {
   name: 'TimeBalanceGraph',
+  components: {
+    GChart,
+  },
   props: {
     data: {
       type: Object,
-      required: true
-    }
+      required: true,
+    },
   },
   data() {
     return {
       constants,
       chartData: [
         ['Time', 'Supplied', 'Loaned'],
-        ['0', 0, 0]
+        ['0', 0, 0],
       ],
       chartOptions: {
         width: 750,
         height: 250,
         legend: {
           position: 'bottom',
-          alignment: 'end'
+          alignment: 'end',
         },
         fontName: 'Rubik',
         colors: ['#24BD6B', '#008CFF'],
         chartArea: {
           left: '8%',
           width: '90%',
-          height: '70%'
-        }
+          height: '70%',
+        },
       },
       weekLabels: [
         { key: 0, value: 'Sunday' },
@@ -92,7 +95,7 @@ export default {
         { key: 3, value: 'Wednesday' },
         { key: 4, value: 'Thursday' },
         { key: 5, value: 'Friday' },
-        { key: 6, value: 'Saturday' }
+        { key: 6, value: 'Saturday' },
       ],
       monthLabels: [
         { key: 0, value: 'January' },
@@ -106,10 +109,13 @@ export default {
         { key: 8, value: 'September' },
         { key: 9, value: 'October' },
         { key: 10, value: 'November' },
-        { key: 11, value: 'December' }
+        { key: 11, value: 'December' },
       ],
-      period: 'week'
-    }
+      period: 'week',
+    };
+  },
+  created() {
+    this.getChartData('week');
   },
   methods: {
     mapTimeToLabel(period, date) {
@@ -132,10 +138,10 @@ export default {
         .getOverallBalance(period)
         .then((overallBalance) =>
           overallBalance.map(([date, supplied, loaned]) => [
-            this.mapTimeToLabel(period, date),
-            supplied,
-            loaned
-          ])
+          this.mapTimeToLabel(period, date),
+          supplied,
+          loaned
+        ])
         )
         .then((overallBalance) => {
           overallBalance.reverse()
@@ -144,11 +150,5 @@ export default {
         })
     }
   },
-  components: {
-    GChart
-  },
-  created() {
-    this.getChartData('week')
-  }
 }
 </script>

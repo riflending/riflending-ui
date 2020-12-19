@@ -16,12 +16,12 @@
         <v-row class="ma-0 px-6">
           <v-divider />
         </v-row>
-        <v-list class="mx-6" v-for="(borrow, idx) in borrows" :key="`liquidate-item-${idx}`">
-          <liquidate-item
+        <v-list v-for="(borrow, idx) in borrows" :key="`liquidate-item-${idx}`" class="mx-6">
+          <LiquidateItem
             :borrower="borrow.borrower"
-            :maxToLiquidate="borrow.maxToLiquidate"
+            :max-to-liquidate="borrow.maxToLiquidate"
             :debt="borrow.debt"
-            :borrowMarketAddress="borrow.borrowMarketAddress"
+            :borrow-market-address="borrow.borrowMarketAddress"
             :collateral="data"
             @selected="accountSelected"
           />
@@ -46,15 +46,15 @@ import { mapState } from 'vuex'
 import LiquidateItem from '@/components/dialog/liquidate/LiquidateItem.vue'
 
 export default {
-  name: 'LiquidateList.vue',
+  name: 'LiquidateListVue',
+  components: {
+    LiquidateItem,
+  },
   props: {
     data: {
       type: Object,
-      required: true
-    }
-  },
-  components: {
-    LiquidateItem
+      required: true,
+    },
   },
   data() {
     return {
@@ -69,72 +69,67 @@ export default {
       return this.borrows.length > 0
     }
   },
+  created() {
+    this.getBorrows();
+  },
   methods: {
     accountSelected(accountObject) {
-      this.$emit('selected', accountObject)
+      this.$emit('selected', accountObject);
     },
     getUnhealthyAccounts(market) {
       market
         .getPastEvents('Borrow', 0)
         .then((borrowEvents) => {
-          const accounts = []
-          const uniqueBorrows = []
+          const accounts = [];
+          const uniqueBorrows = [];
           const borrowsTemp = borrowEvents
             .map(({ address, returnValues: { user } }) => ({
               borrower: user,
-              borrowMarketAddress: address
+              borrowMarketAddress: address,
             }))
-            .filter((borrow) => borrow.borrower !== this.account)
+            .filter((borrow) => borrow.borrower !== this.account);
           borrowsTemp.forEach((borrow) => {
             if (accounts.indexOf(borrow.borrower) === -1) {
-              accounts.push(borrow.borrower)
-              uniqueBorrows.push(borrow)
+              accounts.push(borrow.borrower);
+              uniqueBorrows.push(borrow);
             }
-          })
-          return uniqueBorrows
+          });
+          return uniqueBorrows;
         })
-        .then((borrows) =>
-          Promise.all([
+        .then((borrows) => Promise.all([
             Promise.all(
-              borrows.map((borrow) => this.$rbank.controller.getAccountHealth(borrow.borrower))
+              borrows.map((borrow) => this.$rbank.controller.getAccountHealth(borrow.borrower)),
             ),
-            borrows
-          ])
+            borrows,
+          ]),
         )
-        .then(([accountsHealth, borrows]) =>
-          borrows
+        .then(([accountsHealth, borrows]) => borrows
             .map((borrow, idx) => ({ health: accountsHealth[idx], ...borrow }))
-            .filter((borrow) => borrow.health <= 0)
+            .filter((borrow) => borrow.health <= 0),
         )
-        .then((borrows) =>
-          Promise.all([
+        .then((borrows) => Promise.all([
             borrows,
             Promise.all(
-              borrows.map((borrow) =>
-                new this.$rbank.Market(borrow.borrowMarketAddress).updatedBorrowBy(borrow.borrower)
-              )
+              borrows.map((borrow) => new this.$rbank.Market(borrow.borrowMarketAddress).updatedBorrowBy(borrow.borrower),
+              ),
             ),
-            Promise.all(borrows.map((borrow) => this.data.market.updatedSupplyOf(borrow.borrower)))
-          ])
+            Promise.all(borrows.map((borrow) => this.data.market.updatedSupplyOf(borrow.borrower))),
+          ]),
         )
-        .then(([borrows, debtsBy, suppliesOf]) =>
-          borrows
+        .then(([borrows, debtsBy, suppliesOf]) => borrows
             .map((borrow, idx) => ({
               debt: debtsBy[idx],
               maxToLiquidate: suppliesOf[idx],
-              ...borrow
+              ...borrow,
             }))
-            .forEach((borrow) => this.borrows.push(borrow))
-        )
+            .forEach((borrow) => this.borrows.push(borrow)),
+        );
     },
     getBorrows() {
       this.$rbank.eventualMarkets
         .then((markets) => markets.filter((market) => market.address !== this.data.market.address))
-        .then((markets) => markets.forEach((market) => this.getUnhealthyAccounts(market)))
-    }
+        .then((markets) => markets.forEach((market) => this.getUnhealthyAccounts(market)));
+    },
   },
-  created() {
-    this.getBorrows()
-  }
 }
 </script>

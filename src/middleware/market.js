@@ -20,44 +20,44 @@ export default class Market {
     account
   ) {
     this.account = account
-    //TODO see if factoryContract go to middleware class
+    // TODO see if factoryContract go to middleware class
     this.factoryContract = new factoryContract()
     this.isCRBTC = cTokenSymbol === 'cRBTC'
-    //TODO see delete eventuan web, uses in vue
+    // TODO see delete eventuan web, uses in vue
     this.eventualWeb3WS = {}
     this.eventualWeb3Http = {}
-    //set data cToken
+    // set data cToken
     this.decimals = cTokenDecimals
     this.instanceAddress = this.factoryContract.addressContract[cTokenSymbol]
     this.instance = this.factoryContract.getContractCtoken(cTokenSymbol)
     this.symbol = cTokenSymbol
 
     this.token = Object()
-    //validate cRBTC
+    // validate cRBTC
     if (cTokenSymbol !== 'cRBTC') {
       this.token.instance = this.factoryContract.getContractToken(tokenSymbol)
       this.token.internalAddress = this.token.instance.address.toLowerCase()
     }
-    //set data token
+    // set data token
     this.token.symbol = tokenSymbol
     this.token.name = underlyingName
     this.token.decimals = underlyingDecimals
-    //set borrow rate
+    // set borrow rate
     this.factor = 1e18
     this.blocksPerYear = 1051200
 
-    //TODO set supply of
+    // TODO set supply of
     // https://github.com/ajlopez/DeFiProt/blob/master/contracts/Market.sol#L246
     this.supplyOf = 13
   }
 
   async getValueMoc() {
-    //set contract
+    // set contract
     const contract = this.factoryContract.getContract('RBTCMocOracle')
-    //call contract
-    let [value, ok] = await contract.callStatic.peek()
+    // call contract
+    const [value, ok] = await contract.callStatic.peek()
     return new BigNumber(value)
-    //TODO comment validation, because in Oracle moc test fails (ok=false)
+    // TODO comment validation, because in Oracle moc test fails (ok=false)
     // if (ok) {
     //   return value;
     // }
@@ -70,11 +70,11 @@ export default class Market {
   }
 
   async getPrice() {
-    //set contract
+    // set contract
     const contract = this.factoryContract.getContract('PriceOracleProxy')
-    //get price of cToken
+    // get price of cToken
     const priceToken = await contract.callStatic.getUnderlyingPrice(this.instanceAddress)
-    //get price of rbtc
+    // get price of rbtc
     const valueOracle = await this.getValueMoc()
     // price = ( price cToken in rbtc * price of rbtc) /  Oracle precision decimals
     return new BigNumber(priceToken.toString())
@@ -124,26 +124,26 @@ export default class Market {
   }
 
   async validateMarketAccount(account) {
-    //set contract Comptroller delegate (Unitroller)
-    let contract = this.factoryContract.getContractByNameAndAbiName(
+    // set contract Comptroller delegate (Unitroller)
+    const contract = this.factoryContract.getContractByNameAndAbiName(
       constants.Unitroller,
       constants.Comptroller
     )
-    //get is member (bool)
+    // get is member (bool)
     return contract.checkMembership(account, this.instanceAddress)
   }
 
   async addMarket() {
-    //set contract
-    let contract = this.factoryContract.getContractByNameAndAbiName(
+    // set contract
+    const contract = this.factoryContract.getContractByNameAndAbiName(
       constants.Unitroller,
       constants.Comptroller
     )
-    //set signer
-    let contractWithSigner = contract.connect(this.factoryContract.getSigner())
-    //send transaction
-    let tx = await contractWithSigner.enterMarkets([this.instanceAddress])
-    //await result transaction
+    // set signer
+    const contractWithSigner = contract.connect(this.factoryContract.getSigner())
+    // send transaction
+    const tx = await contractWithSigner.enterMarkets([this.instanceAddress])
+    // await result transaction
     return tx.wait()
   }
 
@@ -154,41 +154,41 @@ export default class Market {
    * @return {Promise<TXResult>} the wait mined transaction
    */
   async supply(amount, account) {
-    //add decimals token
+    // add decimals token
     const amountBN = this.getAmountDecimals(amount)
     console.log('amountBN', amountBN)
     let tx
-    //validate crbtc
+    // validate crbtc
     if (!this.isCRBTC) {
       console.log('not CRBTC', amountBN)
-      //check allowance
+      // check allowance
       const allowance = await this.token.instance.allowance(account, this.instanceAddress)
-      //validate if enough
+      // validate if enough
       const notEnough = new BigNumber(allowance.toString()).lt(amountBN)
       if (notEnough) {
         console.log('not enough')
-        //set signer token
-        let signer = this.token.instance.connect(this.factoryContract.getSigner())
-        //approve
-        let txSigner = await signer.approve(this.instanceAddress, ethers.constants.MaxUint256)
+        // set signer token
+        const signer = this.token.instance.connect(this.factoryContract.getSigner())
+        // approve
+        const txSigner = await signer.approve(this.instanceAddress, ethers.constants.MaxUint256)
         await txSigner.wait()
       }
       console.log('before mint')
-      //mint token
+      // mint token
       console.log('amountBN.toString()', amountBN.toString())
-      let signerCtoken = this.instance.connect(this.factoryContract.getSigner())
+      const signerCtoken = this.instance.connect(this.factoryContract.getSigner())
       tx = await signerCtoken.mint(amountBN.toString())
     } else {
-      //set signer cRBTC
-      let signer = this.instance.connect(this.factoryContract.getSigner())
-      //set value
-      let overrides = {
+      // set signer cRBTC
+      const signer = this.instance.connect(this.factoryContract.getSigner())
+      // set value
+      const overrides = {
         value: amountBN.toString()
       }
-      //mint crbtc
+      // mint crbtc
       tx = await signer.mint(overrides)
     }
-    //wait for mined transaction
+    // wait for mined transaction
     return tx.wait()
   }
 
@@ -198,20 +198,20 @@ export default class Market {
    * @return {Promise<TXResult>} the wait mined transaction
    */
   async borrow(amount) {
-    //TODO: add validation. Account has to have entered market prior to borrowing.
-    //add decimals token
+    // TODO: add validation. Account has to have entered market prior to borrowing.
+    // add decimals token
     const amountBN = this.getAmountDecimals(amount)
     // connect to cerc20
-    let signer = this.instance.connect(this.factoryContract.getSigner())
+    const signer = this.instance.connect(this.factoryContract.getSigner())
     // perform borrow()
-    let tx = await signer.borrow(amountBN.toString())
-    //wait for mined transaction
+    const tx = await signer.borrow(amountBN.toString())
+    // wait for mined transaction
     return tx.wait()
   }
 
   getAmountDecimals(amount, isCtoken = false) {
-    //add decimals token
-    amount = amount * Math.pow(10, !isCtoken ? decimals[this.token.symbol] : decimals[this.symbol])
+    // add decimals token
+    amount *= Math.pow(10, !isCtoken ? decimals[this.token.symbol] : decimals[this.symbol]);
     return new BigNumber(amount.toString())
   }
 
@@ -220,16 +220,16 @@ export default class Market {
    * @return human number collateralFactorMantisa | error beacuse the cToken is not listed on protocol
    */
   async getCollateralFactorMantissa() {
-    //set contract Comptroller delegate (Unitroller)
-    let contract = this.factoryContract.getContractByNameAndAbiName(
+    // set contract Comptroller delegate (Unitroller)
+    const contract = this.factoryContract.getContractByNameAndAbiName(
       constants.Unitroller,
       constants.Comptroller
     )
-    //get is member (bool)
-    let [isListed, collateralFactorMantissa, isComped] = await contract.markets(
+    // get is member (bool)
+    const [isListed, collateralFactorMantissa, isComped] = await contract.markets(
       this.instanceAddress
     )
-    //validate token listed
+    // validate token listed
     if (isListed) {
       return ethers.utils.formatEther(collateralFactorMantissa)
     }
@@ -237,32 +237,32 @@ export default class Market {
   }
 
   async redeemUnderlying(amount) {
-    //set signer token
-    let signer = this.instance.connect(this.factoryContract.getSigner())
-    //send redeemUnderlying
-    let tx = await signer.redeemUnderlying(amount.toString())
-    //wait for mined transaction
+    // set signer token
+    const signer = this.instance.connect(this.factoryContract.getSigner())
+    // send redeemUnderlying
+    const tx = await signer.redeemUnderlying(amount.toString())
+    // wait for mined transaction
     return tx.wait()
   }
 
   async redeem(amount) {
-    //set signer token
-    let signer = this.instance.connect(this.factoryContract.getSigner())
-    //send redeem
-    let tx = await signer.redeem(amount.toString())
-    //wait for mined transaction
+    // set signer token
+    const signer = this.instance.connect(this.factoryContract.getSigner())
+    // send redeem
+    const tx = await signer.redeem(amount.toString())
+    // wait for mined transaction
     return tx.wait()
   }
 
   withdraw(amount, max = false) {
-    //add decimals token
+    // add decimals token
     const amountBN = this.getAmountDecimals(amount)
-    //validate if max sets and is crbtc
+    // validate if max sets and is crbtc
     // if ((max) || (this.isCRBTC)) {
     //   //amount cToken
     //   return this.redeem(amountBN.toString());
     // }
-    //amount token
+    // amount token
     return this.redeemUnderlying(amountBN.toString())
   }
 
@@ -277,17 +277,17 @@ export default class Market {
   async payBorrow(amount) {
     let contractWithSigner
     let tx
-    //validate crbtc
+    // validate crbtc
     if (this.isCRBTC) {
-      //set signer token
+      // set signer token
       contractWithSigner = this.instance.connect(this.factoryContract.getSigner())
-      tx = await contractWithSigner.repayBorrow({ value: ethers.utils.parseEther(amount + '') })
+      tx = await contractWithSigner.repayBorrow({ value: ethers.utils.parseEther(`${amount}`) })
     } else {
-      //set signer cRBTC
+      // set signer cRBTC
       contractWithSigner = this.instance.connect(this.factoryContract.getSigner())
-      tx = await contractWithSigner.repayBorrow(ethers.utils.parseEther(amount + ''))
+      tx = await contractWithSigner.repayBorrow(ethers.utils.parseEther(`${amount}`))
     }
-    //wait for mined transaction
+    // wait for mined transaction
     return tx.wait()
   }
 
@@ -316,9 +316,9 @@ export default class Market {
    * @return {response, code} response: (bool) if allowed or not, code: numerical error otherwise
    */
   async withdrawAllowed(amount, account) {
-    //set
+    // set
     const amountBN = this.getAmountDecimals(amount)
-    //set contract Comptroller delegate (Unitroller)
+    // set contract Comptroller delegate (Unitroller)
     const contract = this.factoryContract.getContractByNameAndAbiName(
       constants.Unitroller,
       constants.Comptroller
@@ -362,7 +362,7 @@ export default class Market {
     const middleware = new Middleware() // maybe not necesary to load a whole Middleware here
     const price = await this.price // current market price
     let rbtcPrice = await this.getValueMoc() // rbtc price
-    rbtcPrice = rbtcPrice / 1e18 // in usd
+    rbtcPrice /= 1e18; // in usd
     const { accountLiquidityInExcess } = await middleware.getAccountLiquidity(account)
     return price > 0 ? (rbtcPrice * (accountLiquidityInExcess / 1e18)) / (price / 1e18) : 0 // return max(0,borrowLimit)
   }

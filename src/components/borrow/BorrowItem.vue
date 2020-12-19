@@ -32,7 +32,7 @@
               </v-list-item-subtitle>
             </v-col>
             <v-col cols="3" class="pa-0">
-              <v-btn class="pa-0" @click="dialog = !dialog" icon>
+              <v-btn class="pa-0" icon @click="dialog = !dialog">
                 <svg
                   width="11"
                   height="32"
@@ -55,7 +55,7 @@
     </v-list-item>
     <v-divider />
     <template v-if="dialog">
-      <borrow-dialog :data="dataObject" @closed="reset" />
+      <BorrowDialog :data="dataObject" @closed="reset" />
     </template>
   </div>
 </template>
@@ -103,70 +103,30 @@ export default {
       }
     }
   },
-  methods: {
-    reset() {
-      this.dialog = false
-      this.market
-        .borrowBalanceCurrent(this.account)
-        .then((balance) => {
-          this.borrowBalance = balance
-          return this.market.getPriceInDecimals()
-        })
-        //set price
-        .then((price) => {
-          this.price = price
-          return this.market.getBorrowRate()
-        })
-        //set borrow rate block
-        .then((borrowRatePerBlock) => {
-          this.borrowRate = borrowRatePerBlock
-          return this.market.getCash()
-        })
-        //set cash
-        .then((cash) => {
-          this.cash = cash
-          // this.cash = cash;
-        })
-      this.$emit('dialogClosed')
-      // this.dialog = false;
-      // this.$rbank.controller.eventualMarketPrice(this.market.address)
-      //   .then((marketPrice) => {
-      //     this.price = marketPrice;
-      //     return this.market.eventualBorrowRate;
-      //   })
-      //   .then((borrowRate) => {
-      //     this.borrowRate = borrowRate;
-      //     return this.market.eventualCash;
-      //   })
-    }
-  },
-  components: {
-    BorrowDialog
-  },
   mounted() {
-    this.$parent.$parent.$parent.$on('reload', this.reset)
+    this.$parent.$parent.$parent.$on('reload', this.reset);
   },
   created() {
     // set data token this.data.market.borrowBalanceCurrent(this.account)
-    this.token = this.market.token
+    this.token = this.market.token;
     this.market
       .borrowBalanceCurrent(this.account)
       .then((balance) => {
-        this.borrowBalance = Number(balance)
-        return this.market.getPriceInDecimals()
+        this.borrowBalance = Number(balance);
+        return this.market.getPriceInDecimals();
       })
       // set price
       .then((price) => {
-        this.price = price
-        return this.market.getBorrowRate()
+        this.price = price;
+        return this.market.getBorrowRate();
       })
 
       // set borrow rate block
       .then((borrowRatePerBlock) => {
-        this.borrowRate = borrowRatePerBlock
-        return this.market.getCash()
+        this.borrowRate = borrowRatePerBlock;
+        return this.market.getCash();
       })
-      /********/
+      /** ***** */
 
       // this.market.eventualEvents
       //   .then((events) => {
@@ -196,8 +156,48 @@ export default {
       //   })
       .then((cash) => {
         // this.cash = cash;
-        this.cash = cash
-      })
-  }
+        this.cash = cash;
+      });
+  },
+  methods: {
+    reset() {
+      this.dialog = false
+      this.market
+        .borrowBalanceCurrent(this.account)
+        .then((balance) => {
+          this.borrowBalance = balance
+          return this.market.getPriceInDecimals()
+        })
+        // set price
+        .then((price) => {
+          this.price = price
+          return this.market.getBorrowRate()
+        })
+        // set borrow rate block
+        .then((borrowRatePerBlock) => {
+          this.borrowRate = borrowRatePerBlock
+          return this.market.getCash()
+        })
+        // set cash
+        .then((cash) => {
+          this.cash = cash
+          // this.cash = cash;
+        })
+      this.$emit('dialogClosed')
+      // this.dialog = false;
+      // this.$rbank.controller.eventualMarketPrice(this.market.address)
+      //   .then((marketPrice) => {
+      //     this.price = marketPrice;
+      //     return this.market.eventualBorrowRate;
+      //   })
+      //   .then((borrowRate) => {
+      //     this.borrowRate = borrowRate;
+      //     return this.market.eventualCash;
+      //   })
+    }
+  },
+  components: {
+    BorrowDialog
+  },
 }
 </script>

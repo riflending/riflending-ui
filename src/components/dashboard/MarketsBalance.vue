@@ -10,7 +10,7 @@
           :key="`market-balance-item-${idx}`"
           cols="4"
         >
-          <market-balance-item :marketAddress="market" />
+          <MarketBalanceItem :market-address="market" />
         </v-col>
       </v-row>
     </v-container>
@@ -22,13 +22,13 @@ import MarketBalanceItem from '@/components/dashboard/MarketBalanceItem.vue'
 
 export default {
   name: 'MarketsBalance',
+  components: {
+    MarketBalanceItem,
+  },
   data() {
     return {
-      marketAddresses: []
-    }
-  },
-  components: {
-    MarketBalanceItem
+      marketAddresses: [],
+    };
   },
   created() {
     this.$rbank.eventualMarkets.then((mkts) => {

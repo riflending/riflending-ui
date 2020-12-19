@@ -13,7 +13,7 @@
         {{ accountCutOff }}
       </v-btn>
     </div>
-    <v-btn class="ml-5 button" rounded color="#008CFF" id="connectButton" @click="connect" v-else>
+    <v-btn v-else id="connectButton" class="ml-5 button" rounded color="#008CFF" @click="connect">
       <span class="mx-5">Connect wallet</span>
     </v-btn>
   </v-app-bar>

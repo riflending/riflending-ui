@@ -10,7 +10,7 @@ export default class factoryContract {
   getSigner() {
     const format = Vue.web3Provider.formatter.formats
     const signer = Vue.web3Provider.getSigner()
-    //asign format to signer
+    // asign format to signer
     Object.assign(signer.provider.formatter, { format })
     return signer
   }
@@ -29,30 +29,26 @@ export default class factoryContract {
 
   getContract(name) {
     if (this.validateContractName(name)) {
-      return this.createContract(this.addressContract[name], abi[name], Vue.web3Provider)
+      return this.createContract(this.addressContract[name], abi[name], Vue.web3Provider);
     }
-    return
   }
 
   getContractToken(name) {
     if (this.validateContractName(name)) {
-      return this.createContract(this.addressContract[name], abi['Erc20'], Vue.web3Provider)
+      return this.createContract(this.addressContract[name], abi.Erc20, Vue.web3Provider);
     }
-    return
   }
 
   getContractCtoken(name) {
     if (this.validateContractName(name)) {
-      let abiCtoken = name == 'cRBTC' ? abi['cRBTC'] : abi['cErc20']
-      return this.createContract(this.addressContract[name], abiCtoken, Vue.web3Provider)
+      const abiCtoken = name == 'cRBTC' ? abi.cRBTC : abi.cErc20
+      return this.createContract(this.addressContract[name], abiCtoken, Vue.web3Provider);
     }
-    return
   }
 
   getContractByNameAndAbiName(nameContract, nameAbi) {
     if (this.validateContractName(nameContract) && abi.hasOwnProperty(nameAbi)) {
-      return this.createContract(this.addressContract[nameContract], abi[nameAbi], Vue.web3Provider)
+      return this.createContract(this.addressContract[nameContract], abi[nameAbi], Vue.web3Provider);
     }
-    return
   }
 }

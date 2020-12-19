@@ -110,40 +110,39 @@ export default {
       account: (state) => state.Session.account
     })
   },
+  created() {
+    this.getChartData('week');
+  },
   methods: {
     mapTimeToLabel(period, date) {
       switch (period) {
         case constants.PERIOD_DAY:
-          return date
+          return date;
         case constants.PERIOD_WEEK:
-          return this.weekLabels[date.getDay()].value
+          return this.weekLabels[date.getDay()].value;
         case constants.PERIOD_MONTH:
-          return date
+          return date;
         case constants.PERIOD_YEAR:
-          return this.monthLabels[date.getMonth()].value
+          return this.monthLabels[date.getMonth()].value;
         default:
-          return this.weekLabels[date.getDay()].value
+          return this.weekLabels[date.getDay()].value;
       }
     },
     getChartData(period) {
-      this.period = period
+      this.period = period;
       this.$rbank.controller
         .getOverallBalance(this.account, period)
-        .then((overallBalance) =>
-          overallBalance.map(([date, balance]) => [this.mapTimeToLabel(period, date), balance])
+        .then((overallBalance) => overallBalance.map(([date, balance]) => [this.mapTimeToLabel(period, date), balance]),
         )
         .then((overallBalance) => {
-          overallBalance.reverse()
-          this.chartData = Array.from(new Set(overallBalance.map(JSON.stringify)), JSON.parse)
-          this.chartData.unshift(['Time', 'Balance'])
-        })
-    }
+          overallBalance.reverse();
+          this.chartData = Array.from(new Set(overallBalance.map(JSON.stringify)), JSON.parse);
+          this.chartData.unshift(['Time', 'Balance']);
+        });
+    },
   },
   components: {
-    GChart
+    GChart,
   },
-  created() {
-    this.getChartData('week')
-  }
 }
 </script>

@@ -8,8 +8,8 @@
       </v-col>
       <v-col cols="9" class="d-flex align-center">
         <v-text-field
-          class="dataInput"
           v-model="tokenAddress"
+          class="dataInput"
           type="text"
           solo
           flat
@@ -27,8 +27,8 @@
         <v-row class="ma-0">
           <v-col>
             <v-text-field
-              class="d-flex align-start"
               v-model="marketPrice"
+              class="d-flex align-start"
               type="number"
               solo
               flat
@@ -106,7 +106,7 @@
         Next
       </v-btn>
     </v-row>
-    <v-snackbar centered v-model="showSnackbar" color="error" elevation="24" :multi-line="true">
+    <v-snackbar v-model="showSnackbar" centered color="error" elevation="24" :multi-line="true">
       {{ error }}
     </v-snackbar>
   </div>
@@ -151,63 +151,63 @@ export default {
       )
     }
   },
+  watch: {
+    advancedFlag() {
+      if (this.advancedFlag) {
+        this.advanced.icon = 'arrow_drop_up';
+        this.advanced.text = 'Advanced Market Details';
+      } else {
+        this.advanced.icon = 'arrow_drop_down';
+        this.advanced.text = 'Advanced';
+        this.blocksPerYear = 1e6;
+        this.utilizationRate = 20;
+      }
+    },
+  },
   methods: {
     reset() {
-      this.advancedFlag = false
-      this.tokenAddress = null
-      this.marketPrice = 0
-      this.baseBorrowApr = 0
-      this.blocksPerYear = 1e6
-      this.utilizationRate = 20
-      this.showSnackbar = false
-      this.marketExists = false
+      this.advancedFlag = false;
+      this.tokenAddress = null;
+      this.marketPrice = 0;
+      this.baseBorrowApr = 0;
+      this.blocksPerYear = 1e6;
+      this.utilizationRate = 20;
+      this.showSnackbar = false;
+      this.marketExists = false;
     },
     async checkMarketExistence() {
       await this.$rbank.marketExistsByToken(this.tokenAddress).then((marketExists) => {
-        this.marketExists = marketExists
-      })
+        this.marketExists = marketExists;
+      });
     },
     async createMarket() {
-      await this.checkMarketExistence()
+      await this.checkMarketExistence();
       if (!this.marketExists) {
-        let marketAddress
-        this.$emit('wait')
+        let marketAddress;
+        this.$emit('wait');
         await this.$rbank.Market.create(
           this.tokenAddress,
           this.baseBorrowApr,
           this.blocksPerYear,
-          this.utilizationRate
+          this.utilizationRate,
         )
           .then((createdMarketAddress) => {
-            marketAddress = createdMarketAddress
-            return new this.$rbank.Market(createdMarketAddress)
+            marketAddress = createdMarketAddress;
+            return new this.$rbank.Market(createdMarketAddress);
           })
           .then((market) => market.setControllerAddress(this.$rbank.controller.address))
           .then(() => this.$rbank.controller.addMarket(marketAddress))
           .then(() => this.$rbank.controller.setMarketPrice(marketAddress, this.marketPrice))
           .then(() => this.$emit('created', { marketAddress }))
           .catch(() => {
-            this.$emit('error')
-          })
+            this.$emit('error');
+          });
       } else {
-        this.error = 'There is already a market for the token address entered!'
-        this.showSnackbar = true
-        setTimeout(() => this.reset(), 3000)
+        this.error = 'There is already a market for the token address entered!';
+        this.showSnackbar = true;
+        setTimeout(() => this.reset(), 3000);
       }
-    }
+    },
   },
-  watch: {
-    advancedFlag() {
-      if (this.advancedFlag) {
-        this.advanced.icon = 'arrow_drop_up'
-        this.advanced.text = 'Advanced Market Details'
-      } else {
-        this.advanced.icon = 'arrow_drop_down'
-        this.advanced.text = 'Advanced'
-        this.blocksPerYear = 1e6
-        this.utilizationRate = 20
-      }
-    }
-  }
 }
 </script>

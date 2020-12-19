@@ -24,7 +24,7 @@ export const constants = {
 
 export const address = {
   testnet: {
-    //rsk testnet deployed contracts
+    // rsk testnet deployed contracts
     Unitroller: '0x51401d51f7cfc1a91f88a973edd0762d2021bb5b',
     MultiSigWallet: '0x0fce7d2e8e0a92ba6068a54ed2a7e628ea022e72',
     PriceOracleProxy: '0x0d0006f3f700a468b6467615f2fb9efdec4e4e33',
@@ -46,7 +46,7 @@ export const address = {
     rDAI: '0x0d86fca9be034a363cf12c9834af08d54a10451c'
   },
   mainnet: {
-    /*TODO - uptate this to RSK mainnet addresses*/
+    /* TODO - uptate this to RSK mainnet addresses */
     Unitroller: '0x51401d51f7cfc1a91f88a973edd0762d2021bb5b',
     MultiSigWallet: '0x0fce7d2e8e0a92ba6068a54ed2a7e628ea022e72',
     PriceOracleProxy: '0x0d0006f3f700a468b6467615f2fb9efdec4e4e33',
@@ -866,10 +866,30 @@ export const abi = {
     {
       anonymous: false,
       inputs: [
-        { indexed: false, internalType: 'uint256', name: 'cashPrior', type: 'uint256' },
-        { indexed: false, internalType: 'uint256', name: 'interestAccumulated', type: 'uint256' },
-        { indexed: false, internalType: 'uint256', name: 'borrowIndex', type: 'uint256' },
-        { indexed: false, internalType: 'uint256', name: 'totalBorrows', type: 'uint256' }
+        {
+          indexed: false,
+          internalType: 'uint256',
+          name: 'cashPrior',
+          type: 'uint256',
+        },
+        {
+          indexed: false,
+          internalType: 'uint256',
+          name: 'interestAccumulated',
+          type: 'uint256',
+        },
+        {
+          indexed: false,
+          internalType: 'uint256',
+          name: 'borrowIndex',
+          type: 'uint256',
+        },
+        {
+          indexed: false,
+          internalType: 'uint256',
+          name: 'totalBorrows',
+          type: 'uint256',
+        },
       ],
       name: 'AccrueInterest',
       type: 'event'
@@ -877,9 +897,24 @@ export const abi = {
     {
       anonymous: false,
       inputs: [
-        { indexed: true, internalType: 'address', name: 'owner', type: 'address' },
-        { indexed: true, internalType: 'address', name: 'spender', type: 'address' },
-        { indexed: false, internalType: 'uint256', name: 'amount', type: 'uint256' }
+        {
+          indexed: true,
+          internalType: 'address',
+          name: 'owner',
+          type: 'address',
+        },
+        {
+          indexed: true,
+          internalType: 'address',
+          name: 'spender',
+          type: 'address',
+        },
+        {
+          indexed: false,
+          internalType: 'uint256',
+          name: 'amount',
+          type: 'uint256',
+        },
       ],
       name: 'Approval',
       type: 'event'
@@ -887,10 +922,30 @@ export const abi = {
     {
       anonymous: false,
       inputs: [
-        { indexed: false, internalType: 'address', name: 'borrower', type: 'address' },
-        { indexed: false, internalType: 'uint256', name: 'borrowAmount', type: 'uint256' },
-        { indexed: false, internalType: 'uint256', name: 'accountBorrows', type: 'uint256' },
-        { indexed: false, internalType: 'uint256', name: 'totalBorrows', type: 'uint256' }
+        {
+          indexed: false,
+          internalType: 'address',
+          name: 'borrower',
+          type: 'address',
+        },
+        {
+          indexed: false,
+          internalType: 'uint256',
+          name: 'borrowAmount',
+          type: 'uint256',
+        },
+        {
+          indexed: false,
+          internalType: 'uint256',
+          name: 'accountBorrows',
+          type: 'uint256',
+        },
+        {
+          indexed: false,
+          internalType: 'uint256',
+          name: 'totalBorrows',
+          type: 'uint256',
+        },
       ],
       name: 'Borrow',
       type: 'event'
@@ -898,9 +953,24 @@ export const abi = {
     {
       anonymous: false,
       inputs: [
-        { indexed: false, internalType: 'uint256', name: 'error', type: 'uint256' },
-        { indexed: false, internalType: 'uint256', name: 'info', type: 'uint256' },
-        { indexed: false, internalType: 'uint256', name: 'detail', type: 'uint256' }
+        {
+          indexed: false,
+          internalType: 'uint256',
+          name: 'error',
+          type: 'uint256',
+        },
+        {
+          indexed: false,
+          internalType: 'uint256',
+          name: 'info',
+          type: 'uint256',
+        },
+        {
+          indexed: false,
+          internalType: 'uint256',
+          name: 'detail',
+          type: 'uint256',
+        },
       ],
       name: 'Failure',
       type: 'event'
@@ -908,11 +978,36 @@ export const abi = {
     {
       anonymous: false,
       inputs: [
-        { indexed: false, internalType: 'address', name: 'liquidator', type: 'address' },
-        { indexed: false, internalType: 'address', name: 'borrower', type: 'address' },
-        { indexed: false, internalType: 'uint256', name: 'repayAmount', type: 'uint256' },
-        { indexed: false, internalType: 'address', name: 'cTokenCollateral', type: 'address' },
-        { indexed: false, internalType: 'uint256', name: 'seizeTokens', type: 'uint256' }
+        {
+          indexed: false,
+          internalType: 'address',
+          name: 'liquidator',
+          type: 'address',
+        },
+        {
+          indexed: false,
+          internalType: 'address',
+          name: 'borrower',
+          type: 'address',
+        },
+        {
+          indexed: false,
+          internalType: 'uint256',
+          name: 'repayAmount',
+          type: 'uint256',
+        },
+        {
+          indexed: false,
+          internalType: 'address',
+          name: 'cTokenCollateral',
+          type: 'address',
+        },
+        {
+          indexed: false,
+          internalType: 'uint256',
+          name: 'seizeTokens',
+          type: 'uint256',
+        },
       ],
       name: 'LiquidateBorrow',
       type: 'event'
@@ -920,9 +1015,24 @@ export const abi = {
     {
       anonymous: false,
       inputs: [
-        { indexed: false, internalType: 'address', name: 'minter', type: 'address' },
-        { indexed: false, internalType: 'uint256', name: 'mintAmount', type: 'uint256' },
-        { indexed: false, internalType: 'uint256', name: 'mintTokens', type: 'uint256' }
+        {
+          indexed: false,
+          internalType: 'address',
+          name: 'minter',
+          type: 'address',
+        },
+        {
+          indexed: false,
+          internalType: 'uint256',
+          name: 'mintAmount',
+          type: 'uint256',
+        },
+        {
+          indexed: false,
+          internalType: 'uint256',
+          name: 'mintTokens',
+          type: 'uint256',
+        },
       ],
       name: 'Mint',
       type: 'event'
@@ -930,8 +1040,18 @@ export const abi = {
     {
       anonymous: false,
       inputs: [
-        { indexed: false, internalType: 'address', name: 'oldAdmin', type: 'address' },
-        { indexed: false, internalType: 'address', name: 'newAdmin', type: 'address' }
+        {
+          indexed: false,
+          internalType: 'address',
+          name: 'oldAdmin',
+          type: 'address',
+        },
+        {
+          indexed: false,
+          internalType: 'address',
+          name: 'newAdmin',
+          type: 'address',
+        },
       ],
       name: 'NewAdmin',
       type: 'event'
@@ -977,8 +1097,18 @@ export const abi = {
     {
       anonymous: false,
       inputs: [
-        { indexed: false, internalType: 'address', name: 'oldPendingAdmin', type: 'address' },
-        { indexed: false, internalType: 'address', name: 'newPendingAdmin', type: 'address' }
+        {
+          indexed: false,
+          internalType: 'address',
+          name: 'oldPendingAdmin',
+          type: 'address',
+        },
+        {
+          indexed: false,
+          internalType: 'address',
+          name: 'newPendingAdmin',
+          type: 'address',
+        },
       ],
       name: 'NewPendingAdmin',
       type: 'event'
@@ -1005,9 +1135,24 @@ export const abi = {
     {
       anonymous: false,
       inputs: [
-        { indexed: false, internalType: 'address', name: 'redeemer', type: 'address' },
-        { indexed: false, internalType: 'uint256', name: 'redeemAmount', type: 'uint256' },
-        { indexed: false, internalType: 'uint256', name: 'redeemTokens', type: 'uint256' }
+        {
+          indexed: false,
+          internalType: 'address',
+          name: 'redeemer',
+          type: 'address',
+        },
+        {
+          indexed: false,
+          internalType: 'uint256',
+          name: 'redeemAmount',
+          type: 'uint256',
+        },
+        {
+          indexed: false,
+          internalType: 'uint256',
+          name: 'redeemTokens',
+          type: 'uint256',
+        },
       ],
       name: 'Redeem',
       type: 'event'
@@ -1015,11 +1160,36 @@ export const abi = {
     {
       anonymous: false,
       inputs: [
-        { indexed: false, internalType: 'address', name: 'payer', type: 'address' },
-        { indexed: false, internalType: 'address', name: 'borrower', type: 'address' },
-        { indexed: false, internalType: 'uint256', name: 'repayAmount', type: 'uint256' },
-        { indexed: false, internalType: 'uint256', name: 'accountBorrows', type: 'uint256' },
-        { indexed: false, internalType: 'uint256', name: 'totalBorrows', type: 'uint256' }
+        {
+          indexed: false,
+          internalType: 'address',
+          name: 'payer',
+          type: 'address',
+        },
+        {
+          indexed: false,
+          internalType: 'address',
+          name: 'borrower',
+          type: 'address',
+        },
+        {
+          indexed: false,
+          internalType: 'uint256',
+          name: 'repayAmount',
+          type: 'uint256',
+        },
+        {
+          indexed: false,
+          internalType: 'uint256',
+          name: 'accountBorrows',
+          type: 'uint256',
+        },
+        {
+          indexed: false,
+          internalType: 'uint256',
+          name: 'totalBorrows',
+          type: 'uint256',
+        },
       ],
       name: 'RepayBorrow',
       type: 'event'
@@ -1027,9 +1197,24 @@ export const abi = {
     {
       anonymous: false,
       inputs: [
-        { indexed: false, internalType: 'address', name: 'benefactor', type: 'address' },
-        { indexed: false, internalType: 'uint256', name: 'addAmount', type: 'uint256' },
-        { indexed: false, internalType: 'uint256', name: 'newTotalReserves', type: 'uint256' }
+        {
+          indexed: false,
+          internalType: 'address',
+          name: 'benefactor',
+          type: 'address',
+        },
+        {
+          indexed: false,
+          internalType: 'uint256',
+          name: 'addAmount',
+          type: 'uint256',
+        },
+        {
+          indexed: false,
+          internalType: 'uint256',
+          name: 'newTotalReserves',
+          type: 'uint256',
+        },
       ],
       name: 'ReservesAdded',
       type: 'event'
@@ -1037,9 +1222,24 @@ export const abi = {
     {
       anonymous: false,
       inputs: [
-        { indexed: false, internalType: 'address', name: 'admin', type: 'address' },
-        { indexed: false, internalType: 'uint256', name: 'reduceAmount', type: 'uint256' },
-        { indexed: false, internalType: 'uint256', name: 'newTotalReserves', type: 'uint256' }
+        {
+          indexed: false,
+          internalType: 'address',
+          name: 'admin',
+          type: 'address',
+        },
+        {
+          indexed: false,
+          internalType: 'uint256',
+          name: 'reduceAmount',
+          type: 'uint256',
+        },
+        {
+          indexed: false,
+          internalType: 'uint256',
+          name: 'newTotalReserves',
+          type: 'uint256',
+        },
       ],
       name: 'ReservesReduced',
       type: 'event'
@@ -1047,9 +1247,24 @@ export const abi = {
     {
       anonymous: false,
       inputs: [
-        { indexed: true, internalType: 'address', name: 'from', type: 'address' },
-        { indexed: true, internalType: 'address', name: 'to', type: 'address' },
-        { indexed: false, internalType: 'uint256', name: 'amount', type: 'uint256' }
+        {
+          indexed: true,
+          internalType: 'address',
+          name: 'from',
+          type: 'address',
+        },
+        {
+          indexed: true,
+          internalType: 'address',
+          name: 'to',
+          type: 'address',
+        },
+        {
+          indexed: false,
+          internalType: 'uint256',
+          name: 'amount',
+          type: 'uint256',
+        },
       ],
       name: 'Transfer',
       type: 'event'
@@ -1512,9 +1727,24 @@ export const abi = {
     {
       anonymous: false,
       inputs: [
-        { indexed: true, internalType: 'address', name: 'owner', type: 'address' },
-        { indexed: true, internalType: 'address', name: 'spender', type: 'address' },
-        { indexed: false, internalType: 'uint256', name: 'amount', type: 'uint256' }
+        {
+          indexed: true,
+          internalType: 'address',
+          name: 'owner',
+          type: 'address',
+        },
+        {
+          indexed: true,
+          internalType: 'address',
+          name: 'spender',
+          type: 'address',
+        },
+        {
+          indexed: false,
+          internalType: 'uint256',
+          name: 'amount',
+          type: 'uint256',
+        },
       ],
       name: 'Approval',
       type: 'event',
@@ -1523,9 +1753,24 @@ export const abi = {
     {
       anonymous: false,
       inputs: [
-        { indexed: true, internalType: 'address', name: 'delegator', type: 'address' },
-        { indexed: true, internalType: 'address', name: 'fromDelegate', type: 'address' },
-        { indexed: true, internalType: 'address', name: 'toDelegate', type: 'address' }
+        {
+          indexed: true,
+          internalType: 'address',
+          name: 'delegator',
+          type: 'address',
+        },
+        {
+          indexed: true,
+          internalType: 'address',
+          name: 'fromDelegate',
+          type: 'address',
+        },
+        {
+          indexed: true,
+          internalType: 'address',
+          name: 'toDelegate',
+          type: 'address',
+        },
       ],
       name: 'DelegateChanged',
       type: 'event',
@@ -1534,9 +1779,24 @@ export const abi = {
     {
       anonymous: false,
       inputs: [
-        { indexed: true, internalType: 'address', name: 'delegate', type: 'address' },
-        { indexed: false, internalType: 'uint256', name: 'previousBalance', type: 'uint256' },
-        { indexed: false, internalType: 'uint256', name: 'newBalance', type: 'uint256' }
+        {
+          indexed: true,
+          internalType: 'address',
+          name: 'delegate',
+          type: 'address',
+        },
+        {
+          indexed: false,
+          internalType: 'uint256',
+          name: 'previousBalance',
+          type: 'uint256',
+        },
+        {
+          indexed: false,
+          internalType: 'uint256',
+          name: 'newBalance',
+          type: 'uint256',
+        },
       ],
       name: 'DelegateVotesChanged',
       type: 'event',
@@ -1545,9 +1805,24 @@ export const abi = {
     {
       anonymous: false,
       inputs: [
-        { indexed: true, internalType: 'address', name: 'from', type: 'address' },
-        { indexed: true, internalType: 'address', name: 'to', type: 'address' },
-        { indexed: false, internalType: 'uint256', name: 'amount', type: 'uint256' }
+        {
+          indexed: true,
+          internalType: 'address',
+          name: 'from',
+          type: 'address',
+        },
+        {
+          indexed: true,
+          internalType: 'address',
+          name: 'to',
+          type: 'address',
+        },
+        {
+          indexed: false,
+          internalType: 'uint256',
+          name: 'amount',
+          type: 'uint256',
+        },
       ],
       name: 'Transfer',
       type: 'event',
@@ -1787,7 +2062,14 @@ export const abi = {
     },
     {
       anonymous: false,
-      inputs: [{ indexed: false, internalType: 'uint256', name: 'id', type: 'uint256' }],
+      inputs: [
+        {
+          indexed: false,
+          internalType: 'uint256',
+          name: 'id',
+          type: 'uint256'
+        }
+      ],
       name: 'ProposalCanceled',
       type: 'event',
       signature: '0x789cf55be980739dad1d0699b93b58e806b51c9d96619bfa8fe0a28abaa7b30c'
@@ -1795,15 +2077,60 @@ export const abi = {
     {
       anonymous: false,
       inputs: [
-        { indexed: false, internalType: 'uint256', name: 'id', type: 'uint256' },
-        { indexed: false, internalType: 'address', name: 'proposer', type: 'address' },
-        { indexed: false, internalType: 'address[]', name: 'targets', type: 'address[]' },
-        { indexed: false, internalType: 'uint256[]', name: 'values', type: 'uint256[]' },
-        { indexed: false, internalType: 'string[]', name: 'signatures', type: 'string[]' },
-        { indexed: false, internalType: 'bytes[]', name: 'calldatas', type: 'bytes[]' },
-        { indexed: false, internalType: 'uint256', name: 'startBlock', type: 'uint256' },
-        { indexed: false, internalType: 'uint256', name: 'endBlock', type: 'uint256' },
-        { indexed: false, internalType: 'string', name: 'description', type: 'string' }
+        {
+          indexed: false,
+          internalType: 'uint256',
+          name: 'id',
+          type: 'uint256',
+        },
+        {
+          indexed: false,
+          internalType: 'address',
+          name: 'proposer',
+          type: 'address',
+        },
+        {
+          indexed: false,
+          internalType: 'address[]',
+          name: 'targets',
+          type: 'address[]',
+        },
+        {
+          indexed: false,
+          internalType: 'uint256[]',
+          name: 'values',
+          type: 'uint256[]',
+        },
+        {
+          indexed: false,
+          internalType: 'string[]',
+          name: 'signatures',
+          type: 'string[]',
+        },
+        {
+          indexed: false,
+          internalType: 'bytes[]',
+          name: 'calldatas',
+          type: 'bytes[]',
+        },
+        {
+          indexed: false,
+          internalType: 'uint256',
+          name: 'startBlock',
+          type: 'uint256',
+        },
+        {
+          indexed: false,
+          internalType: 'uint256',
+          name: 'endBlock',
+          type: 'uint256',
+        },
+        {
+          indexed: false,
+          internalType: 'string',
+          name: 'description',
+          type: 'string',
+        },
       ],
       name: 'ProposalCreated',
       type: 'event',
@@ -1811,7 +2138,14 @@ export const abi = {
     },
     {
       anonymous: false,
-      inputs: [{ indexed: false, internalType: 'uint256', name: 'id', type: 'uint256' }],
+      inputs: [
+        {
+          indexed: false,
+          internalType: 'uint256',
+          name: 'id',
+          type: 'uint256'
+        }
+      ],
       name: 'ProposalExecuted',
       type: 'event',
       signature: '0x712ae1383f79ac853f8d882153778e0260ef8f03b504e2866e0593e04d2b291f'
@@ -1819,8 +2153,18 @@ export const abi = {
     {
       anonymous: false,
       inputs: [
-        { indexed: false, internalType: 'uint256', name: 'id', type: 'uint256' },
-        { indexed: false, internalType: 'uint256', name: 'eta', type: 'uint256' }
+        {
+          indexed: false,
+          internalType: 'uint256',
+          name: 'id',
+          type: 'uint256',
+        },
+        {
+          indexed: false,
+          internalType: 'uint256',
+          name: 'eta',
+          type: 'uint256',
+        },
       ],
       name: 'ProposalQueued',
       type: 'event',
@@ -1829,10 +2173,30 @@ export const abi = {
     {
       anonymous: false,
       inputs: [
-        { indexed: false, internalType: 'address', name: 'voter', type: 'address' },
-        { indexed: false, internalType: 'uint256', name: 'proposalId', type: 'uint256' },
-        { indexed: false, internalType: 'bool', name: 'support', type: 'bool' },
-        { indexed: false, internalType: 'uint256', name: 'votes', type: 'uint256' }
+        {
+          indexed: false,
+          internalType: 'address',
+          name: 'voter',
+          type: 'address',
+        },
+        {
+          indexed: false,
+          internalType: 'uint256',
+          name: 'proposalId',
+          type: 'uint256',
+        },
+        {
+          indexed: false,
+          internalType: 'bool',
+          name: 'support',
+          type: 'bool',
+        },
+        {
+          indexed: false,
+          internalType: 'uint256',
+          name: 'votes',
+          type: 'uint256',
+        },
       ],
       name: 'VoteCast',
       type: 'event',
@@ -2160,13 +2524,33 @@ export const abi = {
     }
   ],
   Comptroller: [
-    { inputs: [], payable: false, stateMutability: 'nonpayable', type: 'constructor' },
+    {
+      inputs: [],
+      payable: false,
+      stateMutability: 'nonpayable',
+      type: 'constructor',
+    },
     {
       anonymous: false,
       inputs: [
-        { indexed: false, internalType: 'contract CToken', name: 'cToken', type: 'address' },
-        { indexed: false, internalType: 'string', name: 'action', type: 'string' },
-        { indexed: false, internalType: 'bool', name: 'pauseState', type: 'bool' }
+        {
+          indexed: false,
+          internalType: 'contract CToken',
+          name: 'cToken',
+          type: 'address',
+        },
+        {
+          indexed: false,
+          internalType: 'string',
+          name: 'action',
+          type: 'string',
+        },
+        {
+          indexed: false,
+          internalType: 'bool',
+          name: 'pauseState',
+          type: 'bool',
+        },
       ],
       name: 'ActionPaused',
       type: 'event'
@@ -2174,8 +2558,18 @@ export const abi = {
     {
       anonymous: false,
       inputs: [
-        { indexed: true, internalType: 'contract CToken', name: 'cToken', type: 'address' },
-        { indexed: false, internalType: 'uint256', name: 'newSpeed', type: 'uint256' }
+        {
+          indexed: true,
+          internalType: 'contract CToken',
+          name: 'cToken',
+          type: 'address',
+        },
+        {
+          indexed: false,
+          internalType: 'uint256',
+          name: 'newSpeed',
+          type: 'uint256',
+        },
       ],
       name: 'CompSpeedUpdated',
       type: 'event'
@@ -2183,10 +2577,30 @@ export const abi = {
     {
       anonymous: false,
       inputs: [
-        { indexed: true, internalType: 'contract CToken', name: 'cToken', type: 'address' },
-        { indexed: true, internalType: 'address', name: 'borrower', type: 'address' },
-        { indexed: false, internalType: 'uint256', name: 'compDelta', type: 'uint256' },
-        { indexed: false, internalType: 'uint256', name: 'compBorrowIndex', type: 'uint256' }
+        {
+          indexed: true,
+          internalType: 'contract CToken',
+          name: 'cToken',
+          type: 'address',
+        },
+        {
+          indexed: true,
+          internalType: 'address',
+          name: 'borrower',
+          type: 'address',
+        },
+        {
+          indexed: false,
+          internalType: 'uint256',
+          name: 'compDelta',
+          type: 'uint256',
+        },
+        {
+          indexed: false,
+          internalType: 'uint256',
+          name: 'compBorrowIndex',
+          type: 'uint256',
+        },
       ],
       name: 'DistributedBorrowerComp',
       type: 'event'
@@ -2194,10 +2608,30 @@ export const abi = {
     {
       anonymous: false,
       inputs: [
-        { indexed: true, internalType: 'contract CToken', name: 'cToken', type: 'address' },
-        { indexed: true, internalType: 'address', name: 'supplier', type: 'address' },
-        { indexed: false, internalType: 'uint256', name: 'compDelta', type: 'uint256' },
-        { indexed: false, internalType: 'uint256', name: 'compSupplyIndex', type: 'uint256' }
+        {
+          indexed: true,
+          internalType: 'contract CToken',
+          name: 'cToken',
+          type: 'address',
+        },
+        {
+          indexed: true,
+          internalType: 'address',
+          name: 'supplier',
+          type: 'address',
+        },
+        {
+          indexed: false,
+          internalType: 'uint256',
+          name: 'compDelta',
+          type: 'uint256',
+        },
+        {
+          indexed: false,
+          internalType: 'uint256',
+          name: 'compSupplyIndex',
+          type: 'uint256',
+        },
       ],
       name: 'DistributedSupplierComp',
       type: 'event'
@@ -2205,9 +2639,24 @@ export const abi = {
     {
       anonymous: false,
       inputs: [
-        { indexed: false, internalType: 'uint256', name: 'error', type: 'uint256' },
-        { indexed: false, internalType: 'uint256', name: 'info', type: 'uint256' },
-        { indexed: false, internalType: 'uint256', name: 'detail', type: 'uint256' }
+        {
+          indexed: false,
+          internalType: 'uint256',
+          name: 'error',
+          type: 'uint256',
+        },
+        {
+          indexed: false,
+          internalType: 'uint256',
+          name: 'info',
+          type: 'uint256',
+        },
+        {
+          indexed: false,
+          internalType: 'uint256',
+          name: 'detail',
+          type: 'uint256',
+        },
       ],
       name: 'Failure',
       type: 'event'
@@ -2215,8 +2664,18 @@ export const abi = {
     {
       anonymous: false,
       inputs: [
-        { indexed: false, internalType: 'contract CToken', name: 'cToken', type: 'address' },
-        { indexed: false, internalType: 'bool', name: 'isComped', type: 'bool' }
+        {
+          indexed: false,
+          internalType: 'contract CToken',
+          name: 'cToken',
+          type: 'address',
+        },
+        {
+          indexed: false,
+          internalType: 'bool',
+          name: 'isComped',
+          type: 'bool',
+        },
       ],
       name: 'MarketComped',
       type: 'event'
@@ -2224,8 +2683,18 @@ export const abi = {
     {
       anonymous: false,
       inputs: [
-        { indexed: false, internalType: 'contract CToken', name: 'cToken', type: 'address' },
-        { indexed: false, internalType: 'address', name: 'account', type: 'address' }
+        {
+          indexed: false,
+          internalType: 'contract CToken',
+          name: 'cToken',
+          type: 'address',
+        },
+        {
+          indexed: false,
+          internalType: 'address',
+          name: 'account',
+          type: 'address',
+        },
       ],
       name: 'MarketEntered',
       type: 'event'
@@ -2233,8 +2702,18 @@ export const abi = {
     {
       anonymous: false,
       inputs: [
-        { indexed: false, internalType: 'contract CToken', name: 'cToken', type: 'address' },
-        { indexed: false, internalType: 'address', name: 'account', type: 'address' }
+        {
+          indexed: false,
+          internalType: 'contract CToken',
+          name: 'cToken',
+          type: 'address',
+        },
+        {
+          indexed: false,
+          internalType: 'address',
+          name: 'account',
+          type: 'address',
+        },
       ],
       name: 'MarketExited',
       type: 'event'
@@ -2242,7 +2721,12 @@ export const abi = {
     {
       anonymous: false,
       inputs: [
-        { indexed: false, internalType: 'contract CToken', name: 'cToken', type: 'address' }
+        {
+          indexed: false,
+          internalType: 'contract CToken',
+          name: 'cToken',
+          type: 'address',
+        },
       ],
       name: 'MarketListed',
       type: 'event'
@@ -2250,8 +2734,18 @@ export const abi = {
     {
       anonymous: false,
       inputs: [
-        { indexed: true, internalType: 'contract CToken', name: 'cToken', type: 'address' },
-        { indexed: false, internalType: 'uint256', name: 'newBorrowCap', type: 'uint256' }
+        {
+          indexed: true,
+          internalType: 'contract CToken',
+          name: 'cToken',
+          type: 'address',
+        },
+        {
+          indexed: false,
+          internalType: 'uint256',
+          name: 'newBorrowCap',
+          type: 'uint256',
+        },
       ],
       name: 'NewBorrowCap',
       type: 'event'
@@ -2259,8 +2753,18 @@ export const abi = {
     {
       anonymous: false,
       inputs: [
-        { indexed: false, internalType: 'address', name: 'oldBorrowCapGuardian', type: 'address' },
-        { indexed: false, internalType: 'address', name: 'newBorrowCapGuardian', type: 'address' }
+        {
+          indexed: false,
+          internalType: 'address',
+          name: 'oldBorrowCapGuardian',
+          type: 'address',
+        },
+        {
+          indexed: false,
+          internalType: 'address',
+          name: 'newBorrowCapGuardian',
+          type: 'address',
+        },
       ],
       name: 'NewBorrowCapGuardian',
       type: 'event'
@@ -2274,7 +2778,12 @@ export const abi = {
           name: 'oldCloseFactorMantissa',
           type: 'uint256'
         },
-        { indexed: false, internalType: 'uint256', name: 'newCloseFactorMantissa', type: 'uint256' }
+        {
+          indexed: false,
+          internalType: 'uint256',
+          name: 'newCloseFactorMantissa',
+          type: 'uint256',
+        },
       ],
       name: 'NewCloseFactor',
       type: 'event'
@@ -2282,7 +2791,12 @@ export const abi = {
     {
       anonymous: false,
       inputs: [
-        { indexed: false, internalType: 'contract CToken', name: 'cToken', type: 'address' },
+        {
+          indexed: false,
+          internalType: 'contract CToken',
+          name: 'cToken',
+          type: 'address',
+        },
         {
           indexed: false,
           internalType: 'uint256',
@@ -2302,8 +2816,18 @@ export const abi = {
     {
       anonymous: false,
       inputs: [
-        { indexed: false, internalType: 'uint256', name: 'oldCompRate', type: 'uint256' },
-        { indexed: false, internalType: 'uint256', name: 'newCompRate', type: 'uint256' }
+        {
+          indexed: false,
+          internalType: 'uint256',
+          name: 'oldCompRate',
+          type: 'uint256',
+        },
+        {
+          indexed: false,
+          internalType: 'uint256',
+          name: 'newCompRate',
+          type: 'uint256',
+        },
       ],
       name: 'NewCompRate',
       type: 'event'
@@ -2330,8 +2854,18 @@ export const abi = {
     {
       anonymous: false,
       inputs: [
-        { indexed: false, internalType: 'uint256', name: 'oldMaxAssets', type: 'uint256' },
-        { indexed: false, internalType: 'uint256', name: 'newMaxAssets', type: 'uint256' }
+        {
+          indexed: false,
+          internalType: 'uint256',
+          name: 'oldMaxAssets',
+          type: 'uint256',
+        },
+        {
+          indexed: false,
+          internalType: 'uint256',
+          name: 'newMaxAssets',
+          type: 'uint256',
+        },
       ],
       name: 'NewMaxAssets',
       type: 'event'
@@ -2339,8 +2873,18 @@ export const abi = {
     {
       anonymous: false,
       inputs: [
-        { indexed: false, internalType: 'address', name: 'oldPauseGuardian', type: 'address' },
-        { indexed: false, internalType: 'address', name: 'newPauseGuardian', type: 'address' }
+        {
+          indexed: false,
+          internalType: 'address',
+          name: 'oldPauseGuardian',
+          type: 'address',
+        },
+        {
+          indexed: false,
+          internalType: 'address',
+          name: 'newPauseGuardian',
+          type: 'address',
+        },
       ],
       name: 'NewPauseGuardian',
       type: 'event'
@@ -3520,10 +4064,30 @@ export const abi = {
     {
       anonymous: false,
       inputs: [
-        { indexed: false, internalType: 'uint256', name: 'cashPrior', type: 'uint256' },
-        { indexed: false, internalType: 'uint256', name: 'interestAccumulated', type: 'uint256' },
-        { indexed: false, internalType: 'uint256', name: 'borrowIndex', type: 'uint256' },
-        { indexed: false, internalType: 'uint256', name: 'totalBorrows', type: 'uint256' }
+        {
+          indexed: false,
+          internalType: 'uint256',
+          name: 'cashPrior',
+          type: 'uint256',
+        },
+        {
+          indexed: false,
+          internalType: 'uint256',
+          name: 'interestAccumulated',
+          type: 'uint256',
+        },
+        {
+          indexed: false,
+          internalType: 'uint256',
+          name: 'borrowIndex',
+          type: 'uint256',
+        },
+        {
+          indexed: false,
+          internalType: 'uint256',
+          name: 'totalBorrows',
+          type: 'uint256',
+        },
       ],
       name: 'AccrueInterest',
       type: 'event'
@@ -3531,9 +4095,24 @@ export const abi = {
     {
       anonymous: false,
       inputs: [
-        { indexed: true, internalType: 'address', name: 'owner', type: 'address' },
-        { indexed: true, internalType: 'address', name: 'spender', type: 'address' },
-        { indexed: false, internalType: 'uint256', name: 'amount', type: 'uint256' }
+        {
+          indexed: true,
+          internalType: 'address',
+          name: 'owner',
+          type: 'address',
+        },
+        {
+          indexed: true,
+          internalType: 'address',
+          name: 'spender',
+          type: 'address',
+        },
+        {
+          indexed: false,
+          internalType: 'uint256',
+          name: 'amount',
+          type: 'uint256',
+        },
       ],
       name: 'Approval',
       type: 'event'
@@ -3541,10 +4120,30 @@ export const abi = {
     {
       anonymous: false,
       inputs: [
-        { indexed: false, internalType: 'address', name: 'borrower', type: 'address' },
-        { indexed: false, internalType: 'uint256', name: 'borrowAmount', type: 'uint256' },
-        { indexed: false, internalType: 'uint256', name: 'accountBorrows', type: 'uint256' },
-        { indexed: false, internalType: 'uint256', name: 'totalBorrows', type: 'uint256' }
+        {
+          indexed: false,
+          internalType: 'address',
+          name: 'borrower',
+          type: 'address',
+        },
+        {
+          indexed: false,
+          internalType: 'uint256',
+          name: 'borrowAmount',
+          type: 'uint256',
+        },
+        {
+          indexed: false,
+          internalType: 'uint256',
+          name: 'accountBorrows',
+          type: 'uint256',
+        },
+        {
+          indexed: false,
+          internalType: 'uint256',
+          name: 'totalBorrows',
+          type: 'uint256',
+        },
       ],
       name: 'Borrow',
       type: 'event'
@@ -3552,9 +4151,24 @@ export const abi = {
     {
       anonymous: false,
       inputs: [
-        { indexed: false, internalType: 'uint256', name: 'error', type: 'uint256' },
-        { indexed: false, internalType: 'uint256', name: 'info', type: 'uint256' },
-        { indexed: false, internalType: 'uint256', name: 'detail', type: 'uint256' }
+        {
+          indexed: false,
+          internalType: 'uint256',
+          name: 'error',
+          type: 'uint256',
+        },
+        {
+          indexed: false,
+          internalType: 'uint256',
+          name: 'info',
+          type: 'uint256',
+        },
+        {
+          indexed: false,
+          internalType: 'uint256',
+          name: 'detail',
+          type: 'uint256',
+        },
       ],
       name: 'Failure',
       type: 'event'
@@ -3562,11 +4176,36 @@ export const abi = {
     {
       anonymous: false,
       inputs: [
-        { indexed: false, internalType: 'address', name: 'liquidator', type: 'address' },
-        { indexed: false, internalType: 'address', name: 'borrower', type: 'address' },
-        { indexed: false, internalType: 'uint256', name: 'repayAmount', type: 'uint256' },
-        { indexed: false, internalType: 'address', name: 'cTokenCollateral', type: 'address' },
-        { indexed: false, internalType: 'uint256', name: 'seizeTokens', type: 'uint256' }
+        {
+          indexed: false,
+          internalType: 'address',
+          name: 'liquidator',
+          type: 'address',
+        },
+        {
+          indexed: false,
+          internalType: 'address',
+          name: 'borrower',
+          type: 'address',
+        },
+        {
+          indexed: false,
+          internalType: 'uint256',
+          name: 'repayAmount',
+          type: 'uint256',
+        },
+        {
+          indexed: false,
+          internalType: 'address',
+          name: 'cTokenCollateral',
+          type: 'address',
+        },
+        {
+          indexed: false,
+          internalType: 'uint256',
+          name: 'seizeTokens',
+          type: 'uint256',
+        },
       ],
       name: 'LiquidateBorrow',
       type: 'event'
@@ -3574,9 +4213,24 @@ export const abi = {
     {
       anonymous: false,
       inputs: [
-        { indexed: false, internalType: 'address', name: 'minter', type: 'address' },
-        { indexed: false, internalType: 'uint256', name: 'mintAmount', type: 'uint256' },
-        { indexed: false, internalType: 'uint256', name: 'mintTokens', type: 'uint256' }
+        {
+          indexed: false,
+          internalType: 'address',
+          name: 'minter',
+          type: 'address',
+        },
+        {
+          indexed: false,
+          internalType: 'uint256',
+          name: 'mintAmount',
+          type: 'uint256',
+        },
+        {
+          indexed: false,
+          internalType: 'uint256',
+          name: 'mintTokens',
+          type: 'uint256',
+        },
       ],
       name: 'Mint',
       type: 'event'
@@ -3584,8 +4238,18 @@ export const abi = {
     {
       anonymous: false,
       inputs: [
-        { indexed: false, internalType: 'address', name: 'oldAdmin', type: 'address' },
-        { indexed: false, internalType: 'address', name: 'newAdmin', type: 'address' }
+        {
+          indexed: false,
+          internalType: 'address',
+          name: 'oldAdmin',
+          type: 'address',
+        },
+        {
+          indexed: false,
+          internalType: 'address',
+          name: 'newAdmin',
+          type: 'address',
+        },
       ],
       name: 'NewAdmin',
       type: 'event'
@@ -3631,8 +4295,18 @@ export const abi = {
     {
       anonymous: false,
       inputs: [
-        { indexed: false, internalType: 'address', name: 'oldPendingAdmin', type: 'address' },
-        { indexed: false, internalType: 'address', name: 'newPendingAdmin', type: 'address' }
+        {
+          indexed: false,
+          internalType: 'address',
+          name: 'oldPendingAdmin',
+          type: 'address',
+        },
+        {
+          indexed: false,
+          internalType: 'address',
+          name: 'newPendingAdmin',
+          type: 'address',
+        },
       ],
       name: 'NewPendingAdmin',
       type: 'event'
@@ -3659,9 +4333,24 @@ export const abi = {
     {
       anonymous: false,
       inputs: [
-        { indexed: false, internalType: 'address', name: 'redeemer', type: 'address' },
-        { indexed: false, internalType: 'uint256', name: 'redeemAmount', type: 'uint256' },
-        { indexed: false, internalType: 'uint256', name: 'redeemTokens', type: 'uint256' }
+        {
+          indexed: false,
+          internalType: 'address',
+          name: 'redeemer',
+          type: 'address',
+        },
+        {
+          indexed: false,
+          internalType: 'uint256',
+          name: 'redeemAmount',
+          type: 'uint256',
+        },
+        {
+          indexed: false,
+          internalType: 'uint256',
+          name: 'redeemTokens',
+          type: 'uint256',
+        },
       ],
       name: 'Redeem',
       type: 'event'
@@ -3669,11 +4358,36 @@ export const abi = {
     {
       anonymous: false,
       inputs: [
-        { indexed: false, internalType: 'address', name: 'payer', type: 'address' },
-        { indexed: false, internalType: 'address', name: 'borrower', type: 'address' },
-        { indexed: false, internalType: 'uint256', name: 'repayAmount', type: 'uint256' },
-        { indexed: false, internalType: 'uint256', name: 'accountBorrows', type: 'uint256' },
-        { indexed: false, internalType: 'uint256', name: 'totalBorrows', type: 'uint256' }
+        {
+          indexed: false,
+          internalType: 'address',
+          name: 'payer',
+          type: 'address',
+        },
+        {
+          indexed: false,
+          internalType: 'address',
+          name: 'borrower',
+          type: 'address',
+        },
+        {
+          indexed: false,
+          internalType: 'uint256',
+          name: 'repayAmount',
+          type: 'uint256',
+        },
+        {
+          indexed: false,
+          internalType: 'uint256',
+          name: 'accountBorrows',
+          type: 'uint256',
+        },
+        {
+          indexed: false,
+          internalType: 'uint256',
+          name: 'totalBorrows',
+          type: 'uint256',
+        },
       ],
       name: 'RepayBorrow',
       type: 'event'
@@ -3681,9 +4395,24 @@ export const abi = {
     {
       anonymous: false,
       inputs: [
-        { indexed: false, internalType: 'address', name: 'benefactor', type: 'address' },
-        { indexed: false, internalType: 'uint256', name: 'addAmount', type: 'uint256' },
-        { indexed: false, internalType: 'uint256', name: 'newTotalReserves', type: 'uint256' }
+        {
+          indexed: false,
+          internalType: 'address',
+          name: 'benefactor',
+          type: 'address',
+        },
+        {
+          indexed: false,
+          internalType: 'uint256',
+          name: 'addAmount',
+          type: 'uint256',
+        },
+        {
+          indexed: false,
+          internalType: 'uint256',
+          name: 'newTotalReserves',
+          type: 'uint256',
+        },
       ],
       name: 'ReservesAdded',
       type: 'event'
@@ -3691,9 +4420,24 @@ export const abi = {
     {
       anonymous: false,
       inputs: [
-        { indexed: false, internalType: 'address', name: 'admin', type: 'address' },
-        { indexed: false, internalType: 'uint256', name: 'reduceAmount', type: 'uint256' },
-        { indexed: false, internalType: 'uint256', name: 'newTotalReserves', type: 'uint256' }
+        {
+          indexed: false,
+          internalType: 'address',
+          name: 'admin',
+          type: 'address',
+        },
+        {
+          indexed: false,
+          internalType: 'uint256',
+          name: 'reduceAmount',
+          type: 'uint256',
+        },
+        {
+          indexed: false,
+          internalType: 'uint256',
+          name: 'newTotalReserves',
+          type: 'uint256',
+        },
       ],
       name: 'ReservesReduced',
       type: 'event'
@@ -3701,9 +4445,24 @@ export const abi = {
     {
       anonymous: false,
       inputs: [
-        { indexed: true, internalType: 'address', name: 'from', type: 'address' },
-        { indexed: true, internalType: 'address', name: 'to', type: 'address' },
-        { indexed: false, internalType: 'uint256', name: 'amount', type: 'uint256' }
+        {
+          indexed: true,
+          internalType: 'address',
+          name: 'from',
+          type: 'address',
+        },
+        {
+          indexed: true,
+          internalType: 'address',
+          name: 'to',
+          type: 'address',
+        },
+        {
+          indexed: false,
+          internalType: 'uint256',
+          name: 'amount',
+          type: 'uint256',
+        },
       ],
       name: 'Transfer',
       type: 'event'
@@ -4209,15 +4968,30 @@ export const abi = {
     {
       anonymous: false,
       inputs: [
-        { indexed: false, internalType: 'uint256', name: 'baseRatePerBlock', type: 'uint256' },
-        { indexed: false, internalType: 'uint256', name: 'multiplierPerBlock', type: 'uint256' },
+        {
+          indexed: false,
+          internalType: 'uint256',
+          name: 'baseRatePerBlock',
+          type: 'uint256',
+        },
+        {
+          indexed: false,
+          internalType: 'uint256',
+          name: 'multiplierPerBlock',
+          type: 'uint256',
+        },
         {
           indexed: false,
           internalType: 'uint256',
           name: 'jumpMultiplierPerBlock',
           type: 'uint256'
         },
-        { indexed: false, internalType: 'uint256', name: 'kink', type: 'uint256' }
+        {
+          indexed: false,
+          internalType: 'uint256',
+          name: 'kink',
+          type: 'uint256',
+        },
       ],
       name: 'NewInterestParams',
       type: 'event'
@@ -4392,8 +5166,18 @@ export const abi = {
     {
       anonymous: false,
       inputs: [
-        { indexed: false, internalType: 'address', name: 'oldAddress', type: 'address' },
-        { indexed: false, internalType: 'address', name: 'newAddress', type: 'address' }
+        {
+          indexed: false,
+          internalType: 'address',
+          name: 'oldAddress',
+          type: 'address',
+        },
+        {
+          indexed: false,
+          internalType: 'address',
+          name: 'newAddress',
+          type: 'address',
+        },
       ],
       name: 'PriceOracleAdapterUpdated',
       type: 'event'
@@ -4463,8 +5247,18 @@ export const abi = {
     {
       anonymous: false,
       inputs: [
-        { indexed: false, internalType: 'address', name: 'oldGuardian', type: 'address' },
-        { indexed: false, internalType: 'address', name: 'newGuardian', type: 'address' }
+        {
+          indexed: false,
+          internalType: 'address',
+          name: 'oldGuardian',
+          type: 'address',
+        },
+        {
+          indexed: false,
+          internalType: 'address',
+          name: 'newGuardian',
+          type: 'address',
+        },
       ],
       name: 'NewGuardian',
       type: 'event'
@@ -4472,8 +5266,18 @@ export const abi = {
     {
       anonymous: false,
       inputs: [
-        { indexed: false, internalType: 'address', name: 'oldPendingGuardian', type: 'address' },
-        { indexed: false, internalType: 'address', name: 'newPendingGuardian', type: 'address' }
+        {
+          indexed: false,
+          internalType: 'address',
+          name: 'oldPendingGuardian',
+          type: 'address',
+        },
+        {
+          indexed: false,
+          internalType: 'address',
+          name: 'newPendingGuardian',
+          type: 'address',
+        },
       ],
       name: 'NewPendingGuardian',
       type: 'event'
@@ -4606,8 +5410,18 @@ export const abi = {
     {
       anonymous: false,
       inputs: [
-        { indexed: false, internalType: 'uint256', name: 'baseRatePerBlock', type: 'uint256' },
-        { indexed: false, internalType: 'uint256', name: 'multiplierPerBlock', type: 'uint256' }
+        {
+          indexed: false,
+          internalType: 'uint256',
+          name: 'baseRatePerBlock',
+          type: 'uint256',
+        },
+        {
+          indexed: false,
+          internalType: 'uint256',
+          name: 'multiplierPerBlock',
+          type: 'uint256',
+        },
       ],
       name: 'NewInterestParams',
       type: 'event'
@@ -4879,7 +5693,12 @@ export const abi = {
       stateMutability: 'view',
       type: 'function'
     },
-    { inputs: [], payable: false, stateMutability: 'nonpayable', type: 'constructor' },
+    {
+      inputs: [],
+      payable: false,
+      stateMutability: 'nonpayable',
+      type: 'constructor',
+    },
     {
       anonymous: false,
       inputs: [{ indexed: false, name: 'val', type: 'bytes32' }],
@@ -4934,20 +5753,20 @@ export const cTokensDetails = [
   {
     symbol: 'cRBTC',
     name: 'ctoken rbtc',
-    decimals: decimals['cRBTC'],
-    underlying: { symbol: 'RBTC', name: 'RSK Smart Bitcoin', decimals: decimals['RBTC'] }
+    decimals: decimals.cRBTC,
+    underlying: { symbol: 'RBTC', name: 'RSK Smart Bitcoin', decimals: decimals.RBTC }
   },
   {
     symbol: 'cRIF',
     name: 'ctoken rLending Rif',
-    decimals: decimals['cRIF'],
-    underlying: { symbol: 'RIF', name: 'rLending Rif', decimals: decimals['RIF'] }
+    decimals: decimals.cRIF,
+    underlying: { symbol: 'RIF', name: 'rLending Rif', decimals: decimals.RIF }
   },
   {
     symbol: 'crDAI',
     name: 'ctoken rLending Dai',
-    decimals: decimals['crDAI'],
-    underlying: { symbol: 'rDAI', name: 'rLending Dai', decimals: decimals['rDAI'] }
+    decimals: decimals.crDAI,
+    underlying: { symbol: 'rDAI', name: 'rLending Dai', decimals: decimals.rDAI }
   }
 ]
 

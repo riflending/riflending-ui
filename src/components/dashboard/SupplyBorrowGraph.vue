@@ -30,14 +30,14 @@
           type="PieChart"
           :data="chartData"
           :options="chartOptions"
-          :resizeDebounce="500"
+          :resize-debounce="500"
         />
         <GChart
           v-else
           type="PieChart"
           :data="emptyChart"
           :options="chartOptions"
-          :resizeDebounce="500"
+          :resize-debounce="500"
         />
       </v-col>
       <v-col cols="3">
@@ -112,31 +112,31 @@ export default {
       return !!this.totalBorrowed || !!this.totalSupply
     }
   },
+  created() {
+    this.getData();
+  },
   methods: {
     getData() {
       this.$rbank.controller.getAccountValues(this.account).then(({ supplyValue, borrowValue }) => {
-        this.totalBorrowed = borrowValue
-        this.totalSupplied = supplyValue
-        this.getBorrowLimit()
-        this.updateDiagramData()
-      })
+        this.totalBorrowed = borrowValue;
+        this.totalSupplied = supplyValue;
+        this.getBorrowLimit();
+        this.updateDiagramData();
+      });
     },
     getBorrowLimit() {
       this.$rbank.controller.getAccountLiquidity(this.account).then((liquidity) => {
-        this.totalBorrowLimit = liquidity / 2
-      })
+        this.totalBorrowLimit = liquidity / 2;
+      });
     },
     updateDiagramData() {
       this.chartData = [
         ['Type', 'Value'],
         ['Supplied', this.totalSupplied],
-        ['Borrowed', this.totalBorrowed]
-      ]
-    }
+        ['Borrowed', this.totalBorrowed],
+      ];
+    },
   },
-  created() {
-    this.getData()
-  }
 }
 </script>
 

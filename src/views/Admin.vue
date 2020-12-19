@@ -18,10 +18,10 @@
             </v-row>
           </v-col>
         </v-row>
-        <market-list />
+        <MarketList />
       </v-card>
       <template v-if="dialog">
-        <market-create-dialog :data="dataObject" @closed="dialog = false" />
+        <MarketCreateDialog :data="dataObject" @closed="dialog = false" />
       </template>
     </div>
   </div>
@@ -33,21 +33,21 @@ import MarketCreateDialog from '@/components/dialog/market/MarketCreateDialog.vu
 
 export default {
   name: 'Admin',
+  components: {
+    MarketList,
+    MarketCreateDialog,
+  },
   data() {
     return {
-      dialog: false
-    }
+      dialog: false,
+    };
   },
   computed: {
     dataObject() {
       return {
-        flag: this.dialog
-      }
-    }
+        flag: this.dialog,
+      };
+    },
   },
-  components: {
-    MarketList,
-    MarketCreateDialog
-  }
 }
 </script>

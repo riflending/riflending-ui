@@ -1,6 +1,6 @@
 <template>
   <v-dialog v-model="flag" width="800">
-    <v-card class="market-dialog dialog container" v-click-outside="onClickOutside">
+    <v-card v-click-outside="onClickOutside" class="market-dialog dialog container">
       <div class="container">
         <v-row class="ma-0 d-flex align-center">
           <v-col cols="1" class="d-flex justify-center">
@@ -87,12 +87,12 @@
           <v-col cols="1" />
         </v-row>
         <v-row>
-          <transactions-graph :data="dataObject" />
+          <TransactionsGraph :data="dataObject" />
         </v-row>
       </div>
     </v-card>
     <template v-if="priceFlag">
-      <market-price-dialog :data="dataObject" @closed="reset" />
+      <MarketPriceDialog :data="dataObject" @closed="reset" />
     </template>
   </v-dialog>
 </template>
@@ -145,52 +145,52 @@ export default {
       }
     }
   },
+  created() {
+    this.data.market.eventualToken.then((tok) => {
+      this.tokenAddress = tok.address;
+      this.reset();
+    });
+  },
   methods: {
     onClickOutside() {
       if (!this.priceFlag) {
-        this.flag = false
-        this.$emit('closed')
+        this.flag = false;
+        this.$emit('closed');
       }
     },
     reset() {
-      this.priceFlag = false
+      this.priceFlag = false;
       this.$rbank.controller
         .eventualMarketPrice(this.data.market.address)
         .then((marketPrice) => {
-          this.price = marketPrice
-          return this.data.market.eventualBorrowRate
+          this.price = marketPrice;
+          return this.data.market.eventualBorrowRate;
         })
         .then((borrowRate) => {
-          this.borrowRate = borrowRate
-          return this.data.market.eventualBaseBorrowRate
+          this.borrowRate = borrowRate;
+          return this.data.market.eventualBaseBorrowRate;
         })
         .then((baseBorrowRate) => {
-          this.baseBorrowRate = baseBorrowRate
-          return this.data.market.eventualUpdatedTotalSupply
+          this.baseBorrowRate = baseBorrowRate;
+          return this.data.market.eventualUpdatedTotalSupply;
         })
         .then((updatedTotalSupply) => {
-          this.updatedTotalSupply = updatedTotalSupply
-          return this.data.market.eventualUpdatedTotalBorrows
+          this.updatedTotalSupply = updatedTotalSupply;
+          return this.data.market.eventualUpdatedTotalBorrows;
         })
         .then((updatedTotalBorrows) => {
-          this.updatedTotalBorrow = updatedTotalBorrows
-          return this.data.market.eventualCash
+          this.updatedTotalBorrow = updatedTotalBorrows;
+          return this.data.market.eventualCash;
         })
         .then((cash) => {
-          this.cash = cash
-          this.growth = (this.borrowRate - this.baseBorrowRate).toFixed(2)
-        })
-    }
+          this.cash = cash;
+          this.growth = (this.borrowRate - this.baseBorrowRate).toFixed(2);
+        });
+    },
   },
   components: {
     MarketPriceDialog,
-    TransactionsGraph
+    TransactionsGraph,
   },
-  created() {
-    this.data.market.eventualToken.then((tok) => {
-      this.tokenAddress = tok.address
-      this.reset()
-    })
-  }
 }
 </script>

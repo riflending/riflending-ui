@@ -17,7 +17,7 @@
         </v-col>
         <v-col cols="6" class="d-flex align-center">
           <a class="mr-3 blueish" target="_blank" :href="rskExplorerUrl">{{ addressCutOff }}</a>
-          <v-icon @click="copyHash" small> content_copy </v-icon>
+          <v-icon small @click="copyHash"> content_copy </v-icon>
         </v-col>
       </v-row>
       <v-row class="ma-0 pt-3 d-flex align-center">
@@ -69,29 +69,29 @@ export default {
       return `https://explorer.testnet.rsk.co/address/${this.marketAddress}`
     }
   },
-  methods: {
-    closeDialog() {
-      this.$emit('close')
-    },
-    copyHash() {
-      navigator.clipboard.writeText(this.marketAddress)
-    }
-  },
   created() {
-    const market = new this.$rbank.Market(this.marketAddress)
+    const market = new this.$rbank.Market(this.marketAddress);
     market.eventualToken
       .then((token) => token.eventualSymbol)
       .then((tokenSymbol) => {
-        this.tokenSymbol = tokenSymbol
-        return market.eventualBorrowRate
+        this.tokenSymbol = tokenSymbol;
+        return market.eventualBorrowRate;
       })
       .then((borrowRate) => {
-        this.borrowRate = borrowRate
-        return this.$rbank.controller.eventualMarketPrice(this.marketAddress)
+        this.borrowRate = borrowRate;
+        return this.$rbank.controller.eventualMarketPrice(this.marketAddress);
       })
       .then((marketPrice) => {
-        this.price = marketPrice
-      })
-  }
+        this.price = marketPrice;
+      });
+  },
+  methods: {
+    closeDialog() {
+      this.$emit('close');
+    },
+    copyHash() {
+      navigator.clipboard.writeText(this.marketAddress);
+    },
+  },
 }
 </script>

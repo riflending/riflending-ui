@@ -117,13 +117,13 @@
       <v-row class="ma-0">
         <v-col class="pa-0">
           <v-card class="graphics-card container" width="94%">
-            <supply-borrow-graph />
+            <SupplyBorrowGraph />
           </v-card>
         </v-col>
       </v-row>
     </div>
     <v-row class="mx-6 d-flex justify-center">
-      <tx-list />
+      <TxList />
     </v-row>
   </div>
 </template>

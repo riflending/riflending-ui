@@ -51,10 +51,10 @@
     <v-row class="mx-6">
       <div class="tx-divider"></div>
     </v-row>
-    <v-list class="mx-6" v-for="(tx, idx) in transactions" :key="`tx-item-${idx}`">
-      <tx-item
-        :transactionHash="tx.transactionHash"
-        :marketName="tx.market"
+    <v-list v-for="(tx, idx) in transactions" :key="`tx-item-${idx}`" class="mx-6">
+      <TxItem
+        :transaction-hash="tx.transactionHash"
+        :market-name="tx.market"
         :amount="tx.transactionAmount"
         :apr="tx.apr"
         :price="tx.price"
@@ -89,6 +89,9 @@ export default {
       return this.transactions.length !== 0
     }
   },
+  created() {
+    this.getTransactions();
+  },
   methods: {
     pushMarketEvents(market, marketDeployBlock, symbol, price, borrowRate, decimals) {
       market.getPastEvents('Supply', marketDeployBlock, { user: this.account }).then((events) => {
@@ -100,10 +103,10 @@ export default {
             transactionHash,
             transactionAmount: Number(amount),
             operation: event,
-            decimals
-          })
-        })
-      })
+            decimals,
+          });
+        });
+      });
       market.getPastEvents('Borrow', marketDeployBlock, { user: this.account }).then((events) => {
         events.forEach(({ event, transactionHash, returnValues: { amount } }) => {
           this.transactions.push({
@@ -113,10 +116,10 @@ export default {
             transactionHash,
             transactionAmount: Number(amount),
             operation: event,
-            decimals
-          })
-        })
-      })
+            decimals,
+          });
+        });
+      });
       market.getPastEvents('Redeem', marketDeployBlock, { user: this.account }).then((events) => {
         events.forEach(({ event, transactionHash, returnValues: { amount } }) => {
           this.transactions.push({
@@ -126,10 +129,10 @@ export default {
             transactionHash,
             transactionAmount: Number(amount),
             operation: event,
-            decimals
-          })
-        })
-      })
+            decimals,
+          });
+        });
+      });
       market
         .getPastEvents('PayBorrow', marketDeployBlock, { user: this.account })
         .then((events) => {
@@ -141,33 +144,29 @@ export default {
               transactionHash,
               transactionAmount: Number(amount),
               operation: event,
-              decimals
-            })
-          })
-        })
+              decimals,
+            });
+          });
+        });
     },
     getTransactions() {
       this.$rbank.eventualMarkets.then((markets) => {
         markets.forEach((market) => {
           market.eventualToken
-            .then((token) =>
-              Promise.all([
+            .then((token) => Promise.all([
                 token.eventualSymbol,
                 market.eventualDeployBlock,
                 this.$rbank.controller.eventualMarketPrice(market.address),
                 market.eventualBorrowRate,
-                token.eventualDecimals
-              ])
+                token.eventualDecimals,
+              ]),
             )
             .then(([symbol, deployBlock, price, borrowRate, decimals]) => {
-              this.pushMarketEvents(market, deployBlock, symbol, price, borrowRate, decimals)
-            })
-        })
-      })
-    }
+              this.pushMarketEvents(market, deployBlock, symbol, price, borrowRate, decimals);
+            });
+        });
+      });
+    },
   },
-  created() {
-    this.getTransactions()
-  }
 }
 </script>

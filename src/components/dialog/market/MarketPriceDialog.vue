@@ -1,6 +1,6 @@
 <template>
   <v-dialog v-model="flag" width="350" :persistent="waiting || success">
-    <v-card class="market-price-dialog dialog container" v-click-outside="onClickOutside">
+    <v-card v-click-outside="onClickOutside" class="market-price-dialog dialog container">
       <template v-if="!waiting && !success && !error">
         <div>
           <v-row class="mt-2 d-flex align-center">
@@ -28,13 +28,13 @@
           </v-row>
           <v-row class="mx-5">
             <v-text-field
+              v-model="newPrice"
               class="bigger-data-input"
               full-width
               single-line
               solo
               flat
               type="number"
-              v-model="newPrice"
               required
               :rules="[rules.required, rules.integer]"
             />
@@ -47,9 +47,9 @@
         </div>
       </template>
       <template v-else>
-        <error-dialog v-if="error" @closeDialog="closeMarketPrice" />
-        <loader v-if="waiting" />
-        <market-price-success v-if="success" :price="newPrice" @closed="closeMarketPrice" />
+        <ErrorDialog v-if="error" @closeDialog="closeMarketPrice" />
+        <Loader v-if="waiting" />
+        <MarketPriceSuccess v-if="success" :price="newPrice" @closed="closeMarketPrice" />
       </template>
     </v-card>
   </v-dialog>
@@ -62,11 +62,16 @@ import ErrorDialog from '@/components/dialog/ErrorDialog.vue'
 
 export default {
   name: 'MarketPriceDialog',
+  components: {
+    Loader,
+    MarketPriceSuccess,
+    ErrorDialog,
+  },
   props: {
     data: {
       type: Object,
-      required: true
-    }
+      required: true,
+    },
   },
   data() {
     return {
@@ -78,14 +83,19 @@ export default {
       error: false,
       rules: {
         required: () => !!Number(this.newPrice) || 'Required.',
-        integer: () => !this.newPrice.toString().includes('.') || 'Not decimal positions allowed.'
-      }
-    }
+        integer: () => !this.newPrice.toString().includes('.') || 'Not decimal positions allowed.',
+      },
+    };
   },
   computed: {
     validForm() {
-      return typeof this.rules.required() !== 'string' && typeof this.rules.integer() !== 'string'
-    }
+      return typeof this.rules.required() !== 'string' && typeof this.rules.integer() !== 'string';
+    },
+  },
+  created() {
+    this.$rbank.controller.eventualMarketPrice(this.data.market.address).then((marketPrice) => {
+      this.price = marketPrice;
+    });
   },
   methods: {
     onClickOutside() {
@@ -114,15 +124,5 @@ export default {
         })
     }
   },
-  components: {
-    Loader,
-    MarketPriceSuccess,
-    ErrorDialog
-  },
-  created() {
-    this.$rbank.controller.eventualMarketPrice(this.data.market.address).then((marketPrice) => {
-      this.price = marketPrice
-    })
-  }
 }
 </script>

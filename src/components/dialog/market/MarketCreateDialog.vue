@@ -1,22 +1,22 @@
 <template>
   <v-dialog v-model="flag" width="650" :persistent="waiting || succeed">
-    <v-card class="market-create-dialog container" v-click-outside="onClickOutside">
+    <v-card v-click-outside="onClickOutside" class="market-create-dialog container">
       <div v-show="!waiting && !errorDialog" class="marketDialog">
-        <market-create-top :success="succeed" />
+        <MarketCreateTop :success="succeed" />
         <component
           :is="currentComponent"
-          :marketAddress="marketAddress"
+          :market-address="marketAddress"
           @error="actionError"
           @created="actionSucceed"
           @wait="waiting = true"
           @close="closeDialog"
         />
       </div>
-      <div class="dialog" v-show="waiting">
-        <loader v-show="waiting" />
+      <div v-show="waiting" class="dialog">
+        <Loader v-show="waiting" />
       </div>
       <template v-if="errorDialog">
-        <error-dialog @closeDialog="closeDialog" />
+        <ErrorDialog @closeDialog="closeDialog" />
       </template>
     </v-card>
   </v-dialog>
@@ -31,11 +31,18 @@ import ErrorDialog from '@/components/dialog/ErrorDialog.vue'
 
 export default {
   name: 'MarketCreateDialog',
+  components: {
+    MarketCreateTop,
+    MarketCreateInput,
+    MarketCreateSuccess,
+    Loader,
+    ErrorDialog,
+  },
   props: {
     data: {
       type: Object,
-      required: true
-    }
+      required: true,
+    },
   },
   data() {
     return {
@@ -44,39 +51,32 @@ export default {
       waiting: false,
       marketAddress: null,
       currentComponent: 'MarketCreateInput',
-      errorDialog: null
-    }
+      errorDialog: null,
+    };
   },
   methods: {
     actionError() {
-      this.waiting = false
-      this.succeed = false
-      this.errorDialog = true
+      this.waiting = false;
+      this.succeed = false;
+      this.errorDialog = true;
     },
     actionSucceed(succeedObject) {
-      this.waiting = false
-      this.errorDialog = false
-      this.marketAddress = succeedObject.marketAddress
-      this.currentComponent = 'MarketCreateSuccess'
-      this.succeed = true
+      this.waiting = false;
+      this.errorDialog = false;
+      this.marketAddress = succeedObject.marketAddress;
+      this.currentComponent = 'MarketCreateSuccess';
+      this.succeed = true;
     },
     onClickOutside() {
       if (!this.waiting && !this.succeed) {
-        this.flag = false
-        this.$emit('closed')
+        this.flag = false;
+        this.$emit('closed');
       }
     },
     closeDialog() {
-      this.flag = false
-      this.$emit('closed')
-    }
+      this.flag = false;
+      this.$emit('closed');
+    },
   },
-  components: {
-    MarketCreateTop,
-    MarketCreateInput,
-    MarketCreateSuccess,
-    Loader,
-    ErrorDialog
-  }
 }
 </script>

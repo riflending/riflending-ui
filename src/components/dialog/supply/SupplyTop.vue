@@ -69,16 +69,16 @@ export default {
     }
   },
   created() {
-    //set token address
+    // set token address
     this.tokenAddress = this.data.market.token.instance
-    //set token balance
+    // set token balance
     this.data.market
       .getUserBalanceOfUnderlying()
       .then((balance) => {
         this.tokenBalance = balance
         return this.data.market.getPriceInDecimals()
       })
-      //set price
+      // set price
       .then((price) => {
         this.price = price
         this.tokenBalancePrice = new BigNumber(this.tokenBalance).multipliedBy(

@@ -76,21 +76,21 @@ export default {
       return '#24BD6B'
     }
   },
+  created() {
+    this.$rbank.controller.getAccountHealth(this.account).then((accountHealth) => {
+      this.accountHealth = accountHealth;
+    });
+  },
   methods: {
     reset() {
       this.$rbank.controller.getAccountHealth(this.account).then((accountHealth) => {
-        this.accountHealth = accountHealth
-      })
-    }
+        this.accountHealth = accountHealth;
+      });
+    },
   },
   components: {
     SupplyList,
-    BorrowList
+    BorrowList,
   },
-  created() {
-    this.$rbank.controller.getAccountHealth(this.account).then((accountHealth) => {
-      this.accountHealth = accountHealth
-    })
-  }
 }
 </script>

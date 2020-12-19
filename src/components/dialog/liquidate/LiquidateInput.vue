@@ -1,7 +1,7 @@
 <template>
   <div class="liquidate-input">
     <template v-if="!waiting">
-      <liquidate-list v-if="!accountSelected" :data="data" @selected="setLiquidationAccount" />
+      <LiquidateList v-if="!accountSelected" :data="data" @selected="setLiquidationAccount" />
       <div v-else>
         <v-row class="mx-6 px-6 mb-3">
           <h1>Collateral Available to liquidate:</h1>
@@ -31,19 +31,19 @@
             <v-row class="inputBox mb-4">
               <v-col cols="10">
                 <v-text-field
+                  v-model="amount"
                   class="inputText"
                   full-width
                   single-line
                   solo
                   flat
                   type="number"
-                  v-model="amount"
                   required
                   :rules="[rules.required, rules.decimals, rules.funds, rules.maxAvailable]"
                 />
               </v-col>
               <v-col cols="2" class="mb-6 ml-0">
-                <v-btn @click="max = true" text color="#008CFF">max</v-btn>
+                <v-btn text color="#008CFF" @click="max = true">max</v-btn>
               </v-col>
             </v-row>
             <v-row class="mx-0 px-1 d-flex align-center">
@@ -99,14 +99,14 @@
           </v-col>
         </v-row>
         <v-row class="my-6 d-flex justify-center">
-          <v-btn class="button" rounded color="#008CFF" @click="liquidate" :disabled="!validForm">
+          <v-btn class="button" rounded color="#008CFF" :disabled="!validForm" @click="liquidate">
             Liquidate account
           </v-btn>
         </v-row>
       </div>
     </template>
     <template v-else>
-      <loader />
+      <Loader />
     </template>
   </div>
 </template>
@@ -208,10 +208,10 @@ export default {
         new this.$rbank.Market(this.borrowMarketAddress).eventualToken
           .then((token) =>
             Promise.all([
-              token.eventualSymbol,
-              token.eventualDecimals,
-              token.eventualBalanceOf(this.account)
-            ])
+            token.eventualSymbol,
+            token.eventualDecimals,
+            token.eventualBalanceOf(this.account)
+          ])
           )
           .then(([symbol, decimals, balance]) => {
             this.borrowMarketSymbol = symbol

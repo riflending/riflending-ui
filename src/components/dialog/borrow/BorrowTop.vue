@@ -76,7 +76,7 @@ export default {
     }
   },
   created() {
-    //set token balance
+    // set token balance
     this.data.market
       .getUserBalanceOfUnderlying()
       .then((balance) => {
@@ -84,7 +84,7 @@ export default {
         console.log('borrowTop: tokenBalance', this.tokenBalance)
         return this.data.market.getPriceInDecimals()
       })
-      //set price
+      // set price
       .then((price) => {
         this.price = price
         this.tokenBalancePrice = new BigNumber(this.tokenBalance).multipliedBy(

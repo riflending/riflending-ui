@@ -18,7 +18,7 @@
         </v-row>
       </v-list-item>
       <v-divider />
-      <supply-item
+      <SupplyItem
         v-for="(market, idx) in markets"
         :key="`market-${idx}`"
         :market="market"
@@ -56,7 +56,7 @@ export default {
     SupplyItem
   },
   created() {
-    //get all markets
+    // get all markets
     this.markets = this.$middleware.getMarkets(this.account)
 
     this.markets.forEach((market) =>

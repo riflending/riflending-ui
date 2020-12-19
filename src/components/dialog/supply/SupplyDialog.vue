@@ -1,6 +1,6 @@
 <template>
   <v-dialog v-model="flag" width="700" :persistent="waiting || succeed">
-    <v-card class="supply-dialog dialog container" v-click-outside="onClickOutside">
+    <v-card v-click-outside="onClickOutside" class="supply-dialog dialog container">
       <template v-if="!succeed && !errorDialog">
         <component :is="topComponent" :data="marketTokenObject" />
         <template v-if="!waiting">
@@ -41,10 +41,10 @@
         </template>
       </template>
       <template v-if="errorDialog && !succeed">
-        <error-dialog @closeDialog="close" :data="errorObject" />
+        <ErrorDialog :data="errorObject" @closeDialog="close" />
       </template>
       <template v-if="succeed">
-        <success-top :data="marketTokenObject" />
+        <SuccessTop :data="marketTokenObject" />
         <component :is="successComponent" :data="successObject" @closeDialog="close" />
       </template>
     </v-card>
@@ -65,11 +65,23 @@ import ErrorDialog from '@/components/dialog/ErrorDialog.vue'
 
 export default {
   name: 'SupplyDialog',
+  components: {
+    SupplyTop,
+    SuccessTop,
+    SupplySuccess,
+    SupplyInput,
+    WithdrawInput,
+    WithdrawTop,
+    WithdrawSuccess,
+    LiquidateInput,
+    LiquidateSuccess,
+    ErrorDialog,
+  },
   props: {
     data: {
       type: Object,
-      required: true
-    }
+      required: true,
+    },
   },
   data() {
     return {
@@ -86,15 +98,15 @@ export default {
       collateral: null,
       hash: null,
       errorDialog: null,
-      userErrorMessage: null
-    }
+      userErrorMessage: null,
+    };
   },
   computed: {
     marketTokenObject() {
       return {
         token: this.data.token,
-        market: this.data.market
-      }
+        market: this.data.market,
+      };
     },
     successObject() {
       return {
@@ -105,16 +117,30 @@ export default {
         liquidateValue: this.liquidateValue,
         costValue: this.costValue,
         collateral: this.collateral,
-        hash: this.hash
-      }
+        hash: this.hash,
+      };
     },
     errorObject() {
       return {
         market: this.data.market,
         token: this.data.token,
-        userErrorMessage: this.userErrorMessage
+        userErrorMessage: this.userErrorMessage,
+      };
+    },
+  },
+  watch: {
+    currentComponent() {
+      if (this.currentComponent === 'SupplyInput') {
+        this.successComponent = 'SupplySuccess';
+        this.topComponent = 'SupplyTop';
+      } else if (this.currentComponent === 'WithdrawInput') {
+        this.successComponent = 'WithdrawSuccess';
+        this.topComponent = 'WithdrawTop';
+      } else {
+        this.successComponent = 'LiquidateSuccess';
+        this.topComponent = 'SupplyTop';
       }
-    }
+    },
   },
   methods: {
     reset() {
@@ -156,31 +182,5 @@ export default {
       this.$emit('closed')
     }
   },
-  components: {
-    SupplyTop,
-    SuccessTop,
-    SupplySuccess,
-    SupplyInput,
-    WithdrawInput,
-    WithdrawTop,
-    WithdrawSuccess,
-    LiquidateInput,
-    LiquidateSuccess,
-    ErrorDialog
-  },
-  watch: {
-    currentComponent() {
-      if (this.currentComponent === 'SupplyInput') {
-        this.successComponent = 'SupplySuccess'
-        this.topComponent = 'SupplyTop'
-      } else if (this.currentComponent === 'WithdrawInput') {
-        this.successComponent = 'WithdrawSuccess'
-        this.topComponent = 'WithdrawTop'
-      } else {
-        this.successComponent = 'LiquidateSuccess'
-        this.topComponent = 'SupplyTop'
-      }
-    }
-  }
 }
 </script>

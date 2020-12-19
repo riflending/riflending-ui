@@ -1,8 +1,8 @@
 <template>
   <v-dialog v-model="flag" width="700" :persistent="waiting || succeed">
-    <v-card class="borrow-dialog dialog container" v-click-outside="onClickOutside">
+    <v-card v-click-outside="onClickOutside" class="borrow-dialog dialog container">
       <template v-if="!succeed && !errorDialog">
-        <borrow-top :data="marketTokenObject" />
+        <BorrowTop :data="marketTokenObject" />
         <template v-if="!waiting">
           <v-row class="d-flex justify-center">
             <div class="toggle my-5">
@@ -34,10 +34,10 @@
         </template>
       </template>
       <template v-if="errorDialog && !succeed">
-        <error-dialog @closeDialog="close" :data="errorObject" />
+        <ErrorDialog :data="errorObject" @closeDialog="close" />
       </template>
       <template v-if="succeed">
-        <success-top :data="marketTokenObject" />
+        <SuccessTop :data="marketTokenObject" />
         <component :is="successComponent" :data="successObject" @closeDialog="close" />
       </template>
     </v-card>
@@ -55,11 +55,20 @@ import ErrorDialog from '@/components/dialog/ErrorDialog.vue'
 
 export default {
   name: 'BorrowDialog',
+  components: {
+    BorrowTop,
+    SuccessTop,
+    BorrowSuccess,
+    BorrowInput,
+    RepayInput,
+    RepaySuccess,
+    ErrorDialog,
+  },
   props: {
     data: {
       type: Object,
-      required: true
-    }
+      required: true,
+    },
   },
   data() {
     return {
@@ -71,31 +80,37 @@ export default {
       borrowBalanceInfo: null,
       hash: null,
       errorDialog: null,
-      userErrorMessage: null
-    }
+      userErrorMessage: null,
+    };
   },
   computed: {
     marketTokenObject() {
       return {
         token: this.data.token,
-        market: this.data.market
-      }
+        market: this.data.market,
+      };
     },
     successObject() {
       return {
         market: this.data.market,
         token: this.data.token,
         borrowBalanceInfo: this.borrowBalanceInfo,
-        hash: this.hash
-      }
+        hash: this.hash,
+      };
     },
     errorObject() {
       return {
         market: this.data.market,
         token: this.data.token,
-        userErrorMessage: this.userErrorMessage
-      }
-    }
+        userErrorMessage: this.userErrorMessage,
+      };
+    },
+  },
+  watch: {
+    currentComponent() {
+      this.successComponent =
+        this.currentComponent === 'BorrowInput' ? 'BorrowSuccess' : 'RepaySuccess'
+    },
   },
   methods: {
     reset() {
@@ -133,20 +148,5 @@ export default {
       this.$emit('closed')
     }
   },
-  components: {
-    BorrowTop,
-    SuccessTop,
-    BorrowSuccess,
-    BorrowInput,
-    RepayInput,
-    RepaySuccess,
-    ErrorDialog
-  },
-  watch: {
-    currentComponent() {
-      this.successComponent =
-        this.currentComponent === 'BorrowInput' ? 'BorrowSuccess' : 'RepaySuccess'
-    }
-  }
 }
 </script>
