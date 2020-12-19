@@ -68,6 +68,9 @@ import TransactionHash from '@/components/common/TransactionHash.vue'
 
 export default {
   name: 'LiquidateSuccess',
+  components: {
+    TransactionHash,
+  },
   props: {
     data: {
       type: Object,
@@ -121,9 +124,6 @@ export default {
       const allowed = this.price > 0 ? Math.floor(liquidity / (this.price * 2)) : 0
       return allowed >= cash ? cash : allowed
     },
-  },
-  components: {
-    TransactionHash,
   },
 }
 </script>

@@ -118,6 +118,10 @@ import Loader from '@/components/common/Loader.vue'
 
 export default {
   name: 'LiquidateInput',
+  components: {
+    Loader,
+    LiquidateList,
+  },
   props: {
     data: {
       type: Object,
@@ -149,6 +153,59 @@ export default {
           this.amount <= this.maxToLiquidate || 'There is not enough collateral to liquidate',
       },
     }
+  },
+  computed: {
+    ...mapState({
+      account: (state) => state.Session.account,
+    }),
+    validForm() {
+      return (
+        typeof this.rules.funds() !== 'string' &&
+        typeof this.rules.decimals() !== 'string' &&
+        typeof this.rules.required() !== 'string' &&
+        typeof this.rules.maxAvailable() !== 'string'
+      )
+    },
+    maxToLiquidate() {
+      return (
+        Math.min(
+          this.maxCollateralSupplied,
+          this.accountDebt,
+          this.funds * this.borrowMarketPrice,
+        ) / this.currentMarketPrice
+      )
+    },
+    usdAmount() {
+      return this.amount * this.currentMarketPrice
+    },
+    hasDecimals() {
+      return !!Number(this.data.token.decimals)
+    },
+    numberOfDecimals() {
+      const amount = this.amount.toString()
+      return amount.includes('.')
+        ? amount.substring(amount.indexOf('.') + 1, amount.length).length <=
+            this.data.token.decimals
+        : true
+    },
+    decimalPositions() {
+      const amount = this.amount.toString()
+      return this.hasDecimals ? this.numberOfDecimals : !amount.includes('.')
+    },
+    contractAmount() {
+      return this.borrowMarketTokenDecimals
+        ? this.amount / 10 ** this.borrowMarketTokenDecimals
+        : this.amount
+    },
+    collateralAmount() {
+      return (
+        (this.amount * this.currentMarketPrice) /
+        (this.borrowMarketPrice * 10 ** this.borrowMarketTokenDecimals)
+      ).toFixed(this.borrowMarketTokenDecimals)
+    },
+    liquidationAmount() {
+      return Number(Number(this.amount).toFixed(this.data.token.decimals))
+    },
   },
   watch: {
     max() {
@@ -222,63 +279,6 @@ export default {
           .catch(reject)
       })
     },
-  },
-  computed: {
-    ...mapState({
-      account: (state) => state.Session.account,
-    }),
-    validForm() {
-      return (
-        typeof this.rules.funds() !== 'string' &&
-        typeof this.rules.decimals() !== 'string' &&
-        typeof this.rules.required() !== 'string' &&
-        typeof this.rules.maxAvailable() !== 'string'
-      )
-    },
-    maxToLiquidate() {
-      return (
-        Math.min(
-          this.maxCollateralSupplied,
-          this.accountDebt,
-          this.funds * this.borrowMarketPrice,
-        ) / this.currentMarketPrice
-      )
-    },
-    usdAmount() {
-      return this.amount * this.currentMarketPrice
-    },
-    hasDecimals() {
-      return !!Number(this.data.token.decimals)
-    },
-    numberOfDecimals() {
-      const amount = this.amount.toString()
-      return amount.includes('.')
-        ? amount.substring(amount.indexOf('.') + 1, amount.length).length <=
-            this.data.token.decimals
-        : true
-    },
-    decimalPositions() {
-      const amount = this.amount.toString()
-      return this.hasDecimals ? this.numberOfDecimals : !amount.includes('.')
-    },
-    contractAmount() {
-      return this.borrowMarketTokenDecimals
-        ? this.amount / 10 ** this.borrowMarketTokenDecimals
-        : this.amount
-    },
-    collateralAmount() {
-      return (
-        (this.amount * this.currentMarketPrice) /
-        (this.borrowMarketPrice * 10 ** this.borrowMarketTokenDecimals)
-      ).toFixed(this.borrowMarketTokenDecimals)
-    },
-    liquidationAmount() {
-      return Number(Number(this.amount).toFixed(this.data.token.decimals))
-    },
-  },
-  components: {
-    Loader,
-    LiquidateList,
   },
 }
 </script>

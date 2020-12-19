@@ -71,6 +71,9 @@ import TransactionHash from '@/components/common/TransactionHash.vue'
 
 export default {
   name: 'BorrowSuccess',
+  components: {
+    TransactionHash,
+  },
   props: {
     data: {
       type: Object,
@@ -130,9 +133,6 @@ export default {
     closeDialog() {
       this.$emit('closeDialog')
     },
-  },
-  components: {
-    TransactionHash,
   },
 }
 </script>

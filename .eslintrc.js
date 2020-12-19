@@ -18,6 +18,7 @@ module.exports = {
   },
   rules: {
     'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
+    'no-warning-comments': 'warn',
     'vue/component-name-in-template-casing': ['error', 'PascalCase'],
     'prettier/prettier': 'error',
     'no-console': [

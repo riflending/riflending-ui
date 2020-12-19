@@ -103,6 +103,9 @@ import { ethers } from 'ethers'
 
 export default {
   name: 'RepayInput',
+  components: {
+    Loader,
+  },
   props: {
     data: {
       type: Object,
@@ -344,6 +347,8 @@ export default {
     },
     getValues() {
       console.log('RepayBorrow: getValues')
+      // TODO check oldLiquidity usage here
+      // eslint-disable-next-line no-unused-vars
       let oldLiquidity
       let oldCash
       this.data.market
@@ -400,9 +405,6 @@ export default {
       //       .getMaxBorrowAllowed(oldLiquidity, oldCash));
       //   });
     },
-  },
-  components: {
-    Loader,
   },
 }
 </script>

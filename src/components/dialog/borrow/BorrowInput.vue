@@ -114,6 +114,9 @@ import Loader from '@/components/common/Loader.vue'
 
 export default {
   name: 'BorrowInput',
+  components: {
+    Loader,
+  },
   props: {
     data: {
       type: Object,
@@ -450,9 +453,6 @@ export default {
       //     .getMaxBorrowAllowed(this.oldLiquidity, this.oldCash) - this.maxBorrowAllowed);
       // });
     },
-  },
-  components: {
-    Loader,
   },
 }
 </script>

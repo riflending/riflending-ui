@@ -263,6 +263,7 @@ export default {
     async withdrawAllowed() {
       // TODO get de ammount in cToken values
       return ''
+      // eslint-disable-next-line no-unreachable
       return this.data.market.withdrawAllowed(this.amount, this.account).then((allowed) => {
         if (!allowed.allowed) {
           return this.$middleware.getMsjErrorCodeComptroller(allowed.errorCode._hex)
@@ -308,8 +309,10 @@ export default {
     },
     async getValues() {
       this.supplyBalanceInfo = Number(this.amount)
+      // TODO Why this return nothing ?
       return
-      // TODO this functon
+      // TODO check the usage of the oldLiquidity var
+      // eslint-disable-next-line no-unused-vars, no-unreachable
       let oldLiquidity
       let auxBorrowValue
       this.$middleware
@@ -334,6 +337,9 @@ export default {
 
           this.liquidity = newBorrowValue < newSupplyValue ? newSupplyValue - newBorrowValue : 0
         })
+
+      // TODO this code is never reached because the empty return on the line 313
+      // eslint-disable-next-line no-unreachable
       this.maxWithdrawAllowed = this.getMaxWithdrawAllowed(this.oldSupplyOf, this.oldCash)
       // TODO getAccountValues
       // return this.data.market.getAccountValues(this.account);

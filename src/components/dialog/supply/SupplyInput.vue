@@ -261,6 +261,8 @@ export default {
       return (Number(value) / 10 ** this.data.token.decimals).toFixed(this.data.token.decimals)
     },
     async getValues() {
+      // TODO check oldLiquidity usage here
+      // eslint-disable-next-line no-unused-vars
       let oldLiquidity
       let oldCash
       await this.$middleware
