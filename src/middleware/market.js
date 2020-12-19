@@ -17,7 +17,7 @@ export default class Market {
     tokenSymbol,
     underlyingName,
     underlyingDecimals,
-    account
+    account,
   ) {
     this.account = account
     // TODO see if factoryContract go to middleware class
@@ -55,7 +55,7 @@ export default class Market {
     // set contract
     const contract = this.factoryContract.getContract('RBTCMocOracle')
     // call contract
-    const [value, ok] = await contract.callStatic.peek()
+    const [value] = await contract.callStatic.peek()
     return new BigNumber(value)
     // TODO comment validation, because in Oracle moc test fails (ok=false)
     // if (ok) {
@@ -127,7 +127,7 @@ export default class Market {
     // set contract Comptroller delegate (Unitroller)
     const contract = this.factoryContract.getContractByNameAndAbiName(
       constants.Unitroller,
-      constants.Comptroller
+      constants.Comptroller,
     )
     // get is member (bool)
     return contract.checkMembership(account, this.instanceAddress)
@@ -137,7 +137,7 @@ export default class Market {
     // set contract
     const contract = this.factoryContract.getContractByNameAndAbiName(
       constants.Unitroller,
-      constants.Comptroller
+      constants.Comptroller,
     )
     // set signer
     const contractWithSigner = contract.connect(this.factoryContract.getSigner())
@@ -183,7 +183,7 @@ export default class Market {
       const signer = this.instance.connect(this.factoryContract.getSigner())
       // set value
       const overrides = {
-        value: amountBN.toString()
+        value: amountBN.toString(),
       }
       // mint crbtc
       tx = await signer.mint(overrides)
@@ -211,7 +211,7 @@ export default class Market {
 
   getAmountDecimals(amount, isCtoken = false) {
     // add decimals token
-    amount *= Math.pow(10, !isCtoken ? decimals[this.token.symbol] : decimals[this.symbol]);
+    amount *= Math.pow(10, !isCtoken ? decimals[this.token.symbol] : decimals[this.symbol])
     return new BigNumber(amount.toString())
   }
 
@@ -223,12 +223,10 @@ export default class Market {
     // set contract Comptroller delegate (Unitroller)
     const contract = this.factoryContract.getContractByNameAndAbiName(
       constants.Unitroller,
-      constants.Comptroller
+      constants.Comptroller,
     )
     // get is member (bool)
-    const [isListed, collateralFactorMantissa, isComped] = await contract.markets(
-      this.instanceAddress
-    )
+    const [isListed, collateralFactorMantissa] = await contract.markets(this.instanceAddress)
     // validate token listed
     if (isListed) {
       return ethers.utils.formatEther(collateralFactorMantissa)
@@ -253,7 +251,7 @@ export default class Market {
     // wait for mined transaction
     return tx.wait()
   }
-
+  // eslint-disable-next-line no-unused-vars
   withdraw(amount, max = false) {
     // add decimals token
     const amountBN = this.getAmountDecimals(amount)
@@ -295,11 +293,11 @@ export default class Market {
    * mock events
    */
   get eventualEvents() {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
       resolve('10')
     })
   }
-
+  // eslint-disable-next-line no-unused-vars
   liquidateBorrow(borrower, amount, collateralMarket, from = '') {
     // return this.token;
     return new Promise((resolve, reject) => {
@@ -321,7 +319,7 @@ export default class Market {
     // set contract Comptroller delegate (Unitroller)
     const contract = this.factoryContract.getContractByNameAndAbiName(
       constants.Unitroller,
-      constants.Comptroller
+      constants.Comptroller,
     )
     return contract.callStatic
       .redeemAllowed(this.instanceAddress, account, amountBN.toString())
@@ -340,12 +338,12 @@ export default class Market {
     const amountBN = this.getAmountDecimals(amount)
     const contract = this.factoryContract.getContractByNameAndAbiName(
       constants.Unitroller,
-      constants.Comptroller
+      constants.Comptroller,
     )
     const response = await contract.callStatic.borrowAllowed(
       this.instanceAddress,
       account,
-      amountBN.toString()
+      amountBN.toString(),
     )
     console.log('market.js borrowAllowed? response', response)
     return { allowed: response.toNumber() === 0, errorCode: response }
@@ -362,7 +360,7 @@ export default class Market {
     const middleware = new Middleware() // maybe not necesary to load a whole Middleware here
     const price = await this.price // current market price
     let rbtcPrice = await this.getValueMoc() // rbtc price
-    rbtcPrice /= 1e18; // in usd
+    rbtcPrice /= 1e18 // in usd
     const { accountLiquidityInExcess } = await middleware.getAccountLiquidity(account)
     return price > 0 ? (rbtcPrice * (accountLiquidityInExcess / 1e18)) / (price / 1e18) : 0 // return max(0,borrowLimit)
   }

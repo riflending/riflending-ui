@@ -40,13 +40,13 @@ export default {
   data() {
     return {
       dialog: false,
-    };
+    }
   },
   computed: {
     dataObject() {
       return {
         flag: this.dialog,
-      };
+      }
     },
   },
 }

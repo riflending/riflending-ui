@@ -19,17 +19,17 @@ import * as constants from '@/store/constants'
 
 export default {
   name: 'BaseLayout',
+  components: {
+    AppBar,
+    Footing,
+  },
   data() {
     return {}
   },
   computed: {
     ...mapGetters({
-      isLogged: constants.SESSION_IS_LOGGED
-    })
+      isLogged: constants.SESSION_IS_LOGGED,
+    }),
   },
-  components: {
-    AppBar,
-    Footing
-  }
 }
 </script>

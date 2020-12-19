@@ -73,24 +73,24 @@ import { mapState } from 'vuex'
 export default {
   name: 'TxList',
   components: {
-    TxItem
+    TxItem,
   },
   data() {
     return {
       lastUpdated: '',
-      transactions: []
+      transactions: [],
     }
   },
   computed: {
     ...mapState({
-      account: (state) => state.Session.account
+      account: (state) => state.Session.account,
     }),
     hasTransactions() {
       return this.transactions.length !== 0
-    }
+    },
   },
   created() {
-    this.getTransactions();
+    this.getTransactions()
   },
   methods: {
     pushMarketEvents(market, marketDeployBlock, symbol, price, borrowRate, decimals) {
@@ -104,9 +104,9 @@ export default {
             transactionAmount: Number(amount),
             operation: event,
             decimals,
-          });
-        });
-      });
+          })
+        })
+      })
       market.getPastEvents('Borrow', marketDeployBlock, { user: this.account }).then((events) => {
         events.forEach(({ event, transactionHash, returnValues: { amount } }) => {
           this.transactions.push({
@@ -117,9 +117,9 @@ export default {
             transactionAmount: Number(amount),
             operation: event,
             decimals,
-          });
-        });
-      });
+          })
+        })
+      })
       market.getPastEvents('Redeem', marketDeployBlock, { user: this.account }).then((events) => {
         events.forEach(({ event, transactionHash, returnValues: { amount } }) => {
           this.transactions.push({
@@ -130,9 +130,9 @@ export default {
             transactionAmount: Number(amount),
             operation: event,
             decimals,
-          });
-        });
-      });
+          })
+        })
+      })
       market
         .getPastEvents('PayBorrow', marketDeployBlock, { user: this.account })
         .then((events) => {
@@ -145,15 +145,16 @@ export default {
               transactionAmount: Number(amount),
               operation: event,
               decimals,
-            });
-          });
-        });
+            })
+          })
+        })
     },
     getTransactions() {
       this.$rbank.eventualMarkets.then((markets) => {
         markets.forEach((market) => {
           market.eventualToken
-            .then((token) => Promise.all([
+            .then((token) =>
+              Promise.all([
                 token.eventualSymbol,
                 market.eventualDeployBlock,
                 this.$rbank.controller.eventualMarketPrice(market.address),
@@ -162,10 +163,10 @@ export default {
               ]),
             )
             .then(([symbol, deployBlock, price, borrowRate, decimals]) => {
-              this.pushMarketEvents(market, deployBlock, symbol, price, borrowRate, decimals);
-            });
-        });
-      });
+              this.pushMarketEvents(market, deployBlock, symbol, price, borrowRate, decimals)
+            })
+        })
+      })
     },
   },
 }

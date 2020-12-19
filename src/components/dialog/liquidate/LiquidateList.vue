@@ -58,77 +58,82 @@ export default {
   },
   data() {
     return {
-      borrows: []
+      borrows: [],
     }
   },
   computed: {
     ...mapState({
-      account: (state) => state.Session.account
+      account: (state) => state.Session.account,
     }),
     hasAccounts() {
       return this.borrows.length > 0
-    }
+    },
   },
   created() {
-    this.getBorrows();
+    this.getBorrows()
   },
   methods: {
     accountSelected(accountObject) {
-      this.$emit('selected', accountObject);
+      this.$emit('selected', accountObject)
     },
     getUnhealthyAccounts(market) {
       market
         .getPastEvents('Borrow', 0)
         .then((borrowEvents) => {
-          const accounts = [];
-          const uniqueBorrows = [];
+          const accounts = []
+          const uniqueBorrows = []
           const borrowsTemp = borrowEvents
             .map(({ address, returnValues: { user } }) => ({
               borrower: user,
               borrowMarketAddress: address,
             }))
-            .filter((borrow) => borrow.borrower !== this.account);
+            .filter((borrow) => borrow.borrower !== this.account)
           borrowsTemp.forEach((borrow) => {
             if (accounts.indexOf(borrow.borrower) === -1) {
-              accounts.push(borrow.borrower);
-              uniqueBorrows.push(borrow);
+              accounts.push(borrow.borrower)
+              uniqueBorrows.push(borrow)
             }
-          });
-          return uniqueBorrows;
+          })
+          return uniqueBorrows
         })
-        .then((borrows) => Promise.all([
+        .then((borrows) =>
+          Promise.all([
             Promise.all(
               borrows.map((borrow) => this.$rbank.controller.getAccountHealth(borrow.borrower)),
             ),
             borrows,
           ]),
         )
-        .then(([accountsHealth, borrows]) => borrows
+        .then(([accountsHealth, borrows]) =>
+          borrows
             .map((borrow, idx) => ({ health: accountsHealth[idx], ...borrow }))
             .filter((borrow) => borrow.health <= 0),
         )
-        .then((borrows) => Promise.all([
+        .then((borrows) =>
+          Promise.all([
             borrows,
             Promise.all(
-              borrows.map((borrow) => new this.$rbank.Market(borrow.borrowMarketAddress).updatedBorrowBy(borrow.borrower),
+              borrows.map((borrow) =>
+                new this.$rbank.Market(borrow.borrowMarketAddress).updatedBorrowBy(borrow.borrower),
               ),
             ),
             Promise.all(borrows.map((borrow) => this.data.market.updatedSupplyOf(borrow.borrower))),
           ]),
         )
-        .then(([borrows, debtsBy, suppliesOf]) => borrows
+        .then(([borrows, debtsBy, suppliesOf]) =>
+          borrows
             .map((borrow, idx) => ({
               debt: debtsBy[idx],
               maxToLiquidate: suppliesOf[idx],
               ...borrow,
             }))
             .forEach((borrow) => this.borrows.push(borrow)),
-        );
+        )
     },
     getBorrows() {
       this.$rbank.eventualMarkets
         .then((markets) => markets.filter((market) => market.address !== this.data.market.address))
-        .then((markets) => markets.forEach((market) => this.getUnhealthyAccounts(market)));
+        .then((markets) => markets.forEach((market) => this.getUnhealthyAccounts(market)))
     },
   },
 }

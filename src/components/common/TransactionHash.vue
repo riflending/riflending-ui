@@ -16,24 +16,24 @@ export default {
   props: {
     hash: {
       type: String,
-      required: true
-    }
+      required: true,
+    },
   },
   computed: {
     hashCutOff() {
       return `${this.hash.substring(0, 4)}...${this.hash.substring(
         this.hash.length - 4,
-        this.hash.length
+        this.hash.length,
       )}`
     },
     rskExplorerUrl() {
       return `https://explorer.testnet.rsk.co/tx/${this.hash}`
-    }
+    },
   },
   methods: {
     copyHash() {
       navigator.clipboard.writeText(this.hash)
-    }
-  }
+    },
+  },
 }
 </script>

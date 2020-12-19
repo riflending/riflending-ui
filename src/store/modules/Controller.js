@@ -3,13 +3,13 @@ import * as constants from '@/store/constants'
 const state = {
   markets: [],
   factor: 1e16,
-  mantissa: 1e6
+  mantissa: 1e6,
 }
 
 const actions = {
   [constants.CONTROLLER_MARKET_UPDATE_BORROW_RATE]: (
     { commit },
-    { marketIndex, marketBorrowRate }
+    { marketIndex, marketBorrowRate },
   ) => {
     commit(constants.CONTROLLER_SET_MARKET_BORROW_RATE, { marketIndex, marketBorrowRate })
   },
@@ -18,7 +18,7 @@ const actions = {
     dispatch(constants.CONTROLLER_MARKET_GET_BORROW_RATE, { marketIndex })
     dispatch(constants.CONTROLLER_MARKET_GET_TOTAL_BORROWS, { marketIndex })
     dispatch(constants.CONTROLLER_MARKET_GET_TOTAL_SUPPLIES, { marketIndex })
-  }
+  },
 }
 
 const mutations = {
@@ -62,7 +62,7 @@ const mutations = {
   // eslint-disable-next-line no-shadow
   [constants.CONTROLLER_SET_MARKET_TOTAL_SUPPLIES]: (state, { marketIndex, marketSupplies }) => {
     state.markets[marketIndex].supplied = Number(marketSupplies)
-  }
+  },
 }
 
 const getters = {}
@@ -71,5 +71,5 @@ export default {
   state,
   actions,
   mutations,
-  getters
+  getters,
 }

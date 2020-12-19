@@ -73,7 +73,7 @@ import { GChart } from 'vue-google-charts'
 export default {
   name: 'SupplyBorrowGraph',
   components: {
-    GChart
+    GChart,
   },
   data() {
     return {
@@ -82,12 +82,12 @@ export default {
       totalBorrowLimit: 0,
       emptyChart: [
         ['Type', 'Value'],
-        ['data', 1]
+        ['data', 1],
       ],
       chartData: [
         ['Type', 'Value'],
         ['Supplied', 0],
-        ['Borrowed', 0]
+        ['Borrowed', 0],
       ],
       chartOptions: {
         width: 200,
@@ -99,42 +99,42 @@ export default {
         pieHole: 0.7,
         chartArea: {
           width: '100%',
-          height: '100%'
-        }
-      }
+          height: '100%',
+        },
+      },
     }
   },
   computed: {
     ...mapState({
-      account: (state) => state.Session.account
+      account: (state) => state.Session.account,
     }),
     supplyBorrow() {
       return !!this.totalBorrowed || !!this.totalSupply
-    }
+    },
   },
   created() {
-    this.getData();
+    this.getData()
   },
   methods: {
     getData() {
       this.$rbank.controller.getAccountValues(this.account).then(({ supplyValue, borrowValue }) => {
-        this.totalBorrowed = borrowValue;
-        this.totalSupplied = supplyValue;
-        this.getBorrowLimit();
-        this.updateDiagramData();
-      });
+        this.totalBorrowed = borrowValue
+        this.totalSupplied = supplyValue
+        this.getBorrowLimit()
+        this.updateDiagramData()
+      })
     },
     getBorrowLimit() {
       this.$rbank.controller.getAccountLiquidity(this.account).then((liquidity) => {
-        this.totalBorrowLimit = liquidity / 2;
-      });
+        this.totalBorrowLimit = liquidity / 2
+      })
     },
     updateDiagramData() {
       this.chartData = [
         ['Type', 'Value'],
         ['Supplied', this.totalSupplied],
         ['Borrowed', this.totalBorrowed],
-      ];
+      ]
     },
   },
 }

@@ -104,11 +104,15 @@ import TransactionsGraph from '@/components/admin/TransactionsGraph.vue'
 
 export default {
   name: 'MarketDialog',
+  components: {
+    MarketPriceDialog,
+    TransactionsGraph,
+  },
   props: {
     data: {
       type: Object,
-      required: true
-    }
+      required: true,
+    },
   },
   data() {
     return {
@@ -121,12 +125,12 @@ export default {
       cash: 0,
       growth: 0,
       tokenAddress: 0,
-      priceFlag: false
+      priceFlag: false,
     }
   },
   computed: {
     ...mapState({
-      account: (state) => state.Session.account
+      account: (state) => state.Session.account,
     }),
     apr() {
       return this.borrowRate.toFixed(2)
@@ -141,56 +145,52 @@ export default {
       return {
         flag: this.priceFlag,
         market: this.data.market,
-        token: this.data.token
+        token: this.data.token,
       }
-    }
+    },
   },
   created() {
     this.data.market.eventualToken.then((tok) => {
-      this.tokenAddress = tok.address;
-      this.reset();
-    });
+      this.tokenAddress = tok.address
+      this.reset()
+    })
   },
   methods: {
     onClickOutside() {
       if (!this.priceFlag) {
-        this.flag = false;
-        this.$emit('closed');
+        this.flag = false
+        this.$emit('closed')
       }
     },
     reset() {
-      this.priceFlag = false;
+      this.priceFlag = false
       this.$rbank.controller
         .eventualMarketPrice(this.data.market.address)
         .then((marketPrice) => {
-          this.price = marketPrice;
-          return this.data.market.eventualBorrowRate;
+          this.price = marketPrice
+          return this.data.market.eventualBorrowRate
         })
         .then((borrowRate) => {
-          this.borrowRate = borrowRate;
-          return this.data.market.eventualBaseBorrowRate;
+          this.borrowRate = borrowRate
+          return this.data.market.eventualBaseBorrowRate
         })
         .then((baseBorrowRate) => {
-          this.baseBorrowRate = baseBorrowRate;
-          return this.data.market.eventualUpdatedTotalSupply;
+          this.baseBorrowRate = baseBorrowRate
+          return this.data.market.eventualUpdatedTotalSupply
         })
         .then((updatedTotalSupply) => {
-          this.updatedTotalSupply = updatedTotalSupply;
-          return this.data.market.eventualUpdatedTotalBorrows;
+          this.updatedTotalSupply = updatedTotalSupply
+          return this.data.market.eventualUpdatedTotalBorrows
         })
         .then((updatedTotalBorrows) => {
-          this.updatedTotalBorrow = updatedTotalBorrows;
-          return this.data.market.eventualCash;
+          this.updatedTotalBorrow = updatedTotalBorrows
+          return this.data.market.eventualCash
         })
         .then((cash) => {
-          this.cash = cash;
-          this.growth = (this.borrowRate - this.baseBorrowRate).toFixed(2);
-        });
+          this.cash = cash
+          this.growth = (this.borrowRate - this.baseBorrowRate).toFixed(2)
+        })
     },
-  },
-  components: {
-    MarketPriceDialog,
-    TransactionsGraph,
   },
 }
 </script>

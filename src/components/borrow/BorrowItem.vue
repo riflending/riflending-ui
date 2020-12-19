@@ -66,29 +66,32 @@ import BorrowDialog from '@/components/dialog/borrow/BorrowDialog.vue'
 
 export default {
   name: 'BorrowItem',
+  components: {
+    BorrowDialog,
+  },
   props: {
     market: {
       type: Object,
-      required: true
-    }
+      required: true,
+    },
   },
   data() {
     return {
       token: {
         name: null,
         symbol: null,
-        decimals: 0
+        decimals: 0,
       },
       price: 0,
       borrowRate: 0,
       cash: 0,
       dialog: false,
-      borrowBalance: 0
+      borrowBalance: 0,
     }
   },
   computed: {
     ...mapState({
-      account: (state) => state.Session.account
+      account: (state) => state.Session.account,
     }),
     apr() {
       return this.borrowRate.toFixed(2)
@@ -99,32 +102,32 @@ export default {
         borrowRate: this.borrowRate,
         price: this.price,
         token: this.token,
-        market: this.market
+        market: this.market,
       }
-    }
+    },
   },
   mounted() {
-    this.$parent.$parent.$parent.$on('reload', this.reset);
+    this.$parent.$parent.$parent.$on('reload', this.reset)
   },
   created() {
     // set data token this.data.market.borrowBalanceCurrent(this.account)
-    this.token = this.market.token;
+    this.token = this.market.token
     this.market
       .borrowBalanceCurrent(this.account)
       .then((balance) => {
-        this.borrowBalance = Number(balance);
-        return this.market.getPriceInDecimals();
+        this.borrowBalance = Number(balance)
+        return this.market.getPriceInDecimals()
       })
       // set price
       .then((price) => {
-        this.price = price;
-        return this.market.getBorrowRate();
+        this.price = price
+        return this.market.getBorrowRate()
       })
 
       // set borrow rate block
       .then((borrowRatePerBlock) => {
-        this.borrowRate = borrowRatePerBlock;
-        return this.market.getCash();
+        this.borrowRate = borrowRatePerBlock
+        return this.market.getCash()
       })
       /** ***** */
 
@@ -156,8 +159,8 @@ export default {
       //   })
       .then((cash) => {
         // this.cash = cash;
-        this.cash = cash;
-      });
+        this.cash = cash
+      })
   },
   methods: {
     reset() {
@@ -194,10 +197,7 @@ export default {
       //     this.borrowRate = borrowRate;
       //     return this.market.eventualCash;
       //   })
-    }
-  },
-  components: {
-    BorrowDialog
+    },
   },
 }
 </script>

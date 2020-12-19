@@ -71,8 +71,8 @@ export default {
   props: {
     data: {
       type: Object,
-      required: true
-    }
+      required: true,
+    },
   },
   data() {
     return {
@@ -81,45 +81,45 @@ export default {
       cash: 0,
       price: 0,
       maxBorrowAllowed: 0,
-      supplyOf: 0
+      supplyOf: 0,
     }
   },
   computed: {
     ...mapState({
-      account: (state) => state.Session.account
-    })
+      account: (state) => state.Session.account,
+    }),
   },
   created() {
     this.data.market.eventualToken
       .then((tok) => tok.eventualBalanceOf(this.account))
       .then((tokenBalance) => {
-        this.tokenBalance = tokenBalance;
-        return this.$rbank.controller.getAccountLiquidity(this.account);
+        this.tokenBalance = tokenBalance
+        return this.$rbank.controller.getAccountLiquidity(this.account)
       })
       .then((accountLiquidity) => {
-        this.liquidity = accountLiquidity;
-        return this.data.market.eventualCash;
+        this.liquidity = accountLiquidity
+        return this.data.market.eventualCash
       })
       .then((cash) => {
-        this.cash = cash;
-        return this.$rbank.controller.eventualMarketPrice(this.data.market.address);
+        this.cash = cash
+        return this.$rbank.controller.eventualMarketPrice(this.data.market.address)
       })
       .then((marketPrice) => {
-        this.price = marketPrice;
-        return this.data.market.updatedSupplyOf(this.account);
+        this.price = marketPrice
+        return this.data.market.updatedSupplyOf(this.account)
       })
       .then((supplyOf) => {
-        this.supplyOf = supplyOf;
-        this.maxBorrowAllowed = this.getMaxAllowed(this.liquidity, this.cash);
-      });
+        this.supplyOf = supplyOf
+        this.maxBorrowAllowed = this.getMaxAllowed(this.liquidity, this.cash)
+      })
   },
   methods: {
     closeDialog() {
-      this.$emit('closeDialog');
+      this.$emit('closeDialog')
     },
     getMaxAllowed(liquidity, cash) {
-      const allowed = this.price > 0 ? Math.floor(liquidity / (this.price * 2)) : 0;
-      return allowed >= cash ? cash : allowed;
+      const allowed = this.price > 0 ? Math.floor(liquidity / (this.price * 2)) : 0
+      return allowed >= cash ? cash : allowed
     },
   },
   components: {

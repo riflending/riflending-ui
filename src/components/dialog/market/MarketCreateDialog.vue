@@ -52,30 +52,30 @@ export default {
       marketAddress: null,
       currentComponent: 'MarketCreateInput',
       errorDialog: null,
-    };
+    }
   },
   methods: {
     actionError() {
-      this.waiting = false;
-      this.succeed = false;
-      this.errorDialog = true;
+      this.waiting = false
+      this.succeed = false
+      this.errorDialog = true
     },
     actionSucceed(succeedObject) {
-      this.waiting = false;
-      this.errorDialog = false;
-      this.marketAddress = succeedObject.marketAddress;
-      this.currentComponent = 'MarketCreateSuccess';
-      this.succeed = true;
+      this.waiting = false
+      this.errorDialog = false
+      this.marketAddress = succeedObject.marketAddress
+      this.currentComponent = 'MarketCreateSuccess'
+      this.succeed = true
     },
     onClickOutside() {
       if (!this.waiting && !this.succeed) {
-        this.flag = false;
-        this.$emit('closed');
+        this.flag = false
+        this.$emit('closed')
       }
     },
     closeDialog() {
-      this.flag = false;
-      this.$emit('closed');
+      this.flag = false
+      this.$emit('closed')
     },
   },
 }

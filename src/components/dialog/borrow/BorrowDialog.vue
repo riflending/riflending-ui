@@ -81,14 +81,14 @@ export default {
       hash: null,
       errorDialog: null,
       userErrorMessage: null,
-    };
+    }
   },
   computed: {
     marketTokenObject() {
       return {
         token: this.data.token,
         market: this.data.market,
-      };
+      }
     },
     successObject() {
       return {
@@ -96,14 +96,14 @@ export default {
         token: this.data.token,
         borrowBalanceInfo: this.borrowBalanceInfo,
         hash: this.hash,
-      };
+      }
     },
     errorObject() {
       return {
         market: this.data.market,
         token: this.data.token,
         userErrorMessage: this.userErrorMessage,
-      };
+      }
     },
   },
   watch: {
@@ -146,7 +146,7 @@ export default {
     close() {
       this.reset()
       this.$emit('closed')
-    }
+    },
   },
 }
 </script>

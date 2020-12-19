@@ -30,19 +30,19 @@ export default {
   props: {
     data: {
       type: Object,
-      required: true
-    }
+      required: true,
+    },
   },
   data() {
     return {
       borrowRate: 0,
-      price: 0
+      price: 0,
     }
   },
   computed: {
     apr() {
       return this.borrowRate.toFixed(2)
-    }
+    },
   },
   created() {
     this.data.market
@@ -54,6 +54,6 @@ export default {
       .then((borrowRate) => {
         this.borrowRate = borrowRate
       })
-  }
+  },
 }
 </script>

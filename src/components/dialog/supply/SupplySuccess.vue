@@ -85,11 +85,14 @@ import TransactionHash from '@/components/common/TransactionHash.vue'
 
 export default {
   name: 'SupplySuccess',
+  components: {
+    TransactionHash,
+  },
   props: {
     data: {
       type: Object,
-      required: true
-    }
+      required: true,
+    },
   },
   data() {
     return {
@@ -98,47 +101,44 @@ export default {
       cash: 0,
       price: 0,
       maxBorrowAllowed: 0,
-      supplyOf: 0
+      supplyOf: 0,
     }
   },
   computed: {
     ...mapState({
-      account: (state) => state.Session.account
-    })
+      account: (state) => state.Session.account,
+    }),
   },
   created() {
     this.data.market
       .getBalanceOfUnderlying(this.account)
       .then((balance) => {
-        this.tokenBalance = balance;
-        this.supplyOf = balance;
-        return this.$middleware.getAccountLiquidity(this.account);
+        this.tokenBalance = balance
+        this.supplyOf = balance
+        return this.$middleware.getAccountLiquidity(this.account)
       })
       .then(({ accountLiquidityInExcess }) => {
-        this.liquidity = accountLiquidityInExcess;
-        return this.data.market.getCash();
+        this.liquidity = accountLiquidityInExcess
+        return this.data.market.getCash()
       })
       .then((cash) => {
-        this.cash = cash;
-        return this.data.market.getPriceInDecimals();
+        this.cash = cash
+        return this.data.market.getPriceInDecimals()
       })
       .then((price) => {
-        this.price = price;
-        this.maxBorrowAllowed = this.getMaxAllowed(this.liquidity, this.cash);
-        return this.data.market.getUserBalanceOfUnderlying();
-      });
+        this.price = price
+        this.maxBorrowAllowed = this.getMaxAllowed(this.liquidity, this.cash)
+        return this.data.market.getUserBalanceOfUnderlying()
+      })
   },
   methods: {
     closeDialog() {
-      this.$emit('closeDialog');
+      this.$emit('closeDialog')
     },
     getMaxAllowed(liquidity, cash) {
-      const allowed = this.price > 0 ? Math.floor(liquidity / (this.price * 2)) : 0;
-      return allowed >= cash ? cash : allowed;
+      const allowed = this.price > 0 ? Math.floor(liquidity / (this.price * 2)) : 0
+      return allowed >= cash ? cash : allowed
     },
-  },
-  components: {
-    TransactionHash,
   },
 }
 </script>

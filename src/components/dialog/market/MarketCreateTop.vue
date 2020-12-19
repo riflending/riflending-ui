@@ -23,8 +23,8 @@ export default {
   props: {
     success: {
       type: Boolean,
-      required: true
-    }
-  }
+      required: true,
+    },
+  },
 }
 </script>

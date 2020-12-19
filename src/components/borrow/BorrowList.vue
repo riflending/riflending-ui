@@ -34,33 +34,25 @@ import BorrowItem from '@/components/borrow/BorrowItem.vue'
 
 export default {
   name: 'BorrowList',
+  components: {
+    BorrowItem,
+  },
   data() {
     return {
-      markets: []
-    }
-  },
-  methods: {
-    reset() {
-      this.$emit('listChange')
-    },
-    reloadItems() {
-      this.$emit('reload')
+      markets: [],
     }
   },
   computed: {
     ...mapState({
-      account: (state) => state.Session.account
-    })
-  },
-  components: {
-    BorrowItem
+      account: (state) => state.Session.account,
+    }),
   },
   created() {
     // get all markets
     this.markets = this.$middleware.getMarkets(this.account)
 
     this.markets.forEach((market) =>
-      market.eventualEvents.then((events) => events.liquidateBorrow().on('data', this.reloadItems))
+      market.eventualEvents.then((events) => events.liquidateBorrow().on('data', this.reloadItems)),
     )
     // this.$rbank.eventualMarkets
     //   .then((mkts) => {
@@ -68,6 +60,14 @@ export default {
     //     this.markets.forEach((market) => market.eventualEvents
     //       .then((events) => events.liquidateBorrow().on('data', this.reloadItems)));
     //   });
-  }
+  },
+  methods: {
+    reset() {
+      this.$emit('listChange')
+    },
+    reloadItems() {
+      this.$emit('reload')
+    },
+  },
 }
 </script>

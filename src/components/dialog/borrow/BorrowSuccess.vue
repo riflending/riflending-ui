@@ -74,8 +74,8 @@ export default {
   props: {
     data: {
       type: Object,
-      required: true
-    }
+      required: true,
+    },
   },
   data() {
     return {
@@ -84,51 +84,51 @@ export default {
       cash: 0,
       price: 0,
       maxBorrowAllowed: 0,
-      borrowBy: 0
+      borrowBy: 0,
     }
   },
   computed: {
     ...mapState({
-      account: (state) => state.Session.account
-    })
+      account: (state) => state.Session.account,
+    }),
   },
   created() {
     this.data.market
       .getUserBalanceOfUnderlying()
       .then((balance) => {
-        this.tokenBalance = balance;
-        console.log('success! balance', this.tokenBalance, ' account: ', this.account);
-        return this.$middleware.getAccountLiquidity(this.account);
+        this.tokenBalance = balance
+        console.log('success! balance', this.tokenBalance, ' account: ', this.account)
+        return this.$middleware.getAccountLiquidity(this.account)
         // return this.$rbank.controller.getAccountLiquidity(this.account);
       })
       .then(({ accountLiquidityInExcess }) => {
-        this.liquidity = accountLiquidityInExcess;
-        return this.data.market.getCash();
+        this.liquidity = accountLiquidityInExcess
+        return this.data.market.getCash()
         // return this.data.market.eventualCash;
       })
       .then((cash) => {
-        this.cash = cash;
-        console.log('success! cash', this.cash);
-        return this.data.market.getPriceInDecimals();
+        this.cash = cash
+        console.log('success! cash', this.cash)
+        return this.data.market.getPriceInDecimals()
         // return this.$rbank.controller.eventualMarketPrice(this.data.market.address);
       })
       .then((marketPrice) => {
-        this.price = Number(marketPrice);
-        console.log('success! marketprice', this.price);
-        return this.data.market.borrowBalanceCurrent(this.account);
+        this.price = Number(marketPrice)
+        console.log('success! marketprice', this.price)
+        return this.data.market.borrowBalanceCurrent(this.account)
       })
       .then((borrowBy) => {
-        this.borrowBy = Number(borrowBy);
-        console.log('success! borrowby', this.borrowBy);
-        return this.data.market.getMaxBorrowAllowed(this.account);
+        this.borrowBy = Number(borrowBy)
+        console.log('success! borrowby', this.borrowBy)
+        return this.data.market.getMaxBorrowAllowed(this.account)
       })
       .then((maxBorrowAllowed) => {
-        this.maxBorrowAllowed = maxBorrowAllowed;
-      });
+        this.maxBorrowAllowed = maxBorrowAllowed
+      })
   },
   methods: {
     closeDialog() {
-      this.$emit('closeDialog');
+      this.$emit('closeDialog')
     },
   },
   components: {

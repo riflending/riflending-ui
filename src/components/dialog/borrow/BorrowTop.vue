@@ -51,8 +51,8 @@ export default {
   props: {
     data: {
       type: Object,
-      required: true
-    }
+      required: true,
+    },
   },
   data() {
     return {
@@ -61,19 +61,19 @@ export default {
       tokenBalancePrice: 0,
       borrowRate: 0,
       liqProvided: 0,
-      tokenAddress: 0
+      tokenAddress: 0,
     }
   },
   computed: {
     ...mapState({
-      account: (state) => state.Session.account
+      account: (state) => state.Session.account,
     }),
     apr() {
       return this.borrowRate.toFixed(2)
     },
     rskExplorerUrl() {
       return `https://explorer.testnet.rsk.co/address/${this.tokenAddress}`
-    }
+    },
   },
   created() {
     // set token balance
@@ -88,7 +88,7 @@ export default {
       .then((price) => {
         this.price = price
         this.tokenBalancePrice = new BigNumber(this.tokenBalance).multipliedBy(
-          new BigNumber(this.price)
+          new BigNumber(this.price),
         )
         return this.data.market.getBorrowRate()
       })
@@ -110,6 +110,6 @@ export default {
     //   .then((borrowRate) => {
     //     this.borrowRate = borrowRate;
     //   });
-  }
+  },
 }
 </script>

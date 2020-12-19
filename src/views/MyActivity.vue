@@ -135,18 +135,22 @@ import { mapState } from 'vuex'
 
 export default {
   name: 'MyActivity',
+  components: {
+    SupplyBorrowGraph,
+    TxList,
+  },
   data() {
     return {
       healthFactor: 0,
       totalBalance: 0,
       totalSupplied: 0,
       totalBorrowed: 0,
-      showHealthWarning: null
+      showHealthWarning: null,
     }
   },
   computed: {
     ...mapState({
-      account: (state) => state.Session.account
+      account: (state) => state.Session.account,
     }),
     accountHealth() {
       return this.healthFactor.toFixed(2)
@@ -164,11 +168,7 @@ export default {
         return 'medium'
       }
       return 'high'
-    }
-  },
-  components: {
-    SupplyBorrowGraph,
-    TxList
+    },
   },
   created() {
     this.$middleware
@@ -183,6 +183,6 @@ export default {
         this.healthFactor = health > 1 ? 100 : health * 100
         this.showHealthWarning = Number(this.healthFactor) === 0
       })
-  }
+  },
 }
 </script>

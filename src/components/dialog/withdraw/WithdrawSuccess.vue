@@ -62,11 +62,14 @@ import TransactionHash from '@/components/common/TransactionHash.vue'
 
 export default {
   name: 'SupplySuccess',
+  components: {
+    TransactionHash,
+  },
   props: {
     data: {
       type: Object,
-      required: true
-    }
+      required: true,
+    },
   },
   data() {
     return {
@@ -74,45 +77,42 @@ export default {
       cash: 0,
       price: 0,
       maxBorrowAllowed: 0,
-      supplyOf: 0
+      supplyOf: 0,
     }
   },
   computed: {
     ...mapState({
-      account: (state) => state.Session.account
-    })
+      account: (state) => state.Session.account,
+    }),
   },
   created() {
     this.$middleware
       .getAccountLiquidity(this.account)
       .then(({ accountLiquidityInExcess }) => {
-        this.liquidity = Number(accountLiquidityInExcess);
-        return this.data.market.getCash();
+        this.liquidity = Number(accountLiquidityInExcess)
+        return this.data.market.getCash()
       })
       .then((cash) => {
-        this.cash = cash;
-        return this.data.market.getPriceInDecimals();
+        this.cash = cash
+        return this.data.market.getPriceInDecimals()
       })
       .then((price) => {
-        this.price = price;
-        this.maxBorrowAllowed = this.getMaxAllowed(this.liquidity, this.cash);
-        return this.data.market.getBalanceOfUnderlying(this.account);
+        this.price = price
+        this.maxBorrowAllowed = this.getMaxAllowed(this.liquidity, this.cash)
+        return this.data.market.getBalanceOfUnderlying(this.account)
       })
       .then((balance) => {
-        this.supplyOf = balance;
-      });
+        this.supplyOf = balance
+      })
   },
   methods: {
     closeDialog() {
-      this.$emit('closeDialog');
+      this.$emit('closeDialog')
     },
     getMaxAllowed(liquidity, cash) {
-      const allowed = this.price > 0 ? Math.floor(liquidity / (this.price * 2)) : 0;
-      return allowed >= cash ? cash : allowed;
+      const allowed = this.price > 0 ? Math.floor(liquidity / (this.price * 2)) : 0
+      return allowed >= cash ? cash : allowed
     },
-  },
-  components: {
-    TransactionHash,
   },
 }
 </script>

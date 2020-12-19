@@ -37,15 +37,15 @@ export default {
   props: {
     data: {
       type: Object,
-      required: true
-    }
+      required: true,
+    },
   },
   data() {
     return {
       price: 0,
       borrowRate: 0,
       tokenAddress: 0,
-      tokenDecimals: 0
+      tokenDecimals: 0,
     }
   },
   computed: {
@@ -54,7 +54,7 @@ export default {
     },
     rskExplorerUrl() {
       return `https://explorer.testnet.rsk.co/address/${this.tokenAddress}`
-    }
+    },
   },
   created() {
     this.data.market
@@ -68,6 +68,6 @@ export default {
       .then((borrowRate) => {
         this.borrowRate = borrowRate
       })
-  }
+  },
 }
 </script>

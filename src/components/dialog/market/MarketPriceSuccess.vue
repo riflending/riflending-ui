@@ -22,13 +22,13 @@ export default {
   props: {
     price: {
       type: String,
-      required: true
-    }
+      required: true,
+    },
   },
   methods: {
     close() {
       this.$emit('closed')
-    }
-  }
+    },
+  },
 }
 </script>

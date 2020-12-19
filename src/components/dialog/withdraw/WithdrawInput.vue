@@ -17,7 +17,7 @@
               rules.decimals,
               rules.marketSupply,
               rules.userSupply,
-              rules.userDebts
+              rules.userDebts,
             ]"
           />
         </v-col>
@@ -117,11 +117,14 @@ import { ethers } from 'ethers'
 
 export default {
   name: 'WithdrawInput',
+  components: {
+    Loader,
+  },
   props: {
     data: {
       type: Object,
-      required: true
-    }
+      required: true,
+    },
   },
   data() {
     return {
@@ -155,13 +158,13 @@ export default {
           this.oldSupplyOf >= Number(this.amount) || 'You do not have enough funds on this market',
         userDebts: () =>
           this.oldSupplyOf - this.debt >= Number(this.amount) ||
-          'You can not withdraw that much, because is compromised as collateral in a debt'
-      }
+          'You can not withdraw that much, because is compromised as collateral in a debt',
+      },
     }
   },
   computed: {
     ...mapState({
-      account: (state) => state.Session.account
+      account: (state) => state.Session.account,
     }),
     maxBorrowAllowedAsDouble() {
       return this.asDouble(this.maxBorrowAllowed)
@@ -191,18 +194,18 @@ export default {
     decimalPositions() {
       const amount = this.amount.toString()
       return this.hasDecimals ? this.numberOfDecimals : !amount.includes('.')
-    }
+    },
   },
   watch: {
     amount() {
-      this.getValues();
-      if (this.maxAmount && this.amount !== this.maxWithdrawAllowed) this.maxAmount = false;
-      if (this.amount === this.maxWithdrawAllowed) this.maxAmount = true;
+      this.getValues()
+      if (this.maxAmount && this.amount !== this.maxWithdrawAllowed) this.maxAmount = false
+      if (this.amount === this.maxWithdrawAllowed) this.maxAmount = true
     },
     maxAmount() {
-      this.getValues();
-      if (this.maxAmount) this.amount = this.maxWithdrawAllowed;
-      if (!this.maxAmount && this.amount === this.maxWithdrawAllowed) this.amount = null;
+      this.getValues()
+      if (this.maxAmount) this.amount = this.maxWithdrawAllowed
+      if (!this.maxAmount && this.amount === this.maxWithdrawAllowed) this.amount = null
     },
   },
   created() {
@@ -212,49 +215,49 @@ export default {
     this.data.market
       .getCash()
       .then((cash) => {
-        this.oldCash = cash;
-        this.cash = cash;
-        return this.data.market.getPriceInDecimals();
+        this.oldCash = cash
+        this.cash = cash
+        return this.data.market.getPriceInDecimals()
       })
       // set price
       .then((marketPrice) => {
-        this.price = marketPrice;
-        return this.data.market.borrowBalanceCurrent(this.account);
+        this.price = marketPrice
+        return this.data.market.borrowBalanceCurrent(this.account)
       })
       .then((borrowValue) => {
-        this.data.market.contractAmount;
+        this.data.market.contractAmount
         // TODO format
-        this.borrowValue = ethers.utils.formatEther(borrowValue);
-        return this.data.market.getUserBalanceOfUnderlying();
+        this.borrowValue = ethers.utils.formatEther(borrowValue)
+        return this.data.market.getUserBalanceOfUnderlying()
       })
       .then((balance) => {
-        this.tokenBalance = balance;
-        this.supplyOf = this.tokenBalance;
-        this.oldSupplyOf = this.tokenBalance;
-        return this.$middleware.getAccountLiquidity(this.account);
+        this.tokenBalance = balance
+        this.supplyOf = this.tokenBalance
+        this.oldSupplyOf = this.tokenBalance
+        return this.$middleware.getAccountLiquidity(this.account)
       })
       // sets liquidity
       .then(({ accountLiquidityInExcess }) => {
-        this.liquidity = accountLiquidityInExcess;
-        return this.data.market.getCurrentExchangeRate();
+        this.liquidity = accountLiquidityInExcess
+        return this.data.market.getCurrentExchangeRate()
       })
       // sets mantissa
       .then((mantissa) => {
-        this.mantissa = mantissa;
-        return this.data.market.getCollateralFactorMantissa();
+        this.mantissa = mantissa
+        return this.data.market.getCollateralFactorMantissa()
       })
       // sets maxWithdrawAllowed and maxBorrowAllowed
       .then((collateralFactor) => {
         // set collateralFactor
-        this.collateralFactor = collateralFactor * this.mantissa;
+        this.collateralFactor = collateralFactor * this.mantissa
         // sets debt
-        this.debt = (this.borrowValue * (this.mantissa + this.collateralFactor)) / this.mantissa;
-        this.maxWithdrawAllowed = this.getMaxWithdrawAllowed(this.supplyOf, this.cash);
-        return this.data.market.getMaxBorrowAllowed(this.account);
+        this.debt = (this.borrowValue * (this.mantissa + this.collateralFactor)) / this.mantissa
+        this.maxWithdrawAllowed = this.getMaxWithdrawAllowed(this.supplyOf, this.cash)
+        return this.data.market.getMaxBorrowAllowed(this.account)
       })
       .then((maxBorrowAllowed) => {
-        this.maxBorrowAllowed = maxBorrowAllowed;
-      });
+        this.maxBorrowAllowed = maxBorrowAllowed
+      })
   },
   methods: {
     async withdrawAllowed() {
@@ -283,7 +286,7 @@ export default {
           this.$emit('succeed', {
             hash: res.transactionHash,
             borrowLimitInfo: this.borrowLimitInfo,
-            supplyBalanceInfo: this.supplyBalanceInfo
+            supplyBalanceInfo: this.supplyBalanceInfo,
           })
         })
         .catch((error) => {
@@ -291,7 +294,7 @@ export default {
           // validate user error message
           const userError = typeof error === 'string' ? error : error.message || ''
           this.$emit('error', {
-            userErrorMessage: userError
+            userErrorMessage: userError,
           })
         })
     },
@@ -325,7 +328,8 @@ export default {
           return this.data.market.getUserBalanceOfUnderlying()
         })
         .then((balanceSupply) => {
-          const newBorrowValue = (auxBorrowValue * (this.collateralFactor + this.mantissa)) / this.mantissa;
+          const newBorrowValue =
+            (auxBorrowValue * (this.collateralFactor + this.mantissa)) / this.mantissa
           const newSupplyValue = balanceSupply - Number(this.contractAmount) * this.price
 
           this.liquidity = newBorrowValue < newSupplyValue ? newSupplyValue - newBorrowValue : 0
@@ -357,10 +361,7 @@ export default {
       //       this.maxBorrowAllowed
       //   );
       // });
-    }
-  },
-  components: {
-    Loader,
+    },
   },
 }
 </script>

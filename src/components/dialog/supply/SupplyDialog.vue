@@ -99,14 +99,14 @@ export default {
       hash: null,
       errorDialog: null,
       userErrorMessage: null,
-    };
+    }
   },
   computed: {
     marketTokenObject() {
       return {
         token: this.data.token,
         market: this.data.market,
-      };
+      }
     },
     successObject() {
       return {
@@ -118,27 +118,27 @@ export default {
         costValue: this.costValue,
         collateral: this.collateral,
         hash: this.hash,
-      };
+      }
     },
     errorObject() {
       return {
         market: this.data.market,
         token: this.data.token,
         userErrorMessage: this.userErrorMessage,
-      };
+      }
     },
   },
   watch: {
     currentComponent() {
       if (this.currentComponent === 'SupplyInput') {
-        this.successComponent = 'SupplySuccess';
-        this.topComponent = 'SupplyTop';
+        this.successComponent = 'SupplySuccess'
+        this.topComponent = 'SupplyTop'
       } else if (this.currentComponent === 'WithdrawInput') {
-        this.successComponent = 'WithdrawSuccess';
-        this.topComponent = 'WithdrawTop';
+        this.successComponent = 'WithdrawSuccess'
+        this.topComponent = 'WithdrawTop'
       } else {
-        this.successComponent = 'LiquidateSuccess';
-        this.topComponent = 'SupplyTop';
+        this.successComponent = 'LiquidateSuccess'
+        this.topComponent = 'SupplyTop'
       }
     },
   },
@@ -180,7 +180,7 @@ export default {
     close() {
       this.reset()
       this.$emit('closed')
-    }
+    },
   },
 }
 </script>

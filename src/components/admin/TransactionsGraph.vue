@@ -112,10 +112,10 @@ export default {
         { key: 11, value: 'December' },
       ],
       period: 'week',
-    };
+    }
   },
   created() {
-    this.getChartData('week');
+    this.getChartData('week')
   },
   methods: {
     mapTimeToLabel(period, date) {
@@ -138,17 +138,17 @@ export default {
         .getOverallBalance(period)
         .then((overallBalance) =>
           overallBalance.map(([date, supplied, loaned]) => [
-          this.mapTimeToLabel(period, date),
-          supplied,
-          loaned
-        ])
+            this.mapTimeToLabel(period, date),
+            supplied,
+            loaned,
+          ]),
         )
         .then((overallBalance) => {
           overallBalance.reverse()
           this.chartData = Array.from(new Set(overallBalance.map(JSON.stringify)), JSON.parse)
           this.chartData.unshift(['Time', 'Supplied', 'Loaned'])
         })
-    }
+    },
   },
 }
 </script>

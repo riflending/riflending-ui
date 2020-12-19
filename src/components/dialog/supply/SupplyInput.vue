@@ -104,11 +104,14 @@ import Loader from '@/components/common/Loader.vue'
 
 export default {
   name: 'SupplyInput',
+  components: {
+    Loader,
+  },
   props: {
     data: {
       type: Object,
-      required: true
-    }
+      required: true,
+    },
   },
   data() {
     return {
@@ -136,13 +139,13 @@ export default {
           // TODO see if the tokenBalance is the balance of account or the balance of the account in the protocol
           // this.tokenBalance >= Number(this.contractAmount) ||
           // "Not enough funds",
-          this.maxAmountBalanceAllowed >= Number(this.amount) || 'Not enough funds'
-      }
+          this.maxAmountBalanceAllowed >= Number(this.amount) || 'Not enough funds',
+      },
     }
   },
   computed: {
     ...mapState({
-      account: (state) => state.Session.account
+      account: (state) => state.Session.account,
     }),
     apr() {
       return this.borrowRate.toFixed(2)
@@ -173,64 +176,64 @@ export default {
     decimalPositions() {
       const amount = this.amount.toString()
       return this.hasDecimals ? this.numberOfDecimals : !amount.includes('.')
-    }
+    },
   },
   watch: {
     amount() {
-      this.getValues();
-      if (this.maxAmount && this.amount !== this.maxAmountBalanceAllowed) this.maxAmount = false;
-      if (this.amount === this.maxAmountBalanceAllowed) this.maxAmount = true;
+      this.getValues()
+      if (this.maxAmount && this.amount !== this.maxAmountBalanceAllowed) this.maxAmount = false
+      if (this.amount === this.maxAmountBalanceAllowed) this.maxAmount = true
     },
     maxAmount() {
-      if (this.maxAmount) this.amount = this.maxAmountBalanceAllowed;
-      if (!this.maxAmount && this.amount === this.maxAmountBalanceAllowed) this.amount = null;
+      if (this.maxAmount) this.amount = this.maxAmountBalanceAllowed
+      if (!this.maxAmount && this.amount === this.maxAmountBalanceAllowed) this.amount = null
     },
   },
   created() {
     this.$middleware
       .getAccountLiquidity(this.account)
       .then(({ accountLiquidityInExcess }) => {
-        this.liquidity = Number(accountLiquidityInExcess);
-        return this.data.market.getCash();
+        this.liquidity = Number(accountLiquidityInExcess)
+        return this.data.market.getCash()
       })
       .then((cash) => {
-        this.cash = cash;
-        return this.data.market.getBorrowRate();
+        this.cash = cash
+        return this.data.market.getBorrowRate()
       })
       .then((borrowRate) => {
-        this.borrowRate = borrowRate;
-        return this.data.market.getPriceInDecimals();
+        this.borrowRate = borrowRate
+        return this.data.market.getPriceInDecimals()
       })
       .then((price) => {
-        this.price = price;
-        return this.data.market.getUserBalanceOfUnderlying();
+        this.price = price
+        return this.data.market.getUserBalanceOfUnderlying()
       })
       .then((tokenBalance) => {
-        this.tokenBalance = tokenBalance;
-        this.supplyOf = tokenBalance;
-        return this.data.market.getMaxBorrowAllowed(this.account);
+        this.tokenBalance = tokenBalance
+        this.supplyOf = tokenBalance
+        return this.data.market.getMaxBorrowAllowed(this.account)
       })
       .then((maxBorrowAllowed) => {
-        this.maxBorrowAllowed = maxBorrowAllowed;
-        const internalAddressOfToken = this.data.market.token?.internalAddress;
+        this.maxBorrowAllowed = maxBorrowAllowed
+        const internalAddressOfToken = this.data.market.token?.internalAddress
         return internalAddressOfToken
           ? this.$middleware.getWalletAccountBalance(
-            this.account,
+              this.account,
               this.data.market.token?.internalAddress,
-          )
-          : this.$middleware.getWalletAccountBalanceForRBTC(this.account);
+            )
+          : this.$middleware.getWalletAccountBalanceForRBTC(this.account)
       })
       .then((balanceOfToken) => {
-        this.maxAmountBalanceAllowed = balanceOfToken;
-        return this.data.market.getCurrentExchangeRate();
+        this.maxAmountBalanceAllowed = balanceOfToken
+        return this.data.market.getCurrentExchangeRate()
       })
       .then((mantissa) => {
-        this.mantissa = mantissa;
-        return this.data.market.getCollateralFactorMantissa();
+        this.mantissa = mantissa
+        return this.data.market.getCollateralFactorMantissa()
       })
       .then((collateralFactor) => {
-        this.collateralFactor = collateralFactor;
-      });
+        this.collateralFactor = collateralFactor
+      })
   },
   methods: {
     supply() {
@@ -244,7 +247,7 @@ export default {
           this.$emit('succeed', {
             hash: res.transactionHash,
             borrowLimitInfo: this.borrowLimitInfo,
-            supplyBalanceInfo: Number(this.amount)
+            supplyBalanceInfo: Number(this.amount),
           })
         })
         .catch((error) => {
@@ -297,10 +300,7 @@ export default {
       //         this.getMaxBorrowAllowed(oldLiquidity, oldCash)
       //     );
       //   });
-    }
-  },
-  components: {
-    Loader,
+    },
   },
 }
 </script>

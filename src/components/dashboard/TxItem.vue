@@ -42,36 +42,36 @@ export default {
   props: {
     marketName: {
       type: String,
-      required: true
+      required: true,
     },
     transactionHash: {
       type: String,
-      required: true
+      required: true,
     },
     amount: {
       type: Number,
-      required: true
+      required: true,
     },
     apr: {
       type: Number,
-      required: true
+      required: true,
     },
     price: {
       type: Number,
-      required: true
+      required: true,
     },
     operation: {
       type: String,
-      required: true
+      required: true,
     },
     decimals: {
       type: Number,
-      required: true
-    }
+      required: true,
+    },
   },
   data() {
     return {
-      operationLogo: null
+      operationLogo: null,
     }
   },
   created() {
@@ -94,6 +94,6 @@ export default {
       default:
         this.operationLogo = null
     }
-  }
+  },
 }
 </script>

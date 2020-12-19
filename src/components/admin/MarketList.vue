@@ -40,19 +40,21 @@ export default {
   data() {
     return {
       markets: [],
-    };
+    }
   },
   created() {
     this.$rbank.eventualMarkets.then((mkts) => {
-      this.markets = mkts;
-      this.markets.forEach((market) => market.eventualEvents.then((events) => events.liquidateBorrow().on('data', this.reloadItems),
+      this.markets = mkts
+      this.markets.forEach((market) =>
+        market.eventualEvents.then((events) =>
+          events.liquidateBorrow().on('data', this.reloadItems),
         ),
-      );
-    });
+      )
+    })
   },
   methods: {
     reloadItems() {
-      this.$emit('reload');
+      this.$emit('reload')
     },
   },
 }

@@ -20,7 +20,7 @@ export default class factoryContract {
   }
 
   validateContractName(name) {
-    if (!constants.hasOwnProperty(name)) {
+    if (!Object.prototype.hasOwnProperty.call(constants, name)) {
       console.error(`contract name (${name}) not exist in constants`)
       return false
     }
@@ -29,26 +29,29 @@ export default class factoryContract {
 
   getContract(name) {
     if (this.validateContractName(name)) {
-      return this.createContract(this.addressContract[name], abi[name], Vue.web3Provider);
+      return this.createContract(this.addressContract[name], abi[name], Vue.web3Provider)
     }
   }
 
   getContractToken(name) {
     if (this.validateContractName(name)) {
-      return this.createContract(this.addressContract[name], abi.Erc20, Vue.web3Provider);
+      return this.createContract(this.addressContract[name], abi.Erc20, Vue.web3Provider)
     }
   }
 
   getContractCtoken(name) {
     if (this.validateContractName(name)) {
       const abiCtoken = name == 'cRBTC' ? abi.cRBTC : abi.cErc20
-      return this.createContract(this.addressContract[name], abiCtoken, Vue.web3Provider);
+      return this.createContract(this.addressContract[name], abiCtoken, Vue.web3Provider)
     }
   }
 
   getContractByNameAndAbiName(nameContract, nameAbi) {
-    if (this.validateContractName(nameContract) && abi.hasOwnProperty(nameAbi)) {
-      return this.createContract(this.addressContract[nameContract], abi[nameAbi], Vue.web3Provider);
+    if (
+      this.validateContractName(nameContract) &&
+      Object.prototype.hasOwnProperty.call(abi, nameAbi)
+    ) {
+      return this.createContract(this.addressContract[nameContract], abi[nameAbi], Vue.web3Provider)
     }
   }
 }

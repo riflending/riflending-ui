@@ -28,12 +28,12 @@ export default {
   data() {
     return {
       marketAddresses: [],
-    };
+    }
   },
   created() {
     this.$rbank.eventualMarkets.then((mkts) => {
       this.marketAddresses = mkts.map((mkt) => mkt.address)
     })
-  }
+  },
 }
 </script>

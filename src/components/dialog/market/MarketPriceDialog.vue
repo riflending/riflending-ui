@@ -85,17 +85,17 @@ export default {
         required: () => !!Number(this.newPrice) || 'Required.',
         integer: () => !this.newPrice.toString().includes('.') || 'Not decimal positions allowed.',
       },
-    };
+    }
   },
   computed: {
     validForm() {
-      return typeof this.rules.required() !== 'string' && typeof this.rules.integer() !== 'string';
+      return typeof this.rules.required() !== 'string' && typeof this.rules.integer() !== 'string'
     },
   },
   created() {
     this.$rbank.controller.eventualMarketPrice(this.data.market.address).then((marketPrice) => {
-      this.price = marketPrice;
-    });
+      this.price = marketPrice
+    })
   },
   methods: {
     onClickOutside() {
@@ -122,7 +122,7 @@ export default {
           this.success = false
           this.error = true
         })
-    }
+    },
   },
 }
 </script>

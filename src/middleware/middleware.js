@@ -20,8 +20,8 @@ export default class Middleware {
           tokenSymbol,
           cTokensDetails[index].underlying.name,
           cTokensDetails[index].underlying.decimals,
-          account
-        )
+          account,
+        ),
       )
     }
     return markets
@@ -40,18 +40,19 @@ export default class Middleware {
     const factoryContractInstance = new factoryContract()
     const contract = factoryContractInstance.getContractByNameAndAbiName(
       constants.Unitroller,
-      constants.Comptroller
+      constants.Comptroller,
     )
     const [err, accountLiquidityInExcess, accountShortfall] = await contract.getAccountLiquidity(
-      account
+      account,
     )
     return {
       err,
       accountLiquidityInExcess,
-      accountShortfall
+      accountShortfall,
     }
   }
 
+  // eslint-disable-next-line no-unused-vars
   getCollateralFactor(account) {
     return 1
     // return Rlending.eth
@@ -80,24 +81,24 @@ export default class Middleware {
     const marketsPromises = markets.map(
       (market) =>
         new Promise((resolve, reject) => {
-        (async () => {
-          try {
-            const borrowBalanceCurrent = await market.borrowBalanceCurrentFormatted(account)
-            const borrowBalanceCurrentBN = new BigNumber(borrowBalanceCurrent)
-            const marketPriceFromOracleBN = await market.getPriceInDecimals()
-            const marketPriceBN = marketPriceFromOracleBN || new BigNumber(0)
+          ;(async () => {
+            try {
+              const borrowBalanceCurrent = await market.borrowBalanceCurrentFormatted(account)
+              const borrowBalanceCurrentBN = new BigNumber(borrowBalanceCurrent)
+              const marketPriceFromOracleBN = await market.getPriceInDecimals()
+              const marketPriceBN = marketPriceFromOracleBN || new BigNumber(0)
 
-            const tokenBalance = await market.getBalanceOfUnderlying(account)
-            const tokenBalanceBN = new BigNumber(tokenBalance)
+              const tokenBalance = await market.getBalanceOfUnderlying(account)
+              const tokenBalanceBN = new BigNumber(tokenBalance)
 
-            const borrowValue = borrowBalanceCurrentBN.multipliedBy(marketPriceBN)
-            const supplyValue = tokenBalanceBN.multipliedBy(marketPriceBN)
-            resolve({ borrowValue, supplyValue })
-          } catch (err) {
-            reject(err)
-          }
-        })()
-      })
+              const borrowValue = borrowBalanceCurrentBN.multipliedBy(marketPriceBN)
+              const supplyValue = tokenBalanceBN.multipliedBy(marketPriceBN)
+              resolve({ borrowValue, supplyValue })
+            } catch (err) {
+              reject(err)
+            }
+          })()
+        }),
     )
     const totals = await Promise.all(marketsPromises)
     const totalsReduced = totals.reduce(
@@ -105,7 +106,7 @@ export default class Middleware {
         borrowValue: previousValue.borrowValue.plus(currentValue.borrowValue),
         supplyValue: previousValue.supplyValue.plus(currentValue.supplyValue),
       }),
-      { borrowValue: new BigNumber(0), supplyValue: new BigNumber(0) }
+      { borrowValue: new BigNumber(0), supplyValue: new BigNumber(0) },
     )
     return totalsReduced
   }

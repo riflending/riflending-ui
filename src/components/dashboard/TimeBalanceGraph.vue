@@ -60,12 +60,15 @@ import { mapState } from 'vuex'
 
 export default {
   name: 'TimeBalanceGraph',
+  components: {
+    GChart,
+  },
   data() {
     return {
       constants,
       chartData: [
         ['Date', 'Balance'],
-        ['2014', 0]
+        ['2014', 0],
       ],
       chartOptions: {
         height: 250,
@@ -73,11 +76,11 @@ export default {
           left: '10%',
           right: '5%',
           width: '60%',
-          height: '85%'
+          height: '85%',
         },
         legend: 'none',
         fontName: 'Rubik',
-        colors: ['#24BD6B']
+        colors: ['#24BD6B'],
       },
       weekLabels: [
         { key: 0, value: 'Sunday' },
@@ -86,7 +89,7 @@ export default {
         { key: 3, value: 'Wednesday' },
         { key: 4, value: 'Thursday' },
         { key: 5, value: 'Friday' },
-        { key: 6, value: 'Saturday' }
+        { key: 6, value: 'Saturday' },
       ],
       monthLabels: [
         { key: 0, value: 'January' },
@@ -100,49 +103,47 @@ export default {
         { key: 8, value: 'September' },
         { key: 9, value: 'October' },
         { key: 10, value: 'November' },
-        { key: 11, value: 'December' }
+        { key: 11, value: 'December' },
       ],
-      period: 'week'
+      period: 'week',
     }
   },
   computed: {
     ...mapState({
-      account: (state) => state.Session.account
-    })
+      account: (state) => state.Session.account,
+    }),
   },
   created() {
-    this.getChartData('week');
+    this.getChartData('week')
   },
   methods: {
     mapTimeToLabel(period, date) {
       switch (period) {
         case constants.PERIOD_DAY:
-          return date;
+          return date
         case constants.PERIOD_WEEK:
-          return this.weekLabels[date.getDay()].value;
+          return this.weekLabels[date.getDay()].value
         case constants.PERIOD_MONTH:
-          return date;
+          return date
         case constants.PERIOD_YEAR:
-          return this.monthLabels[date.getMonth()].value;
+          return this.monthLabels[date.getMonth()].value
         default:
-          return this.weekLabels[date.getDay()].value;
+          return this.weekLabels[date.getDay()].value
       }
     },
     getChartData(period) {
-      this.period = period;
+      this.period = period
       this.$rbank.controller
         .getOverallBalance(this.account, period)
-        .then((overallBalance) => overallBalance.map(([date, balance]) => [this.mapTimeToLabel(period, date), balance]),
+        .then((overallBalance) =>
+          overallBalance.map(([date, balance]) => [this.mapTimeToLabel(period, date), balance]),
         )
         .then((overallBalance) => {
-          overallBalance.reverse();
-          this.chartData = Array.from(new Set(overallBalance.map(JSON.stringify)), JSON.parse);
-          this.chartData.unshift(['Time', 'Balance']);
-        });
+          overallBalance.reverse()
+          this.chartData = Array.from(new Set(overallBalance.map(JSON.stringify)), JSON.parse)
+          this.chartData.unshift(['Time', 'Balance'])
+        })
     },
-  },
-  components: {
-    GChart,
   },
 }
 </script>

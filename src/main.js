@@ -19,8 +19,8 @@ Vue.config.productionTip = false
 Vue.prototype.$rbank = Vue.rbank = new Rbank({
   [process.env.VUE_APP_NETWORK_ID]: {
     httpProvider: process.env.VUE_APP_HTTP_PROVIDER,
-    wsProvider: process.env.VUE_APP_WSS_PROVIDER
-  }
+    wsProvider: process.env.VUE_APP_WSS_PROVIDER,
+  },
 })
 // eslint-disable-next-line no-multi-assign
 Vue.prototype.$middleware = Vue.middleware = new Middleware()
@@ -33,12 +33,12 @@ Vue.prototype.$rLogin = Vue.rLogin = new RLogin({
       options: {
         rpc: {
           // 30: 'https://public-node.rsk.co',
-          31: 'https://public-node.testnet.rsk.co'
-        }
-      }
-    }
+          31: 'https://public-node.testnet.rsk.co',
+        },
+      },
+    },
   },
-  supportedChains: [31] // 30
+  supportedChains: [31], // 30
 })
 
 Vue.prototype.$provider = null
@@ -48,5 +48,5 @@ new Vue({
   router,
   store,
   vuetify,
-  render: (h) => h(App)
+  render: (h) => h(App),
 }).$mount('#app')

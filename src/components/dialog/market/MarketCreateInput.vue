@@ -123,7 +123,7 @@ export default {
       advancedFlag: false,
       advanced: {
         text: 'Advanced',
-        icon: 'arrow_drop_down'
+        icon: 'arrow_drop_down',
       },
       blocksPerYear: 1e6,
       utilizationRate: 20,
@@ -135,8 +135,8 @@ export default {
         requiredBaseBorrowApr: () => !!Number(this.baseBorrowApr) || 'Required.',
         requiredBlocksPerYear: () => !!Number(this.blocksPerYear) || 'Required.',
         requiredUtilizationRate: () => !!Number(this.utilizationRate) || 'Required.',
-        address: () => /^0x[a-fA-F0-9]{40}$/.test(this.tokenAddress) || 'Not a valid address'
-      }
+        address: () => /^0x[a-fA-F0-9]{40}$/.test(this.tokenAddress) || 'Not a valid address',
+      },
     }
   },
   computed: {
@@ -149,42 +149,42 @@ export default {
         typeof this.rules.requiredBlocksPerYear() !== 'string' &&
         typeof this.rules.requiredUtilizationRate() !== 'string'
       )
-    }
+    },
   },
   watch: {
     advancedFlag() {
       if (this.advancedFlag) {
-        this.advanced.icon = 'arrow_drop_up';
-        this.advanced.text = 'Advanced Market Details';
+        this.advanced.icon = 'arrow_drop_up'
+        this.advanced.text = 'Advanced Market Details'
       } else {
-        this.advanced.icon = 'arrow_drop_down';
-        this.advanced.text = 'Advanced';
-        this.blocksPerYear = 1e6;
-        this.utilizationRate = 20;
+        this.advanced.icon = 'arrow_drop_down'
+        this.advanced.text = 'Advanced'
+        this.blocksPerYear = 1e6
+        this.utilizationRate = 20
       }
     },
   },
   methods: {
     reset() {
-      this.advancedFlag = false;
-      this.tokenAddress = null;
-      this.marketPrice = 0;
-      this.baseBorrowApr = 0;
-      this.blocksPerYear = 1e6;
-      this.utilizationRate = 20;
-      this.showSnackbar = false;
-      this.marketExists = false;
+      this.advancedFlag = false
+      this.tokenAddress = null
+      this.marketPrice = 0
+      this.baseBorrowApr = 0
+      this.blocksPerYear = 1e6
+      this.utilizationRate = 20
+      this.showSnackbar = false
+      this.marketExists = false
     },
     async checkMarketExistence() {
       await this.$rbank.marketExistsByToken(this.tokenAddress).then((marketExists) => {
-        this.marketExists = marketExists;
-      });
+        this.marketExists = marketExists
+      })
     },
     async createMarket() {
-      await this.checkMarketExistence();
+      await this.checkMarketExistence()
       if (!this.marketExists) {
-        let marketAddress;
-        this.$emit('wait');
+        let marketAddress
+        this.$emit('wait')
         await this.$rbank.Market.create(
           this.tokenAddress,
           this.baseBorrowApr,
@@ -192,20 +192,20 @@ export default {
           this.utilizationRate,
         )
           .then((createdMarketAddress) => {
-            marketAddress = createdMarketAddress;
-            return new this.$rbank.Market(createdMarketAddress);
+            marketAddress = createdMarketAddress
+            return new this.$rbank.Market(createdMarketAddress)
           })
           .then((market) => market.setControllerAddress(this.$rbank.controller.address))
           .then(() => this.$rbank.controller.addMarket(marketAddress))
           .then(() => this.$rbank.controller.setMarketPrice(marketAddress, this.marketPrice))
           .then(() => this.$emit('created', { marketAddress }))
           .catch(() => {
-            this.$emit('error');
-          });
+            this.$emit('error')
+          })
       } else {
-        this.error = 'There is already a market for the token address entered!';
-        this.showSnackbar = true;
-        setTimeout(() => this.reset(), 3000);
+        this.error = 'There is already a market for the token address entered!'
+        this.showSnackbar = true
+        setTimeout(() => this.reset(), 3000)
       }
     },
   },

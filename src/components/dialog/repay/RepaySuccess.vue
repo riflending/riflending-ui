@@ -69,11 +69,14 @@ import TransactionHash from '@/components/common/TransactionHash.vue'
 
 export default {
   name: 'BorrowSuccess',
+  components: {
+    TransactionHash,
+  },
   props: {
     data: {
       type: Object,
-      required: true
-    }
+      required: true,
+    },
   },
   data() {
     return {
@@ -83,49 +86,49 @@ export default {
       price: 0,
       maxBorrowAllowed: 0,
       borrowBy: 0,
-      accountHealth: 0
+      accountHealth: 0,
     }
   },
   computed: {
     ...mapState({
-      account: (state) => state.Session.account
+      account: (state) => state.Session.account,
     }),
     healthFactor() {
       return this.accountHealth >= 1 ? 100 : (this.accountHealth * 100).toFixed(2)
-    }
+    },
   },
   created() {
     this.$middleware
       .getAccountLiquidity(this.account)
       // sets liquidity
       .then(({ accountLiquidityInExcess }) => {
-        console.log('repaySuccess: liquidity', accountLiquidityInExcess);
-        this.liquidity = Number(accountLiquidityInExcess);
-        console.log('repaySuccess: Number(liquidity)', this.liquidity);
-        return this.data.market.getCash();
+        console.log('repaySuccess: liquidity', accountLiquidityInExcess)
+        this.liquidity = Number(accountLiquidityInExcess)
+        console.log('repaySuccess: Number(liquidity)', this.liquidity)
+        return this.data.market.getCash()
       })
       // sets cash
       .then((cash) => {
-        this.cash = cash;
-        console.log('repaySuccess: cash', this.cash);
-        return this.data.market.getBorrowRate();
+        this.cash = cash
+        console.log('repaySuccess: cash', this.cash)
+        return this.data.market.getBorrowRate()
       })
       .then((borrowRate) => {
-        this.borrowRate = borrowRate;
-        console.log('repaySuccess: borrowRate', this.borrowRate);
-        return this.data.market.getPriceInDecimals();
+        this.borrowRate = borrowRate
+        console.log('repaySuccess: borrowRate', this.borrowRate)
+        return this.data.market.getPriceInDecimals()
       })
       // sets price
       .then((price) => {
-        this.price = price;
-        console.log('repaySuccess: price', this.price);
-        return this.data.market.borrowBalanceCurrent(this.account);
+        this.price = price
+        console.log('repaySuccess: price', this.price)
+        return this.data.market.borrowBalanceCurrent(this.account)
       })
       .then((borrowBy) => {
-        this.borrowBy = Number(borrowBy);
-        console.log('success! borrowby', this.borrowBy);
-        this.borrowBalanceInfo = Number(this.contractAmount);
-      });
+        this.borrowBy = Number(borrowBy)
+        console.log('success! borrowby', this.borrowBy)
+        this.borrowBalanceInfo = Number(this.contractAmount)
+      })
 
     // TODO: double-check that we're not missing anything in this refactor
     // .then((accountLiquidity) => {
@@ -152,15 +155,12 @@ export default {
   },
   methods: {
     closeDialog() {
-      this.$emit('closeDialog');
+      this.$emit('closeDialog')
     },
     getMaxAllowed(liquidity, cash) {
-      const allowed = this.price > 0 ? Math.floor(liquidity / (this.price * 2)) : 0;
-      return allowed >= cash ? cash : allowed;
+      const allowed = this.price > 0 ? Math.floor(liquidity / (this.price * 2)) : 0
+      return allowed >= cash ? cash : allowed
     },
-  },
-  components: {
-    TransactionHash,
   },
 }
 </script>

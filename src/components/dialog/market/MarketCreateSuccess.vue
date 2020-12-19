@@ -45,14 +45,14 @@ export default {
   props: {
     marketAddress: {
       type: String,
-      required: true
-    }
+      required: true,
+    },
   },
   data() {
     return {
       tokenSymbol: null,
       price: 0,
-      borrowRate: 0
+      borrowRate: 0,
     }
   },
   computed: {
@@ -62,35 +62,35 @@ export default {
     addressCutOff() {
       return `${this.marketAddress.substring(0, 4)}...${this.marketAddress.substring(
         this.marketAddress.length - 4,
-        this.marketAddress.length
+        this.marketAddress.length,
       )}`
     },
     rskExplorerUrl() {
       return `https://explorer.testnet.rsk.co/address/${this.marketAddress}`
-    }
+    },
   },
   created() {
-    const market = new this.$rbank.Market(this.marketAddress);
+    const market = new this.$rbank.Market(this.marketAddress)
     market.eventualToken
       .then((token) => token.eventualSymbol)
       .then((tokenSymbol) => {
-        this.tokenSymbol = tokenSymbol;
-        return market.eventualBorrowRate;
+        this.tokenSymbol = tokenSymbol
+        return market.eventualBorrowRate
       })
       .then((borrowRate) => {
-        this.borrowRate = borrowRate;
-        return this.$rbank.controller.eventualMarketPrice(this.marketAddress);
+        this.borrowRate = borrowRate
+        return this.$rbank.controller.eventualMarketPrice(this.marketAddress)
       })
       .then((marketPrice) => {
-        this.price = marketPrice;
-      });
+        this.price = marketPrice
+      })
   },
   methods: {
     closeDialog() {
-      this.$emit('close');
+      this.$emit('close')
     },
     copyHash() {
-      navigator.clipboard.writeText(this.marketAddress);
+      navigator.clipboard.writeText(this.marketAddress)
     },
   },
 }

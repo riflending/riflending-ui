@@ -121,8 +121,8 @@ export default {
   props: {
     data: {
       type: Object,
-      required: true
-    }
+      required: true,
+    },
   },
   data() {
     return {
@@ -146,14 +146,14 @@ export default {
           `Maximum ${this.data.token.decimals} decimal places for ${this.data.token.symbol}.`,
         funds: () => this.funds >= this.usdAmount / this.borrowMarketPrice || 'Not enough funds',
         maxAvailable: () =>
-          this.amount <= this.maxToLiquidate || 'There is not enough collateral to liquidate'
-      }
+          this.amount <= this.maxToLiquidate || 'There is not enough collateral to liquidate',
+      },
     }
   },
   watch: {
     max() {
       if (this.max) this.amount = this.maxToLiquidate
-    }
+    },
   },
   methods: {
     liquidate() {
@@ -165,7 +165,7 @@ export default {
           this.liquidationAccount,
           this.collateralAmount * 10 ** this.borrowMarketTokenDecimals,
           this.data.market.address,
-          this.account
+          this.account,
         )
         .then((res) => {
           this.waiting = false
@@ -175,8 +175,8 @@ export default {
             costValue: this.collateralAmount * 10 ** this.borrowMarketTokenDecimals,
             collateral: {
               decimals: this.borrowMarketTokenDecimals,
-              symbol: this.borrowMarketSymbol
-            }
+              symbol: this.borrowMarketSymbol,
+            },
           })
         })
         .catch(() => {
@@ -208,10 +208,10 @@ export default {
         new this.$rbank.Market(this.borrowMarketAddress).eventualToken
           .then((token) =>
             Promise.all([
-            token.eventualSymbol,
-            token.eventualDecimals,
-            token.eventualBalanceOf(this.account)
-          ])
+              token.eventualSymbol,
+              token.eventualDecimals,
+              token.eventualBalanceOf(this.account),
+            ]),
           )
           .then(([symbol, decimals, balance]) => {
             this.borrowMarketSymbol = symbol
@@ -221,11 +221,11 @@ export default {
           })
           .catch(reject)
       })
-    }
+    },
   },
   computed: {
     ...mapState({
-      account: (state) => state.Session.account
+      account: (state) => state.Session.account,
     }),
     validForm() {
       return (
@@ -240,7 +240,7 @@ export default {
         Math.min(
           this.maxCollateralSupplied,
           this.accountDebt,
-          this.funds * this.borrowMarketPrice
+          this.funds * this.borrowMarketPrice,
         ) / this.currentMarketPrice
       )
     },
@@ -274,11 +274,11 @@ export default {
     },
     liquidationAmount() {
       return Number(Number(this.amount).toFixed(this.data.token.decimals))
-    }
+    },
   },
   components: {
     Loader,
-    LiquidateList
-  }
+    LiquidateList,
+  },
 }
 </script>

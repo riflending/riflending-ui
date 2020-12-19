@@ -15,43 +15,43 @@ import MarketsList from '@/components/settings/MarketsList.vue'
 
 export default {
   name: 'Settings',
+  components: {
+    ControllerForm,
+    MarketForm,
+    MarketsList,
+  },
   data() {
     return {
-      marketAddresses: []
+      marketAddresses: [],
     }
   },
   computed: {
     ...mapState({
-      isOwner: (state) => state.Session.isOwner
+      isOwner: (state) => state.Session.isOwner,
     }),
     pageHeight() {
       return document.body.scrollHeight
-    }
+    },
   },
   watch: {
     isOwner(val) {
       if (!val) {
-        this.$router.push({ name: 'MyActivity' });
+        this.$router.push({ name: 'MyActivity' })
       }
     },
     marketAddresses() {
-      this.$vuetify.goTo(this.pageHeight);
+      this.$vuetify.goTo(this.pageHeight)
     },
   },
   created() {
-    this.getMarkets();
+    this.getMarkets()
   },
   methods: {
     getMarkets() {
       this.$rbank.eventualMarkets.then((mkts) => {
         this.marketAddresses = mkts.map((mkt) => mkt.address)
       })
-    }
-  },
-  components: {
-    ControllerForm,
-    MarketForm,
-    MarketsList,
+    },
   },
 }
 </script>

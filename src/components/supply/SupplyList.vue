@@ -34,33 +34,25 @@ import SupplyItem from '@/components/supply/SupplyItem.vue'
 
 export default {
   name: 'SupplyList',
+  components: {
+    SupplyItem,
+  },
   data() {
     return {
-      markets: []
-    }
-  },
-  methods: {
-    reset() {
-      this.$emit('listChange')
-    },
-    reloadItems() {
-      this.$emit('reload')
+      markets: [],
     }
   },
   computed: {
     ...mapState({
-      account: (state) => state.Session.account
-    })
-  },
-  components: {
-    SupplyItem
+      account: (state) => state.Session.account,
+    }),
   },
   created() {
     // get all markets
     this.markets = this.$middleware.getMarkets(this.account)
 
     this.markets.forEach((market) =>
-      market.eventualEvents.then((events) => events.liquidateBorrow().on('data', this.reloadItems))
+      market.eventualEvents.then((events) => events.liquidateBorrow().on('data', this.reloadItems)),
     )
 
     // this.$rbank.eventualMarkets.then((mkts) => {
@@ -78,6 +70,14 @@ export default {
     //     )
     //   );
     // });
-  }
+  },
+  methods: {
+    reset() {
+      this.$emit('listChange')
+    },
+    reloadItems() {
+      this.$emit('reload')
+    },
+  },
 }
 </script>

@@ -30,11 +30,11 @@ export default {
   name: 'AppBar',
   computed: {
     ...mapGetters({
-      isLogged: constants.SESSION_IS_LOGGED
+      isLogged: constants.SESSION_IS_LOGGED,
     }),
     ...mapState({
       account: (state) => state.Session.account,
-      isOwner: (state) => state.Session.isOwner
+      isOwner: (state) => state.Session.isOwner,
     }),
     title() {
       if (this.$route.path === '/supplyBorrow') return 'Supply / Borrow'
@@ -45,13 +45,21 @@ export default {
     accountCutOff() {
       return `${this.account.substring(0, 4)}...${this.account.substring(
         this.account.length - 4,
-        this.account.length
+        this.account.length,
       )}`
-    }
+    },
+  },
+  watch: {
+    isOwner(val) {
+      if (val) this.$router.push({ name: 'Admin' })
+    },
+    isLogged() {
+      this.$router.push({ name: 'MyActivity' })
+    },
   },
   methods: {
     ...mapActions({
-      connectToWeb3: constants.SESSION_CONNECT_WEB3
+      connectToWeb3: constants.SESSION_CONNECT_WEB3,
     }),
     async connect() {
       try {
@@ -74,15 +82,7 @@ export default {
         console.log(e)
       }
       this.connectToWeb3()
-    }
-  },
-  watch: {
-    isOwner(val) {
-      if (val) this.$router.push({ name: 'Admin' })
     },
-    isLogged() {
-      this.$router.push({ name: 'MyActivity' })
-    }
-  }
+  },
 }
 </script>

@@ -16,16 +16,16 @@ export default {
     return {
       layout: 'Base',
       layouts: ['Base'],
-    };
+    }
   },
   computed: {
     currentComponent() {
-      return `${this.layout.toLowerCase()}-layout`;
+      return `${this.layout.toLowerCase()}-layout`
     },
   },
   created() {
-    const ctrl = process.env.VUE_APP_RBANK_CONTROLLER;
-    this.$rbank.controller = ctrl.toLowerCase();
+    const ctrl = process.env.VUE_APP_RBANK_CONTROLLER
+    this.$rbank.controller = ctrl.toLowerCase()
   },
   methods: {},
 }

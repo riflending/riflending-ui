@@ -19,7 +19,7 @@ export const constants = {
   'RIF Moc Oracle': 'RIF Moc Oracle',
   RIF: 'RIF',
   rDAI: 'rDAI',
-  RBTC: 'RBTC'
+  RBTC: 'RBTC',
 }
 
 export const address = {
@@ -43,7 +43,7 @@ export const address = {
     RBTCMocOracle: '0x2d39cc54dc44ff27ad23a91a9b5fd750dae4b218',
     'RIF Moc Oracle': '0x9d4b2c05818a0086e641437fcb64ab6098c7bbec',
     RIF: '0x19f64674d8a5b4e652319f5e239efd3bc969a1fe',
-    rDAI: '0x0d86fca9be034a363cf12c9834af08d54a10451c'
+    rDAI: '0x0d86fca9be034a363cf12c9834af08d54a10451c',
   },
   mainnet: {
     /* TODO - uptate this to RSK mainnet addresses */
@@ -64,8 +64,8 @@ export const address = {
     'RBTC Moc Oracle': '0x2d39cc54dc44ff27ad23a91a9b5fd750dae4b218',
     'RIF Moc Oracle': '0x9d4b2c05818a0086e641437fcb64ab6098c7bbec',
     RIF: '0x19f64674d8a5b4e652319f5e239efd3bc969a1fe',
-    rDAI: '0x0d86fca9be034a363cf12c9834af08d54a10451c'
-  }
+    rDAI: '0x0d86fca9be034a363cf12c9834af08d54a10451c',
+  },
 }
 
 export const abi = {
@@ -76,18 +76,18 @@ export const abi = {
       name: 'name',
       outputs: [{ name: '', type: 'string' }],
       payable: false,
-      type: 'function'
+      type: 'function',
     },
     {
       constant: false,
       inputs: [
         { name: '_spender', type: 'address' },
-        { name: '_value', type: 'uint256' }
+        { name: '_value', type: 'uint256' },
       ],
       name: 'approve',
       outputs: [{ name: '', type: 'bool' }],
       payable: false,
-      type: 'function'
+      type: 'function',
     },
     {
       constant: true,
@@ -95,19 +95,19 @@ export const abi = {
       name: 'totalSupply',
       outputs: [{ name: '', type: 'uint256' }],
       payable: false,
-      type: 'function'
+      type: 'function',
     },
     {
       constant: false,
       inputs: [
         { name: '_from', type: 'address' },
         { name: '_to', type: 'address' },
-        { name: '_value', type: 'uint256' }
+        { name: '_value', type: 'uint256' },
       ],
       name: 'transferFrom',
       outputs: [{ name: '', type: 'bool' }],
       payable: false,
-      type: 'function'
+      type: 'function',
     },
     {
       constant: true,
@@ -115,7 +115,7 @@ export const abi = {
       name: 'decimals',
       outputs: [{ name: '', type: 'uint8' }],
       payable: false,
-      type: 'function'
+      type: 'function',
     },
     {
       constant: true,
@@ -123,7 +123,7 @@ export const abi = {
       name: 'balanceOf',
       outputs: [{ name: '', type: 'uint256' }],
       payable: false,
-      type: 'function'
+      type: 'function',
     },
     {
       constant: true,
@@ -131,29 +131,29 @@ export const abi = {
       name: 'symbol',
       outputs: [{ name: '', type: 'string' }],
       payable: false,
-      type: 'function'
+      type: 'function',
     },
     {
       constant: false,
       inputs: [
         { name: '_to', type: 'address' },
-        { name: '_value', type: 'uint256' }
+        { name: '_value', type: 'uint256' },
       ],
       name: 'transfer',
       outputs: [{ name: '', type: 'bool' }],
       payable: false,
-      type: 'function'
+      type: 'function',
     },
     {
       constant: true,
       inputs: [
         { name: '_owner', type: 'address' },
-        { name: '_spender', type: 'address' }
+        { name: '_spender', type: 'address' },
       ],
       name: 'allowance',
       outputs: [{ name: '', type: 'uint256' }],
       payable: false,
-      type: 'function'
+      type: 'function',
     },
     { inputs: [], payable: false, type: 'constructor' },
     {
@@ -161,21 +161,21 @@ export const abi = {
       inputs: [
         { indexed: true, name: '_from', type: 'address' },
         { indexed: true, name: '_to', type: 'address' },
-        { indexed: false, name: '_value', type: 'uint256' }
+        { indexed: false, name: '_value', type: 'uint256' },
       ],
       name: 'Transfer',
-      type: 'event'
+      type: 'event',
     },
     {
       anonymous: false,
       inputs: [
         { indexed: true, name: '_owner', type: 'address' },
         { indexed: true, name: '_spender', type: 'address' },
-        { indexed: false, name: '_value', type: 'uint256' }
+        { indexed: false, name: '_value', type: 'uint256' },
       ],
       name: 'Approval',
-      type: 'event'
-    }
+      type: 'event',
+    },
   ],
   cErc20: [
     {
@@ -186,20 +186,20 @@ export const abi = {
       payable: false,
       stateMutability: 'view',
       type: 'function',
-      signature: '0x06fdde03'
+      signature: '0x06fdde03',
     },
     {
       constant: false,
       inputs: [
         { name: 'spender', type: 'address' },
-        { name: 'amount', type: 'uint256' }
+        { name: 'amount', type: 'uint256' },
       ],
       name: 'approve',
       outputs: [{ name: '', type: 'bool' }],
       payable: false,
       stateMutability: 'nonpayable',
       type: 'function',
-      signature: '0x095ea7b3'
+      signature: '0x095ea7b3',
     },
     {
       constant: false,
@@ -209,7 +209,7 @@ export const abi = {
       payable: false,
       stateMutability: 'nonpayable',
       type: 'function',
-      signature: '0x0e752702'
+      signature: '0x0e752702',
     },
     {
       constant: true,
@@ -219,7 +219,7 @@ export const abi = {
       payable: false,
       stateMutability: 'view',
       type: 'function',
-      signature: '0x173b9904'
+      signature: '0x173b9904',
     },
     {
       constant: false,
@@ -229,7 +229,7 @@ export const abi = {
       payable: false,
       stateMutability: 'nonpayable',
       type: 'function',
-      signature: '0x17bfdfbc'
+      signature: '0x17bfdfbc',
     },
     {
       constant: true,
@@ -239,7 +239,7 @@ export const abi = {
       payable: false,
       stateMutability: 'view',
       type: 'function',
-      signature: '0x18160ddd'
+      signature: '0x18160ddd',
     },
     {
       constant: true,
@@ -249,34 +249,34 @@ export const abi = {
       payable: false,
       stateMutability: 'view',
       type: 'function',
-      signature: '0x182df0f5'
+      signature: '0x182df0f5',
     },
     {
       constant: false,
       inputs: [
         { name: 'src', type: 'address' },
         { name: 'dst', type: 'address' },
-        { name: 'amount', type: 'uint256' }
+        { name: 'amount', type: 'uint256' },
       ],
       name: 'transferFrom',
       outputs: [{ name: '', type: 'bool' }],
       payable: false,
       stateMutability: 'nonpayable',
       type: 'function',
-      signature: '0x23b872dd'
+      signature: '0x23b872dd',
     },
     {
       constant: false,
       inputs: [
         { name: 'borrower', type: 'address' },
-        { name: 'repayAmount', type: 'uint256' }
+        { name: 'repayAmount', type: 'uint256' },
       ],
       name: 'repayBorrowBehalf',
       outputs: [{ name: '', type: 'uint256' }],
       payable: false,
       stateMutability: 'nonpayable',
       type: 'function',
-      signature: '0x2608f818'
+      signature: '0x2608f818',
     },
     {
       constant: true,
@@ -286,7 +286,7 @@ export const abi = {
       payable: false,
       stateMutability: 'view',
       type: 'function',
-      signature: '0x26782247'
+      signature: '0x26782247',
     },
     {
       constant: true,
@@ -296,7 +296,7 @@ export const abi = {
       payable: false,
       stateMutability: 'view',
       type: 'function',
-      signature: '0x313ce567'
+      signature: '0x313ce567',
     },
     {
       constant: false,
@@ -306,7 +306,7 @@ export const abi = {
       payable: false,
       stateMutability: 'nonpayable',
       type: 'function',
-      signature: '0x3af9e669'
+      signature: '0x3af9e669',
     },
     {
       constant: true,
@@ -316,7 +316,7 @@ export const abi = {
       payable: false,
       stateMutability: 'view',
       type: 'function',
-      signature: '0x3b1d21a2'
+      signature: '0x3b1d21a2',
     },
     {
       constant: false,
@@ -326,7 +326,7 @@ export const abi = {
       payable: false,
       stateMutability: 'nonpayable',
       type: 'function',
-      signature: '0x4576b5db'
+      signature: '0x4576b5db',
     },
     {
       constant: true,
@@ -336,7 +336,7 @@ export const abi = {
       payable: false,
       stateMutability: 'view',
       type: 'function',
-      signature: '0x47bd3718'
+      signature: '0x47bd3718',
     },
     {
       constant: true,
@@ -346,7 +346,7 @@ export const abi = {
       payable: false,
       stateMutability: 'view',
       type: 'function',
-      signature: '0x5fe3b567'
+      signature: '0x5fe3b567',
     },
     {
       constant: false,
@@ -356,7 +356,7 @@ export const abi = {
       payable: false,
       stateMutability: 'nonpayable',
       type: 'function',
-      signature: '0x601a0bf1'
+      signature: '0x601a0bf1',
     },
     {
       constant: true,
@@ -366,7 +366,7 @@ export const abi = {
       payable: false,
       stateMutability: 'view',
       type: 'function',
-      signature: '0x675d972c'
+      signature: '0x675d972c',
     },
     {
       constant: true,
@@ -376,7 +376,7 @@ export const abi = {
       payable: false,
       stateMutability: 'view',
       type: 'function',
-      signature: '0x6c540baf'
+      signature: '0x6c540baf',
     },
     {
       constant: true,
@@ -386,7 +386,7 @@ export const abi = {
       payable: false,
       stateMutability: 'view',
       type: 'function',
-      signature: '0x6f307dc3'
+      signature: '0x6f307dc3',
     },
     {
       constant: true,
@@ -396,7 +396,7 @@ export const abi = {
       payable: false,
       stateMutability: 'view',
       type: 'function',
-      signature: '0x70a08231'
+      signature: '0x70a08231',
     },
     {
       constant: false,
@@ -406,7 +406,7 @@ export const abi = {
       payable: false,
       stateMutability: 'nonpayable',
       type: 'function',
-      signature: '0x73acee98'
+      signature: '0x73acee98',
     },
     {
       constant: false,
@@ -416,7 +416,7 @@ export const abi = {
       payable: false,
       stateMutability: 'nonpayable',
       type: 'function',
-      signature: '0x852a12e3'
+      signature: '0x852a12e3',
     },
     {
       constant: true,
@@ -426,7 +426,7 @@ export const abi = {
       payable: false,
       stateMutability: 'view',
       type: 'function',
-      signature: '0x8f840ddd'
+      signature: '0x8f840ddd',
     },
     {
       constant: true,
@@ -436,7 +436,7 @@ export const abi = {
       payable: false,
       stateMutability: 'view',
       type: 'function',
-      signature: '0x95d89b41'
+      signature: '0x95d89b41',
     },
     {
       constant: true,
@@ -446,7 +446,7 @@ export const abi = {
       payable: false,
       stateMutability: 'view',
       type: 'function',
-      signature: '0x95dd9193'
+      signature: '0x95dd9193',
     },
     {
       constant: false,
@@ -456,7 +456,7 @@ export const abi = {
       payable: false,
       stateMutability: 'nonpayable',
       type: 'function',
-      signature: '0xa0712d68'
+      signature: '0xa0712d68',
     },
     {
       constant: false,
@@ -466,20 +466,20 @@ export const abi = {
       payable: false,
       stateMutability: 'nonpayable',
       type: 'function',
-      signature: '0xa6afed95'
+      signature: '0xa6afed95',
     },
     {
       constant: false,
       inputs: [
         { name: 'dst', type: 'address' },
-        { name: 'amount', type: 'uint256' }
+        { name: 'amount', type: 'uint256' },
       ],
       name: 'transfer',
       outputs: [{ name: '', type: 'bool' }],
       payable: false,
       stateMutability: 'nonpayable',
       type: 'function',
-      signature: '0xa9059cbb'
+      signature: '0xa9059cbb',
     },
     {
       constant: true,
@@ -489,7 +489,7 @@ export const abi = {
       payable: false,
       stateMutability: 'view',
       type: 'function',
-      signature: '0xaa5af0fd'
+      signature: '0xaa5af0fd',
     },
     {
       constant: true,
@@ -499,21 +499,21 @@ export const abi = {
       payable: false,
       stateMutability: 'view',
       type: 'function',
-      signature: '0xae9d70b0'
+      signature: '0xae9d70b0',
     },
     {
       constant: false,
       inputs: [
         { name: 'liquidator', type: 'address' },
         { name: 'borrower', type: 'address' },
-        { name: 'seizeTokens', type: 'uint256' }
+        { name: 'seizeTokens', type: 'uint256' },
       ],
       name: 'seize',
       outputs: [{ name: '', type: 'uint256' }],
       payable: false,
       stateMutability: 'nonpayable',
       type: 'function',
-      signature: '0xb2a02ff1'
+      signature: '0xb2a02ff1',
     },
     {
       constant: false,
@@ -523,7 +523,7 @@ export const abi = {
       payable: false,
       stateMutability: 'nonpayable',
       type: 'function',
-      signature: '0xb71d1a0c'
+      signature: '0xb71d1a0c',
     },
     {
       constant: false,
@@ -533,7 +533,7 @@ export const abi = {
       payable: false,
       stateMutability: 'nonpayable',
       type: 'function',
-      signature: '0xbd6d894d'
+      signature: '0xbd6d894d',
     },
     {
       constant: true,
@@ -543,12 +543,12 @@ export const abi = {
         { name: '', type: 'uint256' },
         { name: '', type: 'uint256' },
         { name: '', type: 'uint256' },
-        { name: '', type: 'uint256' }
+        { name: '', type: 'uint256' },
       ],
       payable: false,
       stateMutability: 'view',
       type: 'function',
-      signature: '0xc37f68e2'
+      signature: '0xc37f68e2',
     },
     {
       constant: false,
@@ -558,7 +558,7 @@ export const abi = {
       payable: false,
       stateMutability: 'nonpayable',
       type: 'function',
-      signature: '0xc5ebeaec'
+      signature: '0xc5ebeaec',
     },
     {
       constant: false,
@@ -568,20 +568,20 @@ export const abi = {
       payable: false,
       stateMutability: 'nonpayable',
       type: 'function',
-      signature: '0xdb006a75'
+      signature: '0xdb006a75',
     },
     {
       constant: true,
       inputs: [
         { name: 'owner', type: 'address' },
-        { name: 'spender', type: 'address' }
+        { name: 'spender', type: 'address' },
       ],
       name: 'allowance',
       outputs: [{ name: '', type: 'uint256' }],
       payable: false,
       stateMutability: 'view',
       type: 'function',
-      signature: '0xdd62ed3e'
+      signature: '0xdd62ed3e',
     },
     {
       constant: false,
@@ -591,7 +591,7 @@ export const abi = {
       payable: false,
       stateMutability: 'nonpayable',
       type: 'function',
-      signature: '0xe9c714f2'
+      signature: '0xe9c714f2',
     },
     {
       constant: false,
@@ -601,7 +601,7 @@ export const abi = {
       payable: false,
       stateMutability: 'nonpayable',
       type: 'function',
-      signature: '0xf2b3abbd'
+      signature: '0xf2b3abbd',
     },
     {
       constant: true,
@@ -611,21 +611,21 @@ export const abi = {
       payable: false,
       stateMutability: 'view',
       type: 'function',
-      signature: '0xf3fdb15a'
+      signature: '0xf3fdb15a',
     },
     {
       constant: false,
       inputs: [
         { name: 'borrower', type: 'address' },
         { name: 'repayAmount', type: 'uint256' },
-        { name: 'cTokenCollateral', type: 'address' }
+        { name: 'cTokenCollateral', type: 'address' },
       ],
       name: 'liquidateBorrow',
       outputs: [{ name: '', type: 'uint256' }],
       payable: false,
       stateMutability: 'nonpayable',
       type: 'function',
-      signature: '0xf5e3c462'
+      signature: '0xf5e3c462',
     },
     {
       constant: true,
@@ -635,7 +635,7 @@ export const abi = {
       payable: false,
       stateMutability: 'view',
       type: 'function',
-      signature: '0xf851a440'
+      signature: '0xf851a440',
     },
     {
       constant: true,
@@ -645,7 +645,7 @@ export const abi = {
       payable: false,
       stateMutability: 'view',
       type: 'function',
-      signature: '0xf8f9da28'
+      signature: '0xf8f9da28',
     },
     {
       constant: false,
@@ -655,7 +655,7 @@ export const abi = {
       payable: false,
       stateMutability: 'nonpayable',
       type: 'function',
-      signature: '0xfca7820b'
+      signature: '0xfca7820b',
     },
     {
       constant: true,
@@ -665,7 +665,7 @@ export const abi = {
       payable: false,
       stateMutability: 'view',
       type: 'function',
-      signature: '0xfe9c44ae'
+      signature: '0xfe9c44ae',
     },
     {
       inputs: [
@@ -675,45 +675,45 @@ export const abi = {
         { name: 'initialExchangeRateMantissa_', type: 'uint256' },
         { name: 'name_', type: 'string' },
         { name: 'symbol_', type: 'string' },
-        { name: 'decimals_', type: 'uint256' }
+        { name: 'decimals_', type: 'uint256' },
       ],
       payable: false,
       stateMutability: 'nonpayable',
       type: 'constructor',
-      signature: 'constructor'
+      signature: 'constructor',
     },
     {
       anonymous: false,
       inputs: [
         { indexed: false, name: 'interestAccumulated', type: 'uint256' },
         { indexed: false, name: 'borrowIndex', type: 'uint256' },
-        { indexed: false, name: 'totalBorrows', type: 'uint256' }
+        { indexed: false, name: 'totalBorrows', type: 'uint256' },
       ],
       name: 'AccrueInterest',
       type: 'event',
-      signature: '0x875352fb3fadeb8c0be7cbbe8ff761b308fa7033470cd0287f02f3436fd76cb9'
+      signature: '0x875352fb3fadeb8c0be7cbbe8ff761b308fa7033470cd0287f02f3436fd76cb9',
     },
     {
       anonymous: false,
       inputs: [
         { indexed: false, name: 'minter', type: 'address' },
         { indexed: false, name: 'mintAmount', type: 'uint256' },
-        { indexed: false, name: 'mintTokens', type: 'uint256' }
+        { indexed: false, name: 'mintTokens', type: 'uint256' },
       ],
       name: 'Mint',
       type: 'event',
-      signature: '0x4c209b5fc8ad50758f13e2e1088ba56a560dff690a1c6fef26394f4c03821c4f'
+      signature: '0x4c209b5fc8ad50758f13e2e1088ba56a560dff690a1c6fef26394f4c03821c4f',
     },
     {
       anonymous: false,
       inputs: [
         { indexed: false, name: 'redeemer', type: 'address' },
         { indexed: false, name: 'redeemAmount', type: 'uint256' },
-        { indexed: false, name: 'redeemTokens', type: 'uint256' }
+        { indexed: false, name: 'redeemTokens', type: 'uint256' },
       ],
       name: 'Redeem',
       type: 'event',
-      signature: '0xe5b754fb1abb7f01b499791d0b820ae3b6af3424ac1c59768edb53f4ec31a929'
+      signature: '0xe5b754fb1abb7f01b499791d0b820ae3b6af3424ac1c59768edb53f4ec31a929',
     },
     {
       anonymous: false,
@@ -721,11 +721,11 @@ export const abi = {
         { indexed: false, name: 'borrower', type: 'address' },
         { indexed: false, name: 'borrowAmount', type: 'uint256' },
         { indexed: false, name: 'accountBorrows', type: 'uint256' },
-        { indexed: false, name: 'totalBorrows', type: 'uint256' }
+        { indexed: false, name: 'totalBorrows', type: 'uint256' },
       ],
       name: 'Borrow',
       type: 'event',
-      signature: '0x13ed6866d4e1ee6da46f845c46d7e54120883d75c5ea9a2dacc1c4ca8984ab80'
+      signature: '0x13ed6866d4e1ee6da46f845c46d7e54120883d75c5ea9a2dacc1c4ca8984ab80',
     },
     {
       anonymous: false,
@@ -734,11 +734,11 @@ export const abi = {
         { indexed: false, name: 'borrower', type: 'address' },
         { indexed: false, name: 'repayAmount', type: 'uint256' },
         { indexed: false, name: 'accountBorrows', type: 'uint256' },
-        { indexed: false, name: 'totalBorrows', type: 'uint256' }
+        { indexed: false, name: 'totalBorrows', type: 'uint256' },
       ],
       name: 'RepayBorrow',
       type: 'event',
-      signature: '0x1a2a22cb034d26d1854bdc6666a5b91fe25efbbb5dcad3b0355478d6f5c362a1'
+      signature: '0x1a2a22cb034d26d1854bdc6666a5b91fe25efbbb5dcad3b0355478d6f5c362a1',
     },
     {
       anonymous: false,
@@ -747,106 +747,106 @@ export const abi = {
         { indexed: false, name: 'borrower', type: 'address' },
         { indexed: false, name: 'repayAmount', type: 'uint256' },
         { indexed: false, name: 'cTokenCollateral', type: 'address' },
-        { indexed: false, name: 'seizeTokens', type: 'uint256' }
+        { indexed: false, name: 'seizeTokens', type: 'uint256' },
       ],
       name: 'LiquidateBorrow',
       type: 'event',
-      signature: '0x298637f684da70674f26509b10f07ec2fbc77a335ab1e7d6215a4b2484d8bb52'
+      signature: '0x298637f684da70674f26509b10f07ec2fbc77a335ab1e7d6215a4b2484d8bb52',
     },
     {
       anonymous: false,
       inputs: [
         { indexed: false, name: 'oldPendingAdmin', type: 'address' },
-        { indexed: false, name: 'newPendingAdmin', type: 'address' }
+        { indexed: false, name: 'newPendingAdmin', type: 'address' },
       ],
       name: 'NewPendingAdmin',
       type: 'event',
-      signature: '0xca4f2f25d0898edd99413412fb94012f9e54ec8142f9b093e7720646a95b16a9'
+      signature: '0xca4f2f25d0898edd99413412fb94012f9e54ec8142f9b093e7720646a95b16a9',
     },
     {
       anonymous: false,
       inputs: [
         { indexed: false, name: 'oldAdmin', type: 'address' },
-        { indexed: false, name: 'newAdmin', type: 'address' }
+        { indexed: false, name: 'newAdmin', type: 'address' },
       ],
       name: 'NewAdmin',
       type: 'event',
-      signature: '0xf9ffabca9c8276e99321725bcb43fb076a6c66a54b7f21c4e8146d8519b417dc'
+      signature: '0xf9ffabca9c8276e99321725bcb43fb076a6c66a54b7f21c4e8146d8519b417dc',
     },
     {
       anonymous: false,
       inputs: [
         { indexed: false, name: 'oldComptroller', type: 'address' },
-        { indexed: false, name: 'newComptroller', type: 'address' }
+        { indexed: false, name: 'newComptroller', type: 'address' },
       ],
       name: 'NewComptroller',
       type: 'event',
-      signature: '0x7ac369dbd14fa5ea3f473ed67cc9d598964a77501540ba6751eb0b3decf5870d'
+      signature: '0x7ac369dbd14fa5ea3f473ed67cc9d598964a77501540ba6751eb0b3decf5870d',
     },
     {
       anonymous: false,
       inputs: [
         { indexed: false, name: 'oldInterestRateModel', type: 'address' },
-        { indexed: false, name: 'newInterestRateModel', type: 'address' }
+        { indexed: false, name: 'newInterestRateModel', type: 'address' },
       ],
       name: 'NewMarketInterestRateModel',
       type: 'event',
-      signature: '0xedffc32e068c7c95dfd4bdfd5c4d939a084d6b11c4199eac8436ed234d72f926'
+      signature: '0xedffc32e068c7c95dfd4bdfd5c4d939a084d6b11c4199eac8436ed234d72f926',
     },
     {
       anonymous: false,
       inputs: [
         { indexed: false, name: 'oldReserveFactorMantissa', type: 'uint256' },
-        { indexed: false, name: 'newReserveFactorMantissa', type: 'uint256' }
+        { indexed: false, name: 'newReserveFactorMantissa', type: 'uint256' },
       ],
       name: 'NewReserveFactor',
       type: 'event',
-      signature: '0xaaa68312e2ea9d50e16af5068410ab56e1a1fd06037b1a35664812c30f821460'
+      signature: '0xaaa68312e2ea9d50e16af5068410ab56e1a1fd06037b1a35664812c30f821460',
     },
     {
       anonymous: false,
       inputs: [
         { indexed: false, name: 'admin', type: 'address' },
         { indexed: false, name: 'reduceAmount', type: 'uint256' },
-        { indexed: false, name: 'newTotalReserves', type: 'uint256' }
+        { indexed: false, name: 'newTotalReserves', type: 'uint256' },
       ],
       name: 'ReservesReduced',
       type: 'event',
-      signature: '0x3bad0c59cf2f06e7314077049f48a93578cd16f5ef92329f1dab1420a99c177e'
+      signature: '0x3bad0c59cf2f06e7314077049f48a93578cd16f5ef92329f1dab1420a99c177e',
     },
     {
       anonymous: false,
       inputs: [
         { indexed: false, name: 'error', type: 'uint256' },
         { indexed: false, name: 'info', type: 'uint256' },
-        { indexed: false, name: 'detail', type: 'uint256' }
+        { indexed: false, name: 'detail', type: 'uint256' },
       ],
       name: 'Failure',
       type: 'event',
-      signature: '0x45b96fe442630264581b197e84bbada861235052c5a1aadfff9ea4e40a969aa0'
+      signature: '0x45b96fe442630264581b197e84bbada861235052c5a1aadfff9ea4e40a969aa0',
     },
     {
       anonymous: false,
       inputs: [
         { indexed: true, name: 'from', type: 'address' },
         { indexed: true, name: 'to', type: 'address' },
-        { indexed: false, name: 'amount', type: 'uint256' }
+        { indexed: false, name: 'amount', type: 'uint256' },
       ],
       name: 'Transfer',
       type: 'event',
-      signature: '0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef'
+      signature: '0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef',
     },
     {
       anonymous: false,
       inputs: [
         { indexed: true, name: 'owner', type: 'address' },
         { indexed: true, name: 'spender', type: 'address' },
-        { indexed: false, name: 'amount', type: 'uint256' }
+        { indexed: false, name: 'amount', type: 'uint256' },
       ],
       name: 'Approval',
       type: 'event',
-      signature: '0x8c5be1e5ebec7d5bd14f71427d1e84f3dd0314c0f7b2291e5b200ac8c7c3b925'
-    }
+      signature: '0x8c5be1e5ebec7d5bd14f71427d1e84f3dd0314c0f7b2291e5b200ac8c7c3b925',
+    },
   ],
   cRBTC: [
     {
@@ -857,11 +857,11 @@ export const abi = {
         { internalType: 'string', name: 'name_', type: 'string' },
         { internalType: 'string', name: 'symbol_', type: 'string' },
         { internalType: 'uint8', name: 'decimals_', type: 'uint8' },
-        { internalType: 'address payable', name: 'admin_', type: 'address' }
+        { internalType: 'address payable', name: 'admin_', type: 'address' },
       ],
       payable: false,
       stateMutability: 'nonpayable',
-      type: 'constructor'
+      type: 'constructor',
     },
     {
       anonymous: false,
@@ -892,7 +892,7 @@ export const abi = {
         },
       ],
       name: 'AccrueInterest',
-      type: 'event'
+      type: 'event',
     },
     {
       anonymous: false,
@@ -917,7 +917,7 @@ export const abi = {
         },
       ],
       name: 'Approval',
-      type: 'event'
+      type: 'event',
     },
     {
       anonymous: false,
@@ -948,7 +948,7 @@ export const abi = {
         },
       ],
       name: 'Borrow',
-      type: 'event'
+      type: 'event',
     },
     {
       anonymous: false,
@@ -973,7 +973,7 @@ export const abi = {
         },
       ],
       name: 'Failure',
-      type: 'event'
+      type: 'event',
     },
     {
       anonymous: false,
@@ -1010,7 +1010,7 @@ export const abi = {
         },
       ],
       name: 'LiquidateBorrow',
-      type: 'event'
+      type: 'event',
     },
     {
       anonymous: false,
@@ -1035,7 +1035,7 @@ export const abi = {
         },
       ],
       name: 'Mint',
-      type: 'event'
+      type: 'event',
     },
     {
       anonymous: false,
@@ -1054,7 +1054,7 @@ export const abi = {
         },
       ],
       name: 'NewAdmin',
-      type: 'event'
+      type: 'event',
     },
     {
       anonymous: false,
@@ -1063,17 +1063,17 @@ export const abi = {
           indexed: false,
           internalType: 'contract ComptrollerInterface',
           name: 'oldComptroller',
-          type: 'address'
+          type: 'address',
         },
         {
           indexed: false,
           internalType: 'contract ComptrollerInterface',
           name: 'newComptroller',
-          type: 'address'
-        }
+          type: 'address',
+        },
       ],
       name: 'NewComptroller',
-      type: 'event'
+      type: 'event',
     },
     {
       anonymous: false,
@@ -1082,17 +1082,17 @@ export const abi = {
           indexed: false,
           internalType: 'contract InterestRateModel',
           name: 'oldInterestRateModel',
-          type: 'address'
+          type: 'address',
         },
         {
           indexed: false,
           internalType: 'contract InterestRateModel',
           name: 'newInterestRateModel',
-          type: 'address'
-        }
+          type: 'address',
+        },
       ],
       name: 'NewMarketInterestRateModel',
-      type: 'event'
+      type: 'event',
     },
     {
       anonymous: false,
@@ -1111,7 +1111,7 @@ export const abi = {
         },
       ],
       name: 'NewPendingAdmin',
-      type: 'event'
+      type: 'event',
     },
     {
       anonymous: false,
@@ -1120,17 +1120,17 @@ export const abi = {
           indexed: false,
           internalType: 'uint256',
           name: 'oldReserveFactorMantissa',
-          type: 'uint256'
+          type: 'uint256',
         },
         {
           indexed: false,
           internalType: 'uint256',
           name: 'newReserveFactorMantissa',
-          type: 'uint256'
-        }
+          type: 'uint256',
+        },
       ],
       name: 'NewReserveFactor',
-      type: 'event'
+      type: 'event',
     },
     {
       anonymous: false,
@@ -1155,7 +1155,7 @@ export const abi = {
         },
       ],
       name: 'Redeem',
-      type: 'event'
+      type: 'event',
     },
     {
       anonymous: false,
@@ -1192,7 +1192,7 @@ export const abi = {
         },
       ],
       name: 'RepayBorrow',
-      type: 'event'
+      type: 'event',
     },
     {
       anonymous: false,
@@ -1217,7 +1217,7 @@ export const abi = {
         },
       ],
       name: 'ReservesAdded',
-      type: 'event'
+      type: 'event',
     },
     {
       anonymous: false,
@@ -1242,7 +1242,7 @@ export const abi = {
         },
       ],
       name: 'ReservesReduced',
-      type: 'event'
+      type: 'event',
     },
     {
       anonymous: false,
@@ -1267,7 +1267,7 @@ export const abi = {
         },
       ],
       name: 'Transfer',
-      type: 'event'
+      type: 'event',
     },
     { payable: true, stateMutability: 'payable', type: 'fallback' },
     {
@@ -1277,7 +1277,7 @@ export const abi = {
       outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
       payable: false,
       stateMutability: 'nonpayable',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: false,
@@ -1286,18 +1286,18 @@ export const abi = {
       outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
       payable: false,
       stateMutability: 'nonpayable',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: false,
       inputs: [
-        { internalType: 'contract ComptrollerInterface', name: 'newComptroller', type: 'address' }
+        { internalType: 'contract ComptrollerInterface', name: 'newComptroller', type: 'address' },
       ],
       name: '_setComptroller',
       outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
       payable: false,
       stateMutability: 'nonpayable',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: false,
@@ -1305,14 +1305,14 @@ export const abi = {
         {
           internalType: 'contract InterestRateModel',
           name: 'newInterestRateModel',
-          type: 'address'
-        }
+          type: 'address',
+        },
       ],
       name: '_setInterestRateModel',
       outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
       payable: false,
       stateMutability: 'nonpayable',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: false,
@@ -1321,7 +1321,7 @@ export const abi = {
       outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
       payable: false,
       stateMutability: 'nonpayable',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: false,
@@ -1330,7 +1330,7 @@ export const abi = {
       outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
       payable: false,
       stateMutability: 'nonpayable',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: true,
@@ -1339,7 +1339,7 @@ export const abi = {
       outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
       payable: false,
       stateMutability: 'view',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: false,
@@ -1348,7 +1348,7 @@ export const abi = {
       outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
       payable: false,
       stateMutability: 'nonpayable',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: true,
@@ -1357,31 +1357,31 @@ export const abi = {
       outputs: [{ internalType: 'address payable', name: '', type: 'address' }],
       payable: false,
       stateMutability: 'view',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: true,
       inputs: [
         { internalType: 'address', name: 'owner', type: 'address' },
-        { internalType: 'address', name: 'spender', type: 'address' }
+        { internalType: 'address', name: 'spender', type: 'address' },
       ],
       name: 'allowance',
       outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
       payable: false,
       stateMutability: 'view',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: false,
       inputs: [
         { internalType: 'address', name: 'spender', type: 'address' },
-        { internalType: 'uint256', name: 'amount', type: 'uint256' }
+        { internalType: 'uint256', name: 'amount', type: 'uint256' },
       ],
       name: 'approve',
       outputs: [{ internalType: 'bool', name: '', type: 'bool' }],
       payable: false,
       stateMutability: 'nonpayable',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: true,
@@ -1390,7 +1390,7 @@ export const abi = {
       outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
       payable: false,
       stateMutability: 'view',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: false,
@@ -1399,7 +1399,7 @@ export const abi = {
       outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
       payable: false,
       stateMutability: 'nonpayable',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: false,
@@ -1408,7 +1408,7 @@ export const abi = {
       outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
       payable: false,
       stateMutability: 'nonpayable',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: false,
@@ -1417,7 +1417,7 @@ export const abi = {
       outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
       payable: false,
       stateMutability: 'nonpayable',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: true,
@@ -1426,7 +1426,7 @@ export const abi = {
       outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
       payable: false,
       stateMutability: 'view',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: true,
@@ -1435,7 +1435,7 @@ export const abi = {
       outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
       payable: false,
       stateMutability: 'view',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: true,
@@ -1444,7 +1444,7 @@ export const abi = {
       outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
       payable: false,
       stateMutability: 'view',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: true,
@@ -1453,7 +1453,7 @@ export const abi = {
       outputs: [{ internalType: 'contract ComptrollerInterface', name: '', type: 'address' }],
       payable: false,
       stateMutability: 'view',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: true,
@@ -1462,7 +1462,7 @@ export const abi = {
       outputs: [{ internalType: 'uint8', name: '', type: 'uint8' }],
       payable: false,
       stateMutability: 'view',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: false,
@@ -1471,7 +1471,7 @@ export const abi = {
       outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
       payable: false,
       stateMutability: 'nonpayable',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: true,
@@ -1480,7 +1480,7 @@ export const abi = {
       outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
       payable: false,
       stateMutability: 'view',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: true,
@@ -1490,11 +1490,11 @@ export const abi = {
         { internalType: 'uint256', name: '', type: 'uint256' },
         { internalType: 'uint256', name: '', type: 'uint256' },
         { internalType: 'uint256', name: '', type: 'uint256' },
-        { internalType: 'uint256', name: '', type: 'uint256' }
+        { internalType: 'uint256', name: '', type: 'uint256' },
       ],
       payable: false,
       stateMutability: 'view',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: true,
@@ -1503,7 +1503,7 @@ export const abi = {
       outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
       payable: false,
       stateMutability: 'view',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: false,
@@ -1513,13 +1513,13 @@ export const abi = {
         { internalType: 'uint256', name: 'initialExchangeRateMantissa_', type: 'uint256' },
         { internalType: 'string', name: 'name_', type: 'string' },
         { internalType: 'string', name: 'symbol_', type: 'string' },
-        { internalType: 'uint8', name: 'decimals_', type: 'uint8' }
+        { internalType: 'uint8', name: 'decimals_', type: 'uint8' },
       ],
       name: 'initialize',
       outputs: [],
       payable: false,
       stateMutability: 'nonpayable',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: true,
@@ -1528,7 +1528,7 @@ export const abi = {
       outputs: [{ internalType: 'contract InterestRateModel', name: '', type: 'address' }],
       payable: false,
       stateMutability: 'view',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: true,
@@ -1537,19 +1537,19 @@ export const abi = {
       outputs: [{ internalType: 'bool', name: '', type: 'bool' }],
       payable: false,
       stateMutability: 'view',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: false,
       inputs: [
         { internalType: 'address', name: 'borrower', type: 'address' },
-        { internalType: 'contract CToken', name: 'cTokenCollateral', type: 'address' }
+        { internalType: 'contract CToken', name: 'cTokenCollateral', type: 'address' },
       ],
       name: 'liquidateBorrow',
       outputs: [],
       payable: true,
       stateMutability: 'payable',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: false,
@@ -1558,7 +1558,7 @@ export const abi = {
       outputs: [],
       payable: true,
       stateMutability: 'payable',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: true,
@@ -1567,7 +1567,7 @@ export const abi = {
       outputs: [{ internalType: 'string', name: '', type: 'string' }],
       payable: false,
       stateMutability: 'view',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: true,
@@ -1576,7 +1576,7 @@ export const abi = {
       outputs: [{ internalType: 'address payable', name: '', type: 'address' }],
       payable: false,
       stateMutability: 'view',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: false,
@@ -1585,7 +1585,7 @@ export const abi = {
       outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
       payable: false,
       stateMutability: 'nonpayable',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: false,
@@ -1594,7 +1594,7 @@ export const abi = {
       outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
       payable: false,
       stateMutability: 'nonpayable',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: false,
@@ -1603,7 +1603,7 @@ export const abi = {
       outputs: [],
       payable: true,
       stateMutability: 'payable',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: false,
@@ -1612,7 +1612,7 @@ export const abi = {
       outputs: [],
       payable: true,
       stateMutability: 'payable',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: true,
@@ -1621,20 +1621,20 @@ export const abi = {
       outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
       payable: false,
       stateMutability: 'view',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: false,
       inputs: [
         { internalType: 'address', name: 'liquidator', type: 'address' },
         { internalType: 'address', name: 'borrower', type: 'address' },
-        { internalType: 'uint256', name: 'seizeTokens', type: 'uint256' }
+        { internalType: 'uint256', name: 'seizeTokens', type: 'uint256' },
       ],
       name: 'seize',
       outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
       payable: false,
       stateMutability: 'nonpayable',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: true,
@@ -1643,7 +1643,7 @@ export const abi = {
       outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
       payable: false,
       stateMutability: 'view',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: true,
@@ -1652,7 +1652,7 @@ export const abi = {
       outputs: [{ internalType: 'string', name: '', type: 'string' }],
       payable: false,
       stateMutability: 'view',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: true,
@@ -1661,7 +1661,7 @@ export const abi = {
       outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
       payable: false,
       stateMutability: 'view',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: false,
@@ -1670,7 +1670,7 @@ export const abi = {
       outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
       payable: false,
       stateMutability: 'nonpayable',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: true,
@@ -1679,7 +1679,7 @@ export const abi = {
       outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
       payable: false,
       stateMutability: 'view',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: true,
@@ -1688,33 +1688,33 @@ export const abi = {
       outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
       payable: false,
       stateMutability: 'view',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: false,
       inputs: [
         { internalType: 'address', name: 'dst', type: 'address' },
-        { internalType: 'uint256', name: 'amount', type: 'uint256' }
+        { internalType: 'uint256', name: 'amount', type: 'uint256' },
       ],
       name: 'transfer',
       outputs: [{ internalType: 'bool', name: '', type: 'bool' }],
       payable: false,
       stateMutability: 'nonpayable',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: false,
       inputs: [
         { internalType: 'address', name: 'src', type: 'address' },
         { internalType: 'address', name: 'dst', type: 'address' },
-        { internalType: 'uint256', name: 'amount', type: 'uint256' }
+        { internalType: 'uint256', name: 'amount', type: 'uint256' },
       ],
       name: 'transferFrom',
       outputs: [{ internalType: 'bool', name: '', type: 'bool' }],
       payable: false,
       stateMutability: 'nonpayable',
-      type: 'function'
-    }
+      type: 'function',
+    },
   ],
   RLEN: [
     {
@@ -1722,7 +1722,7 @@ export const abi = {
       payable: false,
       stateMutability: 'nonpayable',
       type: 'constructor',
-      signature: 'constructor'
+      signature: 'constructor',
     },
     {
       anonymous: false,
@@ -1748,7 +1748,7 @@ export const abi = {
       ],
       name: 'Approval',
       type: 'event',
-      signature: '0x8c5be1e5ebec7d5bd14f71427d1e84f3dd0314c0f7b2291e5b200ac8c7c3b925'
+      signature: '0x8c5be1e5ebec7d5bd14f71427d1e84f3dd0314c0f7b2291e5b200ac8c7c3b925',
     },
     {
       anonymous: false,
@@ -1774,7 +1774,7 @@ export const abi = {
       ],
       name: 'DelegateChanged',
       type: 'event',
-      signature: '0x3134e8a2e6d97e929a7e54011ea5485d7d196dd5f0ba4d4ef95803e8e3fc257f'
+      signature: '0x3134e8a2e6d97e929a7e54011ea5485d7d196dd5f0ba4d4ef95803e8e3fc257f',
     },
     {
       anonymous: false,
@@ -1800,7 +1800,7 @@ export const abi = {
       ],
       name: 'DelegateVotesChanged',
       type: 'event',
-      signature: '0xdec2bacdd2f05b59de34da9b523dff8be42e5e38e818c82fdb0bae774387a724'
+      signature: '0xdec2bacdd2f05b59de34da9b523dff8be42e5e38e818c82fdb0bae774387a724',
     },
     {
       anonymous: false,
@@ -1826,7 +1826,7 @@ export const abi = {
       ],
       name: 'Transfer',
       type: 'event',
-      signature: '0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef'
+      signature: '0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef',
     },
     {
       constant: true,
@@ -1836,7 +1836,7 @@ export const abi = {
       payable: false,
       stateMutability: 'view',
       type: 'function',
-      signature: '0xe7a324dc'
+      signature: '0xe7a324dc',
     },
     {
       constant: true,
@@ -1846,33 +1846,33 @@ export const abi = {
       payable: false,
       stateMutability: 'view',
       type: 'function',
-      signature: '0x20606b70'
+      signature: '0x20606b70',
     },
     {
       constant: true,
       inputs: [
         { internalType: 'address', name: 'account', type: 'address' },
-        { internalType: 'address', name: 'spender', type: 'address' }
+        { internalType: 'address', name: 'spender', type: 'address' },
       ],
       name: 'allowance',
       outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
       payable: false,
       stateMutability: 'view',
       type: 'function',
-      signature: '0xdd62ed3e'
+      signature: '0xdd62ed3e',
     },
     {
       constant: false,
       inputs: [
         { internalType: 'address', name: 'spender', type: 'address' },
-        { internalType: 'uint256', name: 'rawAmount', type: 'uint256' }
+        { internalType: 'uint256', name: 'rawAmount', type: 'uint256' },
       ],
       name: 'approve',
       outputs: [{ internalType: 'bool', name: '', type: 'bool' }],
       payable: false,
       stateMutability: 'nonpayable',
       type: 'function',
-      signature: '0x095ea7b3'
+      signature: '0x095ea7b3',
     },
     {
       constant: true,
@@ -1882,23 +1882,23 @@ export const abi = {
       payable: false,
       stateMutability: 'view',
       type: 'function',
-      signature: '0x70a08231'
+      signature: '0x70a08231',
     },
     {
       constant: true,
       inputs: [
         { internalType: 'address', name: '', type: 'address' },
-        { internalType: 'uint32', name: '', type: 'uint32' }
+        { internalType: 'uint32', name: '', type: 'uint32' },
       ],
       name: 'checkpoints',
       outputs: [
         { internalType: 'uint32', name: 'fromBlock', type: 'uint32' },
-        { internalType: 'uint96', name: 'votes', type: 'uint96' }
+        { internalType: 'uint96', name: 'votes', type: 'uint96' },
       ],
       payable: false,
       stateMutability: 'view',
       type: 'function',
-      signature: '0xf1127ed8'
+      signature: '0xf1127ed8',
     },
     {
       constant: true,
@@ -1908,7 +1908,7 @@ export const abi = {
       payable: false,
       stateMutability: 'view',
       type: 'function',
-      signature: '0x313ce567'
+      signature: '0x313ce567',
     },
     {
       constant: false,
@@ -1918,7 +1918,7 @@ export const abi = {
       payable: false,
       stateMutability: 'nonpayable',
       type: 'function',
-      signature: '0x5c19a95c'
+      signature: '0x5c19a95c',
     },
     {
       constant: false,
@@ -1928,14 +1928,14 @@ export const abi = {
         { internalType: 'uint256', name: 'expiry', type: 'uint256' },
         { internalType: 'uint8', name: 'v', type: 'uint8' },
         { internalType: 'bytes32', name: 'r', type: 'bytes32' },
-        { internalType: 'bytes32', name: 's', type: 'bytes32' }
+        { internalType: 'bytes32', name: 's', type: 'bytes32' },
       ],
       name: 'delegateBySig',
       outputs: [],
       payable: false,
       stateMutability: 'nonpayable',
       type: 'function',
-      signature: '0xc3cda520'
+      signature: '0xc3cda520',
     },
     {
       constant: true,
@@ -1945,7 +1945,7 @@ export const abi = {
       payable: false,
       stateMutability: 'view',
       type: 'function',
-      signature: '0x587cde1e'
+      signature: '0x587cde1e',
     },
     {
       constant: true,
@@ -1955,20 +1955,20 @@ export const abi = {
       payable: false,
       stateMutability: 'view',
       type: 'function',
-      signature: '0xb4b5ea57'
+      signature: '0xb4b5ea57',
     },
     {
       constant: true,
       inputs: [
         { internalType: 'address', name: 'account', type: 'address' },
-        { internalType: 'uint256', name: 'blockNumber', type: 'uint256' }
+        { internalType: 'uint256', name: 'blockNumber', type: 'uint256' },
       ],
       name: 'getPriorVotes',
       outputs: [{ internalType: 'uint96', name: '', type: 'uint96' }],
       payable: false,
       stateMutability: 'view',
       type: 'function',
-      signature: '0x782d6fe1'
+      signature: '0x782d6fe1',
     },
     {
       constant: true,
@@ -1978,7 +1978,7 @@ export const abi = {
       payable: false,
       stateMutability: 'view',
       type: 'function',
-      signature: '0x06fdde03'
+      signature: '0x06fdde03',
     },
     {
       constant: true,
@@ -1988,7 +1988,7 @@ export const abi = {
       payable: false,
       stateMutability: 'view',
       type: 'function',
-      signature: '0x7ecebe00'
+      signature: '0x7ecebe00',
     },
     {
       constant: true,
@@ -1998,7 +1998,7 @@ export const abi = {
       payable: false,
       stateMutability: 'view',
       type: 'function',
-      signature: '0x6fcfff45'
+      signature: '0x6fcfff45',
     },
     {
       constant: true,
@@ -2008,7 +2008,7 @@ export const abi = {
       payable: false,
       stateMutability: 'view',
       type: 'function',
-      signature: '0x95d89b41'
+      signature: '0x95d89b41',
     },
     {
       constant: true,
@@ -2018,47 +2018,47 @@ export const abi = {
       payable: false,
       stateMutability: 'view',
       type: 'function',
-      signature: '0x18160ddd'
+      signature: '0x18160ddd',
     },
     {
       constant: false,
       inputs: [
         { internalType: 'address', name: 'dst', type: 'address' },
-        { internalType: 'uint256', name: 'rawAmount', type: 'uint256' }
+        { internalType: 'uint256', name: 'rawAmount', type: 'uint256' },
       ],
       name: 'transfer',
       outputs: [{ internalType: 'bool', name: '', type: 'bool' }],
       payable: false,
       stateMutability: 'nonpayable',
       type: 'function',
-      signature: '0xa9059cbb'
+      signature: '0xa9059cbb',
     },
     {
       constant: false,
       inputs: [
         { internalType: 'address', name: 'src', type: 'address' },
         { internalType: 'address', name: 'dst', type: 'address' },
-        { internalType: 'uint256', name: 'rawAmount', type: 'uint256' }
+        { internalType: 'uint256', name: 'rawAmount', type: 'uint256' },
       ],
       name: 'transferFrom',
       outputs: [{ internalType: 'bool', name: '', type: 'bool' }],
       payable: false,
       stateMutability: 'nonpayable',
       type: 'function',
-      signature: '0x23b872dd'
-    }
+      signature: '0x23b872dd',
+    },
   ],
   GovernorAlpha: [
     {
       inputs: [
         { internalType: 'address', name: 'timelock_', type: 'address' },
         { internalType: 'address', name: 'comp_', type: 'address' },
-        { internalType: 'address', name: 'guardian_', type: 'address' }
+        { internalType: 'address', name: 'guardian_', type: 'address' },
       ],
       payable: false,
       stateMutability: 'nonpayable',
       type: 'constructor',
-      signature: 'constructor'
+      signature: 'constructor',
     },
     {
       anonymous: false,
@@ -2067,12 +2067,12 @@ export const abi = {
           indexed: false,
           internalType: 'uint256',
           name: 'id',
-          type: 'uint256'
-        }
+          type: 'uint256',
+        },
       ],
       name: 'ProposalCanceled',
       type: 'event',
-      signature: '0x789cf55be980739dad1d0699b93b58e806b51c9d96619bfa8fe0a28abaa7b30c'
+      signature: '0x789cf55be980739dad1d0699b93b58e806b51c9d96619bfa8fe0a28abaa7b30c',
     },
     {
       anonymous: false,
@@ -2134,7 +2134,7 @@ export const abi = {
       ],
       name: 'ProposalCreated',
       type: 'event',
-      signature: '0x7d84a6263ae0d98d3329bd7b46bb4e8d6f98cd35a7adb45c274c8b7fd5ebd5e0'
+      signature: '0x7d84a6263ae0d98d3329bd7b46bb4e8d6f98cd35a7adb45c274c8b7fd5ebd5e0',
     },
     {
       anonymous: false,
@@ -2143,12 +2143,12 @@ export const abi = {
           indexed: false,
           internalType: 'uint256',
           name: 'id',
-          type: 'uint256'
-        }
+          type: 'uint256',
+        },
       ],
       name: 'ProposalExecuted',
       type: 'event',
-      signature: '0x712ae1383f79ac853f8d882153778e0260ef8f03b504e2866e0593e04d2b291f'
+      signature: '0x712ae1383f79ac853f8d882153778e0260ef8f03b504e2866e0593e04d2b291f',
     },
     {
       anonymous: false,
@@ -2168,7 +2168,7 @@ export const abi = {
       ],
       name: 'ProposalQueued',
       type: 'event',
-      signature: '0x9a2e42fd6722813d69113e7d0079d3d940171428df7373df9c7f7617cfda2892'
+      signature: '0x9a2e42fd6722813d69113e7d0079d3d940171428df7373df9c7f7617cfda2892',
     },
     {
       anonymous: false,
@@ -2200,7 +2200,7 @@ export const abi = {
       ],
       name: 'VoteCast',
       type: 'event',
-      signature: '0x877856338e13f63d0c36822ff0ef736b80934cd90574a3a5bc9262c39d217c46'
+      signature: '0x877856338e13f63d0c36822ff0ef736b80934cd90574a3a5bc9262c39d217c46',
     },
     {
       constant: true,
@@ -2210,7 +2210,7 @@ export const abi = {
       payable: false,
       stateMutability: 'view',
       type: 'function',
-      signature: '0xdeaaa7cc'
+      signature: '0xdeaaa7cc',
     },
     {
       constant: true,
@@ -2220,7 +2220,7 @@ export const abi = {
       payable: false,
       stateMutability: 'view',
       type: 'function',
-      signature: '0x20606b70'
+      signature: '0x20606b70',
     },
     {
       constant: false,
@@ -2230,7 +2230,7 @@ export const abi = {
       payable: false,
       stateMutability: 'nonpayable',
       type: 'function',
-      signature: '0x760fbc13'
+      signature: '0x760fbc13',
     },
     {
       constant: false,
@@ -2240,33 +2240,33 @@ export const abi = {
       payable: false,
       stateMutability: 'nonpayable',
       type: 'function',
-      signature: '0xb9a61961'
+      signature: '0xb9a61961',
     },
     {
       constant: false,
       inputs: [
         { internalType: 'address', name: 'newPendingAdmin', type: 'address' },
-        { internalType: 'uint256', name: 'eta', type: 'uint256' }
+        { internalType: 'uint256', name: 'eta', type: 'uint256' },
       ],
       name: '__executeSetTimelockPendingAdmin',
       outputs: [],
       payable: false,
       stateMutability: 'nonpayable',
       type: 'function',
-      signature: '0x21f43e42'
+      signature: '0x21f43e42',
     },
     {
       constant: false,
       inputs: [
         { internalType: 'address', name: 'newPendingAdmin', type: 'address' },
-        { internalType: 'uint256', name: 'eta', type: 'uint256' }
+        { internalType: 'uint256', name: 'eta', type: 'uint256' },
       ],
       name: '__queueSetTimelockPendingAdmin',
       outputs: [],
       payable: false,
       stateMutability: 'nonpayable',
       type: 'function',
-      signature: '0x91500671'
+      signature: '0x91500671',
     },
     {
       constant: false,
@@ -2276,20 +2276,20 @@ export const abi = {
       payable: false,
       stateMutability: 'nonpayable',
       type: 'function',
-      signature: '0x40e58ee5'
+      signature: '0x40e58ee5',
     },
     {
       constant: false,
       inputs: [
         { internalType: 'uint256', name: 'proposalId', type: 'uint256' },
-        { internalType: 'bool', name: 'support', type: 'bool' }
+        { internalType: 'bool', name: 'support', type: 'bool' },
       ],
       name: 'castVote',
       outputs: [],
       payable: false,
       stateMutability: 'nonpayable',
       type: 'function',
-      signature: '0x15373e3d'
+      signature: '0x15373e3d',
     },
     {
       constant: false,
@@ -2298,14 +2298,14 @@ export const abi = {
         { internalType: 'bool', name: 'support', type: 'bool' },
         { internalType: 'uint8', name: 'v', type: 'uint8' },
         { internalType: 'bytes32', name: 'r', type: 'bytes32' },
-        { internalType: 'bytes32', name: 's', type: 'bytes32' }
+        { internalType: 'bytes32', name: 's', type: 'bytes32' },
       ],
       name: 'castVoteBySig',
       outputs: [],
       payable: false,
       stateMutability: 'nonpayable',
       type: 'function',
-      signature: '0x4634c61f'
+      signature: '0x4634c61f',
     },
     {
       constant: true,
@@ -2315,7 +2315,7 @@ export const abi = {
       payable: false,
       stateMutability: 'view',
       type: 'function',
-      signature: '0x109d0af8'
+      signature: '0x109d0af8',
     },
     {
       constant: false,
@@ -2325,7 +2325,7 @@ export const abi = {
       payable: true,
       stateMutability: 'payable',
       type: 'function',
-      signature: '0xfe0d94c1'
+      signature: '0xfe0d94c1',
     },
     {
       constant: true,
@@ -2335,18 +2335,18 @@ export const abi = {
         { internalType: 'address[]', name: 'targets', type: 'address[]' },
         { internalType: 'uint256[]', name: 'values', type: 'uint256[]' },
         { internalType: 'string[]', name: 'signatures', type: 'string[]' },
-        { internalType: 'bytes[]', name: 'calldatas', type: 'bytes[]' }
+        { internalType: 'bytes[]', name: 'calldatas', type: 'bytes[]' },
       ],
       payable: false,
       stateMutability: 'view',
       type: 'function',
-      signature: '0x328dd982'
+      signature: '0x328dd982',
     },
     {
       constant: true,
       inputs: [
         { internalType: 'uint256', name: 'proposalId', type: 'uint256' },
-        { internalType: 'address', name: 'voter', type: 'address' }
+        { internalType: 'address', name: 'voter', type: 'address' },
       ],
       name: 'getReceipt',
       outputs: [
@@ -2354,17 +2354,17 @@ export const abi = {
           components: [
             { internalType: 'bool', name: 'hasVoted', type: 'bool' },
             { internalType: 'bool', name: 'support', type: 'bool' },
-            { internalType: 'uint96', name: 'votes', type: 'uint96' }
+            { internalType: 'uint96', name: 'votes', type: 'uint96' },
           ],
           internalType: 'struct GovernorAlpha.Receipt',
           name: '',
-          type: 'tuple'
-        }
+          type: 'tuple',
+        },
       ],
       payable: false,
       stateMutability: 'view',
       type: 'function',
-      signature: '0xe23a9a52'
+      signature: '0xe23a9a52',
     },
     {
       constant: true,
@@ -2374,7 +2374,7 @@ export const abi = {
       payable: false,
       stateMutability: 'view',
       type: 'function',
-      signature: '0x452a9320'
+      signature: '0x452a9320',
     },
     {
       constant: true,
@@ -2384,7 +2384,7 @@ export const abi = {
       payable: false,
       stateMutability: 'view',
       type: 'function',
-      signature: '0x17977c61'
+      signature: '0x17977c61',
     },
     {
       constant: true,
@@ -2394,7 +2394,7 @@ export const abi = {
       payable: false,
       stateMutability: 'view',
       type: 'function',
-      signature: '0x06fdde03'
+      signature: '0x06fdde03',
     },
     {
       constant: true,
@@ -2404,7 +2404,7 @@ export const abi = {
       payable: false,
       stateMutability: 'view',
       type: 'function',
-      signature: '0xda35c664'
+      signature: '0xda35c664',
     },
     {
       constant: true,
@@ -2414,7 +2414,7 @@ export const abi = {
       payable: false,
       stateMutability: 'pure',
       type: 'function',
-      signature: '0x7bdbe4d0'
+      signature: '0x7bdbe4d0',
     },
     {
       constant: true,
@@ -2424,7 +2424,7 @@ export const abi = {
       payable: false,
       stateMutability: 'pure',
       type: 'function',
-      signature: '0xb58131b0'
+      signature: '0xb58131b0',
     },
     {
       constant: true,
@@ -2439,12 +2439,12 @@ export const abi = {
         { internalType: 'uint256', name: 'forVotes', type: 'uint256' },
         { internalType: 'uint256', name: 'againstVotes', type: 'uint256' },
         { internalType: 'bool', name: 'canceled', type: 'bool' },
-        { internalType: 'bool', name: 'executed', type: 'bool' }
+        { internalType: 'bool', name: 'executed', type: 'bool' },
       ],
       payable: false,
       stateMutability: 'view',
       type: 'function',
-      signature: '0x013cf08b'
+      signature: '0x013cf08b',
     },
     {
       constant: false,
@@ -2453,14 +2453,14 @@ export const abi = {
         { internalType: 'uint256[]', name: 'values', type: 'uint256[]' },
         { internalType: 'string[]', name: 'signatures', type: 'string[]' },
         { internalType: 'bytes[]', name: 'calldatas', type: 'bytes[]' },
-        { internalType: 'string', name: 'description', type: 'string' }
+        { internalType: 'string', name: 'description', type: 'string' },
       ],
       name: 'propose',
       outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
       payable: false,
       stateMutability: 'nonpayable',
       type: 'function',
-      signature: '0xda95691a'
+      signature: '0xda95691a',
     },
     {
       constant: false,
@@ -2470,7 +2470,7 @@ export const abi = {
       payable: false,
       stateMutability: 'nonpayable',
       type: 'function',
-      signature: '0xddf0b009'
+      signature: '0xddf0b009',
     },
     {
       constant: true,
@@ -2480,7 +2480,7 @@ export const abi = {
       payable: false,
       stateMutability: 'pure',
       type: 'function',
-      signature: '0x24bc1a64'
+      signature: '0x24bc1a64',
     },
     {
       constant: true,
@@ -2490,7 +2490,7 @@ export const abi = {
       payable: false,
       stateMutability: 'view',
       type: 'function',
-      signature: '0x3e4f49e6'
+      signature: '0x3e4f49e6',
     },
     {
       constant: true,
@@ -2500,7 +2500,7 @@ export const abi = {
       payable: false,
       stateMutability: 'view',
       type: 'function',
-      signature: '0xd33219b4'
+      signature: '0xd33219b4',
     },
     {
       constant: true,
@@ -2510,7 +2510,7 @@ export const abi = {
       payable: false,
       stateMutability: 'pure',
       type: 'function',
-      signature: '0x3932abb1'
+      signature: '0x3932abb1',
     },
     {
       constant: true,
@@ -2520,8 +2520,8 @@ export const abi = {
       payable: false,
       stateMutability: 'pure',
       type: 'function',
-      signature: '0x02a251a3'
-    }
+      signature: '0x02a251a3',
+    },
   ],
   Comptroller: [
     {
@@ -2553,7 +2553,7 @@ export const abi = {
         },
       ],
       name: 'ActionPaused',
-      type: 'event'
+      type: 'event',
     },
     {
       anonymous: false,
@@ -2572,7 +2572,7 @@ export const abi = {
         },
       ],
       name: 'CompSpeedUpdated',
-      type: 'event'
+      type: 'event',
     },
     {
       anonymous: false,
@@ -2603,7 +2603,7 @@ export const abi = {
         },
       ],
       name: 'DistributedBorrowerComp',
-      type: 'event'
+      type: 'event',
     },
     {
       anonymous: false,
@@ -2634,7 +2634,7 @@ export const abi = {
         },
       ],
       name: 'DistributedSupplierComp',
-      type: 'event'
+      type: 'event',
     },
     {
       anonymous: false,
@@ -2659,7 +2659,7 @@ export const abi = {
         },
       ],
       name: 'Failure',
-      type: 'event'
+      type: 'event',
     },
     {
       anonymous: false,
@@ -2678,7 +2678,7 @@ export const abi = {
         },
       ],
       name: 'MarketComped',
-      type: 'event'
+      type: 'event',
     },
     {
       anonymous: false,
@@ -2697,7 +2697,7 @@ export const abi = {
         },
       ],
       name: 'MarketEntered',
-      type: 'event'
+      type: 'event',
     },
     {
       anonymous: false,
@@ -2716,7 +2716,7 @@ export const abi = {
         },
       ],
       name: 'MarketExited',
-      type: 'event'
+      type: 'event',
     },
     {
       anonymous: false,
@@ -2729,7 +2729,7 @@ export const abi = {
         },
       ],
       name: 'MarketListed',
-      type: 'event'
+      type: 'event',
     },
     {
       anonymous: false,
@@ -2748,7 +2748,7 @@ export const abi = {
         },
       ],
       name: 'NewBorrowCap',
-      type: 'event'
+      type: 'event',
     },
     {
       anonymous: false,
@@ -2767,7 +2767,7 @@ export const abi = {
         },
       ],
       name: 'NewBorrowCapGuardian',
-      type: 'event'
+      type: 'event',
     },
     {
       anonymous: false,
@@ -2776,7 +2776,7 @@ export const abi = {
           indexed: false,
           internalType: 'uint256',
           name: 'oldCloseFactorMantissa',
-          type: 'uint256'
+          type: 'uint256',
         },
         {
           indexed: false,
@@ -2786,7 +2786,7 @@ export const abi = {
         },
       ],
       name: 'NewCloseFactor',
-      type: 'event'
+      type: 'event',
     },
     {
       anonymous: false,
@@ -2801,17 +2801,17 @@ export const abi = {
           indexed: false,
           internalType: 'uint256',
           name: 'oldCollateralFactorMantissa',
-          type: 'uint256'
+          type: 'uint256',
         },
         {
           indexed: false,
           internalType: 'uint256',
           name: 'newCollateralFactorMantissa',
-          type: 'uint256'
-        }
+          type: 'uint256',
+        },
       ],
       name: 'NewCollateralFactor',
-      type: 'event'
+      type: 'event',
     },
     {
       anonymous: false,
@@ -2830,7 +2830,7 @@ export const abi = {
         },
       ],
       name: 'NewCompRate',
-      type: 'event'
+      type: 'event',
     },
     {
       anonymous: false,
@@ -2839,17 +2839,17 @@ export const abi = {
           indexed: false,
           internalType: 'uint256',
           name: 'oldLiquidationIncentiveMantissa',
-          type: 'uint256'
+          type: 'uint256',
         },
         {
           indexed: false,
           internalType: 'uint256',
           name: 'newLiquidationIncentiveMantissa',
-          type: 'uint256'
-        }
+          type: 'uint256',
+        },
       ],
       name: 'NewLiquidationIncentive',
-      type: 'event'
+      type: 'event',
     },
     {
       anonymous: false,
@@ -2868,7 +2868,7 @@ export const abi = {
         },
       ],
       name: 'NewMaxAssets',
-      type: 'event'
+      type: 'event',
     },
     {
       anonymous: false,
@@ -2887,7 +2887,7 @@ export const abi = {
         },
       ],
       name: 'NewPauseGuardian',
-      type: 'event'
+      type: 'event',
     },
     {
       anonymous: false,
@@ -2896,17 +2896,17 @@ export const abi = {
           indexed: false,
           internalType: 'contract PriceOracle',
           name: 'oldPriceOracle',
-          type: 'address'
+          type: 'address',
         },
         {
           indexed: false,
           internalType: 'contract PriceOracle',
           name: 'newPriceOracle',
-          type: 'address'
-        }
+          type: 'address',
+        },
       ],
       name: 'NewPriceOracle',
-      type: 'event'
+      type: 'event',
     },
     {
       constant: false,
@@ -2915,7 +2915,7 @@ export const abi = {
       outputs: [],
       payable: false,
       stateMutability: 'nonpayable',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: false,
@@ -2924,7 +2924,7 @@ export const abi = {
       outputs: [],
       payable: false,
       stateMutability: 'nonpayable',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: true,
@@ -2933,7 +2933,7 @@ export const abi = {
       outputs: [{ internalType: 'bool', name: '', type: 'bool' }],
       payable: false,
       stateMutability: 'view',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: false,
@@ -2942,7 +2942,7 @@ export const abi = {
       outputs: [],
       payable: false,
       stateMutability: 'nonpayable',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: true,
@@ -2951,7 +2951,7 @@ export const abi = {
       outputs: [{ internalType: 'bool', name: '', type: 'bool' }],
       payable: false,
       stateMutability: 'view',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: false,
@@ -2960,19 +2960,19 @@ export const abi = {
       outputs: [],
       payable: false,
       stateMutability: 'nonpayable',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: false,
       inputs: [
         { internalType: 'contract CToken', name: 'cToken', type: 'address' },
-        { internalType: 'bool', name: 'state', type: 'bool' }
+        { internalType: 'bool', name: 'state', type: 'bool' },
       ],
       name: '_setBorrowPaused',
       outputs: [{ internalType: 'bool', name: '', type: 'bool' }],
       payable: false,
       stateMutability: 'nonpayable',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: false,
@@ -2981,19 +2981,19 @@ export const abi = {
       outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
       payable: false,
       stateMutability: 'nonpayable',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: false,
       inputs: [
         { internalType: 'contract CToken', name: 'cToken', type: 'address' },
-        { internalType: 'uint256', name: 'newCollateralFactorMantissa', type: 'uint256' }
+        { internalType: 'uint256', name: 'newCollateralFactorMantissa', type: 'uint256' },
       ],
       name: '_setCollateralFactor',
       outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
       payable: false,
       stateMutability: 'nonpayable',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: false,
@@ -3002,30 +3002,30 @@ export const abi = {
       outputs: [],
       payable: false,
       stateMutability: 'nonpayable',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: false,
       inputs: [
-        { internalType: 'uint256', name: 'newLiquidationIncentiveMantissa', type: 'uint256' }
+        { internalType: 'uint256', name: 'newLiquidationIncentiveMantissa', type: 'uint256' },
       ],
       name: '_setLiquidationIncentive',
       outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
       payable: false,
       stateMutability: 'nonpayable',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: false,
       inputs: [
         { internalType: 'contract CToken[]', name: 'cTokens', type: 'address[]' },
-        { internalType: 'uint256[]', name: 'newBorrowCaps', type: 'uint256[]' }
+        { internalType: 'uint256[]', name: 'newBorrowCaps', type: 'uint256[]' },
       ],
       name: '_setMarketBorrowCaps',
       outputs: [],
       payable: false,
       stateMutability: 'nonpayable',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: false,
@@ -3034,19 +3034,19 @@ export const abi = {
       outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
       payable: false,
       stateMutability: 'nonpayable',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: false,
       inputs: [
         { internalType: 'contract CToken', name: 'cToken', type: 'address' },
-        { internalType: 'bool', name: 'state', type: 'bool' }
+        { internalType: 'bool', name: 'state', type: 'bool' },
       ],
       name: '_setMintPaused',
       outputs: [{ internalType: 'bool', name: '', type: 'bool' }],
       payable: false,
       stateMutability: 'nonpayable',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: false,
@@ -3055,7 +3055,7 @@ export const abi = {
       outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
       payable: false,
       stateMutability: 'nonpayable',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: false,
@@ -3064,7 +3064,7 @@ export const abi = {
       outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
       payable: false,
       stateMutability: 'nonpayable',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: false,
@@ -3073,7 +3073,7 @@ export const abi = {
       outputs: [{ internalType: 'bool', name: '', type: 'bool' }],
       payable: false,
       stateMutability: 'nonpayable',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: false,
@@ -3082,7 +3082,7 @@ export const abi = {
       outputs: [{ internalType: 'bool', name: '', type: 'bool' }],
       payable: false,
       stateMutability: 'nonpayable',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: false,
@@ -3091,19 +3091,19 @@ export const abi = {
       outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
       payable: false,
       stateMutability: 'nonpayable',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: true,
       inputs: [
         { internalType: 'address', name: '', type: 'address' },
-        { internalType: 'uint256', name: '', type: 'uint256' }
+        { internalType: 'uint256', name: '', type: 'uint256' },
       ],
       name: 'accountAssets',
       outputs: [{ internalType: 'contract CToken', name: '', type: 'address' }],
       payable: false,
       stateMutability: 'view',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: true,
@@ -3112,7 +3112,7 @@ export const abi = {
       outputs: [{ internalType: 'address', name: '', type: 'address' }],
       payable: false,
       stateMutability: 'view',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: true,
@@ -3121,20 +3121,20 @@ export const abi = {
       outputs: [{ internalType: 'contract CToken', name: '', type: 'address' }],
       payable: false,
       stateMutability: 'view',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: false,
       inputs: [
         { internalType: 'address', name: 'cToken', type: 'address' },
         { internalType: 'address', name: 'borrower', type: 'address' },
-        { internalType: 'uint256', name: 'borrowAmount', type: 'uint256' }
+        { internalType: 'uint256', name: 'borrowAmount', type: 'uint256' },
       ],
       name: 'borrowAllowed',
       outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
       payable: false,
       stateMutability: 'nonpayable',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: true,
@@ -3143,7 +3143,7 @@ export const abi = {
       outputs: [{ internalType: 'address', name: '', type: 'address' }],
       payable: false,
       stateMutability: 'view',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: true,
@@ -3152,7 +3152,7 @@ export const abi = {
       outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
       payable: false,
       stateMutability: 'view',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: true,
@@ -3161,44 +3161,44 @@ export const abi = {
       outputs: [{ internalType: 'bool', name: '', type: 'bool' }],
       payable: false,
       stateMutability: 'view',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: false,
       inputs: [
         { internalType: 'address', name: '', type: 'address' },
         { internalType: 'address', name: '', type: 'address' },
-        { internalType: 'uint256', name: '', type: 'uint256' }
+        { internalType: 'uint256', name: '', type: 'uint256' },
       ],
       name: 'borrowVerify',
       outputs: [],
       payable: false,
       stateMutability: 'nonpayable',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: true,
       inputs: [
         { internalType: 'address', name: 'account', type: 'address' },
-        { internalType: 'contract CToken', name: 'cToken', type: 'address' }
+        { internalType: 'contract CToken', name: 'cToken', type: 'address' },
       ],
       name: 'checkMembership',
       outputs: [{ internalType: 'bool', name: '', type: 'bool' }],
       payable: false,
       stateMutability: 'view',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: false,
       inputs: [
         { internalType: 'address', name: 'holder', type: 'address' },
-        { internalType: 'contract CToken[]', name: 'cTokens', type: 'address[]' }
+        { internalType: 'contract CToken[]', name: 'cTokens', type: 'address[]' },
       ],
       name: 'claimComp',
       outputs: [],
       payable: false,
       stateMutability: 'nonpayable',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: false,
@@ -3206,13 +3206,13 @@ export const abi = {
         { internalType: 'address[]', name: 'holders', type: 'address[]' },
         { internalType: 'contract CToken[]', name: 'cTokens', type: 'address[]' },
         { internalType: 'bool', name: 'borrowers', type: 'bool' },
-        { internalType: 'bool', name: 'suppliers', type: 'bool' }
+        { internalType: 'bool', name: 'suppliers', type: 'bool' },
       ],
       name: 'claimComp',
       outputs: [],
       payable: false,
       stateMutability: 'nonpayable',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: false,
@@ -3221,7 +3221,7 @@ export const abi = {
       outputs: [],
       payable: false,
       stateMutability: 'nonpayable',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: true,
@@ -3230,7 +3230,7 @@ export const abi = {
       outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
       payable: false,
       stateMutability: 'view',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: true,
@@ -3239,7 +3239,7 @@ export const abi = {
       outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
       payable: false,
       stateMutability: 'view',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: true,
@@ -3247,23 +3247,23 @@ export const abi = {
       name: 'compBorrowState',
       outputs: [
         { internalType: 'uint224', name: 'index', type: 'uint224' },
-        { internalType: 'uint32', name: 'block', type: 'uint32' }
+        { internalType: 'uint32', name: 'block', type: 'uint32' },
       ],
       payable: false,
       stateMutability: 'view',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: true,
       inputs: [
         { internalType: 'address', name: '', type: 'address' },
-        { internalType: 'address', name: '', type: 'address' }
+        { internalType: 'address', name: '', type: 'address' },
       ],
       name: 'compBorrowerIndex',
       outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
       payable: false,
       stateMutability: 'view',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: true,
@@ -3272,7 +3272,7 @@ export const abi = {
       outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
       payable: false,
       stateMutability: 'view',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: true,
@@ -3281,7 +3281,7 @@ export const abi = {
       outputs: [{ internalType: 'uint224', name: '', type: 'uint224' }],
       payable: false,
       stateMutability: 'view',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: true,
@@ -3290,7 +3290,7 @@ export const abi = {
       outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
       payable: false,
       stateMutability: 'view',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: true,
@@ -3299,19 +3299,19 @@ export const abi = {
       outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
       payable: false,
       stateMutability: 'view',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: true,
       inputs: [
         { internalType: 'address', name: '', type: 'address' },
-        { internalType: 'address', name: '', type: 'address' }
+        { internalType: 'address', name: '', type: 'address' },
       ],
       name: 'compSupplierIndex',
       outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
       payable: false,
       stateMutability: 'view',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: true,
@@ -3319,11 +3319,11 @@ export const abi = {
       name: 'compSupplyState',
       outputs: [
         { internalType: 'uint224', name: 'index', type: 'uint224' },
-        { internalType: 'uint32', name: 'block', type: 'uint32' }
+        { internalType: 'uint32', name: 'block', type: 'uint32' },
       ],
       payable: false,
       stateMutability: 'view',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: true,
@@ -3332,7 +3332,7 @@ export const abi = {
       outputs: [{ internalType: 'address', name: '', type: 'address' }],
       payable: false,
       stateMutability: 'view',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: false,
@@ -3341,7 +3341,7 @@ export const abi = {
       outputs: [{ internalType: 'uint256[]', name: '', type: 'uint256[]' }],
       payable: false,
       stateMutability: 'nonpayable',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: false,
@@ -3350,7 +3350,7 @@ export const abi = {
       outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
       payable: false,
       stateMutability: 'nonpayable',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: true,
@@ -3359,11 +3359,11 @@ export const abi = {
       outputs: [
         { internalType: 'uint256', name: '', type: 'uint256' },
         { internalType: 'uint256', name: '', type: 'uint256' },
-        { internalType: 'uint256', name: '', type: 'uint256' }
+        { internalType: 'uint256', name: '', type: 'uint256' },
       ],
       payable: false,
       stateMutability: 'view',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: true,
@@ -3372,7 +3372,7 @@ export const abi = {
       outputs: [{ internalType: 'contract CToken[]', name: '', type: 'address[]' }],
       payable: false,
       stateMutability: 'view',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: true,
@@ -3381,7 +3381,7 @@ export const abi = {
       outputs: [{ internalType: 'contract CToken[]', name: '', type: 'address[]' }],
       payable: false,
       stateMutability: 'view',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: true,
@@ -3390,7 +3390,7 @@ export const abi = {
       outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
       payable: false,
       stateMutability: 'view',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: true,
@@ -3399,7 +3399,7 @@ export const abi = {
       outputs: [{ internalType: 'address', name: '', type: 'address' }],
       payable: false,
       stateMutability: 'view',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: true,
@@ -3407,17 +3407,17 @@ export const abi = {
         { internalType: 'address', name: 'account', type: 'address' },
         { internalType: 'address', name: 'cTokenModify', type: 'address' },
         { internalType: 'uint256', name: 'redeemTokens', type: 'uint256' },
-        { internalType: 'uint256', name: 'borrowAmount', type: 'uint256' }
+        { internalType: 'uint256', name: 'borrowAmount', type: 'uint256' },
       ],
       name: 'getHypotheticalAccountLiquidity',
       outputs: [
         { internalType: 'uint256', name: '', type: 'uint256' },
         { internalType: 'uint256', name: '', type: 'uint256' },
-        { internalType: 'uint256', name: '', type: 'uint256' }
+        { internalType: 'uint256', name: '', type: 'uint256' },
       ],
       payable: false,
       stateMutability: 'view',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: true,
@@ -3426,7 +3426,7 @@ export const abi = {
       outputs: [{ internalType: 'bool', name: '', type: 'bool' }],
       payable: false,
       stateMutability: 'view',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: false,
@@ -3435,13 +3435,13 @@ export const abi = {
         { internalType: 'address', name: 'cTokenCollateral', type: 'address' },
         { internalType: 'address', name: '', type: 'address' },
         { internalType: 'address', name: 'borrower', type: 'address' },
-        { internalType: 'uint256', name: 'repayAmount', type: 'uint256' }
+        { internalType: 'uint256', name: 'repayAmount', type: 'uint256' },
       ],
       name: 'liquidateBorrowAllowed',
       outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
       payable: false,
       stateMutability: 'nonpayable',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: false,
@@ -3451,29 +3451,29 @@ export const abi = {
         { internalType: 'address', name: '', type: 'address' },
         { internalType: 'address', name: '', type: 'address' },
         { internalType: 'uint256', name: '', type: 'uint256' },
-        { internalType: 'uint256', name: '', type: 'uint256' }
+        { internalType: 'uint256', name: '', type: 'uint256' },
       ],
       name: 'liquidateBorrowVerify',
       outputs: [],
       payable: false,
       stateMutability: 'nonpayable',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: true,
       inputs: [
         { internalType: 'address', name: 'cTokenBorrowed', type: 'address' },
         { internalType: 'address', name: 'cTokenCollateral', type: 'address' },
-        { internalType: 'uint256', name: 'actualRepayAmount', type: 'uint256' }
+        { internalType: 'uint256', name: 'actualRepayAmount', type: 'uint256' },
       ],
       name: 'liquidateCalculateSeizeTokens',
       outputs: [
         { internalType: 'uint256', name: '', type: 'uint256' },
-        { internalType: 'uint256', name: '', type: 'uint256' }
+        { internalType: 'uint256', name: '', type: 'uint256' },
       ],
       payable: false,
       stateMutability: 'view',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: true,
@@ -3482,7 +3482,7 @@ export const abi = {
       outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
       payable: false,
       stateMutability: 'view',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: true,
@@ -3491,11 +3491,11 @@ export const abi = {
       outputs: [
         { internalType: 'bool', name: 'isListed', type: 'bool' },
         { internalType: 'uint256', name: 'collateralFactorMantissa', type: 'uint256' },
-        { internalType: 'bool', name: 'isComped', type: 'bool' }
+        { internalType: 'bool', name: 'isComped', type: 'bool' },
       ],
       payable: false,
       stateMutability: 'view',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: true,
@@ -3504,20 +3504,20 @@ export const abi = {
       outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
       payable: false,
       stateMutability: 'view',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: false,
       inputs: [
         { internalType: 'address', name: 'cToken', type: 'address' },
         { internalType: 'address', name: 'minter', type: 'address' },
-        { internalType: 'uint256', name: '', type: 'uint256' }
+        { internalType: 'uint256', name: '', type: 'uint256' },
       ],
       name: 'mintAllowed',
       outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
       payable: false,
       stateMutability: 'nonpayable',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: true,
@@ -3526,7 +3526,7 @@ export const abi = {
       outputs: [{ internalType: 'bool', name: '', type: 'bool' }],
       payable: false,
       stateMutability: 'view',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: false,
@@ -3534,13 +3534,13 @@ export const abi = {
         { internalType: 'address', name: '', type: 'address' },
         { internalType: 'address', name: '', type: 'address' },
         { internalType: 'uint256', name: '', type: 'uint256' },
-        { internalType: 'uint256', name: '', type: 'uint256' }
+        { internalType: 'uint256', name: '', type: 'uint256' },
       ],
       name: 'mintVerify',
       outputs: [],
       payable: false,
       stateMutability: 'nonpayable',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: true,
@@ -3549,7 +3549,7 @@ export const abi = {
       outputs: [{ internalType: 'contract PriceOracle', name: '', type: 'address' }],
       payable: false,
       stateMutability: 'view',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: true,
@@ -3558,7 +3558,7 @@ export const abi = {
       outputs: [{ internalType: 'address', name: '', type: 'address' }],
       payable: false,
       stateMutability: 'view',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: true,
@@ -3567,7 +3567,7 @@ export const abi = {
       outputs: [{ internalType: 'address', name: '', type: 'address' }],
       payable: false,
       stateMutability: 'view',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: true,
@@ -3576,7 +3576,7 @@ export const abi = {
       outputs: [{ internalType: 'address', name: '', type: 'address' }],
       payable: false,
       stateMutability: 'view',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: true,
@@ -3585,20 +3585,20 @@ export const abi = {
       outputs: [{ internalType: 'address', name: '', type: 'address' }],
       payable: false,
       stateMutability: 'view',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: false,
       inputs: [
         { internalType: 'address', name: 'cToken', type: 'address' },
         { internalType: 'address', name: 'redeemer', type: 'address' },
-        { internalType: 'uint256', name: 'redeemTokens', type: 'uint256' }
+        { internalType: 'uint256', name: 'redeemTokens', type: 'uint256' },
       ],
       name: 'redeemAllowed',
       outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
       payable: false,
       stateMutability: 'nonpayable',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: false,
@@ -3606,13 +3606,13 @@ export const abi = {
         { internalType: 'address', name: '', type: 'address' },
         { internalType: 'address', name: '', type: 'address' },
         { internalType: 'uint256', name: 'redeemAmount', type: 'uint256' },
-        { internalType: 'uint256', name: 'redeemTokens', type: 'uint256' }
+        { internalType: 'uint256', name: 'redeemTokens', type: 'uint256' },
       ],
       name: 'redeemVerify',
       outputs: [],
       payable: false,
       stateMutability: 'nonpayable',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: false,
@@ -3621,7 +3621,7 @@ export const abi = {
       outputs: [],
       payable: false,
       stateMutability: 'nonpayable',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: false,
@@ -3629,13 +3629,13 @@ export const abi = {
         { internalType: 'address', name: 'cToken', type: 'address' },
         { internalType: 'address', name: '', type: 'address' },
         { internalType: 'address', name: 'borrower', type: 'address' },
-        { internalType: 'uint256', name: '', type: 'uint256' }
+        { internalType: 'uint256', name: '', type: 'uint256' },
       ],
       name: 'repayBorrowAllowed',
       outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
       payable: false,
       stateMutability: 'nonpayable',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: false,
@@ -3644,13 +3644,13 @@ export const abi = {
         { internalType: 'address', name: '', type: 'address' },
         { internalType: 'address', name: '', type: 'address' },
         { internalType: 'uint256', name: '', type: 'uint256' },
-        { internalType: 'uint256', name: '', type: 'uint256' }
+        { internalType: 'uint256', name: '', type: 'uint256' },
       ],
       name: 'repayBorrowVerify',
       outputs: [],
       payable: false,
       stateMutability: 'nonpayable',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: false,
@@ -3659,13 +3659,13 @@ export const abi = {
         { internalType: 'address', name: 'cTokenBorrowed', type: 'address' },
         { internalType: 'address', name: 'liquidator', type: 'address' },
         { internalType: 'address', name: 'borrower', type: 'address' },
-        { internalType: 'uint256', name: '', type: 'uint256' }
+        { internalType: 'uint256', name: '', type: 'uint256' },
       ],
       name: 'seizeAllowed',
       outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
       payable: false,
       stateMutability: 'nonpayable',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: true,
@@ -3674,7 +3674,7 @@ export const abi = {
       outputs: [{ internalType: 'bool', name: '', type: 'bool' }],
       payable: false,
       stateMutability: 'view',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: false,
@@ -3683,13 +3683,13 @@ export const abi = {
         { internalType: 'address', name: '', type: 'address' },
         { internalType: 'address', name: '', type: 'address' },
         { internalType: 'address', name: '', type: 'address' },
-        { internalType: 'uint256', name: '', type: 'uint256' }
+        { internalType: 'uint256', name: '', type: 'uint256' },
       ],
       name: 'seizeVerify',
       outputs: [],
       payable: false,
       stateMutability: 'nonpayable',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: false,
@@ -3698,7 +3698,7 @@ export const abi = {
       outputs: [],
       payable: false,
       stateMutability: 'nonpayable',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: false,
@@ -3706,13 +3706,13 @@ export const abi = {
         { internalType: 'address', name: 'cToken', type: 'address' },
         { internalType: 'address', name: 'src', type: 'address' },
         { internalType: 'address', name: 'dst', type: 'address' },
-        { internalType: 'uint256', name: 'transferTokens', type: 'uint256' }
+        { internalType: 'uint256', name: 'transferTokens', type: 'uint256' },
       ],
       name: 'transferAllowed',
       outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
       payable: false,
       stateMutability: 'nonpayable',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: true,
@@ -3721,7 +3721,7 @@ export const abi = {
       outputs: [{ internalType: 'bool', name: '', type: 'bool' }],
       payable: false,
       stateMutability: 'view',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: false,
@@ -3729,14 +3729,14 @@ export const abi = {
         { internalType: 'address', name: '', type: 'address' },
         { internalType: 'address', name: '', type: 'address' },
         { internalType: 'address', name: '', type: 'address' },
-        { internalType: 'uint256', name: '', type: 'uint256' }
+        { internalType: 'uint256', name: '', type: 'uint256' },
       ],
       name: 'transferVerify',
       outputs: [],
       payable: false,
       stateMutability: 'nonpayable',
-      type: 'function'
-    }
+      type: 'function',
+    },
   ],
   PriceFeed: ['function price(string symbol) returns (uint256)'],
   RlendingLens: [
@@ -3744,7 +3744,7 @@ export const abi = {
       constant: false,
       inputs: [
         { internalType: 'contract CToken', name: 'cToken', type: 'address' },
-        { internalType: 'address payable', name: 'account', type: 'address' }
+        { internalType: 'address payable', name: 'account', type: 'address' },
       ],
       name: 'cTokenBalances',
       outputs: [
@@ -3755,22 +3755,22 @@ export const abi = {
             { internalType: 'uint256', name: 'borrowBalanceCurrent', type: 'uint256' },
             { internalType: 'uint256', name: 'balanceOfUnderlying', type: 'uint256' },
             { internalType: 'uint256', name: 'tokenBalance', type: 'uint256' },
-            { internalType: 'uint256', name: 'tokenAllowance', type: 'uint256' }
+            { internalType: 'uint256', name: 'tokenAllowance', type: 'uint256' },
           ],
           internalType: 'struct RlendingLens.CTokenBalances',
           name: '',
-          type: 'tuple'
-        }
+          type: 'tuple',
+        },
       ],
       payable: false,
       stateMutability: 'nonpayable',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: false,
       inputs: [
         { internalType: 'contract CToken[]', name: 'cTokens', type: 'address[]' },
-        { internalType: 'address payable', name: 'account', type: 'address' }
+        { internalType: 'address payable', name: 'account', type: 'address' },
       ],
       name: 'cTokenBalancesAll',
       outputs: [
@@ -3781,16 +3781,16 @@ export const abi = {
             { internalType: 'uint256', name: 'borrowBalanceCurrent', type: 'uint256' },
             { internalType: 'uint256', name: 'balanceOfUnderlying', type: 'uint256' },
             { internalType: 'uint256', name: 'tokenBalance', type: 'uint256' },
-            { internalType: 'uint256', name: 'tokenAllowance', type: 'uint256' }
+            { internalType: 'uint256', name: 'tokenAllowance', type: 'uint256' },
           ],
           internalType: 'struct RlendingLens.CTokenBalances[]',
           name: '',
-          type: 'tuple[]'
-        }
+          type: 'tuple[]',
+        },
       ],
       payable: false,
       stateMutability: 'nonpayable',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: false,
@@ -3812,16 +3812,16 @@ export const abi = {
             { internalType: 'uint256', name: 'collateralFactorMantissa', type: 'uint256' },
             { internalType: 'address', name: 'underlyingAssetAddress', type: 'address' },
             { internalType: 'uint256', name: 'cTokenDecimals', type: 'uint256' },
-            { internalType: 'uint256', name: 'underlyingDecimals', type: 'uint256' }
+            { internalType: 'uint256', name: 'underlyingDecimals', type: 'uint256' },
           ],
           internalType: 'struct RlendingLens.CTokenMetadata',
           name: '',
-          type: 'tuple'
-        }
+          type: 'tuple',
+        },
       ],
       payable: false,
       stateMutability: 'nonpayable',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: false,
@@ -3843,16 +3843,16 @@ export const abi = {
             { internalType: 'uint256', name: 'collateralFactorMantissa', type: 'uint256' },
             { internalType: 'address', name: 'underlyingAssetAddress', type: 'address' },
             { internalType: 'uint256', name: 'cTokenDecimals', type: 'uint256' },
-            { internalType: 'uint256', name: 'underlyingDecimals', type: 'uint256' }
+            { internalType: 'uint256', name: 'underlyingDecimals', type: 'uint256' },
           ],
           internalType: 'struct RlendingLens.CTokenMetadata[]',
           name: '',
-          type: 'tuple[]'
-        }
+          type: 'tuple[]',
+        },
       ],
       payable: false,
       stateMutability: 'nonpayable',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: true,
@@ -3862,16 +3862,16 @@ export const abi = {
         {
           components: [
             { internalType: 'address', name: 'cToken', type: 'address' },
-            { internalType: 'uint256', name: 'underlyingPrice', type: 'uint256' }
+            { internalType: 'uint256', name: 'underlyingPrice', type: 'uint256' },
           ],
           internalType: 'struct RlendingLens.CTokenUnderlyingPrice',
           name: '',
-          type: 'tuple'
-        }
+          type: 'tuple',
+        },
       ],
       payable: false,
       stateMutability: 'view',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: true,
@@ -3881,22 +3881,22 @@ export const abi = {
         {
           components: [
             { internalType: 'address', name: 'cToken', type: 'address' },
-            { internalType: 'uint256', name: 'underlyingPrice', type: 'uint256' }
+            { internalType: 'uint256', name: 'underlyingPrice', type: 'uint256' },
           ],
           internalType: 'struct RlendingLens.CTokenUnderlyingPrice[]',
           name: '',
-          type: 'tuple[]'
-        }
+          type: 'tuple[]',
+        },
       ],
       payable: false,
       stateMutability: 'view',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: true,
       inputs: [
         { internalType: 'contract ComptrollerLensInterface', name: 'comptroller', type: 'address' },
-        { internalType: 'address', name: 'account', type: 'address' }
+        { internalType: 'address', name: 'account', type: 'address' },
       ],
       name: 'getAccountLimits',
       outputs: [
@@ -3904,22 +3904,22 @@ export const abi = {
           components: [
             { internalType: 'contract CToken[]', name: 'markets', type: 'address[]' },
             { internalType: 'uint256', name: 'liquidity', type: 'uint256' },
-            { internalType: 'uint256', name: 'shortfall', type: 'uint256' }
+            { internalType: 'uint256', name: 'shortfall', type: 'uint256' },
           ],
           internalType: 'struct RlendingLens.AccountLimits',
           name: '',
-          type: 'tuple'
-        }
+          type: 'tuple',
+        },
       ],
       payable: false,
       stateMutability: 'view',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: true,
       inputs: [
         { internalType: 'contract RLEN', name: 'comp', type: 'address' },
-        { internalType: 'address', name: 'account', type: 'address' }
+        { internalType: 'address', name: 'account', type: 'address' },
       ],
       name: 'getCompBalanceMetadata',
       outputs: [
@@ -3927,23 +3927,23 @@ export const abi = {
           components: [
             { internalType: 'uint256', name: 'balance', type: 'uint256' },
             { internalType: 'uint256', name: 'votes', type: 'uint256' },
-            { internalType: 'address', name: 'delegate', type: 'address' }
+            { internalType: 'address', name: 'delegate', type: 'address' },
           ],
           internalType: 'struct RlendingLens.CompBalanceMetadata',
           name: '',
-          type: 'tuple'
-        }
+          type: 'tuple',
+        },
       ],
       payable: false,
       stateMutability: 'view',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: false,
       inputs: [
         { internalType: 'contract RLEN', name: 'comp', type: 'address' },
         { internalType: 'contract ComptrollerLensInterface', name: 'comptroller', type: 'address' },
-        { internalType: 'address', name: 'account', type: 'address' }
+        { internalType: 'address', name: 'account', type: 'address' },
       ],
       name: 'getCompBalanceMetadataExt',
       outputs: [
@@ -3952,45 +3952,45 @@ export const abi = {
             { internalType: 'uint256', name: 'balance', type: 'uint256' },
             { internalType: 'uint256', name: 'votes', type: 'uint256' },
             { internalType: 'address', name: 'delegate', type: 'address' },
-            { internalType: 'uint256', name: 'allocated', type: 'uint256' }
+            { internalType: 'uint256', name: 'allocated', type: 'uint256' },
           ],
           internalType: 'struct RlendingLens.CompBalanceMetadataExt',
           name: '',
-          type: 'tuple'
-        }
+          type: 'tuple',
+        },
       ],
       payable: false,
       stateMutability: 'nonpayable',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: true,
       inputs: [
         { internalType: 'contract RLEN', name: 'comp', type: 'address' },
         { internalType: 'address', name: 'account', type: 'address' },
-        { internalType: 'uint32[]', name: 'blockNumbers', type: 'uint32[]' }
+        { internalType: 'uint32[]', name: 'blockNumbers', type: 'uint32[]' },
       ],
       name: 'getCompVotes',
       outputs: [
         {
           components: [
             { internalType: 'uint256', name: 'blockNumber', type: 'uint256' },
-            { internalType: 'uint256', name: 'votes', type: 'uint256' }
+            { internalType: 'uint256', name: 'votes', type: 'uint256' },
           ],
           internalType: 'struct RlendingLens.CompVotes[]',
           name: '',
-          type: 'tuple[]'
-        }
+          type: 'tuple[]',
+        },
       ],
       payable: false,
       stateMutability: 'view',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: true,
       inputs: [
         { internalType: 'contract GovernorAlpha', name: 'governor', type: 'address' },
-        { internalType: 'uint256[]', name: 'proposalIds', type: 'uint256[]' }
+        { internalType: 'uint256[]', name: 'proposalIds', type: 'uint256[]' },
       ],
       name: 'getGovProposals',
       outputs: [
@@ -4008,23 +4008,23 @@ export const abi = {
             { internalType: 'uint256', name: 'forVotes', type: 'uint256' },
             { internalType: 'uint256', name: 'againstVotes', type: 'uint256' },
             { internalType: 'bool', name: 'canceled', type: 'bool' },
-            { internalType: 'bool', name: 'executed', type: 'bool' }
+            { internalType: 'bool', name: 'executed', type: 'bool' },
           ],
           internalType: 'struct RlendingLens.GovProposal[]',
           name: '',
-          type: 'tuple[]'
-        }
+          type: 'tuple[]',
+        },
       ],
       payable: false,
       stateMutability: 'view',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: true,
       inputs: [
         { internalType: 'contract GovernorAlpha', name: 'governor', type: 'address' },
         { internalType: 'address', name: 'voter', type: 'address' },
-        { internalType: 'uint256[]', name: 'proposalIds', type: 'uint256[]' }
+        { internalType: 'uint256[]', name: 'proposalIds', type: 'uint256[]' },
       ],
       name: 'getGovReceipts',
       outputs: [
@@ -4033,17 +4033,17 @@ export const abi = {
             { internalType: 'uint256', name: 'proposalId', type: 'uint256' },
             { internalType: 'bool', name: 'hasVoted', type: 'bool' },
             { internalType: 'bool', name: 'support', type: 'bool' },
-            { internalType: 'uint96', name: 'votes', type: 'uint96' }
+            { internalType: 'uint96', name: 'votes', type: 'uint96' },
           ],
           internalType: 'struct RlendingLens.GovReceipt[]',
           name: '',
-          type: 'tuple[]'
-        }
+          type: 'tuple[]',
+        },
       ],
       payable: false,
       stateMutability: 'view',
-      type: 'function'
-    }
+      type: 'function',
+    },
   ],
   CToken: [
     {
@@ -4055,11 +4055,11 @@ export const abi = {
         { internalType: 'string', name: 'name_', type: 'string' },
         { internalType: 'string', name: 'symbol_', type: 'string' },
         { internalType: 'uint8', name: 'decimals_', type: 'uint8' },
-        { internalType: 'address payable', name: 'admin_', type: 'address' }
+        { internalType: 'address payable', name: 'admin_', type: 'address' },
       ],
       payable: false,
       stateMutability: 'nonpayable',
-      type: 'constructor'
+      type: 'constructor',
     },
     {
       anonymous: false,
@@ -4090,7 +4090,7 @@ export const abi = {
         },
       ],
       name: 'AccrueInterest',
-      type: 'event'
+      type: 'event',
     },
     {
       anonymous: false,
@@ -4115,7 +4115,7 @@ export const abi = {
         },
       ],
       name: 'Approval',
-      type: 'event'
+      type: 'event',
     },
     {
       anonymous: false,
@@ -4146,7 +4146,7 @@ export const abi = {
         },
       ],
       name: 'Borrow',
-      type: 'event'
+      type: 'event',
     },
     {
       anonymous: false,
@@ -4171,7 +4171,7 @@ export const abi = {
         },
       ],
       name: 'Failure',
-      type: 'event'
+      type: 'event',
     },
     {
       anonymous: false,
@@ -4208,7 +4208,7 @@ export const abi = {
         },
       ],
       name: 'LiquidateBorrow',
-      type: 'event'
+      type: 'event',
     },
     {
       anonymous: false,
@@ -4233,7 +4233,7 @@ export const abi = {
         },
       ],
       name: 'Mint',
-      type: 'event'
+      type: 'event',
     },
     {
       anonymous: false,
@@ -4252,7 +4252,7 @@ export const abi = {
         },
       ],
       name: 'NewAdmin',
-      type: 'event'
+      type: 'event',
     },
     {
       anonymous: false,
@@ -4261,17 +4261,17 @@ export const abi = {
           indexed: false,
           internalType: 'contract ComptrollerInterface',
           name: 'oldComptroller',
-          type: 'address'
+          type: 'address',
         },
         {
           indexed: false,
           internalType: 'contract ComptrollerInterface',
           name: 'newComptroller',
-          type: 'address'
-        }
+          type: 'address',
+        },
       ],
       name: 'NewComptroller',
-      type: 'event'
+      type: 'event',
     },
     {
       anonymous: false,
@@ -4280,17 +4280,17 @@ export const abi = {
           indexed: false,
           internalType: 'contract InterestRateModel',
           name: 'oldInterestRateModel',
-          type: 'address'
+          type: 'address',
         },
         {
           indexed: false,
           internalType: 'contract InterestRateModel',
           name: 'newInterestRateModel',
-          type: 'address'
-        }
+          type: 'address',
+        },
       ],
       name: 'NewMarketInterestRateModel',
-      type: 'event'
+      type: 'event',
     },
     {
       anonymous: false,
@@ -4309,7 +4309,7 @@ export const abi = {
         },
       ],
       name: 'NewPendingAdmin',
-      type: 'event'
+      type: 'event',
     },
     {
       anonymous: false,
@@ -4318,17 +4318,17 @@ export const abi = {
           indexed: false,
           internalType: 'uint256',
           name: 'oldReserveFactorMantissa',
-          type: 'uint256'
+          type: 'uint256',
         },
         {
           indexed: false,
           internalType: 'uint256',
           name: 'newReserveFactorMantissa',
-          type: 'uint256'
-        }
+          type: 'uint256',
+        },
       ],
       name: 'NewReserveFactor',
-      type: 'event'
+      type: 'event',
     },
     {
       anonymous: false,
@@ -4353,7 +4353,7 @@ export const abi = {
         },
       ],
       name: 'Redeem',
-      type: 'event'
+      type: 'event',
     },
     {
       anonymous: false,
@@ -4390,7 +4390,7 @@ export const abi = {
         },
       ],
       name: 'RepayBorrow',
-      type: 'event'
+      type: 'event',
     },
     {
       anonymous: false,
@@ -4415,7 +4415,7 @@ export const abi = {
         },
       ],
       name: 'ReservesAdded',
-      type: 'event'
+      type: 'event',
     },
     {
       anonymous: false,
@@ -4440,7 +4440,7 @@ export const abi = {
         },
       ],
       name: 'ReservesReduced',
-      type: 'event'
+      type: 'event',
     },
     {
       anonymous: false,
@@ -4465,7 +4465,7 @@ export const abi = {
         },
       ],
       name: 'Transfer',
-      type: 'event'
+      type: 'event',
     },
     {
       constant: false,
@@ -4474,7 +4474,7 @@ export const abi = {
       outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
       payable: false,
       stateMutability: 'nonpayable',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: false,
@@ -4483,7 +4483,7 @@ export const abi = {
       outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
       payable: false,
       stateMutability: 'nonpayable',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: false,
@@ -4492,18 +4492,18 @@ export const abi = {
       outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
       payable: false,
       stateMutability: 'nonpayable',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: false,
       inputs: [
-        { internalType: 'contract ComptrollerInterface', name: 'newComptroller', type: 'address' }
+        { internalType: 'contract ComptrollerInterface', name: 'newComptroller', type: 'address' },
       ],
       name: '_setComptroller',
       outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
       payable: false,
       stateMutability: 'nonpayable',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: false,
@@ -4511,14 +4511,14 @@ export const abi = {
         {
           internalType: 'contract InterestRateModel',
           name: 'newInterestRateModel',
-          type: 'address'
-        }
+          type: 'address',
+        },
       ],
       name: '_setInterestRateModel',
       outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
       payable: false,
       stateMutability: 'nonpayable',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: false,
@@ -4527,7 +4527,7 @@ export const abi = {
       outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
       payable: false,
       stateMutability: 'nonpayable',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: false,
@@ -4536,7 +4536,7 @@ export const abi = {
       outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
       payable: false,
       stateMutability: 'nonpayable',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: true,
@@ -4545,7 +4545,7 @@ export const abi = {
       outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
       payable: false,
       stateMutability: 'view',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: false,
@@ -4554,7 +4554,7 @@ export const abi = {
       outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
       payable: false,
       stateMutability: 'nonpayable',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: true,
@@ -4563,31 +4563,31 @@ export const abi = {
       outputs: [{ internalType: 'address payable', name: '', type: 'address' }],
       payable: false,
       stateMutability: 'view',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: true,
       inputs: [
         { internalType: 'address', name: 'owner', type: 'address' },
-        { internalType: 'address', name: 'spender', type: 'address' }
+        { internalType: 'address', name: 'spender', type: 'address' },
       ],
       name: 'allowance',
       outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
       payable: false,
       stateMutability: 'view',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: false,
       inputs: [
         { internalType: 'address', name: 'spender', type: 'address' },
-        { internalType: 'uint256', name: 'amount', type: 'uint256' }
+        { internalType: 'uint256', name: 'amount', type: 'uint256' },
       ],
       name: 'approve',
       outputs: [{ internalType: 'bool', name: '', type: 'bool' }],
       payable: false,
       stateMutability: 'nonpayable',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: true,
@@ -4596,7 +4596,7 @@ export const abi = {
       outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
       payable: false,
       stateMutability: 'view',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: false,
@@ -4605,7 +4605,7 @@ export const abi = {
       outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
       payable: false,
       stateMutability: 'nonpayable',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: false,
@@ -4614,7 +4614,7 @@ export const abi = {
       outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
       payable: false,
       stateMutability: 'nonpayable',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: false,
@@ -4623,7 +4623,7 @@ export const abi = {
       outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
       payable: false,
       stateMutability: 'nonpayable',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: true,
@@ -4632,7 +4632,7 @@ export const abi = {
       outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
       payable: false,
       stateMutability: 'view',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: true,
@@ -4641,7 +4641,7 @@ export const abi = {
       outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
       payable: false,
       stateMutability: 'view',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: true,
@@ -4650,7 +4650,7 @@ export const abi = {
       outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
       payable: false,
       stateMutability: 'view',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: true,
@@ -4659,7 +4659,7 @@ export const abi = {
       outputs: [{ internalType: 'contract ComptrollerInterface', name: '', type: 'address' }],
       payable: false,
       stateMutability: 'view',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: true,
@@ -4668,7 +4668,7 @@ export const abi = {
       outputs: [{ internalType: 'uint8', name: '', type: 'uint8' }],
       payable: false,
       stateMutability: 'view',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: false,
@@ -4677,7 +4677,7 @@ export const abi = {
       outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
       payable: false,
       stateMutability: 'nonpayable',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: true,
@@ -4686,7 +4686,7 @@ export const abi = {
       outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
       payable: false,
       stateMutability: 'view',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: true,
@@ -4696,11 +4696,11 @@ export const abi = {
         { internalType: 'uint256', name: '', type: 'uint256' },
         { internalType: 'uint256', name: '', type: 'uint256' },
         { internalType: 'uint256', name: '', type: 'uint256' },
-        { internalType: 'uint256', name: '', type: 'uint256' }
+        { internalType: 'uint256', name: '', type: 'uint256' },
       ],
       payable: false,
       stateMutability: 'view',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: true,
@@ -4709,7 +4709,7 @@ export const abi = {
       outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
       payable: false,
       stateMutability: 'view',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: false,
@@ -4720,13 +4720,13 @@ export const abi = {
         { internalType: 'uint256', name: 'initialExchangeRateMantissa_', type: 'uint256' },
         { internalType: 'string', name: 'name_', type: 'string' },
         { internalType: 'string', name: 'symbol_', type: 'string' },
-        { internalType: 'uint8', name: 'decimals_', type: 'uint8' }
+        { internalType: 'uint8', name: 'decimals_', type: 'uint8' },
       ],
       name: 'initialize',
       outputs: [],
       payable: false,
       stateMutability: 'nonpayable',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: false,
@@ -4736,13 +4736,13 @@ export const abi = {
         { internalType: 'uint256', name: 'initialExchangeRateMantissa_', type: 'uint256' },
         { internalType: 'string', name: 'name_', type: 'string' },
         { internalType: 'string', name: 'symbol_', type: 'string' },
-        { internalType: 'uint8', name: 'decimals_', type: 'uint8' }
+        { internalType: 'uint8', name: 'decimals_', type: 'uint8' },
       ],
       name: 'initialize',
       outputs: [],
       payable: false,
       stateMutability: 'nonpayable',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: true,
@@ -4751,7 +4751,7 @@ export const abi = {
       outputs: [{ internalType: 'contract InterestRateModel', name: '', type: 'address' }],
       payable: false,
       stateMutability: 'view',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: true,
@@ -4760,20 +4760,20 @@ export const abi = {
       outputs: [{ internalType: 'bool', name: '', type: 'bool' }],
       payable: false,
       stateMutability: 'view',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: false,
       inputs: [
         { internalType: 'address', name: 'borrower', type: 'address' },
         { internalType: 'uint256', name: 'repayAmount', type: 'uint256' },
-        { internalType: 'contract CTokenInterface', name: 'cTokenCollateral', type: 'address' }
+        { internalType: 'contract CTokenInterface', name: 'cTokenCollateral', type: 'address' },
       ],
       name: 'liquidateBorrow',
       outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
       payable: false,
       stateMutability: 'nonpayable',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: false,
@@ -4782,7 +4782,7 @@ export const abi = {
       outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
       payable: false,
       stateMutability: 'nonpayable',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: true,
@@ -4791,7 +4791,7 @@ export const abi = {
       outputs: [{ internalType: 'string', name: '', type: 'string' }],
       payable: false,
       stateMutability: 'view',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: true,
@@ -4800,7 +4800,7 @@ export const abi = {
       outputs: [{ internalType: 'address payable', name: '', type: 'address' }],
       payable: false,
       stateMutability: 'view',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: false,
@@ -4809,7 +4809,7 @@ export const abi = {
       outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
       payable: false,
       stateMutability: 'nonpayable',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: false,
@@ -4818,7 +4818,7 @@ export const abi = {
       outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
       payable: false,
       stateMutability: 'nonpayable',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: false,
@@ -4827,19 +4827,19 @@ export const abi = {
       outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
       payable: false,
       stateMutability: 'nonpayable',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: false,
       inputs: [
         { internalType: 'address', name: 'borrower', type: 'address' },
-        { internalType: 'uint256', name: 'repayAmount', type: 'uint256' }
+        { internalType: 'uint256', name: 'repayAmount', type: 'uint256' },
       ],
       name: 'repayBorrowBehalf',
       outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
       payable: false,
       stateMutability: 'nonpayable',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: true,
@@ -4848,20 +4848,20 @@ export const abi = {
       outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
       payable: false,
       stateMutability: 'view',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: false,
       inputs: [
         { internalType: 'address', name: 'liquidator', type: 'address' },
         { internalType: 'address', name: 'borrower', type: 'address' },
-        { internalType: 'uint256', name: 'seizeTokens', type: 'uint256' }
+        { internalType: 'uint256', name: 'seizeTokens', type: 'uint256' },
       ],
       name: 'seize',
       outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
       payable: false,
       stateMutability: 'nonpayable',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: true,
@@ -4870,7 +4870,7 @@ export const abi = {
       outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
       payable: false,
       stateMutability: 'view',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: true,
@@ -4879,7 +4879,7 @@ export const abi = {
       outputs: [{ internalType: 'string', name: '', type: 'string' }],
       payable: false,
       stateMutability: 'view',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: true,
@@ -4888,7 +4888,7 @@ export const abi = {
       outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
       payable: false,
       stateMutability: 'view',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: false,
@@ -4897,7 +4897,7 @@ export const abi = {
       outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
       payable: false,
       stateMutability: 'nonpayable',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: true,
@@ -4906,7 +4906,7 @@ export const abi = {
       outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
       payable: false,
       stateMutability: 'view',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: true,
@@ -4915,32 +4915,32 @@ export const abi = {
       outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
       payable: false,
       stateMutability: 'view',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: false,
       inputs: [
         { internalType: 'address', name: 'dst', type: 'address' },
-        { internalType: 'uint256', name: 'amount', type: 'uint256' }
+        { internalType: 'uint256', name: 'amount', type: 'uint256' },
       ],
       name: 'transfer',
       outputs: [{ internalType: 'bool', name: '', type: 'bool' }],
       payable: false,
       stateMutability: 'nonpayable',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: false,
       inputs: [
         { internalType: 'address', name: 'src', type: 'address' },
         { internalType: 'address', name: 'dst', type: 'address' },
-        { internalType: 'uint256', name: 'amount', type: 'uint256' }
+        { internalType: 'uint256', name: 'amount', type: 'uint256' },
       ],
       name: 'transferFrom',
       outputs: [{ internalType: 'bool', name: '', type: 'bool' }],
       payable: false,
       stateMutability: 'nonpayable',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: true,
@@ -4949,8 +4949,8 @@ export const abi = {
       outputs: [{ internalType: 'address', name: '', type: 'address' }],
       payable: false,
       stateMutability: 'view',
-      type: 'function'
-    }
+      type: 'function',
+    },
   ],
   JumpRateModelV2: [
     {
@@ -4959,11 +4959,11 @@ export const abi = {
         { internalType: 'uint256', name: 'multiplierPerYear', type: 'uint256' },
         { internalType: 'uint256', name: 'jumpMultiplierPerYear', type: 'uint256' },
         { internalType: 'uint256', name: 'kink_', type: 'uint256' },
-        { internalType: 'address', name: 'owner_', type: 'address' }
+        { internalType: 'address', name: 'owner_', type: 'address' },
       ],
       payable: false,
       stateMutability: 'nonpayable',
-      type: 'constructor'
+      type: 'constructor',
     },
     {
       anonymous: false,
@@ -4984,7 +4984,7 @@ export const abi = {
           indexed: false,
           internalType: 'uint256',
           name: 'jumpMultiplierPerBlock',
-          type: 'uint256'
+          type: 'uint256',
         },
         {
           indexed: false,
@@ -4994,7 +4994,7 @@ export const abi = {
         },
       ],
       name: 'NewInterestParams',
-      type: 'event'
+      type: 'event',
     },
     {
       constant: true,
@@ -5003,7 +5003,7 @@ export const abi = {
       outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
       payable: false,
       stateMutability: 'view',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: true,
@@ -5012,20 +5012,7 @@ export const abi = {
       outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
       payable: false,
       stateMutability: 'view',
-      type: 'function'
-    },
-    {
-      constant: true,
-      inputs: [
-        { internalType: 'uint256', name: 'cash', type: 'uint256' },
-        { internalType: 'uint256', name: 'borrows', type: 'uint256' },
-        { internalType: 'uint256', name: 'reserves', type: 'uint256' }
-      ],
-      name: 'getBorrowRate',
-      outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
-      payable: false,
-      stateMutability: 'view',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: true,
@@ -5033,13 +5020,26 @@ export const abi = {
         { internalType: 'uint256', name: 'cash', type: 'uint256' },
         { internalType: 'uint256', name: 'borrows', type: 'uint256' },
         { internalType: 'uint256', name: 'reserves', type: 'uint256' },
-        { internalType: 'uint256', name: 'reserveFactorMantissa', type: 'uint256' }
+      ],
+      name: 'getBorrowRate',
+      outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
+      payable: false,
+      stateMutability: 'view',
+      type: 'function',
+    },
+    {
+      constant: true,
+      inputs: [
+        { internalType: 'uint256', name: 'cash', type: 'uint256' },
+        { internalType: 'uint256', name: 'borrows', type: 'uint256' },
+        { internalType: 'uint256', name: 'reserves', type: 'uint256' },
+        { internalType: 'uint256', name: 'reserveFactorMantissa', type: 'uint256' },
       ],
       name: 'getSupplyRate',
       outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
       payable: false,
       stateMutability: 'view',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: true,
@@ -5048,7 +5048,7 @@ export const abi = {
       outputs: [{ internalType: 'bool', name: '', type: 'bool' }],
       payable: false,
       stateMutability: 'view',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: true,
@@ -5057,7 +5057,7 @@ export const abi = {
       outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
       payable: false,
       stateMutability: 'view',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: true,
@@ -5066,7 +5066,7 @@ export const abi = {
       outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
       payable: false,
       stateMutability: 'view',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: true,
@@ -5075,7 +5075,7 @@ export const abi = {
       outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
       payable: false,
       stateMutability: 'view',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: true,
@@ -5084,7 +5084,7 @@ export const abi = {
       outputs: [{ internalType: 'address', name: '', type: 'address' }],
       payable: false,
       stateMutability: 'view',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: false,
@@ -5092,34 +5092,34 @@ export const abi = {
         { internalType: 'uint256', name: 'baseRatePerYear', type: 'uint256' },
         { internalType: 'uint256', name: 'multiplierPerYear', type: 'uint256' },
         { internalType: 'uint256', name: 'jumpMultiplierPerYear', type: 'uint256' },
-        { internalType: 'uint256', name: 'kink_', type: 'uint256' }
+        { internalType: 'uint256', name: 'kink_', type: 'uint256' },
       ],
       name: 'updateJumpRateModel',
       outputs: [],
       payable: false,
       stateMutability: 'nonpayable',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: true,
       inputs: [
         { internalType: 'uint256', name: 'cash', type: 'uint256' },
         { internalType: 'uint256', name: 'borrows', type: 'uint256' },
-        { internalType: 'uint256', name: 'reserves', type: 'uint256' }
+        { internalType: 'uint256', name: 'reserves', type: 'uint256' },
       ],
       name: 'utilizationRate',
       outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
       payable: false,
       stateMutability: 'pure',
-      type: 'function'
-    }
+      type: 'function',
+    },
   ],
   Maximillion: [
     {
       inputs: [{ internalType: 'contract CRBTC', name: 'cRBTC_', type: 'address' }],
       payable: false,
       stateMutability: 'nonpayable',
-      type: 'constructor'
+      type: 'constructor',
     },
     {
       constant: true,
@@ -5128,7 +5128,7 @@ export const abi = {
       outputs: [{ internalType: 'contract CRBTC', name: '', type: 'address' }],
       payable: false,
       stateMutability: 'view',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: false,
@@ -5137,31 +5137,31 @@ export const abi = {
       outputs: [],
       payable: true,
       stateMutability: 'payable',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: false,
       inputs: [
         { internalType: 'address', name: 'borrower', type: 'address' },
-        { internalType: 'contract CRBTC', name: 'cRBTC_', type: 'address' }
+        { internalType: 'contract CRBTC', name: 'cRBTC_', type: 'address' },
       ],
       name: 'repayBehalfExplicit',
       outputs: [],
       payable: true,
       stateMutability: 'payable',
-      type: 'function'
-    }
+      type: 'function',
+    },
   ],
   PriceOracleAdapterMoc: [
     {
       inputs: [
         { internalType: 'address', name: 'guardian_', type: 'address' },
         { internalType: 'address', name: 'priceProvider', type: 'address' },
-        { internalType: 'address', name: 'rbtcPriceProvider', type: 'address' }
+        { internalType: 'address', name: 'rbtcPriceProvider', type: 'address' },
       ],
       payable: false,
       stateMutability: 'nonpayable',
-      type: 'constructor'
+      type: 'constructor',
     },
     {
       anonymous: false,
@@ -5180,7 +5180,7 @@ export const abi = {
         },
       ],
       name: 'PriceOracleAdapterUpdated',
-      type: 'event'
+      type: 'event',
     },
     {
       constant: true,
@@ -5189,7 +5189,7 @@ export const abi = {
       outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
       payable: false,
       stateMutability: 'view',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: true,
@@ -5198,7 +5198,7 @@ export const abi = {
       outputs: [{ internalType: 'address', name: '', type: 'address' }],
       payable: false,
       stateMutability: 'view',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: true,
@@ -5207,7 +5207,7 @@ export const abi = {
       outputs: [{ internalType: 'contract PriceProviderMoC', name: '', type: 'address' }],
       payable: false,
       stateMutability: 'view',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: true,
@@ -5216,7 +5216,7 @@ export const abi = {
       outputs: [{ internalType: 'contract PriceProviderMoC', name: '', type: 'address' }],
       payable: false,
       stateMutability: 'view',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: false,
@@ -5225,7 +5225,7 @@ export const abi = {
       outputs: [],
       payable: false,
       stateMutability: 'nonpayable',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: false,
@@ -5234,15 +5234,15 @@ export const abi = {
       outputs: [],
       payable: false,
       stateMutability: 'nonpayable',
-      type: 'function'
-    }
+      type: 'function',
+    },
   ],
   PriceOracleProxy: [
     {
       inputs: [{ internalType: 'address', name: 'guardian_', type: 'address' }],
       payable: false,
       stateMutability: 'nonpayable',
-      type: 'constructor'
+      type: 'constructor',
     },
     {
       anonymous: false,
@@ -5261,7 +5261,7 @@ export const abi = {
         },
       ],
       name: 'NewGuardian',
-      type: 'event'
+      type: 'event',
     },
     {
       anonymous: false,
@@ -5280,7 +5280,7 @@ export const abi = {
         },
       ],
       name: 'NewPendingGuardian',
-      type: 'event'
+      type: 'event',
     },
     {
       constant: false,
@@ -5289,7 +5289,7 @@ export const abi = {
       outputs: [],
       payable: false,
       stateMutability: 'nonpayable',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: false,
@@ -5298,7 +5298,7 @@ export const abi = {
       outputs: [],
       payable: false,
       stateMutability: 'nonpayable',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: true,
@@ -5307,7 +5307,7 @@ export const abi = {
       outputs: [{ internalType: 'address', name: '', type: 'address' }],
       payable: false,
       stateMutability: 'view',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: true,
@@ -5316,7 +5316,7 @@ export const abi = {
       outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
       payable: false,
       stateMutability: 'view',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: true,
@@ -5324,11 +5324,11 @@ export const abi = {
       name: 'cTokensArray',
       outputs: [
         { internalType: 'address', name: 'cToken', type: 'address' },
-        { internalType: 'string', name: 'cTokenName', type: 'string' }
+        { internalType: 'string', name: 'cTokenName', type: 'string' },
       ],
       payable: false,
       stateMutability: 'view',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: true,
@@ -5337,7 +5337,7 @@ export const abi = {
       outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
       payable: false,
       stateMutability: 'view',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: true,
@@ -5346,7 +5346,7 @@ export const abi = {
       outputs: [{ internalType: 'address', name: '', type: 'address' }],
       payable: false,
       stateMutability: 'view',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: true,
@@ -5355,7 +5355,7 @@ export const abi = {
       outputs: [{ internalType: 'bool', name: '', type: 'bool' }],
       payable: false,
       stateMutability: 'view',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: true,
@@ -5364,19 +5364,19 @@ export const abi = {
       outputs: [{ internalType: 'address', name: '', type: 'address' }],
       payable: false,
       stateMutability: 'view',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: false,
       inputs: [
         { internalType: 'address', name: 'addressToken', type: 'address' },
-        { internalType: 'address', name: 'addressAdapter', type: 'address' }
+        { internalType: 'address', name: 'addressAdapter', type: 'address' },
       ],
       name: 'setAdapterToToken',
       outputs: [],
       payable: false,
       stateMutability: 'nonpayable',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: false,
@@ -5385,7 +5385,7 @@ export const abi = {
       outputs: [],
       payable: false,
       stateMutability: 'nonpayable',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: true,
@@ -5394,18 +5394,18 @@ export const abi = {
       outputs: [{ internalType: 'address', name: '', type: 'address' }],
       payable: false,
       stateMutability: 'view',
-      type: 'function'
-    }
+      type: 'function',
+    },
   ],
   WhitePaperInterestRateModel: [
     {
       inputs: [
         { internalType: 'uint256', name: 'baseRatePerYear', type: 'uint256' },
-        { internalType: 'uint256', name: 'multiplierPerYear', type: 'uint256' }
+        { internalType: 'uint256', name: 'multiplierPerYear', type: 'uint256' },
       ],
       payable: false,
       stateMutability: 'nonpayable',
-      type: 'constructor'
+      type: 'constructor',
     },
     {
       anonymous: false,
@@ -5424,7 +5424,7 @@ export const abi = {
         },
       ],
       name: 'NewInterestParams',
-      type: 'event'
+      type: 'event',
     },
     {
       constant: true,
@@ -5433,7 +5433,7 @@ export const abi = {
       outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
       payable: false,
       stateMutability: 'view',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: true,
@@ -5442,20 +5442,7 @@ export const abi = {
       outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
       payable: false,
       stateMutability: 'view',
-      type: 'function'
-    },
-    {
-      constant: true,
-      inputs: [
-        { internalType: 'uint256', name: 'cash', type: 'uint256' },
-        { internalType: 'uint256', name: 'borrows', type: 'uint256' },
-        { internalType: 'uint256', name: 'reserves', type: 'uint256' }
-      ],
-      name: 'getBorrowRate',
-      outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
-      payable: false,
-      stateMutability: 'view',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: true,
@@ -5463,13 +5450,26 @@ export const abi = {
         { internalType: 'uint256', name: 'cash', type: 'uint256' },
         { internalType: 'uint256', name: 'borrows', type: 'uint256' },
         { internalType: 'uint256', name: 'reserves', type: 'uint256' },
-        { internalType: 'uint256', name: 'reserveFactorMantissa', type: 'uint256' }
+      ],
+      name: 'getBorrowRate',
+      outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
+      payable: false,
+      stateMutability: 'view',
+      type: 'function',
+    },
+    {
+      constant: true,
+      inputs: [
+        { internalType: 'uint256', name: 'cash', type: 'uint256' },
+        { internalType: 'uint256', name: 'borrows', type: 'uint256' },
+        { internalType: 'uint256', name: 'reserves', type: 'uint256' },
+        { internalType: 'uint256', name: 'reserveFactorMantissa', type: 'uint256' },
       ],
       name: 'getSupplyRate',
       outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
       payable: false,
       stateMutability: 'view',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: true,
@@ -5478,7 +5478,7 @@ export const abi = {
       outputs: [{ internalType: 'bool', name: '', type: 'bool' }],
       payable: false,
       stateMutability: 'view',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: true,
@@ -5487,21 +5487,21 @@ export const abi = {
       outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
       payable: false,
       stateMutability: 'view',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: true,
       inputs: [
         { internalType: 'uint256', name: 'cash', type: 'uint256' },
         { internalType: 'uint256', name: 'borrows', type: 'uint256' },
-        { internalType: 'uint256', name: 'reserves', type: 'uint256' }
+        { internalType: 'uint256', name: 'reserves', type: 'uint256' },
       ],
       name: 'utilizationRate',
       outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
       payable: false,
       stateMutability: 'pure',
-      type: 'function'
-    }
+      type: 'function',
+    },
   ],
   RBTCMocOracle: [
     {
@@ -5511,7 +5511,7 @@ export const abi = {
       outputs: [],
       payable: false,
       stateMutability: 'nonpayable',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: false,
@@ -5520,7 +5520,7 @@ export const abi = {
       outputs: [],
       payable: false,
       stateMutability: 'nonpayable',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: true,
@@ -5528,11 +5528,11 @@ export const abi = {
       name: 'compute',
       outputs: [
         { name: '', type: 'bytes32' },
-        { name: '', type: 'bool' }
+        { name: '', type: 'bool' },
       ],
       payable: false,
       stateMutability: 'view',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: false,
@@ -5541,7 +5541,7 @@ export const abi = {
       outputs: [],
       payable: false,
       stateMutability: 'nonpayable',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: false,
@@ -5550,7 +5550,7 @@ export const abi = {
       outputs: [],
       payable: false,
       stateMutability: 'nonpayable',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: true,
@@ -5559,7 +5559,7 @@ export const abi = {
       outputs: [{ name: '', type: 'bytes12' }],
       payable: false,
       stateMutability: 'view',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: true,
@@ -5568,7 +5568,7 @@ export const abi = {
       outputs: [{ name: '', type: 'bytes12' }],
       payable: false,
       stateMutability: 'view',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: true,
@@ -5577,7 +5577,7 @@ export const abi = {
       outputs: [{ name: '', type: 'bytes32' }],
       payable: false,
       stateMutability: 'view',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: true,
@@ -5585,11 +5585,11 @@ export const abi = {
       name: 'peek',
       outputs: [
         { name: '', type: 'bytes32' },
-        { name: '', type: 'bool' }
+        { name: '', type: 'bool' },
       ],
       payable: false,
       stateMutability: 'view',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: true,
@@ -5598,7 +5598,7 @@ export const abi = {
       outputs: [{ name: '', type: 'address' }],
       payable: false,
       stateMutability: 'view',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: false,
@@ -5607,7 +5607,7 @@ export const abi = {
       outputs: [],
       payable: false,
       stateMutability: 'nonpayable',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: false,
@@ -5616,7 +5616,7 @@ export const abi = {
       outputs: [],
       payable: false,
       stateMutability: 'nonpayable',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: true,
@@ -5625,7 +5625,7 @@ export const abi = {
       outputs: [{ name: '', type: 'address' }],
       payable: false,
       stateMutability: 'view',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: false,
@@ -5634,7 +5634,7 @@ export const abi = {
       outputs: [],
       payable: false,
       stateMutability: 'nonpayable',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: true,
@@ -5643,19 +5643,19 @@ export const abi = {
       outputs: [{ name: '', type: 'bool' }],
       payable: false,
       stateMutability: 'view',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: false,
       inputs: [
         { name: 'pos', type: 'bytes12' },
-        { name: 'wat', type: 'address' }
+        { name: 'wat', type: 'address' },
       ],
       name: 'set',
       outputs: [],
       payable: false,
       stateMutability: 'nonpayable',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: true,
@@ -5664,7 +5664,7 @@ export const abi = {
       outputs: [{ name: '', type: 'address' }],
       payable: false,
       stateMutability: 'view',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: false,
@@ -5673,7 +5673,7 @@ export const abi = {
       outputs: [],
       payable: false,
       stateMutability: 'nonpayable',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: false,
@@ -5682,7 +5682,7 @@ export const abi = {
       outputs: [],
       payable: false,
       stateMutability: 'nonpayable',
-      type: 'function'
+      type: 'function',
     },
     {
       constant: true,
@@ -5691,7 +5691,7 @@ export const abi = {
       outputs: [{ name: '', type: 'uint96' }],
       payable: false,
       stateMutability: 'view',
-      type: 'function'
+      type: 'function',
     },
     {
       inputs: [],
@@ -5703,7 +5703,7 @@ export const abi = {
       anonymous: false,
       inputs: [{ indexed: false, name: 'val', type: 'bytes32' }],
       name: 'LogValue',
-      type: 'event'
+      type: 'event',
     },
     {
       anonymous: true,
@@ -5713,24 +5713,24 @@ export const abi = {
         { indexed: true, name: 'foo', type: 'bytes32' },
         { indexed: true, name: 'bar', type: 'bytes32' },
         { indexed: false, name: 'wad', type: 'uint256' },
-        { indexed: false, name: 'fax', type: 'bytes' }
+        { indexed: false, name: 'fax', type: 'bytes' },
       ],
       name: 'LogNote',
-      type: 'event'
+      type: 'event',
     },
     {
       anonymous: false,
       inputs: [{ indexed: true, name: 'authority', type: 'address' }],
       name: 'LogSetAuthority',
-      type: 'event'
+      type: 'event',
     },
     {
       anonymous: false,
       inputs: [{ indexed: true, name: 'owner', type: 'address' }],
       name: 'LogSetOwner',
-      type: 'event'
-    }
-  ]
+      type: 'event',
+    },
+  ],
 }
 
 export const cTokens = ['cRBTC', 'cRIF', 'crDAI']
@@ -5746,7 +5746,7 @@ export const decimals = {
   cRBTC: 8,
   RIF: 18,
   cRIF: 8,
-  RLEN: 18
+  RLEN: 18,
 }
 
 export const cTokensDetails = [
@@ -5754,20 +5754,20 @@ export const cTokensDetails = [
     symbol: 'cRBTC',
     name: 'ctoken rbtc',
     decimals: decimals.cRBTC,
-    underlying: { symbol: 'RBTC', name: 'RSK Smart Bitcoin', decimals: decimals.RBTC }
+    underlying: { symbol: 'RBTC', name: 'RSK Smart Bitcoin', decimals: decimals.RBTC },
   },
   {
     symbol: 'cRIF',
     name: 'ctoken rLending Rif',
     decimals: decimals.cRIF,
-    underlying: { symbol: 'RIF', name: 'rLending Rif', decimals: decimals.RIF }
+    underlying: { symbol: 'RIF', name: 'rLending Rif', decimals: decimals.RIF },
   },
   {
     symbol: 'crDAI',
     name: 'ctoken rLending Dai',
     decimals: decimals.crDAI,
-    underlying: { symbol: 'rDAI', name: 'rLending Dai', decimals: decimals.rDAI }
-  }
+    underlying: { symbol: 'rDAI', name: 'rLending Dai', decimals: decimals.rDAI },
+  },
 ]
 
 export const errorCodes = {
@@ -5777,81 +5777,81 @@ export const errorCodes = {
       1: {
         error: 'UNAUTHORIZED',
         description: 'The sender is not authorized to perform this action.',
-        hint: ''
+        hint: '',
       },
       2: {
         error: 'COMPTROLLER_MISMATCH',
         description: 'Liquidation cannot be performed in markets with different comptrollers.',
-        hint: ''
+        hint: '',
       },
       3: {
         error: 'INSUFFICIENT_SHORTFALL',
         description: 'The account does not have sufficient shortfall to perform this action.',
-        hint: ''
+        hint: '',
       },
       4: {
         error: 'INSUFFICIENT_LIQUIDITY',
         description: 'The account does not have sufficient liquidity to perform this action.',
-        hint: ''
+        hint: '',
       },
       5: { error: 'INVALID_CLOSE_FACTOR', description: 'The close factor is not valid.', hint: '' },
       6: {
         error: 'INVALID_COLLATERAL_FACTOR',
         description: 'The collateral factor is not valid.',
-        hint: ''
+        hint: '',
       },
       7: {
         error: 'INVALID_LIQUIDATION_INCENTIVE',
         description: 'The liquidation incentive is invalid.',
-        hint: ''
+        hint: '',
       },
       8: {
         error: 'MARKET_NOT_ENTERED',
         description: 'The market has not been entered by the account.',
-        hint: ''
+        hint: '',
       },
       9: {
         error: 'MARKET_NOT_LISTED',
         description: 'The market is not currently listed by the comptroller.',
-        hint: ''
+        hint: '',
       },
       10: {
         error: 'MARKET_ALREADY_LISTED',
         description: 'An admin tried to list the same market more than once.',
-        hint: ''
+        hint: '',
       },
       11: { error: 'MATH_ERROR', description: 'A math calculation error occurred.', hint: '' },
       12: {
         error: 'NONZERO_BORROW_BALANCE',
         description: 'The action cannot be performed since the account carries a borrow balance.',
-        hint: ''
+        hint: '',
       },
       13: {
         error: 'PRICE_ERROR',
         description: 'The comptroller could not obtain a required price of an asset.',
-        hint: ''
+        hint: '',
       },
       14: {
         error: 'REJECTION',
         description: 'The comptroller rejects the action requested by the market.',
-        hint: ''
+        hint: '',
       },
       15: {
         error: 'SNAPSHOT_ERROR',
         description:
           'The comptroller could not get the account borrows and exchange rate from the market.',
-        hint: ''
+        hint: '',
       },
       16: {
         error: 'TOO_MANY_ASSETS',
         description: 'Attempted to enter more markets than are currently supported.',
-        hint: ''
+        hint: '',
       },
       17: {
         error: 'TOO_MUCH_REPAY',
         description: 'Attempted to repay more than is allowed by the protocol.',
-        hint: ''
-      }
+        hint: '',
+      },
     },
     info: {
       0: { error: 'ACCEPT_ADMIN_PENDING_ADMIN_CHECK', description: '', hint: '' },
@@ -5872,7 +5872,7 @@ export const errorCodes = {
       15: { error: 'SET_PENDING_IMPLEMENTATION_OWNER_CHECK', description: '', hint: '' },
       16: { error: 'SET_PRICE_ORACLE_OWNER_CHECK', description: '', hint: '' },
       17: { error: 'SUPPORT_MARKET_EXISTS', description: '', hint: '' },
-      18: { error: 'SUPPORT_MARKET_OWNER_CHECK', description: '', hint: '' }
-    }
-  }
+      18: { error: 'SUPPORT_MARKET_OWNER_CHECK', description: '', hint: '' },
+    },
+  },
 }

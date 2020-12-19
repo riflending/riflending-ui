@@ -26,8 +26,8 @@ export default {
   props: {
     marketAddress: {
       type: String,
-      required: true
-    }
+      required: true,
+    },
   },
   data() {
     return {
@@ -35,23 +35,23 @@ export default {
       token: {
         name: null,
         decimals: 0,
-        symbol: null
+        symbol: null,
       },
       price: 0,
       supplyOf: null,
-      rif: rifImage
+      rif: rifImage,
     }
   },
   computed: {
     ...mapState({
-      account: (state) => state.Session.account
+      account: (state) => state.Session.account,
     }),
     updatedSupplyCash() {
       return ((this.price * this.supplyOf) / 10 ** this.token.decimals).toFixed(this.token.decimals)
     },
     marketSupplyOf() {
       return (this.supplyOf / 10 ** this.token.decimals).toFixed(this.token.decimals)
-    }
+    },
   },
   created() {
     this.market = new this.$rbank.Market(this.marketAddress)
@@ -71,6 +71,6 @@ export default {
       .then((supplyOf) => {
         this.supplyOf = supplyOf
       })
-  }
+  },
 }
 </script>

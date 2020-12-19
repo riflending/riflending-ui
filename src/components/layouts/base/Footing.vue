@@ -20,6 +20,6 @@
 
 <script>
 export default {
-  name: 'Footing'
+  name: 'Footing',
 }
 </script>

@@ -37,37 +37,37 @@ export default {
   props: {
     borrower: {
       type: String,
-      required: true
+      required: true,
     },
     maxToLiquidate: {
       type: Number,
-      required: true
+      required: true,
     },
     debt: {
       type: Number,
-      required: true
+      required: true,
     },
     borrowMarketAddress: {
       type: String,
-      required: true
+      required: true,
     },
     collateral: {
       type: Object,
-      required: true
-    }
+      required: true,
+    },
   },
   data() {
     return {
-      collateralSymbol: ''
+      collateralSymbol: '',
     }
   },
   computed: {
     borrowerCrop() {
       return `${this.borrower.substring(0, 4)}...${this.borrower.substring(
         this.borrower.length - 4,
-        this.borrower.length
+        this.borrower.length,
       )}`
-    }
+    },
   },
   methods: {
     select() {
@@ -75,9 +75,9 @@ export default {
         borrower: this.borrower,
         debt: this.debt,
         maxToLiquidate: this.maxToLiquidate,
-        borrowMarketAddress: this.borrowMarketAddress
+        borrowMarketAddress: this.borrowMarketAddress,
       })
-    }
-  }
+    },
+  },
 }
 </script>

@@ -4,7 +4,7 @@ import * as constants from '@/store/constants'
 const state = {
   account: null,
   instance: null,
-  isOwner: false
+  isOwner: false,
 }
 
 const actions = {
@@ -24,7 +24,7 @@ const actions = {
           commit(constants.SESSION_SET_PROPERTY, { isOwner: false })
         })
     }
-  }
+  },
 }
 
 const mutations = {
@@ -32,17 +32,17 @@ const mutations = {
   [constants.SESSION_SET_PROPERTY]: (state, data) => {
     const [[property, value]] = Object.entries(data)
     state[property] = value
-  }
+  },
 }
 
 const getters = {
   // eslint-disable-next-line no-shadow
-  [constants.SESSION_IS_LOGGED]: (state) => !!state.account
+  [constants.SESSION_IS_LOGGED]: (state) => !!state.account,
 }
 
 export default {
   state,
   actions,
   mutations,
-  getters
+  getters,
 }

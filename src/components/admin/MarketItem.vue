@@ -100,81 +100,81 @@ export default {
       totalSupply: 0,
       totalBorrow: 0,
       dialog: false,
-    };
+    }
   },
   computed: {
     apr() {
-      return this.borrowRate.toFixed(2);
+      return this.borrowRate.toFixed(2)
     },
     dataObject() {
       return {
         flag: this.dialog,
         token: this.token,
         market: this.market,
-      };
+      }
     },
   },
   mounted() {
-    this.$parent.$parent.$on('reload', this.reset);
+    this.$parent.$parent.$on('reload', this.reset)
   },
   created() {
     this.market.eventualEvents.then((events) => {
-      events.allEvents().on('data', this.reset);
-    });
+      events.allEvents().on('data', this.reset)
+    })
     this.market.eventualToken
       .then((tok) => [tok.eventualName, tok.eventualSymbol, tok.eventualDecimals])
       .then((results) => Promise.all(results))
       .then(([name, symbol, decimals]) => {
-        this.token.name = name;
-        this.token.symbol = symbol;
-        this.token.decimals = decimals;
-        return this.$rbank.controller.eventualMarketPrice(this.market.address);
+        this.token.name = name
+        this.token.symbol = symbol
+        this.token.decimals = decimals
+        return this.$rbank.controller.eventualMarketPrice(this.market.address)
       })
       .then((marketPrice) => {
-        this.price = marketPrice;
-        return this.market.eventualBorrowRate;
+        this.price = marketPrice
+        return this.market.eventualBorrowRate
       })
       .then((borrowRate) => {
-        this.borrowRate = borrowRate;
-        return this.market.eventualCash;
+        this.borrowRate = borrowRate
+        return this.market.eventualCash
       })
       .then((cash) => {
-        this.cash = cash;
-        return this.market.eventualUpdatedTotalSupply;
+        this.cash = cash
+        return this.market.eventualUpdatedTotalSupply
       })
       .then((updatedTotalSupply) => {
-        this.totalSupply = updatedTotalSupply;
-        return this.market.eventualUpdatedTotalBorrows;
+        this.totalSupply = updatedTotalSupply
+        return this.market.eventualUpdatedTotalBorrows
       })
       .then((updatedTotalBorrows) => {
-        this.totalBorrow = updatedTotalBorrows;
-      });
+        this.totalBorrow = updatedTotalBorrows
+      })
   },
   methods: {
     reset() {
-      this.dialog = false;
+      this.dialog = false
       this.$rbank.controller
         .eventualMarketPrice(this.market.address)
         .then((marketPrice) => {
-          this.price = marketPrice;
-          return this.market.eventualBorrowRate;
+          this.price = marketPrice
+          return this.market.eventualBorrowRate
         })
         .then((borrowRate) => {
-          this.borrowRate = borrowRate;
-          return this.market.eventualCash;
+          this.borrowRate = borrowRate
+          return this.market.eventualCash
         })
         .then((cash) => {
-          this.cash = cash;
-          return this.market.eventualUpdatedTotalSupply;
+          this.cash = cash
+          return this.market.eventualUpdatedTotalSupply
         })
         .then((updatedTotalSupply) => {
-          this.totalSupply = updatedTotalSupply;
-          return this.market.eventualUpdatedTotalBorrows;
+          this.totalSupply = updatedTotalSupply
+          return this.market.eventualUpdatedTotalBorrows
         })
         .then((updatedTotalBorrows) => {
-          this.totalBorrow = updatedTotalBorrows;
-        });
-      this.$emit('dialogClosed');
+          this.totalBorrow = updatedTotalBorrows
+        })
+      this.$emit('dialogClosed')
     },
   },
 }

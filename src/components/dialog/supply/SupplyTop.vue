@@ -46,27 +46,27 @@ export default {
   props: {
     data: {
       type: Object,
-      required: true
-    }
+      required: true,
+    },
   },
   data() {
     return {
       price: 0,
       tokenBalance: 0,
       tokenBalancePrice: 0,
-      tokenAddress: 0
+      tokenAddress: 0,
     }
   },
   computed: {
     ...mapState({
-      account: (state) => state.Session.account
+      account: (state) => state.Session.account,
     }),
     balanceAsDouble() {
       return (this.tokenBalance / 10 ** this.data.token.decimals).toFixed(this.data.token.decimals)
     },
     rskExplorerUrl() {
       return `https://explorer.testnet.rsk.co/address/${this.tokenAddress}`
-    }
+    },
   },
   created() {
     // set token address
@@ -82,9 +82,9 @@ export default {
       .then((price) => {
         this.price = price
         this.tokenBalancePrice = new BigNumber(this.tokenBalance).multipliedBy(
-          new BigNumber(this.price)
+          new BigNumber(this.price),
         )
       })
-  }
+  },
 }
 </script>
