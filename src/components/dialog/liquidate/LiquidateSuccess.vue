@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="liquidate-success">
     <div class="successBox">
       <v-row class="my-5 d-flex justify-center">
         <h1 class="blueish">Success!</h1>

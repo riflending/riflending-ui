@@ -1,10 +1,10 @@
-import Rlending from '@riflending/riflending-js';
+import { ethers } from 'ethers';
 import BigNumber from 'bignumber.js';
-import factoryContract from './factoryContract'
-import { constants, decimals, abi } from "./constants";
-import { ethers } from "ethers";
+import factoryContract from './factoryContract';
+import { constants, decimals } from './constants';
 import Middleware from './middleware';
 
+BigNumber.set({ EXPONENTIAL_AT: [-18, 36] });
 
 /**
  * middleware that adapt events and state of rbank js to compound js
@@ -12,9 +12,10 @@ import Middleware from './middleware';
 export default class Market {
   // constructor() {}
   constructor(cTokenSymbol, cTokenDecimals, tokenSymbol, underlyingName, underlyingDecimals, account) {
+    this.account = account;
     //TODO see if factoryContract go to middleware class
     this.factoryContract = new factoryContract();
-    this.isCRBTC = (cTokenSymbol == 'cRBTC');
+    this.isCRBTC = (cTokenSymbol === 'cRBTC');
     //TODO see delete eventuan web, uses in vue
     this.eventualWeb3WS = {};
     this.eventualWeb3Http = {};
@@ -26,24 +27,17 @@ export default class Market {
 
     this.token = Object();
     //validate cRBTC
-    if (cTokenSymbol != 'cRBTC') {
-      this.token.instance = this.factoryContract.getContractToken(tokenSymbol)
-      this.token.internalAddress = Rlending.util.getAddress(tokenSymbol).toLowerCase();
+    if (cTokenSymbol !== 'cRBTC') {
+      this.token.instance = this.factoryContract.getContractToken(tokenSymbol);
+      this.token.internalAddress = this.token.instance.address.toLowerCase();
     }
     //set data token
     this.token.symbol = tokenSymbol;
     this.token.name = underlyingName;
     this.token.decimals = underlyingDecimals;
-    //set token balance account
-    this.tokenBalance = this.getBalanceOfUnderlying(account);
-    //set cToken balance account
-    this.cTokenBalance = this.getBalanceOfCtoken(account);
-    //set price
-    this.price = this.getPrice().then((price) => new BigNumber(price).div(new BigNumber(1e18)));
     //set borrow rate
     this.factor = 1e18;
     this.blocksPerYear = 1051200;
-    this.borrowRate = this.getBorrowRate();
 
     //TODO set supply of
     // https://github.com/ajlopez/DeFiProt/blob/master/contracts/Market.sol#L246
@@ -52,10 +46,10 @@ export default class Market {
 
   async getValueMoc() {
     //set contract
-    let contract = this.factoryContract.getContract('RBTCMocOracle');
+    const contract = this.factoryContract.getContract('RBTCMocOracle');
     //call contract
-    let [value, ok] = await contract.peek();
-    return value;
+    let [value, ok] = await contract.callStatic.peek();
+    return new BigNumber(value);
     //TODO comment validation, because in Oracle moc test fails (ok=false)
     // if (ok) {
     //   return value;
@@ -63,43 +57,57 @@ export default class Market {
     // return 0;
   }
 
-  async getPrice() {
-    //set contract
-    let contract = this.factoryContract.getContract('PriceOracleProxy');
-    //get price of cToken
-    let priceToken = await contract.getUnderlyingPrice(this.instanceAddress);
-    //get price of rbtc
-    let valueOracle = await this.getValueMoc();
-    //set decimals of cToken
-    let decimals = `1e${this.token.decimals}`;
-    // price = ( price cToken in rbtc * price of rbtc) / decimals of cToken
-    return new BigNumber(priceToken._hex).multipliedBy(new BigNumber(valueOracle)).div(new BigNumber(decimals)).toNumber();
+  async getPriceInDecimals() {
+    const price = await this.getPrice();
+    return new BigNumber(price).div(new BigNumber(1e18));
   }
 
-  async getBalanceOfCtoken(account) {
-    //set balance of account
-    let balance = await this.instance.balanceOf(account);
-    //return format (without wei)
+  async getPrice() {
+    //set contract
+    const contract = this.factoryContract.getContract('PriceOracleProxy');
+    //get price of cToken
+    const priceToken = await contract.callStatic.getUnderlyingPrice(this.instanceAddress);
+    //get price of rbtc
+    const valueOracle = await this.getValueMoc();
+    // price = ( price cToken in rbtc * price of rbtc) /  Oracle precision decimals
+    return new BigNumber(priceToken.toString()).multipliedBy(valueOracle).div(new BigNumber(1e18)).toNumber();
+  }
+
+  async getUserBalanceOfCtoken() {
+    // set balance of account
+    const balance = await this.instance.balanceOf(this.account);
+    // return format (without wei)
     return ethers.utils.formatEther(balance);
   }
 
+  async getBalanceOfCtoken(account) {
+    // set balance of account
+    const balance = await this.instance.balanceOf(account);
+    // return format (without wei)
+    return ethers.utils.formatEther(balance);
+  }
+
+  async getUserBalanceOfUnderlying() {
+    return this.getBalanceOfUnderlying(this.account);
+  }
+
   async getBalanceOfUnderlying(account) {
-    //set balance of account
-    let balance = await this.instance.callStatic.balanceOfUnderlying(account);
-    //return format (without wei)
+    // set balance of account
+    const balance = await this.instance.callStatic.balanceOfUnderlying(account);
+    // return format (without wei)
     return ethers.utils.formatEther(balance);
   }
 
   async getCash() {
-    //get balance of contract expressed in underlying
-    let cash = await this.instance.getCash();
+    // get balance of contract expressed in underlying
+    const cash = await this.instance.getCash();
     return Number(cash);
   }
 
   async getBorrowRate() {
-    let borrowRatePerBlock = await this.instance.borrowRatePerBlock();
+    const borrowRatePerBlock = await this.instance.borrowRatePerBlock();
     // return borrow rate
-    return new BigNumber(borrowRatePerBlock._hex).times(new BigNumber(100 * this.blocksPerYear)).div(new BigNumber(this.factor)).toNumber();
+    return new BigNumber(borrowRatePerBlock.toString()).times(new BigNumber(100 * this.blocksPerYear)).div(new BigNumber(this.factor)).toNumber();
   }
 
   async validateMarketAccount(account) {
@@ -113,7 +121,7 @@ export default class Market {
     //set contract
     let contract = this.factoryContract.getContractByNameAndAbiName(constants.Unitroller, constants.Comptroller);
     //set signer
-    let contractWithSigner = contract.connect(this.factoryContract.signer);
+    let contractWithSigner = contract.connect(this.factoryContract.getSigner());
     //send transaction
     let tx = await contractWithSigner.enterMarkets([this.instanceAddress]);
     //await result transaction
@@ -128,31 +136,35 @@ export default class Market {
    */
   async supply(amount, account) {
     //add decimals token
-    amount = this.getAmountDecimals(amount);
+    const amountBN = this.getAmountDecimals(amount);
+    console.log('amountBN', amountBN);
     let tx;
     //validate crbtc
     if (!this.isCRBTC) {
+      console.log('not CRBTC', amountBN);
       //check allowance
       const allowance = await this.token.instance.allowance(account, this.instanceAddress);
       //validate if enough
-      const notEnough = allowance.lt(amount);
+      const notEnough = new BigNumber(allowance.toString()).lt(amountBN);
       if (notEnough) {
+        console.log('not enough')
         //set signer token
-        let signer = this.token.instance.connect(this.factoryContract.signer);
+        let signer = this.token.instance.connect(this.factoryContract.getSigner());
         //approve
         let txSigner = await signer.approve(this.instanceAddress, ethers.constants.MaxUint256);
         await txSigner.wait();
       }
+      console.log('before mint')
       //mint token
-      let signerCtoken = this.instance.connect(this.factoryContract.signer);
-      tx = await signerCtoken.mint(amount);
-    }
-    else {
+      console.log('amountBN.toString()', amountBN.toString())
+      let signerCtoken = this.instance.connect(this.factoryContract.getSigner());
+      tx = await signerCtoken.mint(amountBN.toString());
+    } else {
       //set signer cRBTC
-      let signer = this.instance.connect(this.factoryContract.signer);
+      let signer = this.instance.connect(this.factoryContract.getSigner());
       //set value
       let overrides = {
-        value: amount,
+        value: amountBN.toString(),
       };
       //mint crbtc
       tx = await signer.mint(overrides);
@@ -160,6 +172,7 @@ export default class Market {
     //wait for mined transaction
     return tx.wait();
   }
+
   /**
    * Borrows the specified amount from this market.
    * @param {number} amount of this market's token to be borrowed.
@@ -168,11 +181,11 @@ export default class Market {
   async borrow(amount) {
     //TODO: add validation. Account has to have entered market prior to borrowing.
     //add decimals token
-    amount = this.getAmountDecimals(amount);
+    const amountBN = this.getAmountDecimals(amount);
     // connect to cerc20
-    let signer = this.instance.connect(this.factoryContract.signer);
+    let signer = this.instance.connect(this.factoryContract.getSigner());
     // perform borrow()
-    let tx = await signer.borrow(amount);
+    let tx = await signer.borrow(amountBN.toString());
     //wait for mined transaction
     return tx.wait();
   }
@@ -180,7 +193,7 @@ export default class Market {
   getAmountDecimals(amount, isCtoken = false) {
     //add decimals token
     amount = amount * Math.pow(10, (!isCtoken) ? decimals[this.token.symbol] : decimals[this.symbol]);
-    return ethers.BigNumber.from(amount.toString());
+    return new BigNumber(amount.toString());
   }
 
   /**
@@ -201,32 +214,32 @@ export default class Market {
 
   async redeemUnderlying(amount) {
     //set signer token
-    let signer = this.instance.connect(this.factoryContract.signer);
+    let signer = this.instance.connect(this.factoryContract.getSigner());
     //send redeemUnderlying
-    let tx = await signer.redeemUnderlying(amount);
+    let tx = await signer.redeemUnderlying(amount.toString());
     //wait for mined transaction
     return tx.wait();
   }
 
   async redeem(amount) {
     //set signer token
-    let signer = this.instance.connect(this.factoryContract.signer);
+    let signer = this.instance.connect(this.factoryContract.getSigner());
     //send redeem
-    let tx = await signer.redeem(amount);
+    let tx = await signer.redeem(amount.toString());
     //wait for mined transaction
     return tx.wait();
   }
 
   withdraw(amount, max = false) {
     //add decimals token
-    amount = this.getAmountDecimals(amount);
+    const amountBN = this.getAmountDecimals(amount);
     //validate if max sets and is crbtc
     // if ((max) || (this.isCRBTC)) {
     //   //amount cToken
-    //   return this.redeem(amount);
+    //   return this.redeem(amountBN.toString());
     // }
     //amount token
-    return this.redeemUnderlying(amount);
+    return this.redeemUnderlying(amountBN.toString());
   }
 
   /**
@@ -243,11 +256,11 @@ export default class Market {
     //validate crbtc
     if (this.isCRBTC) {
       //set signer token
-      contractWithSigner = this.instance.connect(this.factoryContract.signer);
+      contractWithSigner = this.instance.connect(this.factoryContract.getSigner());
       tx = await contractWithSigner.repayBorrow({ value: ethers.utils.parseEther(amount + '') });
     } else {
       //set signer cRBTC
-      contractWithSigner = this.instance.connect(this.factoryContract.signer);
+      contractWithSigner = this.instance.connect(this.factoryContract.getSigner());
       tx = await contractWithSigner.repayBorrow(ethers.utils.parseEther(amount + ''));
     }
     //wait for mined transaction
@@ -282,10 +295,11 @@ export default class Market {
    */
   async withdrawAllowed(amount, account) {
     //set
-    amount = this.getAmountDecimals(amount);
+    const amountBN = this.getAmountDecimals(amount);
     //set contract Comptroller delegate (Unitroller)
-    let contract = this.factoryContract.getContractByNameAndAbiName(constants.Unitroller, constants.Comptroller);
-    return contract.callStatic.redeemAllowed(this.instanceAddress, account, amount).then((response) => ({ "allowed": response == 0, "errorCode": response }));
+    const contract = this.factoryContract.getContractByNameAndAbiName(constants.Unitroller, constants.Comptroller);
+    return contract.callStatic.redeemAllowed(this.instanceAddress, account, amountBN.toString())
+      .then((response) => ({ allowed: response.toNumber() === 0, errorCode: response }));
   }
 
   /**
@@ -297,11 +311,11 @@ export default class Market {
      * @return {response, code} response: (bool) if allowed or not, code: numerical error otherwise
      */
   async borrowAllowed(amount, account) {
-    amount = this.getAmountDecimals(amount);
-    let contract = this.factoryContract.getContractByNameAndAbiName(constants.Unitroller, constants.Comptroller);
-    const response=  await contract.callStatic.borrowAllowed(this.instanceAddress, account, amount.toString());
-    console.log("market.js borrowAllowed? response",response);
-    return { "allowed": response == 0, "errorCode": response };
+    const amountBN = this.getAmountDecimals(amount);
+    const contract = this.factoryContract.getContractByNameAndAbiName(constants.Unitroller, constants.Comptroller);
+    const response = await contract.callStatic.borrowAllowed(this.instanceAddress, account, amountBN.toString());
+    console.log("market.js borrowAllowed? response", response);
+    return { allowed: response.toNumber() === 0, errorCode: response };
   }
 
   /**
@@ -315,7 +329,7 @@ export default class Market {
     const middleware = new Middleware(); // maybe not necesary to load a whole Middleware here
     const price = await this.price // current market price
     let rbtcPrice = await this.getValueMoc(); // rbtc price
-    rbtcPrice = rbtcPrice / 1e18 ; // in usd
+    rbtcPrice = rbtcPrice / 1e18; // in usd
     const { accountLiquidityInExcess } = await middleware.getAccountLiquidity(account)
     return  price > 0 ? rbtcPrice * (accountLiquidityInExcess/1e18) / (price/1e18) : 0; // return max(0,borrowLimit)
   }
@@ -327,8 +341,9 @@ export default class Market {
    * @return (supplyValue, borrowValue)
    */
   async getAccountValues(account) {
-    const borrowValue = await this.borrowBalanceCurrent(account)
-    return (this.tokenBalance, borrowValue);
+    const borrowValue = await this.borrowBalanceCurrent(account);
+    const tokenBalance = await this.getBalanceOfUnderlying(account);
+    return (tokenBalance, borrowValue);
   }
 
   /**
@@ -338,12 +353,11 @@ export default class Market {
    * @return returns the total borrow balance including accrued interests
    */
   async borrowBalanceCurrent(account) {
-    let balance = await this.instance.callStatic.borrowBalanceCurrent(account);
-    return balance;
+    return this.instance.callStatic.borrowBalanceCurrent(account);
   }
 
   async borrowBalanceCurrentFormatted(account) {
-    let balance = await this.borrowBalanceCurrent(account);
+    const balance = await this.borrowBalanceCurrent(account);
     return ethers.utils.formatEther(balance);
   }
 
@@ -355,8 +369,7 @@ export default class Market {
    */
   async getSnapshot(account) {
     // calls cToken contract
-    let snap = await this.instance.getAccountSnapshot(account);
-    return snap;
+    return this.instance.getAccountSnapshot(account);
   }
 
   /**
@@ -364,15 +377,8 @@ export default class Market {
    * @return human number currentExchangeRate
    */
   async getCurrentExchangeRate() {
-    //set balance of account
-    let currentExchangeRate = await this.instance.exchangeRateStored();
+    // set balance of account
+    const currentExchangeRate = await this.instance.exchangeRateStored();
     return Number(currentExchangeRate);
-  }
-
-  async getBalanceOfUnderlying(account) {
-    //set balance of account
-    let balance = await this.instance.callStatic.balanceOfUnderlying(account);
-    //return format (without wei)
-    return ethers.utils.formatEther(balance);
   }
 }

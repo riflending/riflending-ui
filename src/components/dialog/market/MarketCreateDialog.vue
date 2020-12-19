@@ -7,7 +7,7 @@
                    @created="actionSucceed" @wait="waiting = true" @close="closeDialog"/>
       </div>
       <div class="dialog" v-show="waiting">
-        <loader class="my-15" v-show="waiting"/>
+        <loader v-show="waiting"/>
       </div>
       <template v-if="errorDialog">
         <error-dialog @closeDialog="closeDialog"/>

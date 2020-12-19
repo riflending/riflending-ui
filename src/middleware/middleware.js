@@ -1,17 +1,20 @@
-import Market from './market';
-import Rlending from '@riflending/riflending-js';
+import { ethers } from 'ethers';
+import Vue from 'vue';
 import BigNumber from 'bignumber.js';
-import factoryContract from "./factoryContract";
-import {constants, errorCodes} from "./constants";
+import Market from './market';
+import factoryContract from './factoryContract';
+import { constants, errorCodes, cTokensDetails } from './constants';
+
+BigNumber.set({ EXPONENTIAL_AT: [-18, 36] });
 
 export default class Middleware {
 
   getMarkets(account) {
-    let markets = Array();
-    for (let index = 0; index < Rlending.cTokensDetails.length; index++) {
-      let cTokenSymbol = Rlending.cTokensDetails[index].symbol;
-      let tokenSymbol = Rlending.cTokensDetails[index].underlying.symbol;
-      markets.push(new Market(cTokenSymbol, Rlending.cTokensDetails[index].decimals, tokenSymbol, Rlending.cTokensDetails[index].underlying.name, Rlending.cTokensDetails[index].underlying.decimals, account));
+    const markets = Array();
+    for (let index = 0; index < cTokensDetails.length; index++) {
+      const cTokenSymbol = cTokensDetails[index].symbol;
+      const tokenSymbol = cTokensDetails[index].underlying.symbol;
+      markets.push(new Market(cTokenSymbol, cTokensDetails[index].decimals, tokenSymbol, cTokensDetails[index].underlying.name, cTokensDetails[index].underlying.decimals, account));
     }
     return markets;
   }
@@ -27,57 +30,49 @@ export default class Middleware {
 
   async getAccountLiquidity(account) {
     const factoryContractInstance = new factoryContract();
-    let contract = factoryContractInstance.getContractByNameAndAbiName(constants.Unitroller, constants.Comptroller);
-    const [ err, accountLiquidityInExcess, accountShortfall ] = await contract.getAccountLiquidity(account);
+    const contract = factoryContractInstance.getContractByNameAndAbiName(constants.Unitroller, constants.Comptroller);
+    const [err, accountLiquidityInExcess, accountShortfall] = await contract.getAccountLiquidity(account);
     return {
       err,
       accountLiquidityInExcess,
       accountShortfall,
-    }
+    };
   }
 
   getCollateralFactor(account) {
     return 1;
-    return Rlending.eth
-      .read( // TODO: update to query proper collateral factor in contract
-        Rlending.util.getAddress(Rlending.Unitroller),
-        "function getAccountLiquidity(address) returns (uint)",
-        [account],
-        { provider: window.ethereum }
-      );
+    // return Rlending.eth
+    //   .read( // TODO: update to query proper collateral factor in contract
+    //     Rlending.util.getAddress(Rlending.Unitroller),
+    //     "function getAccountLiquidity(address) returns (uint)",
+    //     [account],
+    //     { provider: window.ethereum }
+    //   );
   }
 
-  getWalletAccountBalance(account, tokenAddress) {
-    return Rlending.eth
-      .read(
-        tokenAddress,
-        "function balanceOf(address) returns (uint)",
-        [account],
-        { provider: window.ethereum }
-      ).then((balance) => Rlending._ethers.utils.formatEther(balance));
+  async getWalletAccountBalance(account, tokenAddress) {
+    const abi = ['function balanceOf(address) returns (uint)'];
+    const contract = new ethers.Contract(tokenAddress, abi, Vue.web3Provider);
+    const balance = await contract.callStatic.balanceOf(account);
+    return ethers.utils.formatEther(balance);
   }
 
-  getWalletAccountBalanceForRBTC(account) {
-    return Rlending.eth
-      .getBalance(
-        account,
-        window.ethereum
-      ).then((balance) => Rlending._ethers.utils.formatEther(balance));
+  async getWalletAccountBalanceForRBTC(account) {
+    const balance = await Vue.web3Provider.getBalance(account);
+    return ethers.utils.formatEther(balance);
   }
 
   async getTotals(account) {
     const markets = this.getMarkets(account);
-
-    const marketsPromises = markets.map(market => new Promise((resolve, reject) => {
+    const marketsPromises = markets.map((market) => new Promise((resolve, reject) => {
       (async () => {
         try {
           const borrowBalanceCurrent = await market.borrowBalanceCurrentFormatted(account);
           const borrowBalanceCurrentBN = new BigNumber(borrowBalanceCurrent);
+          const marketPriceFromOracleBN = await market.getPriceInDecimals();
+          const marketPriceBN = marketPriceFromOracleBN || new BigNumber(0);
 
-          const marketPriceFromOracleBN = await market.price;
-          const marketPriceBN = marketPriceFromOracleBN ? marketPriceFromOracleBN : new BigNumber(0);
-
-          const tokenBalance = await market.tokenBalance;
+          const tokenBalance = await market.getBalanceOfUnderlying(account);
           const tokenBalanceBN = new BigNumber(tokenBalance);
 
           const borrowValue = borrowBalanceCurrentBN.multipliedBy(marketPriceBN);
@@ -86,23 +81,20 @@ export default class Middleware {
         } catch (err) {
           reject(err);
         }
-      })()
-    })
-    )
+      })();
+    }));
     const totals = await Promise.all(marketsPromises);
-
     const totalsReduced = totals.reduce((previousValue, currentValue) => {
       return {
         borrowValue: previousValue.borrowValue.plus(currentValue.borrowValue),
         supplyValue: previousValue.supplyValue.plus(currentValue.supplyValue)
       }
     }, { borrowValue: new BigNumber(0), supplyValue: new BigNumber(0)});
-
     return totalsReduced;
   }
 
   getMsjErrorCodeComptroller(errorNumber, isErroInfo = false) {
-    let retorno = errorCodes['comptroller'][(isErroInfo) ? 'info' : 'codes'][Number(errorNumber)];
+    const retorno = errorCodes['comptroller'][(isErroInfo) ? 'info' : 'codes'][Number(errorNumber)];
     return (!retorno) ? '' : retorno.description;
 
   }

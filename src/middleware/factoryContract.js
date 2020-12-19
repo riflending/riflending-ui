@@ -1,20 +1,18 @@
-import { ethers } from "ethers";
-import { constants, address, abi } from "./constants";
+import { ethers } from 'ethers';
+import Vue from 'vue';
+import { constants, address, abi } from './constants';
 
 export default class factoryContract {
-
     constructor() {
-        this.provider = new ethers.providers.Web3Provider(window.ethereum);
-        //add this format to support RSK
-        //validate formatt  provider
-        const format = this.provider.formatter.formats
-        if (format) format.receipt['root'] = format.receipt['logsBloom']
-        Object.assign(this.provider.formatter, { format: format });
-        this.signer = this.provider.getSigner();
-        //asign format to signer
-        Object.assign(this.signer.provider.formatter, { format: format });
-
         this.addressContract = address.testnet;
+    }
+
+    getSigner() {
+        const format = Vue.web3Provider.formatter.formats;
+        const signer = Vue.web3Provider.getSigner();
+        //asign format to signer
+        Object.assign(signer.provider.formatter, { format });
+        return signer;
     }
 
     createContract(address, abi, provider) {
@@ -31,14 +29,14 @@ export default class factoryContract {
 
     getContract(name) {
         if (this.validateContractName(name)) {
-            return this.createContract(this.addressContract[name], abi[name], this.provider);
+            return this.createContract(this.addressContract[name], abi[name], Vue.web3Provider);
         }
         return;
     }
     
     getContractToken(name) {
         if (this.validateContractName(name)) {
-            return this.createContract(this.addressContract[name], abi["Erc20"], this.provider);
+            return this.createContract(this.addressContract[name], abi["Erc20"], Vue.web3Provider);
         }
         return;
     }
@@ -46,14 +44,14 @@ export default class factoryContract {
     getContractCtoken(name) {
         if (this.validateContractName(name)) {
             let abiCtoken = ((name) == 'cRBTC') ? abi["cRBTC"] : abi["cErc20"];
-            return this.createContract(this.addressContract[name], abiCtoken, this.provider);
+            return this.createContract(this.addressContract[name], abiCtoken, Vue.web3Provider);
         }
         return;
     }
 
     getContractByNameAndAbiName(nameContract, nameAbi) {
         if ((this.validateContractName(nameContract)) && (abi.hasOwnProperty(nameAbi))) {
-            return this.createContract(this.addressContract[nameContract], abi[nameAbi], this.provider);
+            return this.createContract(this.addressContract[nameContract], abi[nameAbi], Vue.web3Provider);
         }
         return;
     }

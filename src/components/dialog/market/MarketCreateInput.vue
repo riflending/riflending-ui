@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="market-create-input container">
     <h2 class="mb-2">Basic Market Info</h2>
     <v-divider color="#008CFF"/>
     <v-row class="ma-0 py-5 d-flex align-center">

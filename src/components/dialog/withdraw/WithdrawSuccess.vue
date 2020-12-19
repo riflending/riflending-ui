@@ -107,7 +107,7 @@ export default {
       })
       .then((cash) => {
         this.cash = cash;
-        return this.data.market.price;
+        return this.data.market.getPriceInDecimals();
       })
       .then((price) => {
         this.price = price;

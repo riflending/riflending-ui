@@ -108,15 +108,15 @@ export default {
   methods: {
     reset() {
       this.dialog = false;
-      this.market.tokenBalance
+      this.market.getUserBalanceOfUnderlying()
         .then((balance) => {
           this.tokenBalance = balance;
-          return this.market.price;
+          return this.market.getPriceInDecimals();
         })
         //set price
         .then((price) => {
           this.price = price;
-          return this.market.borrowRate;
+          return this.market.getBorrowRate();
         })
         //set borrow rate block
         .then((borrowRatePerBlock) => {
@@ -149,15 +149,15 @@ export default {
   created() {
     //set data token
     this.token = this.market.token;
-    this.market.tokenBalance
+    this.market.getUserBalanceOfUnderlying()
       .then((balance) => {
         this.tokenBalance = balance;
-        return this.market.price;
+        return this.market.getPriceInDecimals();
       })
       //set price
       .then((price) => {
         this.price = price;
-        return this.market.borrowRate;
+        return this.market.getBorrowRate();
       })
       //set borrow rate block
       .then((borrowRatePerBlock) => {

@@ -1,4 +1,4 @@
-<template>
+<template class="success-top">
   <v-row class="mx-5 d-flex align-center justify-center">
     <v-col cols="2" class="d-flex justify-center">
       <v-img class="ml-5" src="../../assets/rif.png" width="60" />
@@ -45,10 +45,10 @@ export default {
     },
   },
   created() {
-    this.data.market.price
+    this.data.market.getPriceInDecimals()
       .then((marketPrice) => {
         this.price = marketPrice;
-        return this.data.market.borrowRate;
+        return this.data.market.getBorrowRate();
       })
       .then((borrowRate) => {
         this.borrowRate = borrowRate;

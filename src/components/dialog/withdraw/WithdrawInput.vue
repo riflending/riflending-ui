@@ -117,15 +117,15 @@
       </v-row>
     </template>
     <template v-else>
-      <loader class="my-15" />
+      <loader/>
     </template>
   </div>
 </template>
 
 <script>
-import { mapState } from "vuex";
-import Loader from "@/components/common/Loader.vue";
-import { ethers } from "ethers";
+import { mapState } from 'vuex';
+import Loader from '@/components/common/Loader.vue';
+import { ethers } from 'ethers';
 
 export default {
   name: "WithdrawInput",
@@ -283,7 +283,7 @@ export default {
         })
         .then((borrowValue) => {
           auxBorrowValue = borrowValue;
-          return this.data.market.tokenBalance;
+          return this.data.market.getUserBalanceOfUnderlying();
         })
         .then((balanceSupply) => {
           const newBorrowValue =
@@ -355,7 +355,7 @@ export default {
       .then((cash) => {
         this.oldCash = cash;
         this.cash = cash;
-        return this.data.market.price;
+        return this.data.market.getPriceInDecimals();
       })
       //set price
       .then((marketPrice) => {
@@ -366,7 +366,7 @@ export default {
         this.data.market.contractAmount;
         //TODO format
         this.borrowValue = ethers.utils.formatEther(borrowValue);
-        return this.data.market.tokenBalance;
+        return this.data.market.getUserBalanceOfUnderlying();
       })
       .then((balance) => {
         this.tokenBalance = balance;

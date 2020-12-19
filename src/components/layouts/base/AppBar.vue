@@ -28,6 +28,9 @@
 <script>
 import { mapActions, mapState, mapGetters } from 'vuex';
 import * as constants from '@/store/constants';
+import store from '@/store';
+import Vue from 'vue';
+import { ethers } from 'ethers';
 
 export default {
   name: 'AppBar',
@@ -57,7 +60,20 @@ export default {
     async connect() {
       try {
         // eslint-disable-next-line no-undef
-        await ethereum.enable();
+        // await ethereum.enable();
+        this.$provider = await this.$rLogin.connect();
+        this.$provider.on(this.$rLogin.ACCOUNTS_CHANGED, () => {
+          store.dispatch(constants.SESSION_CONNECT_WEB3);
+        });
+        Vue.provider = this.$provider;
+
+        this.$web3Provider = new ethers.providers.Web3Provider(this.$provider);
+        // Fix transaction format from etherjs getTransactionReceipt as transactionReceipt format
+        // checks root to be a 32 bytes hash when on RSK its 0x01
+        const format = this.$web3Provider.formatter.formats;
+        format.receipt.root = format.receipt.logsBloom;
+        Object.assign(this.$web3Provider.formatter, { format });
+        Vue.web3Provider = this.$web3Provider;
       } catch (e) {
         console.log(e);
       }

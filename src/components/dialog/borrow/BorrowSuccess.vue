@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="borrow-success">
     <div class="successBox">
       <v-row class="my-5 d-flex justify-center">
         <h1 class="blueish">Success!</h1>
@@ -101,7 +101,7 @@ export default {
     TransactionHash,
   },
   created() {
-    this.data.market.tokenBalance
+    this.data.market.getUserBalanceOfUnderlying()
       .then((balance) => {
         this.tokenBalance = balance;
         console.log("success! balance",this.tokenBalance, " account: ", this.account);
@@ -116,15 +116,13 @@ export default {
       .then((cash) => {
         this.cash = cash;
         console.log("success! cash",this.cash);
-        // return this.data.market.getPrice(this.data.market.address);
-        return this.data.market.price;
+        return this.data.market.getPriceInDecimals();
         // return this.$rbank.controller.eventualMarketPrice(this.data.market.address);
       })
       .then((marketPrice) => {
         this.price = Number(marketPrice);
         console.log("success! marketprice",this.price);
         return this.data.market.borrowBalanceCurrent(this.account);
-        // return this.data.market.borrowBalanceCurrent(this.account);
       })
       .then((borrowBy) => {
         this.borrowBy = Number(borrowBy);

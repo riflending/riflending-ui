@@ -1,4 +1,4 @@
-<template>
+<template class="supply-top">
   <v-row class="ma-0 d-flex align-center">
     <v-col cols="2" class="d-flex justify-center">
       <v-img class="ml-5" src="../../../assets/rif.png" width="60" />
@@ -35,7 +35,7 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
+import { mapState } from 'vuex';
 import BigNumber from 'bignumber.js';
 
 export default {
@@ -71,15 +71,15 @@ export default {
     //set token address
     this.tokenAddress =  this.data.market.token.instance;
     //set token balance
-     this.data.market.tokenBalance
+     this.data.market.getUserBalanceOfUnderlying()
       .then((balance) => {
         this.tokenBalance = balance;
-        return this.data.market.price;
+        return this.data.market.getPriceInDecimals();
       })
       //set price
       .then((price) => {
         this.price = price;
-        this.tokenBalancePrice =  new BigNumber(this.tokenBalance).multipliedBy(new BigNumber(this.price))
+        this.tokenBalancePrice = new BigNumber(this.tokenBalance).multipliedBy(new BigNumber(this.price));
 
       });
   },

@@ -1,6 +1,6 @@
 <template>
   <v-dialog v-model="flag" width="350" :persistent="waiting || success">
-    <v-card class="dialog container" v-click-outside="onClickOutside">
+    <v-card class="market-price-dialog dialog container" v-click-outside="onClickOutside">
       <template v-if="!waiting && !success && !error">
         <div>
           <v-row class="mt-2 d-flex align-center">

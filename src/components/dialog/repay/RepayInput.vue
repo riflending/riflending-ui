@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="repay-input">
     <template v-if="!waiting">
       <v-row class="inputBox">
         <v-col cols="10">
@@ -71,7 +71,7 @@
       </v-row>
     </template>
     <template v-else>
-      <loader class="my-15"/>
+      <loader/>
     </template>
   </div>
 </template>
@@ -79,7 +79,7 @@
 <script>
 import { mapState } from 'vuex';
 import Loader from '@/components/common/Loader.vue';
-import { ethers } from "ethers";
+import { ethers } from 'ethers';
 
 export default {
   name: 'RepayInput',
@@ -213,7 +213,7 @@ export default {
       .then((cash) => {
         oldCash = cash;
         this.cash = oldCash + Number(this.contractAmount);
-        return this.data.market.borrowRate;
+        return this.data.market.getBorrowRate();
       });
 
       this.supplyBalanceInfo = Number(this.amount);
@@ -281,17 +281,17 @@ export default {
       // gets borrowRate
       .then((cash) => {
         this.cash = cash;
-        return this.data.market.borrowRate;
+        return this.data.market.getBorrowRate();
       })
       //gets marketPrice
       .then((borrowRate) => {
         this.borrowRate = borrowRate;
-        return this.data.market.price;
+        return this.data.market.getPriceInDecimals();
       })
       //gets token balance
       .then((price) => {
         this.price = price;
-        return this.data.market.tokenBalance;
+        return this.data.market.getUserBalanceOfUnderlying();
       })
       //sets account balance and health
       .then((tokenBalance) => {
@@ -314,7 +314,7 @@ export default {
         return this.data.market.borrowBalanceCurrent(this.account);
       })
       .then((borrowBy) => {
-        this.maxRepayAllowed =  ethers.utils.formatEther(borrowBy);
+        this.maxRepayAllowed = ethers.utils.formatEther(borrowBy);
         this.borrowBy = Number(borrowBy);
         this.oldBorrowBy = Number(borrowBy
       );
