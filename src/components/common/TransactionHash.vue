@@ -1,16 +1,12 @@
 <template>
   <v-row class="transaction-hash d-flex justify-center align-center">
-    <v-col cols="2"/>
-    <v-col class="itemInfo">
-      transaction hash: {{ hashCutOff }}
-    </v-col>
+    <v-col cols="2" />
+    <v-col class="itemInfo"> transaction hash: {{ hashCutOff }} </v-col>
     <v-col class="ml-1">
-      <v-icon @click="copyHash" small>
-        content_copy
-      </v-icon>
+      <v-icon @click="copyHash" small> content_copy </v-icon>
       <a class="ml-2 listTitle" target="_blank" :href="rskExplorerUrl">View on RSKExplorer</a>
     </v-col>
-    <v-col cols="1"/>
+    <v-col cols="1" />
   </v-row>
 </template>
 
@@ -20,22 +16,24 @@ export default {
   props: {
     hash: {
       type: String,
-      required: true,
-    },
+      required: true
+    }
   },
   computed: {
     hashCutOff() {
-      return `${this.hash.substring(0, 4)}...${this.hash
-        .substring(this.hash.length - 4, this.hash.length)}`;
+      return `${this.hash.substring(0, 4)}...${this.hash.substring(
+        this.hash.length - 4,
+        this.hash.length
+      )}`
     },
     rskExplorerUrl() {
-      return `https://explorer.testnet.rsk.co/tx/${this.hash}`;
-    },
+      return `https://explorer.testnet.rsk.co/tx/${this.hash}`
+    }
   },
   methods: {
     copyHash() {
-      navigator.clipboard.writeText(this.hash);
-    },
-  },
-};
+      navigator.clipboard.writeText(this.hash)
+    }
+  }
+}
 </script>

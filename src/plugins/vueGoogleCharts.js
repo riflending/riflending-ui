@@ -1,6 +1,6 @@
-import Vue from 'vue';
-import VueGoogleCharts from 'vue-google-charts';
+import Vue from 'vue'
+import VueGoogleCharts from 'vue-google-charts'
 
-Vue.use(VueGoogleCharts);
+Vue.use(VueGoogleCharts)
 
-export default VueGoogleCharts;
+export default VueGoogleCharts

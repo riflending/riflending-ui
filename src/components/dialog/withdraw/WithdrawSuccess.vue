@@ -38,10 +38,7 @@
         </v-col>
         <v-col cols="3">
           <h1 class="text-center">
-            {{
-              maxBorrowAllowed
-                | formatToken(data.token.decimals)
-            }}
+            {{ maxBorrowAllowed | formatToken(data.token.decimals) }}
           </h1>
         </v-col>
         <v-col cols="2">
@@ -60,16 +57,16 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
-import TransactionHash from "@/components/common/TransactionHash.vue";
+import { mapState } from 'vuex'
+import TransactionHash from '@/components/common/TransactionHash.vue'
 
 export default {
-  name: "SupplySuccess",
+  name: 'SupplySuccess',
   props: {
     data: {
       type: Object,
-      required: true,
-    },
+      required: true
+    }
   },
   data() {
     return {
@@ -77,46 +74,45 @@ export default {
       cash: 0,
       price: 0,
       maxBorrowAllowed: 0,
-      supplyOf: 0,
-    };
+      supplyOf: 0
+    }
   },
   computed: {
     ...mapState({
-      account: (state) => state.Session.account,
-    }),
+      account: (state) => state.Session.account
+    })
   },
   methods: {
     closeDialog() {
-      this.$emit("closeDialog");
+      this.$emit('closeDialog')
     },
     getMaxAllowed(liquidity, cash) {
-      const allowed =
-        this.price > 0 ? Math.floor(liquidity / (this.price * 2)) : 0;
-      return allowed >= cash ? cash : allowed;
-    },
+      const allowed = this.price > 0 ? Math.floor(liquidity / (this.price * 2)) : 0
+      return allowed >= cash ? cash : allowed
+    }
   },
   components: {
-    TransactionHash,
+    TransactionHash
   },
   created() {
     this.$middleware
       .getAccountLiquidity(this.account)
       .then(({ accountLiquidityInExcess }) => {
-        this.liquidity = Number(accountLiquidityInExcess);
-        return this.data.market.getCash();
+        this.liquidity = Number(accountLiquidityInExcess)
+        return this.data.market.getCash()
       })
       .then((cash) => {
-        this.cash = cash;
-        return this.data.market.getPriceInDecimals();
+        this.cash = cash
+        return this.data.market.getPriceInDecimals()
       })
       .then((price) => {
-        this.price = price;
-        this.maxBorrowAllowed = this.getMaxAllowed(this.liquidity, this.cash);
-        return this.data.market.getBalanceOfUnderlying(this.account);
+        this.price = price
+        this.maxBorrowAllowed = this.getMaxAllowed(this.liquidity, this.cash)
+        return this.data.market.getBalanceOfUnderlying(this.account)
       })
       .then((balance) => {
-        this.supplyOf = balance;
-      });
-  },
-};
+        this.supplyOf = balance
+      })
+  }
+}
 </script>

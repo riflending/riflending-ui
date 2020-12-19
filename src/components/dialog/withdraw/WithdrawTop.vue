@@ -33,40 +33,41 @@
 
 <script>
 export default {
-  name: "WithdrawTop",
+  name: 'WithdrawTop',
   props: {
     data: {
       type: Object,
-      required: true,
-    },
+      required: true
+    }
   },
   data() {
     return {
       price: 0,
       borrowRate: 0,
       tokenAddress: 0,
-      tokenDecimals: 0,
-    };
+      tokenDecimals: 0
+    }
   },
   computed: {
     apr() {
-      return this.borrowRate.toFixed(2);
+      return this.borrowRate.toFixed(2)
     },
     rskExplorerUrl() {
-      return `https://explorer.testnet.rsk.co/address/${this.tokenAddress}`;
-    },
+      return `https://explorer.testnet.rsk.co/address/${this.tokenAddress}`
+    }
   },
   created() {
-    this.data.market.getPriceInDecimals()
+    this.data.market
+      .getPriceInDecimals()
       .then((price) => {
-        this.price = price;
-        this.tokenAddress = this.data.market.token.address;
-        this.tokenDecimals = this.data.market.token.decimals;
-        return this.data.market.getBorrowRate();
+        this.price = price
+        this.tokenAddress = this.data.market.token.address
+        this.tokenDecimals = this.data.market.token.decimals
+        return this.data.market.getBorrowRate()
       })
       .then((borrowRate) => {
-        this.borrowRate = borrowRate;
-      });
-  },
-};
+        this.borrowRate = borrowRate
+      })
+  }
+}
 </script>

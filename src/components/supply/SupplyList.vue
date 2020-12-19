@@ -4,9 +4,7 @@
       <v-list-item>
         <v-row>
           <v-col cols="3">
-            <v-list-item-subtitle class="listTitle"
-              >Market</v-list-item-subtitle
-            >
+            <v-list-item-subtitle class="listTitle">Market</v-list-item-subtitle>
           </v-col>
           <v-col cols="3">
             <v-list-item-subtitle class="listTitle">Price</v-list-item-subtitle>
@@ -15,9 +13,7 @@
             <v-list-item-subtitle class="listTitle">APR</v-list-item-subtitle>
           </v-col>
           <v-col cols="4">
-            <v-list-item-subtitle class="listTitle"
-              >Supplied</v-list-item-subtitle
-            >
+            <v-list-item-subtitle class="listTitle">Supplied</v-list-item-subtitle>
           </v-col>
         </v-row>
       </v-list-item>
@@ -33,41 +29,39 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
-import SupplyItem from "@/components/supply/SupplyItem.vue";
+import { mapState } from 'vuex'
+import SupplyItem from '@/components/supply/SupplyItem.vue'
 
 export default {
-  name: "SupplyList",
+  name: 'SupplyList',
   data() {
     return {
-      markets: [],
-    };
+      markets: []
+    }
   },
   methods: {
     reset() {
-      this.$emit("listChange");
+      this.$emit('listChange')
     },
     reloadItems() {
-      this.$emit("reload");
-    },
+      this.$emit('reload')
+    }
   },
-    computed: {
+  computed: {
     ...mapState({
-      account: (state) => state.Session.account,
-    }),
-    },
+      account: (state) => state.Session.account
+    })
+  },
   components: {
-    SupplyItem,
+    SupplyItem
   },
   created() {
     //get all markets
-    this.markets = this.$middleware.getMarkets(this.account);
-    
+    this.markets = this.$middleware.getMarkets(this.account)
+
     this.markets.forEach((market) =>
-      market.eventualEvents.then((events) =>
-        events.liquidateBorrow().on("data", this.reloadItems)
-      )
-    );
+      market.eventualEvents.then((events) => events.liquidateBorrow().on('data', this.reloadItems))
+    )
 
     // this.$rbank.eventualMarkets.then((mkts) => {
     //   this.markets = mkts;
@@ -84,6 +78,6 @@ export default {
     //     )
     //   );
     // });
-  },
-};
+  }
+}
 </script>

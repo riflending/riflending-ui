@@ -4,14 +4,28 @@ module.exports = {
     node: true,
   },
   extends: [
+    'eslint:recommended',
+    'plugin:vue/recommended',
     'plugin:vue/essential',
+    'plugin:prettier/recommended',
     '@vue/airbnb',
+    'prettier/vue',
+  ],
+  plugins: [
+    'prettier'
   ],
   parserOptions: {
     parser: 'babel-eslint',
   },
   rules: {
-    'no-console': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
     'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
+    'vue/component-name-in-template-casing': ['error', 'PascalCase'],
+    'prettier/prettier': 'error',
+    'no-console': [
+      'warn',
+      {
+        'allow': ['warn', 'error']
+      }
+    ],
   },
 };

@@ -5,9 +5,12 @@
     </div>
     <v-container fluid>
       <v-row>
-        <v-col v-for="(market, idx) in marketAddresses"
-               :key="`market-balance-item-${idx}`" cols="4">
-          <market-balance-item :marketAddress="market"/>
+        <v-col
+          v-for="(market, idx) in marketAddresses"
+          :key="`market-balance-item-${idx}`"
+          cols="4"
+        >
+          <market-balance-item :marketAddress="market" />
         </v-col>
       </v-row>
     </v-container>
@@ -15,23 +18,22 @@
 </template>
 
 <script>
-import MarketBalanceItem from '@/components/dashboard/MarketBalanceItem.vue';
+import MarketBalanceItem from '@/components/dashboard/MarketBalanceItem.vue'
 
 export default {
   name: 'MarketsBalance',
   data() {
     return {
-      marketAddresses: [],
-    };
+      marketAddresses: []
+    }
   },
   components: {
-    MarketBalanceItem,
+    MarketBalanceItem
   },
   created() {
-    this.$rbank.eventualMarkets
-      .then((mkts) => {
-        this.marketAddresses = mkts.map((mkt) => mkt.address);
-      });
-  },
-};
+    this.$rbank.eventualMarkets.then((mkts) => {
+      this.marketAddresses = mkts.map((mkt) => mkt.address)
+    })
+  }
+}
 </script>

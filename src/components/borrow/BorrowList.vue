@@ -17,55 +17,57 @@
           </v-col>
         </v-row>
       </v-list-item>
-      <v-divider/>
-      <borrow-item v-for="(market, idx) in markets"
-                   :key="`market-${idx}`" :market="market" @dialogClosed="reset"/>
+      <v-divider />
+      <borrow-item
+        v-for="(market, idx) in markets"
+        :key="`market-${idx}`"
+        :market="market"
+        @dialogClosed="reset"
+      />
     </v-list>
   </v-card>
 </template>
 
 <script>
-import { mapState } from "vuex";
-import BorrowItem from '@/components/borrow/BorrowItem.vue';
+import { mapState } from 'vuex'
+import BorrowItem from '@/components/borrow/BorrowItem.vue'
 
 export default {
   name: 'BorrowList',
   data() {
     return {
-      markets: [],
-    };
+      markets: []
+    }
   },
   methods: {
     reset() {
-      this.$emit('listChange');
+      this.$emit('listChange')
     },
     reloadItems() {
-      this.$emit('reload');
-    },
+      this.$emit('reload')
+    }
   },
   computed: {
-  ...mapState({
-      account: (state) => state.Session.account,
-    }),
+    ...mapState({
+      account: (state) => state.Session.account
+    })
   },
   components: {
-    BorrowItem,
+    BorrowItem
   },
   created() {
     //get all markets
-    this.markets = this.$middleware.getMarkets(this.account);
+    this.markets = this.$middleware.getMarkets(this.account)
 
     this.markets.forEach((market) =>
-      market.eventualEvents.then((events) =>
-        events.liquidateBorrow().on("data", this.reloadItems)
-      )
-    );
+      market.eventualEvents.then((events) => events.liquidateBorrow().on('data', this.reloadItems))
+    )
     // this.$rbank.eventualMarkets
     //   .then((mkts) => {
     //     this.markets = mkts;
     //     this.markets.forEach((market) => market.eventualEvents
     //       .then((events) => events.liquidateBorrow().on('data', this.reloadItems)));
     //   });
-  },
-};
+  }
+}
 </script>

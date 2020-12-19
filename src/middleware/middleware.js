@@ -1,22 +1,30 @@
-import { ethers } from 'ethers';
-import Vue from 'vue';
-import BigNumber from 'bignumber.js';
-import Market from './market';
-import factoryContract from './factoryContract';
-import { constants, errorCodes, cTokensDetails } from './constants';
+import { ethers } from 'ethers'
+import Vue from 'vue'
+import BigNumber from 'bignumber.js'
+import Market from './market'
+import factoryContract from './factoryContract'
+import { constants, errorCodes, cTokensDetails } from './constants'
 
-BigNumber.set({ EXPONENTIAL_AT: [-18, 36] });
+BigNumber.set({ EXPONENTIAL_AT: [-18, 36] })
 
 export default class Middleware {
-
   getMarkets(account) {
-    const markets = Array();
+    const markets = Array()
     for (let index = 0; index < cTokensDetails.length; index++) {
-      const cTokenSymbol = cTokensDetails[index].symbol;
-      const tokenSymbol = cTokensDetails[index].underlying.symbol;
-      markets.push(new Market(cTokenSymbol, cTokensDetails[index].decimals, tokenSymbol, cTokensDetails[index].underlying.name, cTokensDetails[index].underlying.decimals, account));
+      const cTokenSymbol = cTokensDetails[index].symbol
+      const tokenSymbol = cTokensDetails[index].underlying.symbol
+      markets.push(
+        new Market(
+          cTokenSymbol,
+          cTokensDetails[index].decimals,
+          tokenSymbol,
+          cTokensDetails[index].underlying.name,
+          cTokensDetails[index].underlying.decimals,
+          account
+        )
+      )
     }
-    return markets;
+    return markets
   }
 
   /**
@@ -29,18 +37,23 @@ export default class Middleware {
    */
 
   async getAccountLiquidity(account) {
-    const factoryContractInstance = new factoryContract();
-    const contract = factoryContractInstance.getContractByNameAndAbiName(constants.Unitroller, constants.Comptroller);
-    const [err, accountLiquidityInExcess, accountShortfall] = await contract.getAccountLiquidity(account);
+    const factoryContractInstance = new factoryContract()
+    const contract = factoryContractInstance.getContractByNameAndAbiName(
+      constants.Unitroller,
+      constants.Comptroller
+    )
+    const [err, accountLiquidityInExcess, accountShortfall] = await contract.getAccountLiquidity(
+      account
+    )
     return {
       err,
       accountLiquidityInExcess,
-      accountShortfall,
-    };
+      accountShortfall
+    }
   }
 
   getCollateralFactor(account) {
-    return 1;
+    return 1
     // return Rlending.eth
     //   .read( // TODO: update to query proper collateral factor in contract
     //     Rlending.util.getAddress(Rlending.Unitroller),
@@ -51,51 +64,56 @@ export default class Middleware {
   }
 
   async getWalletAccountBalance(account, tokenAddress) {
-    const abi = ['function balanceOf(address) returns (uint)'];
-    const contract = new ethers.Contract(tokenAddress, abi, Vue.web3Provider);
-    const balance = await contract.callStatic.balanceOf(account);
-    return ethers.utils.formatEther(balance);
+    const abi = ['function balanceOf(address) returns (uint)']
+    const contract = new ethers.Contract(tokenAddress, abi, Vue.web3Provider)
+    const balance = await contract.callStatic.balanceOf(account)
+    return ethers.utils.formatEther(balance)
   }
 
   async getWalletAccountBalanceForRBTC(account) {
-    const balance = await Vue.web3Provider.getBalance(account);
-    return ethers.utils.formatEther(balance);
+    const balance = await Vue.web3Provider.getBalance(account)
+    return ethers.utils.formatEther(balance)
   }
 
   async getTotals(account) {
-    const markets = this.getMarkets(account);
-    const marketsPromises = markets.map((market) => new Promise((resolve, reject) => {
-      (async () => {
-        try {
-          const borrowBalanceCurrent = await market.borrowBalanceCurrentFormatted(account);
-          const borrowBalanceCurrentBN = new BigNumber(borrowBalanceCurrent);
-          const marketPriceFromOracleBN = await market.getPriceInDecimals();
-          const marketPriceBN = marketPriceFromOracleBN || new BigNumber(0);
+    const markets = this.getMarkets(account)
+    const marketsPromises = markets.map(
+      (market) =>
+        new Promise((resolve, reject) => {
+          ;(async () => {
+            try {
+              const borrowBalanceCurrent = await market.borrowBalanceCurrentFormatted(account)
+              const borrowBalanceCurrentBN = new BigNumber(borrowBalanceCurrent)
+              const marketPriceFromOracleBN = await market.getPriceInDecimals()
+              const marketPriceBN = marketPriceFromOracleBN || new BigNumber(0)
 
-          const tokenBalance = await market.getBalanceOfUnderlying(account);
-          const tokenBalanceBN = new BigNumber(tokenBalance);
+              const tokenBalance = await market.getBalanceOfUnderlying(account)
+              const tokenBalanceBN = new BigNumber(tokenBalance)
 
-          const borrowValue = borrowBalanceCurrentBN.multipliedBy(marketPriceBN);
-          const supplyValue = tokenBalanceBN.multipliedBy(marketPriceBN);
-          resolve({ borrowValue, supplyValue });
-        } catch (err) {
-          reject(err);
+              const borrowValue = borrowBalanceCurrentBN.multipliedBy(marketPriceBN)
+              const supplyValue = tokenBalanceBN.multipliedBy(marketPriceBN)
+              resolve({ borrowValue, supplyValue })
+            } catch (err) {
+              reject(err)
+            }
+          })()
+        })
+    )
+    const totals = await Promise.all(marketsPromises)
+    const totalsReduced = totals.reduce(
+      (previousValue, currentValue) => {
+        return {
+          borrowValue: previousValue.borrowValue.plus(currentValue.borrowValue),
+          supplyValue: previousValue.supplyValue.plus(currentValue.supplyValue)
         }
-      })();
-    }));
-    const totals = await Promise.all(marketsPromises);
-    const totalsReduced = totals.reduce((previousValue, currentValue) => {
-      return {
-        borrowValue: previousValue.borrowValue.plus(currentValue.borrowValue),
-        supplyValue: previousValue.supplyValue.plus(currentValue.supplyValue)
-      }
-    }, { borrowValue: new BigNumber(0), supplyValue: new BigNumber(0)});
-    return totalsReduced;
+      },
+      { borrowValue: new BigNumber(0), supplyValue: new BigNumber(0) }
+    )
+    return totalsReduced
   }
 
   getMsjErrorCodeComptroller(errorNumber, isErroInfo = false) {
-    const retorno = errorCodes['comptroller'][(isErroInfo) ? 'info' : 'codes'][Number(errorNumber)];
-    return (!retorno) ? '' : retorno.description;
-
+    const retorno = errorCodes['comptroller'][isErroInfo ? 'info' : 'codes'][Number(errorNumber)]
+    return !retorno ? '' : retorno.description
   }
 }

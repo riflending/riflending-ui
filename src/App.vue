@@ -1,36 +1,32 @@
 <template>
   <component :is="currentComponent">
-      <router-view/>
+    <router-view />
   </component>
 </template>
 
 <script>
-import BaseLayout from '@/components/layouts/base/Index.vue';
+import BaseLayout from '@/components/layouts/base/Index.vue'
 
 export default {
   name: 'App',
   data() {
     return {
       layout: 'Base',
-      layouts: [
-        'Base',
-      ],
-    };
+      layouts: ['Base']
+    }
   },
   computed: {
     currentComponent() {
-      return `${this.layout.toLowerCase()}-layout`;
-    },
+      return `${this.layout.toLowerCase()}-layout`
+    }
   },
-  methods: {
-
-  },
+  methods: {},
   components: {
-    BaseLayout,
+    BaseLayout
   },
   created() {
-    const ctrl = process.env.VUE_APP_RBANK_CONTROLLER;
-    this.$rbank.controller = ctrl.toLowerCase();
-  },
-};
+    const ctrl = process.env.VUE_APP_RBANK_CONTROLLER
+    this.$rbank.controller = ctrl.toLowerCase()
+  }
+}
 </script>
