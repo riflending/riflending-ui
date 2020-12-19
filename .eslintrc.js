@@ -8,7 +8,6 @@ module.exports = {
     'plugin:vue/recommended',
     'plugin:vue/essential',
     'plugin:prettier/recommended',
-    '@vue/airbnb',
     'prettier/vue',
   ],
   plugins: [
