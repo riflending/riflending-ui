@@ -17,7 +17,7 @@
               rules.decimals,
               rules.marketCash,
               rules.liquidity,
-              rules.allowed
+              rules.allowed,
             ]"
           />
         </v-col>
@@ -117,8 +117,8 @@ export default {
   props: {
     data: {
       type: Object,
-      required: true
-    }
+      required: true,
+    },
   },
   data() {
     return {
@@ -157,13 +157,13 @@ export default {
         liquidity: () =>
           this.oldLiquidity >= this.price * 2 * Number(this.tokenBalance) ||
           "You don't have enough liquidity, supply more collateral.",
-        enteredMarket: () => true || ''
-      }
+        enteredMarket: () => true || '',
+      },
     }
   },
   computed: {
     ...mapState({
-      account: (state) => state.Session.account
+      account: (state) => state.Session.account,
     }),
     apr() {
       return this.borrowRate.toFixed(2)
@@ -202,67 +202,67 @@ export default {
     decimalPositions() {
       const amount = this.amount.toString()
       return this.hasDecimals ? this.numberOfDecimals : !amount.includes('.')
-    }
+    },
   },
   watch: {
     amount() {
-      this.getValues();
-      if (this.maxAmount && this.amount !== this.oldMaxBorrowAllowed) this.maxAmount = false;
+      this.getValues()
+      if (this.maxAmount && this.amount !== this.oldMaxBorrowAllowed) this.maxAmount = false
       if (this.amount === this.oldMaxBorrowAllowed) {
-        this.maxAmount = true;
+        this.maxAmount = true
       }
     },
     maxAmount() {
-      if (this.maxAmount) this.amount = Math.min(this.oldMaxBorrowAllowed, this.cash / 1e18);
-      if (!this.maxAmount && this.amount === this.oldMaxBorrowAllowed) this.amount = null;
+      if (this.maxAmount) this.amount = Math.min(this.oldMaxBorrowAllowed, this.cash / 1e18)
+      if (!this.maxAmount && this.amount === this.oldMaxBorrowAllowed) this.amount = null
     },
   },
   created() {
     this.data.market
       .borrowBalanceCurrent(this.account)
       .then((borrowBy) => {
-        this.borrowBy = Number(borrowBy);
-        return this.$middleware.getAccountLiquidity(this.account);
+        this.borrowBy = Number(borrowBy)
+        return this.$middleware.getAccountLiquidity(this.account)
         // return this.$rbank.controller.getAccountLiquidity(this.account);
       })
       .then(({ accountLiquidityInExcess }) => {
-        this.oldLiquidity = accountLiquidityInExcess; // liquid assets in the protocol
-        this.liquidity = accountLiquidityInExcess; // liquid assets in the protocol
-        return this.data.market.getCash();
+        this.oldLiquidity = accountLiquidityInExcess // liquid assets in the protocol
+        this.liquidity = accountLiquidityInExcess // liquid assets in the protocol
+        return this.data.market.getCash()
         // return this.data.market.eventualCash;
       })
       .then((cash) => {
         // the amount of underlying stored in contract AKA "CONTRACT LIQUIDITY"
-        this.oldCash = cash; // the amount of underlying stored in contract AKA "CONTRACT LIQUIDITY"
-        this.cash = cash; // the amount of underlying stored in contract AKA "CONTRACT LIQUIDITY"
-        return this.data.market.getBorrowRate();
+        this.oldCash = cash // the amount of underlying stored in contract AKA "CONTRACT LIQUIDITY"
+        this.cash = cash // the amount of underlying stored in contract AKA "CONTRACT LIQUIDITY"
+        return this.data.market.getBorrowRate()
         // return this.data.market.eventualBorrowRate;
       })
       .then((borrowRate) => {
         // TODO: double check, perhaps this is not being used
-        this.borrowRate = borrowRate;
-        return this.data.market.getPrice(this.data.market.address);
+        this.borrowRate = borrowRate
+        return this.data.market.getPrice(this.data.market.address)
         // return this.$rbank.controller.eventualMarketPrice(this.data.market.address);
       })
       .then((marketPrice) => {
-        this.price = marketPrice;
-        return this.data.market.getBalanceOfUnderlying(this.account);
+        this.price = marketPrice
+        return this.data.market.getBalanceOfUnderlying(this.account)
       })
       .then((supplyValue) => {
-        this.supplyValue = supplyValue;
-        return this.data.market.getCurrentExchangeRate();
+        this.supplyValue = supplyValue
+        return this.data.market.getCurrentExchangeRate()
         // return this.$rbank.controller.eventualMantissa;
       })
       .then((mantissa) => {
-        this.mantissa = mantissa;
-        return this.data.market.getMaxBorrowAllowed(this.account);
+        this.mantissa = mantissa
+        return this.data.market.getMaxBorrowAllowed(this.account)
       })
       .then((maxBorrowAllowed) => {
-        this.maxBorrowAllowed = maxBorrowAllowed;
-        this.oldMaxBorrowAllowed = this.asDouble(maxBorrowAllowed);
-        this.borrowAllowance = maxBorrowAllowed;
-        this.borrowBalanceInfo = Number(this.contractAmount);
-      });
+        this.maxBorrowAllowed = maxBorrowAllowed
+        this.oldMaxBorrowAllowed = this.asDouble(maxBorrowAllowed)
+        this.borrowAllowance = maxBorrowAllowed
+        this.borrowBalanceInfo = Number(this.contractAmount)
+      })
 
     //       this.data.market
     // .updatedBorrowBy(this.account)
@@ -344,7 +344,7 @@ export default {
           this.$emit('succeed', {
             hash: res.transactionHash,
             borrowLimitInfo: this.borrowLimitInfo,
-            borrowBalanceInfo: this.borrowBalanceInfo
+            borrowBalanceInfo: this.borrowBalanceInfo,
           })
         })
         .catch((error) => {
@@ -352,7 +352,7 @@ export default {
           // validate user error message
           const userError = typeof error === 'string' ? error : error.message || ''
           this.$emit('error', {
-            userErrorMessage: userError
+            userErrorMessage: userError,
           })
           this.waiting = false
         })
@@ -398,10 +398,10 @@ export default {
         })
         .then((supplyValue) => {
           this.supplyValue = supplyValue
-          const newBorrowValue =            (this.borrowBy + Number(this.contractAmount) * this.price)(
-              (this.collateralFactor + this.mantissa)
-)
-            ) / this.mantissa
+          const newBorrowValue =
+            ((this.borrowBy + Number(this.contractAmount) * this.price) *
+              (this.collateralFactor + this.mantissa)) /
+            this.mantissa
           const newSupplyValue = supplyValue
           this.liquidity = newBorrowValue < newSupplyValue ? newSupplyValue - newBorrowValue : 0
           return this.data.market.getMaxBorrowAllowed(this.account)
@@ -449,7 +449,7 @@ export default {
       //   this.borrowLimitInfo = Number(this
       //     .getMaxBorrowAllowed(this.oldLiquidity, this.oldCash) - this.maxBorrowAllowed);
       // });
-    }
+    },
   },
   components: {
     Loader,
