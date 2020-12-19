@@ -9,8 +9,8 @@
     <v-row class="ma-0 pt-5 d-flex justify-center">
       <h1 class="text-center">Something went wrong...</h1>
     </v-row>
-    <v-row v-if="!!this.data.userErrorMessage" class="ma-0 pt-5 d-flex justify-center">
-      <h2 class="text-center">{{ this.data.userErrorMessage }}</h2>
+    <v-row v-if="!!data.userErrorMessage" class="ma-0 pt-5 d-flex justify-center">
+      <h2 class="text-center">{{ data.userErrorMessage }}</h2>
     </v-row>
     <v-row class="my-3 d-flex justify-center">
       <p class="text-center">
@@ -30,13 +30,13 @@ export default {
   props: {
     data: {
       type: Object,
-      required: true
-    }
+      required: true,
+    },
   },
   methods: {
     closeDialog() {
       this.$emit('closeDialog')
-    }
-  }
+    },
+  },
 }
 </script>
