@@ -2,7 +2,7 @@
   <v-card flat class="loader d-flex align-center justify-center">
     <div class="container">
       <v-row class="my-5 d-flex justify-center">
-        <v-progress-circular indeterminate :size="80" color="#008CFF"/>
+        <v-progress-circular indeterminate :size="80" color="#008CFF" />
       </v-row>
       <v-row class="mt-5 d-flex justify-center">
         <h1 class="text-center">Awaiting transaction approval</h1>
@@ -17,5 +17,5 @@
 <script>
 export default {
   name: 'Loader',
-};
+}
 </script>

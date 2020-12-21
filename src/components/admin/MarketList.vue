@@ -23,38 +23,39 @@
           </v-col>
         </v-row>
       </v-list-item>
-      <v-divider/>
-      <market-item v-for="(market, idx) in markets"
-                   :key="`market-${idx}`" :market="market"/>
+      <v-divider />
+      <MarketItem v-for="(market, idx) in markets" :key="`market-${idx}`" :market="market" />
     </v-list>
   </div>
 </template>
 
 <script>
-import MarketItem from '@/components/admin/MarketItem.vue';
+import MarketItem from '@/components/admin/MarketItem.vue'
 
 export default {
   name: 'MarketList',
-  data() {
-    return {
-      markets: [],
-    };
-  },
   components: {
     MarketItem,
   },
-  methods: {
-    reloadItems() {
-      this.$emit('reload');
-    },
+  data() {
+    return {
+      markets: [],
+    }
   },
   created() {
-    this.$rbank.eventualMarkets
-      .then((mkts) => {
-        this.markets = mkts;
-        this.markets.forEach((market) => market.eventualEvents
-          .then((events) => events.liquidateBorrow().on('data', this.reloadItems)));
-      });
+    this.$rbank.eventualMarkets.then((mkts) => {
+      this.markets = mkts
+      this.markets.forEach((market) =>
+        market.eventualEvents.then((events) =>
+          events.liquidateBorrow().on('data', this.reloadItems),
+        ),
+      )
+    })
   },
-};
+  methods: {
+    reloadItems() {
+      this.$emit('reload')
+    },
+  },
+}
 </script>

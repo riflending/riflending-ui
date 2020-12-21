@@ -6,28 +6,28 @@
           <h1>Transaction History</h1>
         </v-row>
         <v-row>
-          <span>Last updated: {{lastUpdated}}</span>
+          <span>Last updated: {{ lastUpdated }}</span>
         </v-row>
       </v-col>
       <v-col cols="4">
         <v-row>
           <v-col>
             <v-row>
-              <img src="../../assets/myActivity/supplied.svg" alt="">
+              <img src="../../assets/myActivity/supplied.svg" alt="" />
               <h3 class="mx-2">Supplied</h3>
             </v-row>
             <v-row>
-              <img src="../../assets/myActivity/borrowed.svg" alt="">
+              <img src="../../assets/myActivity/borrowed.svg" alt="" />
               <h3 class="mx-2">Borrowed</h3>
             </v-row>
           </v-col>
           <v-col>
             <v-row>
-              <img src="../../assets/myActivity/withdrawn.svg" alt="">
+              <img src="../../assets/myActivity/withdrawn.svg" alt="" />
               <h3 class="mx-2">Withdrawn</h3>
             </v-row>
             <v-row>
-              <img src="../../assets/myActivity/repay.svg" alt="">
+              <img src="../../assets/myActivity/repay.svg" alt="" />
               <h3 class="mx-2">Repayed</h3>
             </v-row>
           </v-col>
@@ -36,38 +36,30 @@
     </v-row>
     <v-row class="mx-6">
       <v-col>
-        <h2>
-          Market
-        </h2>
+        <h2>Market</h2>
       </v-col>
       <v-col>
-        <h2>
-          Price
-        </h2>
+        <h2>Price</h2>
       </v-col>
       <v-col>
-        <h2>
-          APR
-        </h2>
+        <h2>APR</h2>
       </v-col>
       <v-col>
-        <h2>
-          Transaction
-        </h2>
+        <h2>Transaction</h2>
       </v-col>
     </v-row>
     <v-row class="mx-6">
       <div class="tx-divider"></div>
     </v-row>
-    <v-list class="mx-6" v-for="(tx, idx) in transactions"
-            :key="`tx-item-${idx}`">
-      <tx-item :transactionHash="tx.transactionHash"
-               :marketName="tx.market"
-               :amount="tx.transactionAmount"
-               :apr="tx.apr"
-               :price="tx.price"
-               :operation="tx.operation"
-               :decimals="tx.decimals"
+    <v-list v-for="(tx, idx) in transactions" :key="`tx-item-${idx}`" class="mx-6">
+      <TxItem
+        :transaction-hash="tx.transactionHash"
+        :market-name="tx.market"
+        :amount="tx.transactionAmount"
+        :apr="tx.apr"
+        :price="tx.price"
+        :operation="tx.operation"
+        :decimals="tx.decimals"
       />
       <div class="tx-divider"></div>
     </v-list>
@@ -75,8 +67,8 @@
 </template>
 
 <script>
-import TxItem from '@/components/dashboard/TxItem.vue';
-import { mapState } from 'vuex';
+import TxItem from '@/components/dashboard/TxItem.vue'
+import { mapState } from 'vuex'
 
 export default {
   name: 'TxList',
@@ -87,104 +79,95 @@ export default {
     return {
       lastUpdated: '',
       transactions: [],
-    };
+    }
   },
   computed: {
     ...mapState({
       account: (state) => state.Session.account,
     }),
     hasTransactions() {
-      return this.transactions.length !== 0;
+      return this.transactions.length !== 0
     },
+  },
+  created() {
+    this.getTransactions()
   },
   methods: {
     pushMarketEvents(market, marketDeployBlock, symbol, price, borrowRate, decimals) {
-      market.getPastEvents('Supply', marketDeployBlock, { user: this.account })
+      market.getPastEvents('Supply', marketDeployBlock, { user: this.account }).then((events) => {
+        events.forEach(({ event, transactionHash, returnValues: { amount } }) => {
+          this.transactions.push({
+            market: symbol,
+            price,
+            apr: borrowRate,
+            transactionHash,
+            transactionAmount: Number(amount),
+            operation: event,
+            decimals,
+          })
+        })
+      })
+      market.getPastEvents('Borrow', marketDeployBlock, { user: this.account }).then((events) => {
+        events.forEach(({ event, transactionHash, returnValues: { amount } }) => {
+          this.transactions.push({
+            market: symbol,
+            price,
+            apr: borrowRate,
+            transactionHash,
+            transactionAmount: Number(amount),
+            operation: event,
+            decimals,
+          })
+        })
+      })
+      market.getPastEvents('Redeem', marketDeployBlock, { user: this.account }).then((events) => {
+        events.forEach(({ event, transactionHash, returnValues: { amount } }) => {
+          this.transactions.push({
+            market: symbol,
+            price,
+            apr: borrowRate,
+            transactionHash,
+            transactionAmount: Number(amount),
+            operation: event,
+            decimals,
+          })
+        })
+      })
+      market
+        .getPastEvents('PayBorrow', marketDeployBlock, { user: this.account })
         .then((events) => {
           events.forEach(({ event, transactionHash, returnValues: { amount } }) => {
-            this.transactions.push(
-              {
-                market: symbol,
-                price,
-                apr: borrowRate,
-                transactionHash,
-                transactionAmount: Number(amount),
-                operation: event,
-                decimals,
-              },
-            );
-          });
-        });
-      market.getPastEvents('Borrow', marketDeployBlock, { user: this.account })
-        .then((events) => {
-          events.forEach(({ event, transactionHash, returnValues: { amount } }) => {
-            this.transactions.push(
-              {
-                market: symbol,
-                price,
-                apr: borrowRate,
-                transactionHash,
-                transactionAmount: Number(amount),
-                operation: event,
-                decimals,
-              },
-            );
-          });
-        });
-      market.getPastEvents('Redeem', marketDeployBlock, { user: this.account })
-        .then((events) => {
-          events.forEach(({ event, transactionHash, returnValues: { amount } }) => {
-            this.transactions.push(
-              {
-                market: symbol,
-                price,
-                apr: borrowRate,
-                transactionHash,
-                transactionAmount: Number(amount),
-                operation: event,
-                decimals,
-              },
-            );
-          });
-        });
-      market.getPastEvents('PayBorrow', marketDeployBlock, { user: this.account })
-        .then((events) => {
-          events.forEach(({ event, transactionHash, returnValues: { amount } }) => {
-            this.transactions.push(
-              {
-                market: symbol,
-                price,
-                apr: borrowRate,
-                transactionHash,
-                transactionAmount: Number(amount),
-                operation: event,
-                decimals,
-              },
-            );
-          });
-        });
+            this.transactions.push({
+              market: symbol,
+              price,
+              apr: borrowRate,
+              transactionHash,
+              transactionAmount: Number(amount),
+              operation: event,
+              decimals,
+            })
+          })
+        })
     },
     getTransactions() {
-      this.$rbank.eventualMarkets
-        .then((markets) => {
-          markets.forEach((market) => {
-            market.eventualToken
-              .then((token) => Promise.all([
+      this.$rbank.eventualMarkets.then((markets) => {
+        markets.forEach((market) => {
+          market.eventualToken
+            .then((token) =>
+              Promise.all([
                 token.eventualSymbol,
                 market.eventualDeployBlock,
                 this.$rbank.controller.eventualMarketPrice(market.address),
                 market.eventualBorrowRate,
                 token.eventualDecimals,
-              ]))
-              .then(([symbol, deployBlock, price, borrowRate, decimals]) => {
-                this.pushMarketEvents(market, deployBlock, symbol, price, borrowRate, decimals);
-              });
-          });
-        });
+              ]),
+            )
+            .then(([symbol, deployBlock, price, borrowRate, decimals]) => {
+              this.pushMarketEvents(market, deployBlock, symbol, price, borrowRate, decimals)
+            })
+        })
+      })
     },
   },
-  created() {
-    this.getTransactions();
-  },
-};
+}
 </script>

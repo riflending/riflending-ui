@@ -26,7 +26,7 @@
 
 <script>
 export default {
-  name: "SuccessTop",
+  name: 'SuccessTop',
   props: {
     data: {
       type: Object,
@@ -37,22 +37,23 @@ export default {
     return {
       borrowRate: 0,
       price: 0,
-    };
+    }
   },
   computed: {
     apr() {
-      return this.borrowRate.toFixed(2);
+      return this.borrowRate.toFixed(2)
     },
   },
   created() {
-    this.data.market.getPriceInDecimals()
+    this.data.market
+      .getPriceInDecimals()
       .then((marketPrice) => {
-        this.price = marketPrice;
-        return this.data.market.getBorrowRate();
+        this.price = marketPrice
+        return this.data.market.getBorrowRate()
       })
       .then((borrowRate) => {
-        this.borrowRate = borrowRate;
-      });
+        this.borrowRate = borrowRate
+      })
   },
-};
+}
 </script>

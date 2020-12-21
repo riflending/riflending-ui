@@ -1,7 +1,7 @@
 <template class="borrow-top">
   <v-row class="ma-0 d-flex align-center">
     <v-col cols="2" class="d-flex justify-center">
-      <v-img class="ml-5" src="../../../assets/rif.png" width="60"/>
+      <v-img class="ml-5" src="../../../assets/rif.png" width="60" />
     </v-col>
     <v-col cols="2">
       <v-row class="item">
@@ -18,14 +18,18 @@
         <h2>price:</h2>
       </v-row>
       <v-row class="item d-flex justify-start">
-        <span>{{ price | formatPrice }}</span><span class="ml-2 itemInfo">usd</span>
+        <span>{{ price | formatPrice }}</span
+        ><span class="ml-2 itemInfo">usd</span>
       </v-row>
     </v-col>
     <v-col cols="3">
       <v-row>
         <h2>liquidity provided:</h2>
       </v-row>
-      <v-row class="item d-flex justify-start" :title="[`Balance ${tokenBalance} ${data.token.symbol}`]">
+      <v-row
+        class="item d-flex justify-start"
+        :title="[`Balance ${tokenBalance} ${data.token.symbol}`]"
+      >
         {{ tokenBalancePrice | formatPrice }}<span class="ml-2 itemInfo">usd</span>
       </v-row>
     </v-col>
@@ -33,16 +37,14 @@
       <v-row>
         <h2>apr:</h2>
       </v-row>
-      <v-row class="item d-flex justify-start">
-        {{ apr }}%
-      </v-row>
+      <v-row class="item d-flex justify-start"> {{ apr }}% </v-row>
     </v-col>
   </v-row>
 </template>
 
 <script>
-import { mapState } from 'vuex';
-import BigNumber from 'bignumber.js';
+import { mapState } from 'vuex'
+import BigNumber from 'bignumber.js'
 
 export default {
   name: 'BorrowTop',
@@ -58,38 +60,41 @@ export default {
       tokenBalance: 0,
       tokenBalancePrice: 0,
       borrowRate: 0,
-      liqProvided:0,
+      liqProvided: 0,
       tokenAddress: 0,
-    };
+    }
   },
   computed: {
     ...mapState({
       account: (state) => state.Session.account,
     }),
     apr() {
-      return this.borrowRate.toFixed(2);
+      return this.borrowRate.toFixed(2)
     },
     rskExplorerUrl() {
-      return `https://explorer.testnet.rsk.co/address/${this.tokenAddress}`;
+      return `https://explorer.testnet.rsk.co/address/${this.tokenAddress}`
     },
   },
   created() {
-    //set token balance
-    this.data.market.getUserBalanceOfUnderlying()
+    // set token balance
+    this.data.market
+      .getUserBalanceOfUnderlying()
       .then((balance) => {
-        this.tokenBalance = balance;
-        console.log("borrowTop: tokenBalance", this.tokenBalance);
-        return this.data.market.getPriceInDecimals();
+        this.tokenBalance = balance
+        console.log('borrowTop: tokenBalance', this.tokenBalance)
+        return this.data.market.getPriceInDecimals()
       })
-      //set price
+      // set price
       .then((price) => {
-        this.price = price;
-        this.tokenBalancePrice = new BigNumber(this.tokenBalance).multipliedBy(new BigNumber(this.price));
-        return this.data.market.getBorrowRate();
+        this.price = price
+        this.tokenBalancePrice = new BigNumber(this.tokenBalance).multipliedBy(
+          new BigNumber(this.price),
+        )
+        return this.data.market.getBorrowRate()
       })
       .then((borrowRate) => {
-        this.borrowRate = borrowRate;
-      });
+        this.borrowRate = borrowRate
+      })
 
     // this.$rbank.controller.eventualMarketPrice(this.data.market.address)
     //   .then((marketPrice) => {
@@ -105,6 +110,6 @@ export default {
     //   .then((borrowRate) => {
     //     this.borrowRate = borrowRate;
     //   });
-  }
+  },
 }
 </script>

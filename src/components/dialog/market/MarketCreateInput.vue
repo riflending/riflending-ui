@@ -1,18 +1,24 @@
 <template>
   <div class="market-create-input container">
     <h2 class="mb-2">Basic Market Info</h2>
-    <v-divider color="#008CFF"/>
+    <v-divider color="#008CFF" />
     <v-row class="ma-0 py-5 d-flex align-center">
       <v-col>
         <h3>Token address:</h3>
       </v-col>
       <v-col cols="9" class="d-flex align-center">
-        <v-text-field class="dataInput" v-model="tokenAddress" type="text" solo flat
-                      :rules="[rules.requiredAddress, rules.address]"/>
+        <v-text-field
+          v-model="tokenAddress"
+          class="dataInput"
+          type="text"
+          solo
+          flat
+          :rules="[rules.requiredAddress, rules.address]"
+        />
       </v-col>
     </v-row>
     <h2 class="mb-2">Initial market value</h2>
-    <v-divider color="#008CFF"/>
+    <v-divider color="#008CFF" />
     <v-row class="ma-0 py-3 d-flex align-center">
       <v-col>
         <h3>Market price:</h3>
@@ -20,12 +26,16 @@
       <v-col cols="9" class="dataInput">
         <v-row class="ma-0">
           <v-col>
-            <v-text-field class="d-flex align-start" v-model="marketPrice" type="number" solo flat
-                      :rules="[rules.requiredMarketPrice]"/>
+            <v-text-field
+              v-model="marketPrice"
+              class="d-flex align-start"
+              type="number"
+              solo
+              flat
+              :rules="[rules.requiredMarketPrice]"
+            />
           </v-col>
-          <v-col cols="1" class="mb-4 mr-2 dataInfo d-flex justify-end">
-            USD
-          </v-col>
+          <v-col cols="1" class="mb-4 mr-2 dataInfo d-flex justify-end"> USD </v-col>
         </v-row>
       </v-col>
     </v-row>
@@ -36,12 +46,15 @@
       <v-col cols="9" class="dataInput">
         <v-row class="ma-0">
           <v-col>
-            <v-text-field v-model="baseBorrowApr" type="number" solo flat
-                          :rules="[rules.requiredBaseBorrowApr]"/>
+            <v-text-field
+              v-model="baseBorrowApr"
+              type="number"
+              solo
+              flat
+              :rules="[rules.requiredBaseBorrowApr]"
+            />
           </v-col>
-          <v-col cols="1" class="mb-4 mr-2 dataInfo d-flex justify-end">
-            %
-          </v-col>
+          <v-col cols="1" class="mb-4 mr-2 dataInfo d-flex justify-end"> % </v-col>
         </v-row>
       </v-col>
     </v-row>
@@ -58,8 +71,13 @@
             <h3>Blocks per year:</h3>
           </v-col>
           <v-col cols="6" class="dataInput">
-            <v-text-field v-model="blocksPerYear" type="number" solo flat
-                          :rules="[rules.requiredBlocksPerYear]"/>
+            <v-text-field
+              v-model="blocksPerYear"
+              type="number"
+              solo
+              flat
+              :rules="[rules.requiredBlocksPerYear]"
+            />
           </v-col>
         </v-row>
         <v-row class="ma-0 py-3 d-flex align-center">
@@ -69,12 +87,15 @@
           <v-col cols="6" class="dataInput">
             <v-row class="ma-0">
               <v-col>
-                <v-text-field v-model="utilizationRate" type="number" solo flat
-                              :rules="[rules.requiredUtilizationRate]"/>
+                <v-text-field
+                  v-model="utilizationRate"
+                  type="number"
+                  solo
+                  flat
+                  :rules="[rules.requiredUtilizationRate]"
+                />
               </v-col>
-              <v-col cols="1" class="mb-4 mr-2 dataInfo d-flex justify-end">
-                %
-              </v-col>
+              <v-col cols="1" class="mb-4 mr-2 dataInfo d-flex justify-end"> % </v-col>
             </v-row>
           </v-col>
         </v-row>
@@ -85,7 +106,7 @@
         Next
       </v-btn>
     </v-row>
-    <v-snackbar centered v-model="showSnackbar" color="error" elevation="24" :multi-line="true">
+    <v-snackbar v-model="showSnackbar" centered color="error" elevation="24" :multi-line="true">
       {{ error }}
     </v-snackbar>
   </div>
@@ -114,42 +135,56 @@ export default {
         requiredBaseBorrowApr: () => !!Number(this.baseBorrowApr) || 'Required.',
         requiredBlocksPerYear: () => !!Number(this.blocksPerYear) || 'Required.',
         requiredUtilizationRate: () => !!Number(this.utilizationRate) || 'Required.',
-        address: () => (/^0x[a-fA-F0-9]{40}$/.test(this.tokenAddress) || 'Not a valid address'),
+        address: () => /^0x[a-fA-F0-9]{40}$/.test(this.tokenAddress) || 'Not a valid address',
       },
-    };
+    }
   },
   computed: {
     validForm() {
-      return typeof this.rules.requiredAddress() !== 'string'
-        && typeof this.rules.address() !== 'string'
-        && typeof this.rules.requiredMarketPrice() !== 'string'
-        && typeof this.rules.requiredBaseBorrowApr() !== 'string'
-        && typeof this.rules.requiredBlocksPerYear() !== 'string'
-        && typeof this.rules.requiredUtilizationRate() !== 'string';
+      return (
+        typeof this.rules.requiredAddress() !== 'string' &&
+        typeof this.rules.address() !== 'string' &&
+        typeof this.rules.requiredMarketPrice() !== 'string' &&
+        typeof this.rules.requiredBaseBorrowApr() !== 'string' &&
+        typeof this.rules.requiredBlocksPerYear() !== 'string' &&
+        typeof this.rules.requiredUtilizationRate() !== 'string'
+      )
+    },
+  },
+  watch: {
+    advancedFlag() {
+      if (this.advancedFlag) {
+        this.advanced.icon = 'arrow_drop_up'
+        this.advanced.text = 'Advanced Market Details'
+      } else {
+        this.advanced.icon = 'arrow_drop_down'
+        this.advanced.text = 'Advanced'
+        this.blocksPerYear = 1e6
+        this.utilizationRate = 20
+      }
     },
   },
   methods: {
     reset() {
-      this.advancedFlag = false;
-      this.tokenAddress = null;
-      this.marketPrice = 0;
-      this.baseBorrowApr = 0;
-      this.blocksPerYear = 1e6;
-      this.utilizationRate = 20;
-      this.showSnackbar = false;
-      this.marketExists = false;
+      this.advancedFlag = false
+      this.tokenAddress = null
+      this.marketPrice = 0
+      this.baseBorrowApr = 0
+      this.blocksPerYear = 1e6
+      this.utilizationRate = 20
+      this.showSnackbar = false
+      this.marketExists = false
     },
     async checkMarketExistence() {
-      await this.$rbank.marketExistsByToken(this.tokenAddress)
-        .then((marketExists) => {
-          this.marketExists = marketExists;
-        });
+      await this.$rbank.marketExistsByToken(this.tokenAddress).then((marketExists) => {
+        this.marketExists = marketExists
+      })
     },
     async createMarket() {
-      await this.checkMarketExistence();
+      await this.checkMarketExistence()
       if (!this.marketExists) {
-        let marketAddress;
-        this.$emit('wait');
+        let marketAddress
+        this.$emit('wait')
         await this.$rbank.Market.create(
           this.tokenAddress,
           this.baseBorrowApr,
@@ -157,37 +192,22 @@ export default {
           this.utilizationRate,
         )
           .then((createdMarketAddress) => {
-            marketAddress = createdMarketAddress;
-            return new this.$rbank.Market(createdMarketAddress);
+            marketAddress = createdMarketAddress
+            return new this.$rbank.Market(createdMarketAddress)
           })
-          .then((market) => market
-            .setControllerAddress(this.$rbank.controller.address))
+          .then((market) => market.setControllerAddress(this.$rbank.controller.address))
           .then(() => this.$rbank.controller.addMarket(marketAddress))
-          .then(() => this.$rbank.controller
-            .setMarketPrice(marketAddress, this.marketPrice))
+          .then(() => this.$rbank.controller.setMarketPrice(marketAddress, this.marketPrice))
           .then(() => this.$emit('created', { marketAddress }))
           .catch(() => {
-            this.$emit('error');
-          });
+            this.$emit('error')
+          })
       } else {
-        this.error = 'There is already a market for the token address entered!';
-        this.showSnackbar = true;
-        setTimeout(() => this.reset(), 3000);
+        this.error = 'There is already a market for the token address entered!'
+        this.showSnackbar = true
+        setTimeout(() => this.reset(), 3000)
       }
     },
   },
-  watch: {
-    advancedFlag() {
-      if (this.advancedFlag) {
-        this.advanced.icon = 'arrow_drop_up';
-        this.advanced.text = 'Advanced Market Details';
-      } else {
-        this.advanced.icon = 'arrow_drop_down';
-        this.advanced.text = 'Advanced';
-        this.blocksPerYear = 1e6;
-        this.utilizationRate = 20;
-      }
-    },
-  },
-};
+}
 </script>

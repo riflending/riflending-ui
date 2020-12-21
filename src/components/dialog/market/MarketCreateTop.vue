@@ -2,11 +2,17 @@
   <div class="market-create-top mt-5 mb-3">
     <template v-if="success">
       <h1 class="blueish text-center">Success!</h1>
-      <p class="mt-1">You have successfully created a<br> new Market.</p>
+      <p class="mt-1">
+        You have successfully created a<br />
+        new Market.
+      </p>
     </template>
     <template v-else>
       <h1 class="blueish text-center">Create New Market</h1>
-      <p class="mt-1">Fill out the following form to <br> create your new Market.</p>
+      <p class="mt-1">
+        Fill out the following form to <br />
+        create your new Market.
+      </p>
     </template>
   </div>
 </template>
@@ -20,5 +26,5 @@ export default {
       required: true,
     },
   },
-};
+}
 </script>

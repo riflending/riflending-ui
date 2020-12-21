@@ -33,7 +33,7 @@
               </v-list-item-subtitle>
             </v-col>
             <v-col cols="3" class="pa-0">
-              <v-btn class="pa-0" @click="dialog = !dialog" icon>
+              <v-btn class="pa-0" icon @click="dialog = !dialog">
                 <svg
                   width="11"
                   height="32"
@@ -56,17 +56,20 @@
     </v-list-item>
     <v-divider />
     <template v-if="dialog">
-      <supply-dialog :data="dataObject" @closed="reset" />
+      <SupplyDialog :data="dataObject" @closed="reset" />
     </template>
   </div>
 </template>
 
 <script>
-import { mapState } from "vuex";
-import SupplyDialog from "@/components/dialog/supply/SupplyDialog.vue";
+import { mapState } from 'vuex'
+import SupplyDialog from '@/components/dialog/supply/SupplyDialog.vue'
 
 export default {
-  name: "SupplyItem",
+  name: 'SupplyItem',
+  components: {
+    SupplyDialog,
+  },
   props: {
     market: {
       type: Object,
@@ -84,16 +87,16 @@ export default {
       borrowRate: 0,
       dialog: false,
       tokenBalance: 0,
-      currentComponent: "SupplyList",
+      currentComponent: 'SupplyList',
       supplyValue: 0,
-    };
+    }
   },
   computed: {
     ...mapState({
       account: (state) => state.Session.account,
     }),
     apr() {
-      return this.borrowRate.toFixed(2);
+      return this.borrowRate.toFixed(2)
     },
     dataObject() {
       return {
@@ -102,73 +105,36 @@ export default {
         price: this.price,
         token: this.token,
         market: this.market,
-      };
+      }
     },
-  },
-  methods: {
-    reset() {
-      this.dialog = false;
-      this.market.getUserBalanceOfUnderlying()
-        .then((balance) => {
-          this.tokenBalance = balance;
-          return this.market.getPriceInDecimals();
-        })
-        //set price
-        .then((price) => {
-          this.price = price;
-          return this.market.getBorrowRate();
-        })
-        //set borrow rate block
-        .then((borrowRatePerBlock) => {
-          this.borrowRate = borrowRatePerBlock;
-        });
-
-      // this.$rbank.controller
-      //   .eventualMarketPrice(this.market.address)
-      //   .then((marketPrice) => {
-      //     this.price = marketPrice;
-      //     return this.market.eventualBorrowRate;
-      //   })
-      //   .then((borrowRate) => {
-      //     this.borrowRate = borrowRate;
-      //     return this.market.eventualToken;
-      //   })
-      //   .then((tok) => tok.eventualBalanceOf(this.account))
-      //   .then((tokenBalance) => {
-      //     this.tokenBalance = tokenBalance;
-      //   });
-      this.$emit("dialogClosed");
-    },
-  },
-  components: {
-    SupplyDialog,
   },
   mounted() {
-    this.$parent.$parent.$parent.$on("reload", this.reset);
+    this.$parent.$parent.$parent.$on('reload', this.reset)
   },
   created() {
-    //set data token
-    this.token = this.market.token;
-    this.market.getUserBalanceOfUnderlying()
+    // set data token
+    this.token = this.market.token
+    this.market
+      .getUserBalanceOfUnderlying()
       .then((balance) => {
-        this.tokenBalance = balance;
-        return this.market.getPriceInDecimals();
+        this.tokenBalance = balance
+        return this.market.getPriceInDecimals()
       })
-      //set price
+      // set price
       .then((price) => {
-        this.price = price;
-        return this.market.getBorrowRate();
+        this.price = price
+        return this.market.getBorrowRate()
       })
-      //set borrow rate block
+      // set borrow rate block
       .then((borrowRatePerBlock) => {
-        this.borrowRate = borrowRatePerBlock;
-      });
-    //set supply of TODO
-    this.supplyOf = this.market.supplyOf;
+        this.borrowRate = borrowRatePerBlock
+      })
+    // set supply of TODO
+    this.supplyOf = this.market.supplyOf
 
     this.market.eventualEvents.then((events) => {
-      events.allEvents().on("data", this.reset);
-    });
+      events.allEvents().on('data', this.reset)
+    })
 
     // let bla = this.market.token.balance.then(async (balance) => {
     //   console.log("BALANCE", balance);
@@ -210,5 +176,41 @@ export default {
     //     this.supplyOf = supplyOf;
     //   });
   },
-};
+  methods: {
+    reset() {
+      this.dialog = false
+      this.market
+        .getUserBalanceOfUnderlying()
+        .then((balance) => {
+          this.tokenBalance = balance
+          return this.market.getPriceInDecimals()
+        })
+        // set price
+        .then((price) => {
+          this.price = price
+          return this.market.getBorrowRate()
+        })
+        // set borrow rate block
+        .then((borrowRatePerBlock) => {
+          this.borrowRate = borrowRatePerBlock
+        })
+
+      // this.$rbank.controller
+      //   .eventualMarketPrice(this.market.address)
+      //   .then((marketPrice) => {
+      //     this.price = marketPrice;
+      //     return this.market.eventualBorrowRate;
+      //   })
+      //   .then((borrowRate) => {
+      //     this.borrowRate = borrowRate;
+      //     return this.market.eventualToken;
+      //   })
+      //   .then((tok) => tok.eventualBalanceOf(this.account))
+      //   .then((tokenBalance) => {
+      //     this.tokenBalance = tokenBalance;
+      //   });
+      this.$emit('dialogClosed')
+    },
+  },
+}
 </script>

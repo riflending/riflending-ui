@@ -18,36 +18,36 @@
             </v-row>
           </v-col>
         </v-row>
-        <market-list/>
+        <MarketList />
       </v-card>
       <template v-if="dialog">
-        <market-create-dialog :data="dataObject" @closed="dialog = false"/>
+        <MarketCreateDialog :data="dataObject" @closed="dialog = false" />
       </template>
     </div>
   </div>
 </template>
 
 <script>
-import MarketList from '@/components/admin/MarketList.vue';
-import MarketCreateDialog from '@/components/dialog/market/MarketCreateDialog.vue';
+import MarketList from '@/components/admin/MarketList.vue'
+import MarketCreateDialog from '@/components/dialog/market/MarketCreateDialog.vue'
 
 export default {
   name: 'Admin',
+  components: {
+    MarketList,
+    MarketCreateDialog,
+  },
   data() {
     return {
       dialog: false,
-    };
+    }
   },
   computed: {
     dataObject() {
       return {
         flag: this.dialog,
-      };
+      }
     },
   },
-  components: {
-    MarketList,
-    MarketCreateDialog,
-  },
-};
+}
 </script>

@@ -6,7 +6,7 @@
           <v-row class="d-flex align-center">
             <v-col cols="6" class="pa-0 d-flex justify-end">
               <v-list-item-avatar tile size="40">
-                <v-img src="../../assets/rif.png"/>
+                <v-img src="../../assets/rif.png" />
               </v-list-item-avatar>
             </v-col>
             <v-col cols="6" class="pa-0 d-flex justify-start">
@@ -22,9 +22,7 @@
           </v-list-item-subtitle>
         </v-col>
         <v-col cols="2">
-          <v-list-item-subtitle class="item">
-            {{ apr }}%
-          </v-list-item-subtitle>
+          <v-list-item-subtitle class="item"> {{ apr }}% </v-list-item-subtitle>
         </v-col>
         <v-col cols="2">
           <v-list-item-subtitle class="item">
@@ -47,11 +45,20 @@
               </v-list-item-subtitle>
             </v-col>
             <v-col cols="2" class="pa-0">
-              <v-btn class="pa-0 ma-0" @click="dialog = !dialog" icon>
-                <svg width="11" height="32" viewBox="0 0 11 32" fill="none"
-                     xmlns="http://www.w3.org/2000/svg">
-                  <path d="M1 1L9 16L1 31" stroke="#008CFF" stroke-width="2"
-                        stroke-linecap="round"/>
+              <v-btn class="pa-0 ma-0" icon @click="dialog = !dialog">
+                <svg
+                  width="11"
+                  height="32"
+                  viewBox="0 0 11 32"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M1 1L9 16L1 31"
+                    stroke="#008CFF"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                  />
                 </svg>
               </v-btn>
             </v-col>
@@ -59,18 +66,21 @@
         </v-col>
       </v-row>
     </v-list-item>
-    <v-divider/>
+    <v-divider />
     <template v-if="dialog">
-      <market-dialog :data="dataObject" @closed="reset"/>
+      <MarketDialog :data="dataObject" @closed="reset" />
     </template>
   </div>
 </template>
 
 <script>
-import MarketDialog from '@/components/dialog/market/MarketDialog.vue';
+import MarketDialog from '@/components/dialog/market/MarketDialog.vue'
 
 export default {
   name: 'MarketItem',
+  components: {
+    MarketDialog,
+  },
   props: {
     market: {
       type: Object,
@@ -90,90 +100,82 @@ export default {
       totalSupply: 0,
       totalBorrow: 0,
       dialog: false,
-    };
+    }
   },
   computed: {
     apr() {
-      return this.borrowRate.toFixed(2);
+      return this.borrowRate.toFixed(2)
     },
     dataObject() {
       return {
         flag: this.dialog,
         token: this.token,
         market: this.market,
-      };
+      }
     },
+  },
+  mounted() {
+    this.$parent.$parent.$on('reload', this.reset)
+  },
+  created() {
+    this.market.eventualEvents.then((events) => {
+      events.allEvents().on('data', this.reset)
+    })
+    this.market.eventualToken
+      .then((tok) => [tok.eventualName, tok.eventualSymbol, tok.eventualDecimals])
+      .then((results) => Promise.all(results))
+      .then(([name, symbol, decimals]) => {
+        this.token.name = name
+        this.token.symbol = symbol
+        this.token.decimals = decimals
+        return this.$rbank.controller.eventualMarketPrice(this.market.address)
+      })
+      .then((marketPrice) => {
+        this.price = marketPrice
+        return this.market.eventualBorrowRate
+      })
+      .then((borrowRate) => {
+        this.borrowRate = borrowRate
+        return this.market.eventualCash
+      })
+      .then((cash) => {
+        this.cash = cash
+        return this.market.eventualUpdatedTotalSupply
+      })
+      .then((updatedTotalSupply) => {
+        this.totalSupply = updatedTotalSupply
+        return this.market.eventualUpdatedTotalBorrows
+      })
+      .then((updatedTotalBorrows) => {
+        this.totalBorrow = updatedTotalBorrows
+      })
   },
   methods: {
     reset() {
-      this.dialog = false;
-      this.$rbank.controller.eventualMarketPrice(this.market.address)
+      this.dialog = false
+      this.$rbank.controller
+        .eventualMarketPrice(this.market.address)
         .then((marketPrice) => {
-          this.price = marketPrice;
-          return this.market.eventualBorrowRate;
+          this.price = marketPrice
+          return this.market.eventualBorrowRate
         })
         .then((borrowRate) => {
-          this.borrowRate = borrowRate;
-          return this.market.eventualCash;
+          this.borrowRate = borrowRate
+          return this.market.eventualCash
         })
         .then((cash) => {
-          this.cash = cash;
-          return this.market.eventualUpdatedTotalSupply;
+          this.cash = cash
+          return this.market.eventualUpdatedTotalSupply
         })
         .then((updatedTotalSupply) => {
-          this.totalSupply = updatedTotalSupply;
-          return this.market.eventualUpdatedTotalBorrows;
+          this.totalSupply = updatedTotalSupply
+          return this.market.eventualUpdatedTotalBorrows
         })
         .then((updatedTotalBorrows) => {
-          this.totalBorrow = updatedTotalBorrows;
-        });
-      this.$emit('dialogClosed');
+          this.totalBorrow = updatedTotalBorrows
+        })
+      this.$emit('dialogClosed')
     },
   },
-  components: {
-    MarketDialog,
-  },
-  mounted() {
-    this.$parent.$parent.$on('reload', this.reset);
-  },
-  created() {
-    this.market.eventualEvents
-      .then((events) => {
-        events.allEvents()
-          .on('data', this.reset);
-      });
-    this.market.eventualToken
-      .then((tok) => [
-        tok.eventualName,
-        tok.eventualSymbol,
-        tok.eventualDecimals,
-      ])
-      .then((results) => Promise.all(results))
-      .then(([name, symbol, decimals]) => {
-        this.token.name = name;
-        this.token.symbol = symbol;
-        this.token.decimals = decimals;
-        return this.$rbank.controller.eventualMarketPrice(this.market.address);
-      })
-      .then((marketPrice) => {
-        this.price = marketPrice;
-        return this.market.eventualBorrowRate;
-      })
-      .then((borrowRate) => {
-        this.borrowRate = borrowRate;
-        return this.market.eventualCash;
-      })
-      .then((cash) => {
-        this.cash = cash;
-        return this.market.eventualUpdatedTotalSupply;
-      })
-      .then((updatedTotalSupply) => {
-        this.totalSupply = updatedTotalSupply;
-        return this.market.eventualUpdatedTotalBorrows;
-      })
-      .then((updatedTotalBorrows) => {
-        this.totalBorrow = updatedTotalBorrows;
-      });
-  },
-};
+}
 </script>

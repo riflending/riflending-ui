@@ -4,9 +4,7 @@
       <v-list-item>
         <v-row>
           <v-col cols="3">
-            <v-list-item-subtitle class="listTitle"
-              >Market</v-list-item-subtitle
-            >
+            <v-list-item-subtitle class="listTitle">Market</v-list-item-subtitle>
           </v-col>
           <v-col cols="3">
             <v-list-item-subtitle class="listTitle">Price</v-list-item-subtitle>
@@ -15,14 +13,12 @@
             <v-list-item-subtitle class="listTitle">APR</v-list-item-subtitle>
           </v-col>
           <v-col cols="4">
-            <v-list-item-subtitle class="listTitle"
-              >Supplied</v-list-item-subtitle
-            >
+            <v-list-item-subtitle class="listTitle">Supplied</v-list-item-subtitle>
           </v-col>
         </v-row>
       </v-list-item>
       <v-divider />
-      <supply-item
+      <SupplyItem
         v-for="(market, idx) in markets"
         :key="`market-${idx}`"
         :market="market"
@@ -33,41 +29,31 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
-import SupplyItem from "@/components/supply/SupplyItem.vue";
+import { mapState } from 'vuex'
+import SupplyItem from '@/components/supply/SupplyItem.vue'
 
 export default {
-  name: "SupplyList",
-  data() {
-    return {
-      markets: [],
-    };
-  },
-  methods: {
-    reset() {
-      this.$emit("listChange");
-    },
-    reloadItems() {
-      this.$emit("reload");
-    },
-  },
-    computed: {
-    ...mapState({
-      account: (state) => state.Session.account,
-    }),
-    },
+  name: 'SupplyList',
   components: {
     SupplyItem,
   },
+  data() {
+    return {
+      markets: [],
+    }
+  },
+  computed: {
+    ...mapState({
+      account: (state) => state.Session.account,
+    }),
+  },
   created() {
-    //get all markets
-    this.markets = this.$middleware.getMarkets(this.account);
-    
+    // get all markets
+    this.markets = this.$middleware.getMarkets(this.account)
+
     this.markets.forEach((market) =>
-      market.eventualEvents.then((events) =>
-        events.liquidateBorrow().on("data", this.reloadItems)
-      )
-    );
+      market.eventualEvents.then((events) => events.liquidateBorrow().on('data', this.reloadItems)),
+    )
 
     // this.$rbank.eventualMarkets.then((mkts) => {
     //   this.markets = mkts;
@@ -85,5 +71,13 @@ export default {
     //   );
     // });
   },
-};
+  methods: {
+    reset() {
+      this.$emit('listChange')
+    },
+    reloadItems() {
+      this.$emit('reload')
+    },
+  },
+}
 </script>

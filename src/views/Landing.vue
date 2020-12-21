@@ -3,7 +3,7 @@
     <v-row class="d-flex align-center justify-center">
       <v-col cols="6">
         <v-row>
-          <h1> Join the DeFi revolution on the RSK Network</h1>
+          <h1>Join the DeFi revolution on the RSK Network</h1>
         </v-row>
         <v-row class="my-3 simple-text">
           Enjoy the possibilities that Open Finance offers in a safe, clear and understandable way.
@@ -14,7 +14,7 @@
         </v-row> -->
       </v-col>
       <v-col cols="6" class="d-flex justify-center align-center">
-        <img class="landing-1" src="../assets/landing/Ellipse_20.png" alt="">
+        <img class="landing-1" src="../assets/landing/Ellipse_20.png" alt="" />
       </v-col>
     </v-row>
     <v-row class="my-6 d-flex justify-center">
@@ -22,13 +22,13 @@
     </v-row>
     <v-row class="d-flex align-center">
       <v-col class="d-flex justify-center">
-        <img src="../assets/landing/stats_and_graphs.png" alt="">
+        <img src="../assets/landing/stats_and_graphs.png" alt="" />
       </v-col>
       <v-col>
         <v-row class="text-right">
-          <h3> Experience the basics of lending and borrowing assets</h3>
+          <h3>Experience the basics of lending and borrowing assets</h3>
         </v-row>
-        <v-row class=" my-6 text-right simple-text-2">
+        <v-row class="my-6 text-right simple-text-2">
           explore what you can do with your crypto assets and be part of the change to a more
           financially inclusive world
         </v-row>
@@ -86,22 +86,18 @@
         <v-row class="d-flex justify-center">
           <h2>Say goodbye to unexpected collateral liquidations.</h2>
         </v-row>
-        <v-row class="my-4 d-flex justify-center">Introducing your Health Factor,
-          a way for you to keep an eye on the state of your loans.
+        <v-row class="my-4 d-flex justify-center"
+          >Introducing your Health Factor, a way for you to keep an eye on the state of your loans.
         </v-row>
         <v-row class="my-6 py-6 d-flex justify-center">
           <v-card class="health-card">
             <v-row>
               <v-col class="mx-3 px-6">
-                <v-row class="health-card-title">
-                  Health Factor:
-                </v-row>
+                <v-row class="health-card-title"> Health Factor: </v-row>
                 <v-row>
                   <div class="divider-card"></div>
                 </v-row>
-                <v-row class="health-card-text">
-                  Your Account has a low risk of liquidation
-                </v-row>
+                <v-row class="health-card-text"> Your Account has a low risk of liquidation </v-row>
               </v-col>
               <v-col class="d-flex justify-center">
                 <v-progress-circular
@@ -128,20 +124,19 @@
 </template>
 
 <script>
-
 export default {
   name: 'Landing',
   methods: {
     toMyActivity() {
-      this.$router.push({ name: 'MyActivity' });
+      this.$router.push({ name: 'MyActivity' })
     },
     toGithub() {
-      window.location.href = 'https://github.com/riflending/';
-      this.$router.push('https://github.com/riflending/');
+      window.location.href = 'https://github.com/riflending/'
+      this.$router.push('https://github.com/riflending/')
     },
     scrollToTop() {
-      window.scrollTo(0,0);
+      window.scrollTo(0, 0)
     },
   },
-};
+}
 </script>

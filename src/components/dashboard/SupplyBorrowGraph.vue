@@ -9,9 +9,9 @@
       </v-row>
       <v-row class="ma-0 pt-1">
         <v-col cols="5" class="pa-0">
-          <v-divider/>
+          <v-divider />
         </v-col>
-        <v-col/>
+        <v-col />
       </v-row>
     </div>
     <v-row class="ma-0 d-flex align-center">
@@ -25,17 +25,28 @@
         </v-row>
       </v-col>
       <v-col cols="6" class="d-flex justify-center">
-        <GChart v-if="supplyBorrow" type="PieChart" :data="chartData" :options="chartOptions"
-                :resizeDebounce="500"/>
-        <GChart v-else type="PieChart" :data="emptyChart" :options="chartOptions"
-                :resizeDebounce="500"/>
+        <GChart
+          v-if="supplyBorrow"
+          type="PieChart"
+          :data="chartData"
+          :options="chartOptions"
+          :resize-debounce="500"
+        />
+        <GChart
+          v-else
+          type="PieChart"
+          :data="emptyChart"
+          :options="chartOptions"
+          :resize-debounce="500"
+        />
       </v-col>
       <v-col cols="3">
         <v-row class="d-flex justify-start">
           <h3 class="text-center">Borrowed</h3>
         </v-row>
         <v-row class="d-flex justify-start">
-          <p class="blackish text-center">{{ totalBorrowed | formatPrice }}
+          <p class="blackish text-center">
+            {{ totalBorrowed | formatPrice }}
             <span class="ml-2">USD</span>
           </p>
         </v-row>
@@ -56,8 +67,8 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
-import { GChart } from 'vue-google-charts';
+import { mapState } from 'vuex'
+import { GChart } from 'vue-google-charts'
 
 export default {
   name: 'SupplyBorrowGraph',
@@ -91,46 +102,42 @@ export default {
           height: '100%',
         },
       },
-    };
+    }
   },
   computed: {
     ...mapState({
       account: (state) => state.Session.account,
     }),
     supplyBorrow() {
-      return !!this.totalBorrowed || !!this.totalSupply;
+      return !!this.totalBorrowed || !!this.totalSupply
     },
+  },
+  created() {
+    this.getData()
   },
   methods: {
     getData() {
-      this.$rbank.controller.getAccountValues(this.account)
-        .then(({ supplyValue, borrowValue }) => {
-          this.totalBorrowed = borrowValue;
-          this.totalSupplied = supplyValue;
-          this.getBorrowLimit();
-          this.updateDiagramData();
-        });
+      this.$rbank.controller.getAccountValues(this.account).then(({ supplyValue, borrowValue }) => {
+        this.totalBorrowed = borrowValue
+        this.totalSupplied = supplyValue
+        this.getBorrowLimit()
+        this.updateDiagramData()
+      })
     },
     getBorrowLimit() {
-      this.$rbank.controller.getAccountLiquidity(this.account)
-        .then((liquidity) => {
-          this.totalBorrowLimit = liquidity / 2;
-        });
+      this.$rbank.controller.getAccountLiquidity(this.account).then((liquidity) => {
+        this.totalBorrowLimit = liquidity / 2
+      })
     },
     updateDiagramData() {
       this.chartData = [
         ['Type', 'Value'],
         ['Supplied', this.totalSupplied],
         ['Borrowed', this.totalBorrowed],
-      ];
+      ]
     },
   },
-  created() {
-    this.getData();
-  },
-};
+}
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>
