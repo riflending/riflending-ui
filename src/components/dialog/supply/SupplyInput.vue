@@ -75,7 +75,7 @@
             <v-row class="ma-0 d-flex align-center">
               <v-col cols="7" class="d-flex justify-center">
                 <h1>
-                  {{ maxBorrowAllowed | formatToken(data.token.decimals) }}
+                  {{ maxBorrowAllowed | formatNumber }}
                 </h1>
               </v-col>
             </v-row>
