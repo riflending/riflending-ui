@@ -261,7 +261,9 @@ export default {
         return this.data.market.getMaxBorrowAllowed(this.account)
       })
       .then((maxBorrowAllowed) => {
+        console.log('BorrowInput create() maxborrowalloweddddd', maxBorrowAllowed)
         this.maxBorrowAllowed = maxBorrowAllowed
+        console.log('BorrowInput create() maxborrowalloweddddd', this.maxBorrowAllowed)
         this.oldMaxBorrowAllowed = this.asDouble(maxBorrowAllowed)
         this.borrowAllowance = maxBorrowAllowed
         this.borrowBalanceInfo = Number(this.contractAmount)
@@ -410,6 +412,7 @@ export default {
           return this.data.market.getMaxBorrowAllowed(this.account)
         })
         .then((maxBorrowAllowed) => {
+          console.log('BorrowInput updated() maxborrowallowed', maxBorrowAllowed)
           this.maxBorrowAllowed = maxBorrowAllowed
           this.borrowAllowance = maxBorrowAllowed
           this.borrowBalanceInfo = Number(this.contractAmount)

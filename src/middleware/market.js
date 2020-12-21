@@ -358,7 +358,8 @@ export default class Market {
    */
   async getMaxBorrowAllowed(account) {
     const middleware = new Middleware() // maybe not necesary to load a whole Middleware here
-    const price = await this.price // current market price
+    //set price
+    const price = await this.getPrice() // current market price
     let rbtcPrice = await this.getValueMoc() // rbtc price
     rbtcPrice /= 1e18 // in usd
     const { accountLiquidityInExcess } = await middleware.getAccountLiquidity(account)
