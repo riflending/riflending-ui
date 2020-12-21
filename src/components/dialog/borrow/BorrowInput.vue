@@ -86,7 +86,7 @@
           <v-col cols="4">
             <v-row class="ma-0 d-flex align-center">
               <v-col cols="7" class="d-flex justify-center">
-                <h1>{{ maxBorrowAllowed | formatToken(data.token.decimals) }}</h1>
+                <h1>{{ maxBorrowAllowed | formatNumber }}</h1>
               </v-col>
             </v-row>
           </v-col>
@@ -261,9 +261,7 @@ export default {
         return this.data.market.getMaxBorrowAllowed(this.account)
       })
       .then((maxBorrowAllowed) => {
-        console.log('BorrowInput create() maxborrowalloweddddd', maxBorrowAllowed)
         this.maxBorrowAllowed = maxBorrowAllowed
-        console.log('BorrowInput create() maxborrowalloweddddd', this.maxBorrowAllowed)
         this.oldMaxBorrowAllowed = this.asDouble(maxBorrowAllowed)
         this.borrowAllowance = maxBorrowAllowed
         this.borrowBalanceInfo = Number(this.contractAmount)
@@ -412,7 +410,6 @@ export default {
           return this.data.market.getMaxBorrowAllowed(this.account)
         })
         .then((maxBorrowAllowed) => {
-          console.log('BorrowInput updated() maxborrowallowed', maxBorrowAllowed)
           this.maxBorrowAllowed = maxBorrowAllowed
           this.borrowAllowance = maxBorrowAllowed
           this.borrowBalanceInfo = Number(this.contractAmount)
