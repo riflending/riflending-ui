@@ -148,19 +148,19 @@ export default {
       mantissa: 0, // getCurrentExchangeRate() current exchange rate mantissa to convert underlying to ctoken
       rules: {
         required: () => !!Number(this.amount) || 'Required.',
-        // TODO: fix bug: triggers when maxBorrowAllowed is inputed by MAX button
-        // allowed: () => Number(this.maxBorrowAllowed) > Number(this.amount)/* || 'You shouldn\'t borrow over the max allowed!'*/,
-        allowed: () => this.isBorrowAllowed || "You shouldn't borrow over the max allowed!",
+        allowed: () => this.isBorrowAllowed || "Borrow won't be allowed by the protocol", // TODO: currently not being used
         decimals: () =>
           this.decimalPositions ||
           `Maximum ${this.data.token.decimals} decimal places for ${this.data.token.symbol}.`,
         marketCash: () =>
-          this.oldCash >= Number(this.tokenBalance) ||
-          `This market doesn't have enough ${this.data.token.symbol}`,
+          // this.oldCash >= Number(this.amount) ||
+          this.oldCash - Number(this.contractAmount) >= 0 ||
+          `This market doesn't have enough ${this.data.token.symbol} liquidity`,
         liquidity: () =>
-          this.oldLiquidity >= this.price * 2 * Number(this.tokenBalance) ||
-          "You don't have enough liquidity, supply more collateral.",
-        enteredMarket: () => true || '',
+          // this.oldLiquidity >= this.price * 2 * Number(this.tokenBalance) ||
+          Number(this.amount) < this.maxBorrowAllowed ||
+          "You don't have enough liquidity, supply more collateral to raise your Borrow Limit.",
+        enteredMarket: () => true || '', // TODO: currently not being used
       },
     }
   },
@@ -171,9 +171,9 @@ export default {
     apr() {
       return this.borrowRate.toFixed(2)
     },
-    balanceAsDouble() {
-      return (this.tokenBalance / 10 ** this.data.token.decimals).toFixed(this.data.token.decimals)
-    },
+    // balanceAsDouble() {
+    //   return (this.tokenBalance / 10 ** this.data.token.decimals).toFixed(this.data.token.decimals)
+    // },
     // balanceAsDouble() {
     //   return this.asDouble(this.tokenBalance);
     // },
@@ -262,7 +262,8 @@ export default {
       })
       .then((maxBorrowAllowed) => {
         this.maxBorrowAllowed = maxBorrowAllowed
-        this.oldMaxBorrowAllowed = this.asDouble(maxBorrowAllowed)
+        // this.oldMaxBorrowAllowed = this.asDouble(maxBorrowAllowed)
+        this.oldMaxBorrowAllowed = maxBorrowAllowed
         this.borrowAllowance = maxBorrowAllowed
         this.borrowBalanceInfo = Number(this.contractAmount)
       })
@@ -377,9 +378,11 @@ export default {
     //       this.$emit('error');
     //     });
     // },
-    asDouble(value) {
-      return (value / 10 ** this.data.token.decimals).toFixed(this.data.token.decimals)
-    },
+    // asDouble(value) {
+    //   console.log(value)
+    //   console.log("ASDOUBLE", new BigNumber(value).div(this.data.token.decimals).toNumber())
+    //   return (value / 10 ** this.data.token.decimals).toFixed(this.data.token.decimals)
+    // },
     async getValues() {
       this.data.market
         .borrowBalanceCurrent(this.account)
@@ -395,7 +398,9 @@ export default {
         })
         .then((cash) => {
           this.oldCash = cash // balance of contract underlying AKA "CONTRACT LIQUIDITY"
-          this.cash = cash - Number(this.contractAmount)
+          // this.cash = cash - Number(this.contractAmount)
+          this.cash =
+            cash - (cash - Number(this.contractAmount) <= 0 ? cash : Number(this.contractAmount))
           return this.data.market.getBalanceOfUnderlying(this.account)
           // return this.$rbank.controller.getAccountValues(this.account);
         })
