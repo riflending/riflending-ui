@@ -95,21 +95,6 @@ export default {
       .then((borrowRate) => {
         this.borrowRate = borrowRate
       })
-
-    // this.$rbank.controller.eventualMarketPrice(this.data.market.address)
-    //   .then((marketPrice) => {
-    //     this.price = marketPrice;
-    //     return this.data.market.eventualToken;
-    //   })
-    //   .then((tok) => Promise.all([tok.eventualBalanceOf(this.account), tok.address]))
-    //   .then(([tokenBalance, tokenAddress]) => {
-    //     this.tokenAddress = tokenAddress;
-    //     this.tokenBalance = tokenBalance;
-    //     return this.data.market.eventualBorrowRate;
-    //   })
-    //   .then((borrowRate) => {
-    //     this.borrowRate = borrowRate;
-    //   });
   },
 }
 </script>

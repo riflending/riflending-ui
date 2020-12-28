@@ -31,9 +31,7 @@ export default {
     }
   },
   created() {
-    this.$rbank.eventualMarkets.then((mkts) => {
-      this.marketAddresses = mkts.map((mkt) => mkt.address)
-    })
+    //removed - not being used - 2020-12-28
   },
 }
 </script>

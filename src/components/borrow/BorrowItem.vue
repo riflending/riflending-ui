@@ -110,7 +110,7 @@ export default {
     this.$parent.$parent.$parent.$on('reload', this.reset)
   },
   created() {
-    // set data token this.data.market.borrowBalanceCurrent(this.account)
+    // set data token
     this.token = this.market.token
     this.market
       .borrowBalanceCurrent(this.account)
@@ -129,36 +129,7 @@ export default {
         this.borrowRate = borrowRatePerBlock
         return this.market.getCash()
       })
-      /** ***** */
-
-      // this.market.eventualEvents
-      //   .then((events) => {
-      //     events.allEvents()
-      //       .on('data', this.reset);
-      //   });
-      // this.market.eventualToken
-      //   .then((tok) => [
-      //     tok.eventualName,
-      //     tok.eventualSymbol,
-      //     tok.eventualDecimals,
-      //   ])
-      //   .then((results) => Promise.all(results))
-      //   .then(([name, symbol, decimals]) => {
-      //     this.token.name = name;
-      //     this.token.symbol = symbol;
-      //     this.token.decimals = decimals;
-      //     return this.$rbank.controller.eventualMarketPrice(this.market.address);
-      //   })
-      //   .then((marketPrice) => {
-      //     this.price = marketPrice;
-      //     return this.market.eventualBorrowRate;
-      //   })
-      //   .then((borrowRate) => {
-      //     this.borrowRate = borrowRate;
-      //     return this.market.eventualCash;
-      //   })
       .then((cash) => {
-        // this.cash = cash;
         this.cash = cash
       })
   },
@@ -184,19 +155,8 @@ export default {
         // set cash
         .then((cash) => {
           this.cash = cash
-          // this.cash = cash;
         })
       this.$emit('dialogClosed')
-      // this.dialog = false;
-      // this.$rbank.controller.eventualMarketPrice(this.market.address)
-      //   .then((marketPrice) => {
-      //     this.price = marketPrice;
-      //     return this.market.eventualBorrowRate;
-      //   })
-      //   .then((borrowRate) => {
-      //     this.borrowRate = borrowRate;
-      //     return this.market.eventualCash;
-      //   })
     },
   },
 }

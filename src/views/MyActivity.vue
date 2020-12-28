@@ -177,7 +177,7 @@ export default {
         this.totalBorrowed = borrowValue
         this.totalSupplied = supplyValue
         this.totalBalance = supplyValue.minus(borrowValue)
-        return this.$rbank.controller.getAccountHealth(this.account)
+        return this.$middleware.getAccountHealth(this.account)
       })
       .then((health) => {
         this.healthFactor = health > 1 ? 100 : health * 100

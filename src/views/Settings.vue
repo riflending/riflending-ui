@@ -48,7 +48,7 @@ export default {
   },
   methods: {
     getMarkets() {
-      this.$rbank.eventualMarkets.then((mkts) => {
+      this.$middleware.getMarkets().then((mkts) => {
         this.marketAddresses = mkts.map((mkt) => mkt.address)
       })
     },

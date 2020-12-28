@@ -135,46 +135,6 @@ export default {
     this.market.eventualEvents.then((events) => {
       events.allEvents().on('data', this.reset)
     })
-
-    // let bla = this.market.token.balance.then(async (balance) => {
-    //   console.log("BALANCE", balance);
-    // });
-
-    // this.market.instance
-    //   .then((results) => Promise.all(results))
-    //   .then(() => {
-    //     return this.market.balance;
-    //   })
-    //   .then((balan) => {
-    //     console.log(balan);
-    //   });
-    // this.market.eventualToken
-    //   .then((tok) => [
-    //     tok.eventualName,
-    //     tok.eventualSymbol,
-    //     tok.eventualDecimals,
-    //     tok.eventualBalanceOf(this.account),
-    //   ])
-    //   .then((results) => Promise.all(results))
-    //   .then(async ([name, symbol, decimals, balance]) => {
-    //     console.log("name", name);
-    //     // this.token.name = name;
-    //     // this.token.symbol = symbol;
-    //     // this.token.decimals = decimals;
-    //     // this.tokenBalance = balance;
-    //     return this.$rbank.controller.eventualMarketPrice(this.market.address);
-    //   })
-    //   .then((marketPrice) => {
-    //     // this.price = marketPrice;
-    //     return this.market.eventualBorrowRate;
-    //   })
-    //   .then((borrowRate) => {
-    //     this.borrowRate = borrowRate;
-    //     return this.market.updatedSupplyOf(this.account);
-    //   })
-    //   .then((supplyOf) => {
-    //     this.supplyOf = supplyOf;
-    //   });
   },
   methods: {
     reset() {
@@ -194,21 +154,6 @@ export default {
         .then((borrowRatePerBlock) => {
           this.borrowRate = borrowRatePerBlock
         })
-
-      // this.$rbank.controller
-      //   .eventualMarketPrice(this.market.address)
-      //   .then((marketPrice) => {
-      //     this.price = marketPrice;
-      //     return this.market.eventualBorrowRate;
-      //   })
-      //   .then((borrowRate) => {
-      //     this.borrowRate = borrowRate;
-      //     return this.market.eventualToken;
-      //   })
-      //   .then((tok) => tok.eventualBalanceOf(this.account))
-      //   .then((tokenBalance) => {
-      //     this.tokenBalance = tokenBalance;
-      //   });
       this.$emit('dialogClosed')
     },
   },
