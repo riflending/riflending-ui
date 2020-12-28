@@ -322,12 +322,12 @@ export default {
       this.$emit('wait')
       // checks if enteredMarket
       this.data.market
-        .validateMarketAccount(this.account, this.data.market.token.symbol)
+        .checkMembership()
         .then((ok) => {
           // if not exist => enterMarket
           if (!ok) {
             console.log('BorrowInput: Need to enter market first')
-            return this.data.market.addMarket()
+            return this.data.market.enterMarket()
           }
           return ok
         })

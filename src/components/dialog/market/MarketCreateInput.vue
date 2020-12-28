@@ -196,7 +196,7 @@ export default {
             return new this.$rbank.Market(createdMarketAddress)
           })
           .then((market) => market.setControllerAddress(this.$rbank.controller.address))
-          .then(() => this.$rbank.controller.addMarket(marketAddress))
+          .then(() => this.$rbank.controller.enterMarket(marketAddress))
           .then(() => this.$rbank.controller.setMarketPrice(marketAddress, this.marketPrice))
           .then(() => this.$emit('created', { marketAddress }))
           .catch(() => {
