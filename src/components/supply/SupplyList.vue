@@ -3,7 +3,7 @@
     <v-list>
       <v-list-item>
         <v-row>
-          <v-col cols="3">
+          <v-col cols="2">
             <v-list-item-subtitle class="listTitle">Market</v-list-item-subtitle>
           </v-col>
           <v-col cols="3">
@@ -12,8 +12,11 @@
           <v-col cols="2">
             <v-list-item-subtitle class="listTitle">APR</v-list-item-subtitle>
           </v-col>
-          <v-col cols="4">
+          <v-col cols="3">
             <v-list-item-subtitle class="listTitle">Supplied</v-list-item-subtitle>
+          </v-col>
+          <v-col cols="2">
+            <v-list-item-subtitle class="listTitle">Collateral</v-list-item-subtitle>
           </v-col>
         </v-row>
       </v-list-item>
@@ -26,20 +29,28 @@
       />
     </v-list>
   </v-card>
+  <template v-if="waiting">
+
+  </template>
 </template>
 
 <script>
 import { mapState } from 'vuex'
 import SupplyItem from '@/components/supply/SupplyItem.vue'
+import WaitingDialog from '@/components/dialog/WaitingDialog.vue'
 
 export default {
   name: 'SupplyList',
   components: {
     SupplyItem,
+    WaitingDialog,
   },
   data() {
     return {
       markets: [],
+      succeed: false,
+      waiting: false,
+      error: false,
     }
   },
   computed: {
@@ -54,22 +65,6 @@ export default {
     this.markets.forEach((market) =>
       market.eventualEvents.then((events) => events.liquidateBorrow().on('data', this.reloadItems)),
     )
-
-    // this.$rbank.eventualMarkets.then((mkts) => {
-    //   this.markets = mkts;
-    //   // console.log("this.markets",  marketHelper.getMarkets);
-    //   console.log("eventualMarket HELPER", middlewareHelper.getMarkets[0].eventualEvents);
-    //   // console.log("eventualMarket HELPER out", marketHelper.eventualEvents);
-    //   // console.log("mkts", mkts);
-    //   // console.log("eventualMarket", mkts[0].eventualEvents);
-
-    //   // this.markets.forEach((market) =>
-    //   mkts.forEach((market) =>
-    //     market.eventualEvents.then((events) =>
-    //       events.liquidateBorrow().on("data", this.reloadItems)
-    //     )
-    //   );
-    // });
   },
   methods: {
     reset() {
