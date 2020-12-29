@@ -39,11 +39,6 @@
             <v-row class="grayish item d-flex justify-end mr-1"> {{ baseApr }} % </v-row>
           </v-col>
         </v-row>
-        <v-row class="marketDialog ma-0 d-flex justify-end">
-          <v-btn class="button" color="#008CFF" @click="priceFlag = true">
-            Modify market price
-          </v-btn>
-        </v-row>
       </div>
       <div class="container">
         <v-row class="ma-2 d-flex align-center justify-space-between">
@@ -164,8 +159,8 @@ export default {
     },
     reset() {
       this.priceFlag = false
-      this.$rbank.controller
-        .eventualMarketPrice(this.data.market.address)
+      this.data.market
+        .getPrice(this.data.market.address)
         .then((marketPrice) => {
           this.price = marketPrice
           return this.data.market.eventualBorrowRate
