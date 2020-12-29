@@ -153,11 +153,9 @@ export default {
           this.decimalPositions ||
           `Maximum ${this.data.token.decimals} decimal places for ${this.data.token.symbol}.`,
         marketCash: () =>
-          // this.oldCash >= Number(this.amount) ||
           this.oldCash - Number(this.contractAmount) >= 0 ||
           `This market doesn't have enough ${this.data.token.symbol} liquidity`,
         liquidity: () =>
-          // this.oldLiquidity >= this.price * 2 * Number(this.tokenBalance) ||
           Number(this.amount) < this.maxBorrowAllowed ||
           "You don't have enough liquidity, supply more collateral to raise your Borrow Limit.",
         enteredMarket: () => true || '', // TODO: currently not being used
