@@ -77,61 +77,11 @@ export default {
       this.$emit('selected', accountObject)
     },
     getUnhealthyAccounts(market) {
-      market
-        .getPastEvents('Borrow', 0)
-        .then((borrowEvents) => {
-          const accounts = []
-          const uniqueBorrows = []
-          const borrowsTemp = borrowEvents
-            .map(({ address, returnValues: { user } }) => ({
-              borrower: user,
-              borrowMarketAddress: address,
-            }))
-            .filter((borrow) => borrow.borrower !== this.account)
-          borrowsTemp.forEach((borrow) => {
-            if (accounts.indexOf(borrow.borrower) === -1) {
-              accounts.push(borrow.borrower)
-              uniqueBorrows.push(borrow)
-            }
-          })
-          return uniqueBorrows
-        })
-        .then((borrows) =>
-          Promise.all([
-            Promise.all(
-              borrows.map((borrow) => this.$rbank.controller.getAccountHealth(borrow.borrower)),
-            ),
-            borrows,
-          ]),
-        )
-        .then(([accountsHealth, borrows]) =>
-          borrows
-            .map((borrow, idx) => ({ health: accountsHealth[idx], ...borrow }))
-            .filter((borrow) => borrow.health <= 0),
-        )
-        .then((borrows) =>
-          Promise.all([
-            borrows,
-            Promise.all(
-              borrows.map((borrow) =>
-                new this.$rbank.Market(borrow.borrowMarketAddress).updatedBorrowBy(borrow.borrower),
-              ),
-            ),
-            Promise.all(borrows.map((borrow) => this.data.market.updatedSupplyOf(borrow.borrower))),
-          ]),
-        )
-        .then(([borrows, debtsBy, suppliesOf]) =>
-          borrows
-            .map((borrow, idx) => ({
-              debt: debtsBy[idx],
-              maxToLiquidate: suppliesOf[idx],
-              ...borrow,
-            }))
-            .forEach((borrow) => this.borrows.push(borrow)),
-        )
+      console.log('LiquidateList: getUnhealthyAccounts', market)
     },
     getBorrows() {
-      this.$rbank.eventualMarkets
+      this.$middleware
+        .getMarkets(this.account)
         .then((markets) => markets.filter((market) => market.address !== this.data.market.address))
         .then((markets) => markets.forEach((market) => this.getUnhealthyAccounts(market)))
     },
