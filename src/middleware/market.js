@@ -97,6 +97,15 @@ export default class Market {
     return ethers.utils.formatEther(balance)
   }
 
+  async getLockedBalance(token) {
+    // set balance of account
+    console.log('getLockedBalance token', token)
+    const balance = await this.token.instance.balanceOf(token)
+    console.log('getLockedBalance balance', balance)
+    // return format (without wei)
+    return ethers.utils.formatEther(balance)
+  }
+
   async getUserBalanceOfUnderlying() {
     return this.getBalanceOfUnderlying(this.account)
   }

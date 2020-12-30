@@ -1,13 +1,13 @@
 <template>
   <div class="admin">
     <v-row class="d-flex justify-center">
-      <h1>Add, Edit and Manage your markets</h1>
+      <h1>Market Status</h1>
     </v-row>
     <div class="d-flex justify-center">
       <v-card flat width="950" class="list">
         <v-row class="ma-0 d-flex justify-space-between">
           <v-col class="d-flex align-center">
-            <h2>My Markets</h2>
+            <h2>Listed Markets</h2>
           </v-col>
         </v-row>
         <MarketList />

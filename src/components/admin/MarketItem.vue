@@ -26,13 +26,13 @@
         </v-col>
         <v-col cols="2">
           <v-list-item-subtitle class="item">
-            {{ totalSupply | formatToken(token.decimals) }}
+            {{ totalSupply | formatNumber }}
             <span class="ml-2 itemInfo">{{ token.symbol }}</span>
           </v-list-item-subtitle>
         </v-col>
         <v-col cols="2">
           <v-list-item-subtitle class="item">
-            {{ totalBorrow | formatToken(token.decimals) }}
+            {{ totalBorrow | formatNumber }}
             <span class="ml-2 itemInfo">{{ token.symbol }}</span>
           </v-list-item-subtitle>
         </v-col>
@@ -118,33 +118,44 @@ export default {
     this.$parent.$parent.$on('reload', this.reset)
   },
   created() {
+    console.log('mktItem created')
     this.token = this.market.token
+    console.log('mktItem token', this.token)
+    // this.market
+    //   .borrowBalanceCurrent(this.account)
+    //   .then((balance) => {
+    //     console.log("mktItem balance",balance)
+    //     this.borrowBalance = Number(balance)
+    //     return this.market.getPriceInDecimals()
+    //   })
     this.market
-      .borrowBalanceCurrent(this.account)
-      .then((balance) => {
-        this.borrowBalance = Number(balance)
-        return this.market.getPriceInDecimals()
-      })
+      .getPriceInDecimals()
       // set price
       .then((price) => {
+        console.log('mktItem price', price)
         this.price = price
         return this.market.getBorrowRate()
       })
-
-      // set borrow rate block
+      // set borrow rate block (APR)
       .then((borrowRatePerBlock) => {
+        console.log('mktItem borrowPerBlock', borrowRatePerBlock)
         this.borrowRate = borrowRatePerBlock
         return this.market.getCash()
       })
+      // set current market balance
       .then((cash) => {
+        console.log('mktItem cash', cash)
         this.cash = cash
-        return this.market.getBalanceOfUnderlying()
+        console.log('THIS MARKET', this.market)
+        return this.market.getLockedBalance(this.market.instance.address)
       })
       .then((updatedTotalSupply) => {
+        console.log('mktItem balanceUnderlying', updatedTotalSupply)
         this.totalSupply = updatedTotalSupply
-        return this.market.eventualUpdatedTotalBorrows
+        return 99.9999
       })
       .then((updatedTotalBorrows) => {
+        console.log('mktItem totalBorrow', updatedTotalBorrows)
         this.totalBorrow = updatedTotalBorrows
       })
   },
