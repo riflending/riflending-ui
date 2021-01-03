@@ -29,28 +29,20 @@
       />
     </v-list>
   </v-card>
-  <template v-if="waiting">
-
-  </template>
 </template>
 
 <script>
 import { mapState } from 'vuex'
 import SupplyItem from '@/components/supply/SupplyItem.vue'
-import WaitingDialog from '@/components/dialog/WaitingDialog.vue'
 
 export default {
   name: 'SupplyList',
   components: {
     SupplyItem,
-    WaitingDialog,
   },
   data() {
     return {
       markets: [],
-      succeed: false,
-      waiting: false,
-      error: false,
     }
   },
   computed: {

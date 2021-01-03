@@ -37,7 +37,7 @@
           <v-row class="ma-0">
             <v-col cols="9" class="pa-0 d-flex align-center">
               <v-list-item-subtitle class="item">
-                <ToggleButton :market="market" />
+                <ToggleMarketButton :market="market" />
               </v-list-item-subtitle>
             </v-col>
             <v-col cols="3" class="pa-0">
@@ -72,13 +72,13 @@
 <script>
 import { mapState } from 'vuex'
 import SupplyDialog from '@/components/dialog/supply/SupplyDialog.vue'
-import ToggleButton from '@/components/common/ToggleButton.vue'
+import ToggleMarketButton from '@/components/common/ToggleMarketButton.vue'
 
 export default {
   name: 'SupplyItem',
   components: {
     SupplyDialog,
-    ToggleButton,
+    ToggleMarketButton,
   },
   props: {
     market: {
@@ -124,7 +124,6 @@ export default {
   created() {
     // set data token
     this.token = this.market.token
-    console.log('A', this.market)
     this.market
       .getUserBalanceOfUnderlying()
       .then((balance) => {

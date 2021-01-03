@@ -17,7 +17,7 @@
 import { mapState } from 'vuex'
 
 export default {
-  name: 'ToggleButton',
+  name: 'ToggleMarketButton',
   props: {
     market: {
       type: Object,
@@ -54,7 +54,8 @@ export default {
       const result = confirm(message)
       if (result) {
         try {
-          this.$emit('wait')
+          this.$root.$emit('toggleMarketStatusTransaction', 'waiting')
+
           if (this.value) {
             // Exit the market
             await this.market.exitMarket()
@@ -62,11 +63,11 @@ export default {
             // Enter the market
             await this.market.enterMarket()
           }
-          this.$emit('succeed')
           this.value = !this.value
-          this.$emit('input', !this.value)
+          this.$root.$emit('toggleMarketValue', this.value)
+          this.$root.$emit('toggleMarketStatusTransaction', 'success')
         } catch (err) {
-          this.$emit('error')
+          this.$root.$emit('toggleMarketStatusTransaction', 'error')
         }
       }
     },
