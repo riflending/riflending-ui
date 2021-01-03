@@ -44,7 +44,8 @@ export default {
     },
   },
   async created() {
-    this.value = await this.market.checkMembership()
+    this.value = await this.market.checkMembership(this.account)
+    console.log(`Market membership:`, this.market.symbol, `"${this.value}"`)
   },
   methods: {
     async toggle() {
@@ -54,20 +55,45 @@ export default {
       const result = confirm(message)
       if (result) {
         try {
-          this.$root.$emit('toggleMarketStatusTransaction', 'waiting')
+          this.$root.$emit('toggleMarketStatusTransaction', {
+            status: 'waiting',
+            value: this.value,
+            message: '',
+          })
 
           if (this.value) {
             // Exit the market
-            await this.market.exitMarket()
+            const { events } = await this.market.exitMarket()
+            if (events.length > 0 && events[0]?.event === 'Failure') {
+              throw new Error(
+                'There was a problem trying to exit the market, please try again later',
+              )
+            }
           } else {
             // Enter the market
-            await this.market.enterMarket()
+            const { events } = await this.market.enterMarket()
+            if (events.length > 0 && events[0]?.event === 'Failure') {
+              throw new Error(
+                'There was a problem trying to enter the market, please try again later',
+              )
+            }
           }
           this.value = !this.value
-          this.$root.$emit('toggleMarketValue', this.value)
-          this.$root.$emit('toggleMarketStatusTransaction', 'success')
+          const message = this.value
+            ? 'You have successfully entered the market!'
+            : 'You successfully exit the market!'
+
+          this.$root.$emit('toggleMarketStatusTransaction', {
+            status: 'success',
+            value: this.value,
+            message,
+          })
         } catch (err) {
-          this.$root.$emit('toggleMarketStatusTransaction', 'error')
+          this.$root.$emit('toggleMarketStatusTransaction', {
+            status: 'error',
+            value: this.value,
+            message: err.message,
+          })
         }
       }
     },
