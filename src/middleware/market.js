@@ -123,17 +123,16 @@ export default class Market {
       .toNumber()
   }
 
-  /***
+  /**
    * Check if the user already enter the market
-   * @returns {Promise<boolean>}
+   * @param account
+   * @returns {Promise<*>}
    */
-  async checkMembership() {
+  async checkMembership(account) {
     const contract = this.factoryContract.getContractByNameAndAbiName(
       constants.Unitroller,
       constants.Comptroller,
     )
-    const signer = this.factoryContract.getSigner()
-    const account = await signer.getAddress()
 
     return contract.checkMembership(account, this.instanceAddress)
   }
@@ -151,6 +150,7 @@ export default class Market {
     // set signer
     const contractWithSigner = contract.connect(this.factoryContract.getSigner())
     // send transaction
+    console.log(`Instance address ${this.instanceAddress}`)
     const tx = await contractWithSigner.enterMarkets([this.instanceAddress])
     // await result transaction
     return tx.wait()
@@ -169,6 +169,7 @@ export default class Market {
     // set signer
     const contractWithSigner = contract.connect(this.factoryContract.getSigner())
     // send transaction
+    console.log(`Instance address ${this.instanceAddress}`)
     const tx = await contractWithSigner.exitMarket(this.instanceAddress)
     // await result transaction
     return tx.wait()

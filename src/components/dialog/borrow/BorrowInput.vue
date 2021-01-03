@@ -322,7 +322,7 @@ export default {
       this.$emit('wait')
       // checks if enteredMarket
       this.data.market
-        .checkMembership()
+        .checkMembership(this.account)
         .then((ok) => {
           // if not exist => enterMarket
           if (!ok) {
