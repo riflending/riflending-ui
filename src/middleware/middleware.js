@@ -115,4 +115,34 @@ export default class Middleware {
     const retorno = errorCodes.comptroller[isErroInfo ? 'info' : 'codes'][Number(errorNumber)]
     return !retorno ? '' : retorno.description
   }
+
+  // calls comptroller to retrieve the liquidationFactor
+  async getLiquidationFactor() {
+    console.log('getLiquidationFactor')
+    const factoryContractInstance = new factoryContract()
+    let contract = factoryContractInstance.getContractByNameAndAbiName(
+      constants.Unitroller,
+      constants.Comptroller,
+    )
+    console.log('getLiquidationFactor contract', contract)
+    const liqFactor = await contract.closeFactorMantissa()
+    console.log('getLiquidationFactor', liqFactor)
+    return liqFactor
+  }
+
+  async getAccountHealth(account) {
+    // DTI Debt to Income
+    // TODO: fix this function, probably not calculating the right number
+    console.log('getAccountHealth')
+    const liqFactor = await this.getLiquidationFactor()
+    console.log('getAccountHealth liquidateFactor', liqFactor)
+    if (supplyValue == 0 || borrowValue == 0) return 0
+    const { borrowValue, supplyValue } = await this.getTotals(account)
+    console.log('getAccountHealth getTotals borrow', borrowValue, ' supply', supplyValue)
+    const val = supplyValue.div(borrowValue * liqFactor)
+    console.log('val', val)
+    const ret = 1 / (1 + Math.exp(-val.toNumber()))
+    console.log('getAccountHealth return', ret)
+    return ret > 1 ? 1 : ret < 0 ? 0 : ret
+  }
 }

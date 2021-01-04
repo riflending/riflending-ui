@@ -54,22 +54,6 @@ export default {
     this.markets.forEach((market) =>
       market.eventualEvents.then((events) => events.liquidateBorrow().on('data', this.reloadItems)),
     )
-
-    // this.$rbank.eventualMarkets.then((mkts) => {
-    //   this.markets = mkts;
-    //   // console.log("this.markets",  marketHelper.getMarkets);
-    //   console.log("eventualMarket HELPER", middlewareHelper.getMarkets[0].eventualEvents);
-    //   // console.log("eventualMarket HELPER out", marketHelper.eventualEvents);
-    //   // console.log("mkts", mkts);
-    //   // console.log("eventualMarket", mkts[0].eventualEvents);
-
-    //   // this.markets.forEach((market) =>
-    //   mkts.forEach((market) =>
-    //     market.eventualEvents.then((events) =>
-    //       events.liquidateBorrow().on("data", this.reloadItems)
-    //     )
-    //   );
-    // });
   },
   methods: {
     reset() {

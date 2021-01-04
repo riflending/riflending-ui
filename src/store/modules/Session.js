@@ -9,20 +9,12 @@ const state = {
 
 const actions = {
   // eslint-disable-next-line no-shadow
-  [constants.SESSION_CONNECT_WEB3]: ({ commit, state }) => {
+  [constants.SESSION_CONNECT_WEB3]: ({ commit }) => {
     if (Vue.web3Provider) {
-      Vue.web3Provider
-        .listAccounts()
-        .then(([account]) => {
-          commit(constants.SESSION_SET_PROPERTY, { account })
-          return Vue.rbank.controller.eventualOwner
-        })
-        .then((owner) => {
-          commit(constants.SESSION_SET_PROPERTY, { isOwner: owner === state.account })
-        })
-        .catch(() => {
-          commit(constants.SESSION_SET_PROPERTY, { isOwner: false })
-        })
+      Vue.web3Provider.listAccounts().then(([account]) => {
+        commit(constants.SESSION_SET_PROPERTY, { account })
+        commit(constants.SESSION_SET_PROPERTY, { isOwner: false })
+      })
     }
   },
 }

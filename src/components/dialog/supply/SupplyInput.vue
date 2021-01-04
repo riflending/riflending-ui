@@ -241,7 +241,6 @@ export default {
       this.$emit('wait')
       this.data.market
         .supply(this.amount, this.account)
-        // .supply(this.contractAmount, this.account)
         .then((res) => {
           this.waiting = false
           this.$emit('succeed', {
@@ -280,28 +279,6 @@ export default {
           this.cash = oldCash + Number(this.contractAmount)
           return this.data.market.getBorrowRate()
         })
-
-      // TODO all this !!
-      //   .then(({ supplyValue, borrowValue }) => {
-      //     const newBorrowValue =
-      //       (borrowValue * (this.collateralFactor + this.mantissa)) /
-      //       this.mantissa;
-      //     const newSupplyValue =
-      //       supplyValue + Number(this.contractAmount) * this.price;
-      //     this.liquidity =
-      //       newBorrowValue < newSupplyValue
-      //         ? newSupplyValue - newBorrowValue
-      //         : 0;
-      //     this.maxBorrowAllowed = this.getMaxBorrowAllowed(
-      //       this.liquidity,
-      //       this.cash
-      //     );
-      //     this.supplyBalanceInfo = Number(this.contractAmount);
-      //     this.borrowLimitInfo = Number(
-      //       this.maxBorrowAllowed -
-      //         this.getMaxBorrowAllowed(oldLiquidity, oldCash)
-      //     );
-      //   });
     },
   },
 }

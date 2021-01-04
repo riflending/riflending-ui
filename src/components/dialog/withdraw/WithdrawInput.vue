@@ -341,32 +341,6 @@ export default {
       // TODO this code is never reached because the empty return on the line 313
       // eslint-disable-next-line no-unreachable
       this.maxWithdrawAllowed = this.getMaxWithdrawAllowed(this.oldSupplyOf, this.oldCash)
-      // TODO getAccountValues
-      // return this.data.market.getAccountValues(this.account);
-      // .then(({ supplyValue, borrowValue }) => {
-      //   const newBorrowValue =
-      //     (borrowValue * (this.collateralFactor + this.mantissa)) /
-      //     this.mantissa;
-      //   const newSupplyValue =
-      //     supplyValue - Number(this.contractAmount) * this.price;
-      //   this.liquidity =
-      //     newBorrowValue < newSupplyValue
-      //       ? newSupplyValue - newBorrowValue
-      //       : 0;
-      //   this.maxWithdrawAllowed = this.getMaxWithdrawAllowed(
-      //     this.oldSupplyOf,
-      //     this.oldCash
-      //   );
-      //   this.maxBorrowAllowed = this.getMaxBorrowAllowed(
-      //     this.liquidity,
-      //     this.cash
-      //   );
-      //   this.supplyBalanceInfo = Number(this.contractAmount);
-      //   this.borrowLimitInfo = Number(
-      //     this.getMaxBorrowAllowed(oldLiquidity, this.oldCash) -
-      //       this.maxBorrowAllowed
-      //   );
-      // });
     },
   },
 }

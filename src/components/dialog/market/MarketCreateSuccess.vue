@@ -70,20 +70,7 @@ export default {
     },
   },
   created() {
-    const market = new this.$rbank.Market(this.marketAddress)
-    market.eventualToken
-      .then((token) => token.eventualSymbol)
-      .then((tokenSymbol) => {
-        this.tokenSymbol = tokenSymbol
-        return market.eventualBorrowRate
-      })
-      .then((borrowRate) => {
-        this.borrowRate = borrowRate
-        return this.$rbank.controller.eventualMarketPrice(this.marketAddress)
-      })
-      .then((marketPrice) => {
-        this.price = marketPrice
-      })
+    //removed - not being used - 2020-12-28
   },
   methods: {
     closeDialog() {

@@ -224,8 +224,8 @@ export default {
       })
       .then((cash) => {
         // the amount of underlying stored in contract AKA "CONTRACT LIQUIDITY"
-        this.oldCash = cash // the amount of underlying stored in contract AKA "CONTRACT LIQUIDITY"
-        this.cash = cash // the amount of underlying stored in contract AKA "CONTRACT LIQUIDITY"
+        this.oldCash = cash
+        this.cash = cash
         return this.data.market.getBorrowRate()
       })
       .then((borrowRate) => {
@@ -337,7 +337,6 @@ export default {
           this.borrowAllowance = maxBorrowAllowed
           this.borrowBalanceInfo = Number(this.contractAmount)
         })
-
     },
   },
 }

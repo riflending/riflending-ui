@@ -117,17 +117,10 @@ export default {
   },
   methods: {
     getData() {
-      this.$rbank.controller.getAccountValues(this.account).then(({ supplyValue, borrowValue }) => {
-        this.totalBorrowed = borrowValue
-        this.totalSupplied = supplyValue
-        this.getBorrowLimit()
-        this.updateDiagramData()
-      })
+      //removed - not being used - 2020-12-28
     },
     getBorrowLimit() {
-      this.$rbank.controller.getAccountLiquidity(this.account).then((liquidity) => {
-        this.totalBorrowLimit = liquidity / 2
-      })
+      //removed - not being used - 2020-12-28
     },
     updateDiagramData() {
       this.chartData = [

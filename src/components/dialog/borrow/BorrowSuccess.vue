@@ -102,18 +102,15 @@ export default {
         this.tokenBalance = balance
         console.log('success! balance', this.tokenBalance, ' account: ', this.account)
         return this.$middleware.getAccountLiquidity(this.account)
-        // return this.$rbank.controller.getAccountLiquidity(this.account);
       })
       .then(({ accountLiquidityInExcess }) => {
         this.liquidity = accountLiquidityInExcess
         return this.data.market.getCash()
-        // return this.data.market.eventualCash;
       })
       .then((cash) => {
         this.cash = cash
         console.log('success! cash', this.cash)
         return this.data.market.getPriceInDecimals()
-        // return this.$rbank.controller.eventualMarketPrice(this.data.market.address);
       })
       .then((marketPrice) => {
         this.price = Number(marketPrice)

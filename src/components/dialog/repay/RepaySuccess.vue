@@ -129,29 +129,6 @@ export default {
         console.log('success! borrowby', this.borrowBy)
         this.borrowBalanceInfo = Number(this.contractAmount)
       })
-
-    // TODO: double-check that we're not missing anything in this refactor
-    // .then((accountLiquidity) => {
-    //   this.liquidity = accountLiquidity;
-    //   console.log("repaySuccess: liquidity",this.liquidity);
-    //   return this.data.market.eventualCash;
-    // })
-    // .then((cash) => {
-    //   this.cash = cash;
-    //   return this.$rbank.controller.eventualMarketPrice(this.data.market.address);
-    // })
-    // .then((marketPrice) => {
-    //   this.price = marketPrice;
-    //   return this.data.market.updatedBorrowBy(this.account);
-    // })
-    // .then((borrowBy) => {
-    //   this.borrowBy = borrowBy;
-    //   return this.$rbank.controller.getAccountHealth(this.account);
-    // })
-    // .then((accountHealth) => {
-    //   this.accountHealth = accountHealth;
-    //   this.maxBorrowAllowed = this.getMaxAllowed(this.liquidity, this.cash);
-    // });
   },
   methods: {
     closeDialog() {

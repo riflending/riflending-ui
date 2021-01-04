@@ -9,33 +9,20 @@
           <v-col class="d-flex align-center">
             <h2>My Markets</h2>
           </v-col>
-          <v-col>
-            <v-row class="d-flex align-center justify-end">
-              <h3>Add new Market</h3>
-              <v-btn class="ml-5" fab dark small color="#008CFF" @click="dialog = !dialog">
-                <v-icon>add</v-icon>
-              </v-btn>
-            </v-row>
-          </v-col>
         </v-row>
         <MarketList />
       </v-card>
-      <template v-if="dialog">
-        <MarketCreateDialog :data="dataObject" @closed="dialog = false" />
-      </template>
     </div>
   </div>
 </template>
 
 <script>
 import MarketList from '@/components/admin/MarketList.vue'
-import MarketCreateDialog from '@/components/dialog/market/MarketCreateDialog.vue'
 
 export default {
   name: 'Admin',
   components: {
     MarketList,
-    MarketCreateDialog,
   },
   data() {
     return {

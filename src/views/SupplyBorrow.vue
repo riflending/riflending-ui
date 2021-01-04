@@ -81,13 +81,13 @@ export default {
     },
   },
   created() {
-    this.$rbank.controller.getAccountHealth(this.account).then((accountHealth) => {
+    this.$middleware.getAccountHealth(this.account).then((accountHealth) => {
       this.accountHealth = accountHealth
     })
   },
   methods: {
     reset() {
-      this.$rbank.controller.getAccountHealth(this.account).then((accountHealth) => {
+      this.$middleware.getAccountHealth(this.account).then((accountHealth) => {
         this.accountHealth = accountHealth
       })
     },
