@@ -19,7 +19,7 @@
       </p>
     </v-row>
     <v-row class="my-5 pt-5 d-flex justify-center">
-      <v-btn class="button" rounded color="#008CFF" @click="closeDialog"> Back </v-btn>
+      <v-btn class="button" rounded color="#008CFF" @click="closeDialog"> Close </v-btn>
     </v-row>
   </div>
 </template>

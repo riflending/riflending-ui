@@ -2,7 +2,7 @@
   <div class="dialog">
     <v-list-item>
       <v-row class="my-5 mx-0 d-flex align-center">
-        <v-col cols="3">
+        <v-col cols="2">
           <v-row class="d-flex align-center">
             <v-col cols="6" class="pa-0 d-flex justify-end">
               <v-list-item-avatar tile size="40">
@@ -24,12 +24,20 @@
         <v-col cols="2">
           <v-list-item-subtitle class="item"> {{ apr }}% </v-list-item-subtitle>
         </v-col>
-        <v-col cols="4" class="px-0">
+        <v-col cols="3" class="px-0">
           <v-row class="ma-0">
             <v-col cols="9" class="pa-0 d-flex align-center">
               <v-list-item-subtitle class="item">
                 {{ tokenBalance | formatNumber }}
-                <!-- {{ tokenBalance | formatToken(token.decimals) }} -->
+              </v-list-item-subtitle>
+            </v-col>
+          </v-row>
+        </v-col>
+        <v-col cols="2" class="px-0">
+          <v-row class="ma-0">
+            <v-col cols="9" class="pa-0 d-flex align-center">
+              <v-list-item-subtitle class="item">
+                <ToggleMarketButton :market="market" />
               </v-list-item-subtitle>
             </v-col>
             <v-col cols="3" class="pa-0">
@@ -64,11 +72,13 @@
 <script>
 import { mapState } from 'vuex'
 import SupplyDialog from '@/components/dialog/supply/SupplyDialog.vue'
+import ToggleMarketButton from '@/components/common/ToggleMarketButton.vue'
 
 export default {
   name: 'SupplyItem',
   components: {
     SupplyDialog,
+    ToggleMarketButton,
   },
   props: {
     market: {

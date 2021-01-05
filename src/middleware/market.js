@@ -123,17 +123,25 @@ export default class Market {
       .toNumber()
   }
 
-  async validateMarketAccount(account) {
-    // set contract Comptroller delegate (Unitroller)
+  /**
+   * Check if the user already enter the market
+   * @param account
+   * @returns {Promise<*>}
+   */
+  async checkMembership(account) {
     const contract = this.factoryContract.getContractByNameAndAbiName(
       constants.Unitroller,
       constants.Comptroller,
     )
-    // get is member (bool)
+
     return contract.checkMembership(account, this.instanceAddress)
   }
 
-  async addMarket() {
+  /**
+   * Allow connected user to enter the market
+   * @returns {Promise<*|"ok"|"not-equal"|"timed-out">}
+   */
+  async enterMarket() {
     // set contract
     const contract = this.factoryContract.getContractByNameAndAbiName(
       constants.Unitroller,
@@ -142,7 +150,27 @@ export default class Market {
     // set signer
     const contractWithSigner = contract.connect(this.factoryContract.getSigner())
     // send transaction
+    console.log(`Instance address ${this.instanceAddress}`)
     const tx = await contractWithSigner.enterMarkets([this.instanceAddress])
+    // await result transaction
+    return tx.wait()
+  }
+
+  /**
+   * Allow the connecte user to exit the market
+   * @returns {Promise<*|"ok"|"not-equal"|"timed-out">}
+   */
+  async exitMarket() {
+    // set contract
+    const contract = this.factoryContract.getContractByNameAndAbiName(
+      constants.Unitroller,
+      constants.Comptroller,
+    )
+    // set signer
+    const contractWithSigner = contract.connect(this.factoryContract.getSigner())
+    // send transaction
+    console.log(`Instance address ${this.instanceAddress}`)
+    const tx = await contractWithSigner.exitMarket(this.instanceAddress)
     // await result transaction
     return tx.wait()
   }
