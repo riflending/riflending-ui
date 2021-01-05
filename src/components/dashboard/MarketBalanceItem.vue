@@ -54,23 +54,7 @@ export default {
     },
   },
   created() {
-    this.market = new this.$rbank.Market(this.marketAddress)
-    this.market.token
-      .then((tok) => [tok.eventualName, tok.eventualSymbol, tok.eventualDecimals])
-      .then((results) => Promise.all(results))
-      .then(([name, symbol, decimals]) => {
-        this.token.name = name
-        this.token.symbol = symbol
-        this.token.decimals = decimals
-        return this.$rbank.controller.eventualMarketPrice(this.marketAddress)
-      })
-      .then((marketPrice) => {
-        this.price = marketPrice
-        return this.market.updatedSupplyOf(this.account)
-      })
-      .then((supplyOf) => {
-        this.supplyOf = supplyOf
-      })
+    //removed - not being used - 2020-12-28
   },
 }
 </script>

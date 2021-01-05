@@ -216,7 +216,7 @@ export default {
     liquidate() {
       this.waiting = true
       this.$emit('wait')
-      const market = new this.$rbank.Market(this.borrowMarketAddress)
+      const market = this.data.market
       market
         .liquidateBorrow(
           this.liquidationAccount,
@@ -244,11 +244,11 @@ export default {
     setLiquidationAccount(accountObject) {
       this.borrowMarketAddress = accountObject.borrowMarketAddress
       this.getCollateralToken()
-        .then(() => this.$rbank.controller.eventualMarketPrice(this.borrowMarketAddress))
+        .then(() => this.data.market.getPrice(this.borrowMarketAddress))
         .then((price) => {
           this.borrowMarketPrice = price
           this.accountDebt = accountObject.debt * price
-          return this.$rbank.controller.eventualMarketPrice(this.data.market.address)
+          return this.data.market.getPrice(this.data.market.address)
         })
         .then((price) => {
           this.currentMarketPrice = price
@@ -262,7 +262,7 @@ export default {
     },
     getCollateralToken() {
       return new Promise((resolve, reject) => {
-        new this.$rbank.Market(this.borrowMarketAddress).eventualToken
+        this.data.market
           .then((token) =>
             Promise.all([
               token.eventualSymbol,

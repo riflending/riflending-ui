@@ -93,7 +93,7 @@ export default {
     },
   },
   created() {
-    this.$rbank.controller.eventualMarketPrice(this.data.market.address).then((marketPrice) => {
+    this.data.market.getPrice(this.data.market.address).then((marketPrice) => {
       this.price = marketPrice
     })
   },
@@ -109,19 +109,7 @@ export default {
       this.$emit('closed')
     },
     setPrice() {
-      this.waiting = true
-      this.$rbank.controller
-        .setMarketPrice(this.data.market.address, this.newPrice)
-        .then(() => {
-          this.waiting = false
-          this.success = true
-          this.$emit('priceSet')
-        })
-        .catch(() => {
-          this.waiting = false
-          this.success = false
-          this.error = true
-        })
+      //removed - not being used - 2020-12-28
     },
   },
 }

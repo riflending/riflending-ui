@@ -1,7 +1,6 @@
 import Vue from 'vue'
 import RLogin from '@rsksmart/rlogin'
 import WalletConnectProvider from '@walletconnect/web3-provider'
-import Rbank from '@rsksmart/rbank'
 import { Middleware } from './middleware/index'
 import App from './App.vue'
 import './registerServiceWorker'
@@ -15,13 +14,7 @@ import './styles/main.scss'
 require('./filters')
 
 Vue.config.productionTip = false
-// eslint-disable-next-line no-multi-assign
-Vue.prototype.$rbank = Vue.rbank = new Rbank({
-  [process.env.VUE_APP_NETWORK_ID]: {
-    httpProvider: process.env.VUE_APP_HTTP_PROVIDER,
-    wsProvider: process.env.VUE_APP_WSS_PROVIDER,
-  },
-})
+
 // eslint-disable-next-line no-multi-assign
 Vue.prototype.$middleware = Vue.middleware = new Middleware()
 // eslint-disable-next-line no-multi-assign

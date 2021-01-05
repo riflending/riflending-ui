@@ -176,37 +176,10 @@ export default {
       this.marketExists = false
     },
     async checkMarketExistence() {
-      await this.$rbank.marketExistsByToken(this.tokenAddress).then((marketExists) => {
-        this.marketExists = marketExists
-      })
+      //removed - not being used - 2020-12-28
     },
     async createMarket() {
-      await this.checkMarketExistence()
-      if (!this.marketExists) {
-        let marketAddress
-        this.$emit('wait')
-        await this.$rbank.Market.create(
-          this.tokenAddress,
-          this.baseBorrowApr,
-          this.blocksPerYear,
-          this.utilizationRate,
-        )
-          .then((createdMarketAddress) => {
-            marketAddress = createdMarketAddress
-            return new this.$rbank.Market(createdMarketAddress)
-          })
-          .then((market) => market.setControllerAddress(this.$rbank.controller.address))
-          .then(() => this.$rbank.controller.enterMarket(marketAddress))
-          .then(() => this.$rbank.controller.setMarketPrice(marketAddress, this.marketPrice))
-          .then(() => this.$emit('created', { marketAddress }))
-          .catch(() => {
-            this.$emit('error')
-          })
-      } else {
-        this.error = 'There is already a market for the token address entered!'
-        this.showSnackbar = true
-        setTimeout(() => this.reset(), 3000)
-      }
+      //removed - not being used - 2020-12-28
     },
   },
 }

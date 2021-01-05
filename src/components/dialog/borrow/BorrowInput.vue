@@ -148,19 +148,17 @@ export default {
       mantissa: 0, // getCurrentExchangeRate() current exchange rate mantissa to convert underlying to ctoken
       rules: {
         required: () => !!Number(this.amount) || 'Required.',
-        // TODO: fix bug: triggers when maxBorrowAllowed is inputed by MAX button
-        // allowed: () => Number(this.maxBorrowAllowed) > Number(this.amount)/* || 'You shouldn\'t borrow over the max allowed!'*/,
-        allowed: () => this.isBorrowAllowed || "You shouldn't borrow over the max allowed!",
+        allowed: () => this.isBorrowAllowed || "Borrow won't be allowed by the protocol", // TODO: currently not being used
         decimals: () =>
           this.decimalPositions ||
           `Maximum ${this.data.token.decimals} decimal places for ${this.data.token.symbol}.`,
         marketCash: () =>
-          this.oldCash >= Number(this.tokenBalance) ||
-          `This market doesn't have enough ${this.data.token.symbol}`,
+          this.oldCash - Number(this.contractAmount) >= 0 ||
+          `This market doesn't have enough ${this.data.token.symbol} liquidity`,
         liquidity: () =>
-          this.oldLiquidity >= this.price * 2 * Number(this.tokenBalance) ||
-          "You don't have enough liquidity, supply more collateral.",
-        enteredMarket: () => true || '',
+          Number(this.amount) < this.maxBorrowAllowed ||
+          "You don't have enough liquidity, supply more collateral to raise your Borrow Limit.",
+        enteredMarket: () => true || '', // TODO: currently not being used
       },
     }
   },
@@ -171,18 +169,10 @@ export default {
     apr() {
       return this.borrowRate.toFixed(2)
     },
-    balanceAsDouble() {
-      return (this.tokenBalance / 10 ** this.data.token.decimals).toFixed(this.data.token.decimals)
-    },
-    // balanceAsDouble() {
-    //   return this.asDouble(this.tokenBalance);
-    // },
     contractAmount() {
-      // TODO: check, is this the right way to convert from user input to contract data
       return Number(this.amount).toFixed(this.data.token.decimals).replace('.', '')
     },
     validForm() {
-      // TODO: double-check validations
       return (
         typeof this.rules.enteredMarket() !== 'string' &&
         typeof this.rules.allowed() !== 'string' &&
@@ -226,26 +216,22 @@ export default {
       .then((borrowBy) => {
         this.borrowBy = Number(borrowBy)
         return this.$middleware.getAccountLiquidity(this.account)
-        // return this.$rbank.controller.getAccountLiquidity(this.account);
       })
       .then(({ accountLiquidityInExcess }) => {
         this.oldLiquidity = accountLiquidityInExcess // liquid assets in the protocol
         this.liquidity = accountLiquidityInExcess // liquid assets in the protocol
         return this.data.market.getCash()
-        // return this.data.market.eventualCash;
       })
       .then((cash) => {
         // the amount of underlying stored in contract AKA "CONTRACT LIQUIDITY"
-        this.oldCash = cash // the amount of underlying stored in contract AKA "CONTRACT LIQUIDITY"
-        this.cash = cash // the amount of underlying stored in contract AKA "CONTRACT LIQUIDITY"
+        this.oldCash = cash
+        this.cash = cash
         return this.data.market.getBorrowRate()
-        // return this.data.market.eventualBorrowRate;
       })
       .then((borrowRate) => {
         // TODO: double check, perhaps this is not being used
         this.borrowRate = borrowRate
         return this.data.market.getPrice(this.data.market.address)
-        // return this.$rbank.controller.eventualMarketPrice(this.data.market.address);
       })
       .then((marketPrice) => {
         this.price = marketPrice
@@ -254,7 +240,6 @@ export default {
       .then((supplyValue) => {
         this.supplyValue = supplyValue
         return this.data.market.getCurrentExchangeRate()
-        // return this.$rbank.controller.eventualMantissa;
       })
       .then((mantissa) => {
         this.mantissa = mantissa
@@ -262,50 +247,10 @@ export default {
       })
       .then((maxBorrowAllowed) => {
         this.maxBorrowAllowed = maxBorrowAllowed
-        this.oldMaxBorrowAllowed = this.asDouble(maxBorrowAllowed)
+        this.oldMaxBorrowAllowed = maxBorrowAllowed
         this.borrowAllowance = maxBorrowAllowed
         this.borrowBalanceInfo = Number(this.contractAmount)
       })
-
-    //       this.data.market
-    // .updatedBorrowBy(this.account)
-    //   .then((borrowBy) => {
-    //     this.borrowBy = borrowBy;
-    //     return this.$rbank.controller.getAccountLiquidity(this.account);
-    //   })
-    //   .then((accountLiquidity) => {
-    //     this.oldLiquidity = accountLiquidity;
-    //     this.liquidity = accountLiquidity;
-    //     return this.data.market.eventualCash;
-    //   })
-    //   .then((cash) => {
-    //     this.oldCash = cash;
-    //     this.cash = cash;
-    //     return this.data.market.eventualBorrowRate;
-    //   })
-    //   .then((borrowRate) => {
-    //     this.borrowRate = borrowRate;
-    //     return this.$rbank.controller.eventualMarketPrice(this.data.market.address);
-    //   })
-    //   .then((marketPrice) => {
-    //     this.price = marketPrice;
-    //     return this.data.market.eventualToken;
-    //   })
-    //   .then((tok) => tok.eventualBalanceOf(this.account))
-    //   .then((tokenBalance) => {
-    //     this.tokenBalance = tokenBalance;
-    //     return this.$rbank.controller.eventualMantissa;
-    //   })
-    //   .then((mantissa) => {
-    //     this.mantissa = mantissa;
-    //     return this.$rbank.controller.eventualCollateralFactor;
-    //   })
-    //   .then((collateralFactor) => {
-    //     this.collateralFactor = collateralFactor * this.mantissa;
-    //     this.oldMaxBorrowAllowed = this.asDouble(this
-    //       .getMaxBorrowAllowed(this.liquidity, this.cash));
-    //     this.maxBorrowAllowed = this.getMaxBorrowAllowed(this.liquidity, this.cash);
-    //   });
   },
   methods: {
     async borrowAllowed() {
@@ -360,44 +305,22 @@ export default {
           this.waiting = false
         })
     },
-    // borrow() {
-    //   this.waiting = true;
-    //   this.$emit('wait');
-    //   this.data.market.borrow(this.contractAmount, this.account)
-    //     .then((res) => {
-    //       this.waiting = false;
-    //       this.$emit('succeed', {
-    //         hash: res.transactionHash,
-    //         borrowLimitInfo: this.borrowLimitInfo,
-    //         borrowBalanceInfo: this.borrowBalanceInfo,
-    //       });
-    //     })
-    //     .catch(() => {
-    //       this.waiting = false;
-    //       this.$emit('error');
-    //     });
-    // },
-    asDouble(value) {
-      return (value / 10 ** this.data.token.decimals).toFixed(this.data.token.decimals)
-    },
     async getValues() {
       this.data.market
         .borrowBalanceCurrent(this.account)
         .then((borrowBy) => {
           this.borrowBy = Number(borrowBy) + Number(this.contractAmount)
           return this.$middleware.getAccountLiquidity(this.account)
-          // return this.$rbank.controller.getAccountLiquidity(this.account);
         })
         .then(({ accountLiquidityInExcess }) => {
           this.oldLiquidity = accountLiquidityInExcess // user's liquid assets in the protocol
           return this.data.market.getCash() // gets underlying balance stored in contract
-          // return this.data.market.eventualCash;
         })
         .then((cash) => {
           this.oldCash = cash // balance of contract underlying AKA "CONTRACT LIQUIDITY"
-          this.cash = cash - Number(this.contractAmount)
+          this.cash =
+            cash - (cash - Number(this.contractAmount) <= 0 ? cash : Number(this.contractAmount))
           return this.data.market.getBalanceOfUnderlying(this.account)
-          // return this.$rbank.controller.getAccountValues(this.account);
         })
         .then((supplyValue) => {
           this.supplyValue = supplyValue
@@ -414,44 +337,6 @@ export default {
           this.borrowAllowance = maxBorrowAllowed
           this.borrowBalanceInfo = Number(this.contractAmount)
         })
-      // Toggle this block to test getValues update on borrowAllowed
-      /// ////////////////////////
-      //  return this.borrowAllowed();
-      // })
-      // .then((allowed) => {
-      //   if (!allowed.allowed) {
-      //     this.isBorrowAllowed = false; // if not allowed, sets internal variable to false
-      //     return this.$middleware.getMsjErrorCodeComptroller(
-      //       allowed.errorCode._hex
-      //     );
-      //   }
-      //   this.isBorrowAllowed = true;
-      // }); ///////////////////////////
-
-      // await this.data.market.updatedBorrowBy(this.account)
-      // .then((borrowBy) => {
-      //   this.borrowBy = borrowBy + Number(this.contractAmount);
-      //   return this.$rbank.controller.getAccountLiquidity(this.account);
-      // })
-      // .then((accountLiquidity) => {
-      //   this.oldLiquidity = accountLiquidity;
-      //   return this.data.market.eventualCash;
-      // })
-      // .then((cash) => {
-      //   this.oldCash = cash;
-      //   this.cash = cash - Number(this.contractAmount);
-      //   return this.$rbank.controller.getAccountValues(this.account);
-      // })
-      // .then(({ supplyValue, borrowValue }) => {
-      //   const newBorrowValue = ((borrowValue + (Number(this.contractAmount) * this.price)) * (this
-      //     .collateralFactor + this.mantissa)) / this.mantissa;
-      //   const newSupplyValue = supplyValue;
-      //   this.liquidity = newBorrowValue < newSupplyValue ? newSupplyValue - newBorrowValue : 0;
-      //   this.maxBorrowAllowed = this.getMaxBorrowAllowed(this.liquidity, this.cash);
-      //   this.borrowBalanceInfo = Number(this.contractAmount);
-      //   this.borrowLimitInfo = Number(this
-      //     .getMaxBorrowAllowed(this.oldLiquidity, this.oldCash) - this.maxBorrowAllowed);
-      // });
     },
   },
 }

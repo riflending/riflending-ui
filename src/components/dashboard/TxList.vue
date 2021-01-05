@@ -150,23 +150,7 @@ export default {
         })
     },
     getTransactions() {
-      this.$rbank.eventualMarkets.then((markets) => {
-        markets.forEach((market) => {
-          market.eventualToken
-            .then((token) =>
-              Promise.all([
-                token.eventualSymbol,
-                market.eventualDeployBlock,
-                this.$rbank.controller.eventualMarketPrice(market.address),
-                market.eventualBorrowRate,
-                token.eventualDecimals,
-              ]),
-            )
-            .then(([symbol, deployBlock, price, borrowRate, decimals]) => {
-              this.pushMarketEvents(market, deployBlock, symbol, price, borrowRate, decimals)
-            })
-        })
-      })
+      //removed - not being used - 2020-12-28
     },
   },
 }

@@ -131,18 +131,8 @@ export default {
           return this.weekLabels[date.getDay()].value
       }
     },
-    getChartData(period) {
-      this.period = period
-      this.$rbank.controller
-        .getOverallBalance(this.account, period)
-        .then((overallBalance) =>
-          overallBalance.map(([date, balance]) => [this.mapTimeToLabel(period, date), balance]),
-        )
-        .then((overallBalance) => {
-          overallBalance.reverse()
-          this.chartData = Array.from(new Set(overallBalance.map(JSON.stringify)), JSON.parse)
-          this.chartData.unshift(['Time', 'Balance'])
-        })
+    getChartData() {
+      //removed - not being used - 2020-12-28
     },
   },
 }

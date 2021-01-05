@@ -96,7 +96,7 @@ export default {
       },
       price: 0,
       borrowRate: 0,
-      cash: 0,
+      cash: 0, // current contract liquidity
       totalSupply: 0,
       totalBorrow: 0,
       dialog: false,
@@ -118,29 +118,27 @@ export default {
     this.$parent.$parent.$on('reload', this.reset)
   },
   created() {
-    this.market.eventualEvents.then((events) => {
-      events.allEvents().on('data', this.reset)
-    })
-    this.market.eventualToken
-      .then((tok) => [tok.eventualName, tok.eventualSymbol, tok.eventualDecimals])
-      .then((results) => Promise.all(results))
-      .then(([name, symbol, decimals]) => {
-        this.token.name = name
-        this.token.symbol = symbol
-        this.token.decimals = decimals
-        return this.$rbank.controller.eventualMarketPrice(this.market.address)
+    this.token = this.market.token
+    this.market
+      .borrowBalanceCurrent(this.account)
+      .then((balance) => {
+        this.borrowBalance = Number(balance)
+        return this.market.getPriceInDecimals()
       })
-      .then((marketPrice) => {
-        this.price = marketPrice
-        return this.market.eventualBorrowRate
+      // set price
+      .then((price) => {
+        this.price = price
+        return this.market.getBorrowRate()
       })
-      .then((borrowRate) => {
-        this.borrowRate = borrowRate
-        return this.market.eventualCash
+
+      // set borrow rate block
+      .then((borrowRatePerBlock) => {
+        this.borrowRate = borrowRatePerBlock
+        return this.market.getCash()
       })
       .then((cash) => {
         this.cash = cash
-        return this.market.eventualUpdatedTotalSupply
+        return this.market.getBalanceOfUnderlying()
       })
       .then((updatedTotalSupply) => {
         this.totalSupply = updatedTotalSupply
@@ -153,15 +151,15 @@ export default {
   methods: {
     reset() {
       this.dialog = false
-      this.$rbank.controller
-        .eventualMarketPrice(this.market.address)
+      this.market
+        .getPriceInDecimals()
         .then((marketPrice) => {
           this.price = marketPrice
-          return this.market.eventualBorrowRate
+          return this.market.getBorrowRate()
         })
         .then((borrowRate) => {
           this.borrowRate = borrowRate
-          return this.market.eventualCash
+          return this.market.getCash()
         })
         .then((cash) => {
           this.cash = cash
