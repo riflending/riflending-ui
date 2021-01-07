@@ -7,7 +7,7 @@
       <router-link class="mx-5" :to="{ name: 'MyActivity' }"> Home </router-link>
       <router-link class="mx-5" :to="{ name: 'SupplyBorrow' }"> Supply/Borrow </router-link>
       <!-- <template v-if="isOwner"> -->
-      <router-link class="mx-5" :to="{ name: 'Admin' }"> Admin </router-link>
+      <router-link class="mx-5" :to="{ name: 'Status' }"> Status </router-link>
       <!-- </template> -->
       <v-btn class="mx-5" rounded outlined color="#008CFF">
         {{ accountCutOff }}
@@ -39,7 +39,7 @@ export default {
     title() {
       if (this.$route.path === '/supplyBorrow') return 'Supply / Borrow'
       if (this.$route.path === '/myActivity') return 'My Activity'
-      if (this.$route.path === '/admin') return 'Admin Dashboard'
+      if (this.$route.path === '/status') return 'Status'
       return ''
     },
     accountCutOff() {
@@ -51,7 +51,7 @@ export default {
   },
   watch: {
     isOwner(val) {
-      if (val) this.$router.push({ name: 'Admin' })
+      if (val) this.$router.push({ name: 'Status' })
     },
     isLogged() {
       this.$router.push({ name: 'MyActivity' })
