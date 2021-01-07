@@ -97,6 +97,31 @@ export default class Market {
     return ethers.utils.formatEther(balance)
   }
 
+  async getLockedBalance(tokenAddress) {
+    const balance = await this.token.instance.balanceOf(tokenAddress)
+    return ethers.utils.formatEther(balance)
+  }
+
+  async getTotalBorrowsCurrent(formatted) {
+    // Total Borrows is the amount of underlying currently loaned out by the market, and the amount upon which interest is accumulated to suppliers of the market.
+    const balance = await this.instance.callStatic.totalBorrowsCurrent()
+    return formatted ? ethers.utils.formatEther(balance) : balance
+  }
+
+  async getTotalCash(formatted) {
+    // Cash is the amount of underlying balance owned by this cToken contract. One may query the total amount of cash currently available to this market.
+    const balance = await this.instance.callStatic.getCash()
+    return formatted ? ethers.utils.formatEther(balance) : balance
+  }
+
+  async getTotalSupply() {
+    // Mmmm see https://compound.finance/docs/ctokens#total-supply, probably we need to use this method, but depends of the bussines rule, we will use the sum of the total borrow and cash
+    const cash = await this.getTotalCash(false)
+    const totalBorrowsCurrent = await this.getTotalBorrowsCurrent(false)
+    const totalSupply = cash.add(totalBorrowsCurrent)
+    return ethers.utils.formatEther(totalSupply)
+  }
+
   async getUserBalanceOfUnderlying() {
     return this.getBalanceOfUnderlying(this.account)
   }

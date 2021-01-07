@@ -28,8 +28,8 @@ export default [
     beforeEnter: requireAuth,
   },
   {
-    path: '/admin',
-    name: 'Admin',
+    path: '/status',
+    name: 'Status',
     component: () => import(/* webpackChunkName: "admin" */ '@/views/Admin.vue'),
     beforeEnter: requireAuth,
   },

@@ -26,13 +26,13 @@
         </v-col>
         <v-col cols="2">
           <v-list-item-subtitle class="item">
-            {{ totalSupply | formatToken(token.decimals) }}
+            {{ totalSupply | formatNumber }}
             <span class="ml-2 itemInfo">{{ token.symbol }}</span>
           </v-list-item-subtitle>
         </v-col>
         <v-col cols="2">
           <v-list-item-subtitle class="item">
-            {{ totalBorrow | formatToken(token.decimals) }}
+            {{ totalBorrow | formatNumber }}
             <span class="ml-2 itemInfo">{{ token.symbol }}</span>
           </v-list-item-subtitle>
         </v-col>
@@ -40,7 +40,7 @@
           <v-row class="ma-0">
             <v-col cols="10" class="pa-0 d-flex align-center">
               <v-list-item-subtitle class="item">
-                {{ cash | formatToken(token.decimals) }}
+                {{ cash | formatNumber }}
                 <span class="ml-2 itemInfo">{{ token.symbol }}</span>
               </v-list-item-subtitle>
             </v-col>
@@ -104,6 +104,7 @@ export default {
   },
   computed: {
     apr() {
+      // APR represents the annual rate charged for earning or borrowing money
       return this.borrowRate.toFixed(2)
     },
     dataObject() {
@@ -117,36 +118,13 @@ export default {
   mounted() {
     this.$parent.$parent.$on('reload', this.reset)
   },
-  created() {
+  async created() {
     this.token = this.market.token
-    this.market
-      .borrowBalanceCurrent(this.account)
-      .then((balance) => {
-        this.borrowBalance = Number(balance)
-        return this.market.getPriceInDecimals()
-      })
-      // set price
-      .then((price) => {
-        this.price = price
-        return this.market.getBorrowRate()
-      })
-
-      // set borrow rate block
-      .then((borrowRatePerBlock) => {
-        this.borrowRate = borrowRatePerBlock
-        return this.market.getCash()
-      })
-      .then((cash) => {
-        this.cash = cash
-        return this.market.getBalanceOfUnderlying()
-      })
-      .then((updatedTotalSupply) => {
-        this.totalSupply = updatedTotalSupply
-        return this.market.eventualUpdatedTotalBorrows
-      })
-      .then((updatedTotalBorrows) => {
-        this.totalBorrow = updatedTotalBorrows
-      })
+    this.price = await this.market.getPriceInDecimals()
+    this.borrowRate = await this.market.getBorrowRate()
+    this.cash = await this.market.getTotalCash(true)
+    this.totalSupply = await this.market.getTotalSupply()
+    this.totalBorrow = await this.market.getTotalBorrowsCurrent(true)
   },
   methods: {
     reset() {
