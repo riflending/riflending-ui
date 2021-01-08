@@ -133,7 +133,10 @@ export default class Middleware {
   async getAccountHealth(account) {
     const { borrowValue, supplyValue } = await this.getTotals(account)
     if (supplyValue == 0 || borrowValue == 0) return 1
-    //returns 1 minus the division of borrow by supply. Supply is div 2, because of the reserve factor
+    //returns 1 minus the division of borrow by supply. Supply is div 2, because of the collateral factor
     return 1 - borrowValue / (supplyValue / 2)
+    // TODO: uncomment the line below to remove hardcoded div 2 value
+    //const colFact = this.getCollateralFactor()
+    // return 1 - borrowValue / (supplyValue * colFact)
   }
 }
