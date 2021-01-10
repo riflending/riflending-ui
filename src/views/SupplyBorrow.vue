@@ -45,7 +45,13 @@
         </v-btn>
       </div>
     </v-row>
-    <v-row class="my-5 d-flex justify-center">
+    <v-row class="d-flex justify-center">
+      <v-alert border="right" colored-border type="error" elevation="2">
+        In order to borrow in a market, it must be entered first. You can do it by clicking on the
+        toggle button.
+      </v-alert> </v-row
+    >>
+    <v-row class="d-flex justify-center">
       <component :is="currentComponent" @listChange="reset" />
     </v-row>
   </div>
