@@ -28,6 +28,7 @@ export default {
   computed: {
     ...mapState({
       isOwner: (state) => state.Session.isOwner,
+      account: (state) => state.Session.account,
     }),
     pageHeight() {
       return document.body.scrollHeight
@@ -43,12 +44,12 @@ export default {
       this.$vuetify.goTo(this.pageHeight)
     },
   },
-  created() {
-    this.getMarkets()
+  async created() {
+    await this.getMarkets(this.account)
   },
   methods: {
     getMarkets() {
-      this.$middleware.getMarkets().then((mkts) => {
+      this.$middleware.getMarkets(this.account).then((mkts) => {
         this.marketAddresses = mkts.map((mkt) => mkt.address)
       })
     },

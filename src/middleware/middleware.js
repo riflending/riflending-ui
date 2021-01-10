@@ -3,28 +3,57 @@ import Vue from 'vue'
 import BigNumber from 'bignumber.js'
 import Market from './market'
 import factoryContract from './factoryContract'
-import { constants, errorCodes, cTokensDetails } from './constants'
+import { constants, address, errorCodes, cTokensDetails } from './constants'
 
 BigNumber.set({ EXPONENTIAL_AT: [-18, 36] })
 
 export default class Middleware {
-  getMarkets(account) {
-    const markets = Array()
-    for (let index = 0; index < cTokensDetails.length; index++) {
-      const cTokenSymbol = cTokensDetails[index].symbol
-      const tokenSymbol = cTokensDetails[index].underlying.symbol
-      markets.push(
-        new Market(
-          cTokenSymbol,
-          cTokensDetails[index].decimals,
-          tokenSymbol,
-          cTokensDetails[index].underlying.name,
-          cTokensDetails[index].underlying.decimals,
-          account,
-        ),
-      )
+  async getMarkets(account) {
+    const markets = []
+
+    const addresses = Vue.web3Provider.network.chainId === 31 ? address.testnet : address.mainnet
+
+    for (let cTokensDetail of cTokensDetails) {
+      const {
+        collateralFactorMantissa,
+        exchangeRateCurrent,
+        reserveFactorMantissa,
+        supplyRatePerBlock,
+        totalBorrows,
+        totalCash,
+        totalReserves,
+        totalSupply,
+      } = await this.getCTokenMetadata(addresses[cTokensDetail.symbol])
+
+      const options = {
+        cTokenSymbol: cTokensDetail.symbol,
+        cTokenDecimals: cTokensDetail.decimals,
+        tokenSymbol: cTokensDetail.underlying.symbol,
+        underlyingName: cTokensDetail.underlying.name,
+        underlyingDecimals: cTokensDetail.underlying.decimals,
+        collateralFactorMantissa,
+        exchangeRateCurrent,
+        reserveFactorMantissa,
+        supplyRatePerBlock,
+        totalBorrows,
+        totalCash,
+        totalReserves,
+        totalSupply,
+        account,
+      }
+
+      markets.push(new Market(options))
     }
     return markets
+  }
+
+  async getCTokenMetadata(cTokenAddress) {
+    const factoryContractInstance = new factoryContract()
+    const contract = factoryContractInstance.getContractByNameAndAbiName(
+      constants.RlendingLens,
+      constants.RlendingLens,
+    )
+    return contract.callStatic.cTokenMetadata(cTokenAddress)
   }
 
   /**
@@ -77,7 +106,7 @@ export default class Middleware {
   }
 
   async getTotals(account) {
-    const markets = this.getMarkets(account)
+    const markets = await this.getMarkets(account)
     const marketsPromises = markets.map(
       (market) =>
         new Promise((resolve, reject) => {
