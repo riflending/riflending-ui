@@ -38,13 +38,20 @@
         <v-btn
           :class="[currentComponent === 'BorrowList' ? 'selected' : 'notSelected']"
           text
+          :disabled="!hasAccountLiquidityInExcess"
           @click="currentComponent = 'BorrowList'"
         >
           <span>Borrow</span>
         </v-btn>
       </div>
     </v-row>
-    <v-row class="my-5 d-flex justify-center">
+    <v-row class="d-flex justify-center">
+      <v-alert border="right" colored-border type="error" elevation="2">
+        In order to borrow in a market, you must add collateral first. You can do it by clicking on the
+        toggle button.
+      </v-alert> </v-row
+    >>
+    <v-row class="d-flex justify-center">
       <component :is="currentComponent" @listChange="reset" />
     </v-row>
   </div>
@@ -65,6 +72,7 @@ export default {
     return {
       accountHealth: 1,
       currentComponent: 'SupplyList',
+      hasAccountLiquidityInExcess: false,
     }
   },
   computed: {
@@ -80,10 +88,13 @@ export default {
       return '#24BD6B'
     },
   },
-  created() {
-    this.$middleware.getAccountHealth(this.account).then((accountHealth) => {
-      this.accountHealth = accountHealth
-    })
+  async created() {
+    this.accountHealth = await this.$middleware.getAccountHealth(this.account)
+    // Take a look at the doc https://compound.finance/docs/comptroller#account-liquidity
+    // The account Liquidity represents the USD value borrowable by a user, before it reaches liquidation
+    // If the user never deposited collateral, this value is zero
+    const { accountLiquidityInExcess } = await this.$middleware.getAccountLiquidity(this.account)
+    this.hasAccountLiquidityInExcess = !accountLiquidityInExcess.isZero()
   },
   methods: {
     reset() {

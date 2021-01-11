@@ -11,14 +11,24 @@ BigNumber.set({ EXPONENTIAL_AT: [-18, 36] })
  */
 export default class Market {
   // constructor() {}
-  constructor(
-    cTokenSymbol,
-    cTokenDecimals,
-    tokenSymbol,
-    underlyingName,
-    underlyingDecimals,
-    account,
-  ) {
+  constructor(market) {
+    const {
+      cTokenSymbol,
+      cTokenDecimals,
+      tokenSymbol,
+      underlyingName,
+      underlyingDecimals,
+      account,
+      collateralFactorMantissa,
+      exchangeRateCurrent,
+      reserveFactorMantissa,
+      supplyRatePerBlock,
+      totalBorrows,
+      totalCash,
+      totalReserves,
+      totalSupply,
+    } = market
+
     this.account = account
     // TODO see if factoryContract go to middleware class
     this.factoryContract = new factoryContract()
@@ -49,6 +59,16 @@ export default class Market {
     // TODO set supply of
     // https://github.com/ajlopez/DeFiProt/blob/master/contracts/Market.sol#L246
     this.supplyOf = 13
+
+    // New information added fromt the Lens Helpers
+    this.collateralFactorMantissa = collateralFactorMantissa
+    this.exchangeRateCurrent = exchangeRateCurrent
+    this.reserveFactorMantissa = reserveFactorMantissa
+    this.supplyRatePerBlock = supplyRatePerBlock
+    this.totalBorrows = totalBorrows
+    this.totalCash = totalCash
+    this.totalReserves = totalReserves
+    this.totalSupply = totalSupply
   }
 
   async getValueMoc() {
@@ -114,11 +134,9 @@ export default class Market {
     return formatted ? ethers.utils.formatEther(balance) : balance
   }
 
-  async getTotalSupply() {
+  getTotalSupply() {
     // Mmmm see https://compound.finance/docs/ctokens#total-supply, probably we need to use this method, but depends of the bussines rule, we will use the sum of the total borrow and cash
-    const cash = await this.getTotalCash(false)
-    const totalBorrowsCurrent = await this.getTotalBorrowsCurrent(false)
-    const totalSupply = cash.add(totalBorrowsCurrent)
+    const totalSupply = this.totalCash.add(this.totalBorrows)
     return ethers.utils.formatEther(totalSupply)
   }
 

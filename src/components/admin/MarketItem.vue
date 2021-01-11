@@ -32,7 +32,7 @@
         </v-col>
         <v-col cols="2">
           <v-list-item-subtitle class="item">
-            {{ totalBorrow | formatNumber }}
+            {{ totalBorrows | formatNumber }}
             <span class="ml-2 itemInfo">{{ token.symbol }}</span>
           </v-list-item-subtitle>
         </v-col>
@@ -44,24 +44,25 @@
                 <span class="ml-2 itemInfo">{{ token.symbol }}</span>
               </v-list-item-subtitle>
             </v-col>
-            <v-col cols="2" class="pa-0">
-              <v-btn class="pa-0 ma-0" icon @click="dialog = !dialog">
-                <svg
-                  width="11"
-                  height="32"
-                  viewBox="0 0 11 32"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M1 1L9 16L1 31"
-                    stroke="#008CFF"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                  />
-                </svg>
-              </v-btn>
-            </v-col>
+            <!--TODO: we are going to hide this button for now, we don't know if we will have to use it later-->
+            <!--<v-col cols="2" class="pa-0">-->
+            <!--<v-btn class="pa-0 ma-0" icon @click="dialog = !dialog">-->
+            <!--<svg-->
+            <!--width="11"-->
+            <!--height="32"-->
+            <!--viewBox="0 0 11 32"-->
+            <!--fill="none"-->
+            <!--xmlns="http://www.w3.org/2000/svg"-->
+            <!--&gt;-->
+            <!--<path-->
+            <!--d="M1 1L9 16L1 31"-->
+            <!--stroke="#008CFF"-->
+            <!--stroke-width="2"-->
+            <!--stroke-linecap="round"-->
+            <!--/>-->
+            <!--</svg>-->
+            <!--</v-btn>-->
+            <!--</v-col>-->
           </v-row>
         </v-col>
       </v-row>
@@ -75,6 +76,7 @@
 
 <script>
 import MarketDialog from '@/components/dialog/market/MarketDialog.vue'
+import { ethers } from 'ethers'
 
 export default {
   name: 'MarketItem',
@@ -98,7 +100,7 @@ export default {
       borrowRate: 0,
       cash: 0, // current contract liquidity
       totalSupply: 0,
-      totalBorrow: 0,
+      totalBorrows: 0,
       dialog: false,
     }
   },
@@ -122,9 +124,9 @@ export default {
     this.token = this.market.token
     this.price = await this.market.getPriceInDecimals()
     this.borrowRate = await this.market.getBorrowRate()
-    this.cash = await this.market.getTotalCash(true)
-    this.totalSupply = await this.market.getTotalSupply()
-    this.totalBorrow = await this.market.getTotalBorrowsCurrent(true)
+    this.cash = ethers.utils.formatEther(this.market.totalCash)
+    this.totalSupply = this.market.getTotalSupply()
+    this.totalBorrows = ethers.utils.formatEther(this.market.totalBorrows)
   },
   methods: {
     reset() {
@@ -137,7 +139,7 @@ export default {
         })
         .then((borrowRate) => {
           this.borrowRate = borrowRate
-          return this.market.getCash()
+          return ethers.utils.formatEther(this.market.totalCash)
         })
         .then((cash) => {
           this.cash = cash
@@ -148,7 +150,7 @@ export default {
           return this.market.eventualUpdatedTotalBorrows
         })
         .then((updatedTotalBorrows) => {
-          this.totalBorrow = updatedTotalBorrows
+          this.totalBorrows = updatedTotalBorrows
         })
       this.$emit('dialogClosed')
     },

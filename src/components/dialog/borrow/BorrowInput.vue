@@ -265,19 +265,8 @@ export default {
     borrow() {
       this.waiting = true
       this.$emit('wait')
-      // checks if enteredMarket
-      this.data.market
-        .checkMembership(this.account)
-        .then((ok) => {
-          // if not exist => enterMarket
-          if (!ok) {
-            console.log('BorrowInput: Need to enter market first')
-            return this.data.market.enterMarket()
-          }
-          return ok
-        })
-        // checks if borrowAllowed
-        .then(() => this.borrowAllowed())
+      // checks if borrowAllowed
+      this.borrowAllowed()
         .then((allowed) => {
           if (!allowed) {
             this.isBorrowAllowed = true // probably get rid of this variable alltogether.
