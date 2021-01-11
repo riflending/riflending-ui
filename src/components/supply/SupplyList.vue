@@ -79,9 +79,9 @@ export default {
       this.toggleMarketTransactionMessage = message
     })
   },
-  created() {
+  async created() {
     // get all markets
-    this.markets = this.$middleware.getMarkets(this.account)
+    this.markets = await this.$middleware.getMarkets(this.account)
 
     this.markets.forEach((market) =>
       market.eventualEvents.then((events) => events.liquidateBorrow().on('data', this.reloadItems)),
