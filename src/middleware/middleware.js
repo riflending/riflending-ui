@@ -64,7 +64,6 @@ export default class Middleware {
    *          account liquidity in excess of collateral requirements,
    *          account shortfall below collateral requirements)
    */
-
   async getAccountLiquidity(account) {
     const factoryContractInstance = new factoryContract()
     const contract = factoryContractInstance.getContractByNameAndAbiName(
@@ -159,13 +158,91 @@ export default class Middleware {
     return liqFactor
   }
 
+  /**
+   * getAccountHealth calculates the account health factor
+   * @dev returns percentage value between 0 and 1
+   * @param account Address of the account to snapshot
+   * @return 1 - (SUM_market borrowValue / SUM_market(supplyValue * colFact) )
+   */
   async getAccountHealth(account) {
-    const { borrowValue, supplyValue } = await this.getTotals(account)
-    if (supplyValue == 0 || borrowValue == 0) return 1
-    //returns 1 minus the division of borrow by supply. Supply is div 2, because of the collateral factor
-    return 1 - borrowValue / (supplyValue / 2)
-    // TODO: uncomment the line below to remove hardcoded div 2 value
-    //const colFact = this.getCollateralFactor()
-    // return 1 - borrowValue / (supplyValue * colFact)
+    const markets = await this.getMarkets(account)
+    console.log('accountHealth markets', markets)
+    const marketsPromises = markets.map(
+      (market) =>
+        new Promise((resolve, reject) => {
+          ;(async () => {
+            try {
+              console.log('accountHealth promise', market.token.symbol)
+              const borrowBalanceCurrent = await market.borrowBalanceCurrentFormatted(account)
+              const borrowBalanceCurrentBN = new BigNumber(borrowBalanceCurrent)
+              const marketPriceFromOracleBN = await market.getPriceInDecimals()
+              const marketPriceBN = marketPriceFromOracleBN || new BigNumber(0)
+              console.log('accountHealth marketPriceBN', market.token.symbol, marketPriceBN)
+
+              const tokenBalance = await market.getBalanceOfUnderlying(account)
+              const tokenBalanceBN = new BigNumber(tokenBalance)
+              console.log('accountHealth tokenBalanceBN', market.token.symbol, tokenBalanceBN)
+              const colFact = market.collateralFactorMantissa
+              console.log('accountHealth colFact', market.token.symbol, colFact)
+              const colNum = Number(colFact)
+              // console.log("accountHealth market decimals", market.token.decimals)
+              console.log('accountHealth colNum', colNum)
+              console.log('accountHealth colNum/1e18', colNum / market.factor)
+
+              const colStr = colNum / market.factor.toString()
+              console.log('accountHealth colStr', colStr)
+
+              const colFactBN = new BigNumber(colStr)
+              console.log('accountHealth colFactBN', market.token.symbol, Number(colFactBN))
+
+              const borrowValue = borrowBalanceCurrentBN.multipliedBy(marketPriceBN)
+              console.log('accountHealth borrowValue', market.token.symbol, Number(borrowValue))
+              const supplyValue = tokenBalanceBN.multipliedBy(marketPriceBN)
+              console.log('accountHealth supplyValue', market.token.symbol, Number(supplyValue))
+
+              const supByFactor = supplyValue.multipliedBy(colFactBN)
+              console.log('accountHealth supByFactor', market.token.symbol, Number(supByFactor))
+              // const marketHealth = 1 - (borrowValue.dividedBy(supplyValue))
+              resolve({ borrowValue, supByFactor })
+            } catch (err) {
+              reject(err)
+            }
+          })()
+        }),
+    )
+    console.log('accountHealth endedMapping')
+    const totals = await Promise.all(marketsPromises)
+    console.log('accountHealth totals', totals)
+    // return 1 - (SUM borrowValue / SUM(supplyValue * colFact) )
+    let numerator = new BigNumber(0)
+    let denominator = new BigNumber(0)
+    // for(let mkt in totals){
+    //   numerator = numerator.plus(mkt.borrowValue)
+    //   denominator = denominator.plus(mkt.supByFactor)
+    // }
+    for (let i = 0, len = totals.length; i < len; i++) {
+      numerator = numerator.plus(totals[i].borrowValue)
+      denominator = denominator.plus(totals[i].supByFactor)
+    }
+    if (denominator == 0 || numerator == 0) {
+      console.log('AccountHealth returns zero values')
+      return 1
+    }
+    // numerator = numerator.plus(totals[0].borrowValue).plus(totals[1].borrowValue)
+    console.log('accountHealth numerator', numerator, ' div', denominator)
+    console.log('accountHealth 1?', new BigNumber(1))
+    console.log('accountHealth 1-numerator?', new BigNumber(1).minus(numerator))
+    console.log(
+      'accountHealth 1-numerator div denominator?',
+      new BigNumber(1).minus(numerator).div(denominator),
+    )
+    const healtFactor = new BigNumber(1).minus(numerator.div(denominator))
+    console.log('accountHealth health factor', healtFactor)
+    console.log('accountHealth health num/den', numerator.div(denominator))
+    console.log('accountHealth health Number num/den', Number(numerator.div(denominator)))
+
+    console.log('accountHealth health factor Number', Number(healtFactor))
+
+    return Number(healtFactor)
   }
 }
