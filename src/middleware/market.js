@@ -23,6 +23,7 @@ export default class Market {
       exchangeRateCurrent,
       reserveFactorMantissa,
       supplyRatePerBlock,
+      borrowRatePerBlock,
       totalBorrows,
       totalCash,
       totalReserves,
@@ -61,14 +62,37 @@ export default class Market {
     this.supplyOf = 13
 
     // New information added fromt the Lens Helpers
+    // Collateral factor can range from 0-90%,
     this.collateralFactorMantissa = collateralFactorMantissa
+    // In the discord channel, the support team says that LTV is the same as the collateralFactor
+    this.loanToValue = collateralFactorMantissa
+    console.log(
+      `CollateralFactor ${collateralFactorMantissa} - Decimals ${underlyingDecimals} - ${ethers.utils.formatUnits(
+        collateralFactorMantissa,
+        underlyingDecimals,
+      )}`,
+    )
     this.exchangeRateCurrent = exchangeRateCurrent
     this.reserveFactorMantissa = reserveFactorMantissa
     this.supplyRatePerBlock = supplyRatePerBlock
+    this.borrowRatePerBlock = borrowRatePerBlock
     this.totalBorrows = totalBorrows
     this.totalCash = totalCash
     this.totalReserves = totalReserves
     this.totalSupply = totalSupply
+
+    // Calculation based on the compound doc, see https://compound.finance/docs#protocol-math, search for APY
+    const mantissa = ethers.utils.parseUnits('1', underlyingDecimals)
+    console.log('Mantissa', mantissa.toString())
+    const blocksPerDay = 4 * 60 * 24
+    const daysPerYear = 365
+
+    this.supplyApy =
+      (Math.pow((supplyRatePerBlock / mantissa) * blocksPerDay + 1, daysPerYear - 1) - 1) * 100
+    this.borrowApy =
+      (Math.pow((borrowRatePerBlock / mantissa) * blocksPerDay + 1, daysPerYear - 1) - 1) * 100
+    console.log(`Supply APY for ${tokenSymbol} ${this.supplyApy} %`)
+    console.log(`Borrow APY for ${tokenSymbol} ${this.borrowApy} %`)
   }
 
   async getValueMoc() {

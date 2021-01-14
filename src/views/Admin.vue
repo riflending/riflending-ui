@@ -4,7 +4,7 @@
       <h1>Market Status</h1>
     </v-row>
     <div class="d-flex justify-center">
-      <v-card flat width="950" class="list">
+      <v-card flat width="1250" class="list">
         <v-row class="ma-0 d-flex justify-space-between">
           <v-col class="d-flex align-center">
             <h2>Listed Markets</h2>

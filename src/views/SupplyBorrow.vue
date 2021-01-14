@@ -47,8 +47,8 @@
     </v-row>
     <v-row class="d-flex justify-center">
       <v-alert border="right" colored-border type="error" elevation="2">
-        In order to borrow in a market, you must add collateral first. You can do it by clicking on the
-        toggle button.
+        In order to borrow in a market, you must add collateral first. You can do it by clicking on
+        the toggle button.
       </v-alert> </v-row
     >>
     <v-row class="d-flex justify-center">
