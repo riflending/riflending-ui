@@ -9,8 +9,11 @@
           <v-col cols="2">
             <v-list-item-subtitle class="listTitle">Price</v-list-item-subtitle>
           </v-col>
-          <v-col cols="2">
+          <v-col cols="1">
             <v-list-item-subtitle class="listTitle">APR</v-list-item-subtitle>
+          </v-col>
+          <v-col cols="1">
+            <v-list-item-subtitle class="listTitle" title="Loan to Value">LTV</v-list-item-subtitle>
           </v-col>
           <v-col cols="2">
             <v-list-item-subtitle class="listTitle">Total Supplied</v-list-item-subtitle>

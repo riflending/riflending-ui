@@ -21,8 +21,11 @@
             {{ price | formatPrice }}<span class="ml-2 itemInfo">usd</span>
           </v-list-item-subtitle>
         </v-col>
-        <v-col cols="2">
+        <v-col cols="1">
           <v-list-item-subtitle class="item"> {{ apr }}% </v-list-item-subtitle>
+        </v-col>
+        <v-col cols="1">
+          <v-list-item-subtitle class="item"> {{ loanToValue }}% </v-list-item-subtitle>
         </v-col>
         <v-col cols="2">
           <v-list-item-subtitle class="item">
@@ -98,6 +101,7 @@ export default {
       },
       price: 0,
       borrowRate: 0,
+      loanToValue: 0,
       cash: 0, // current contract liquidity
       totalSupply: 0,
       totalBorrows: 0,
@@ -124,9 +128,13 @@ export default {
     this.token = this.market.token
     this.price = await this.market.getPriceInDecimals()
     this.borrowRate = await this.market.getBorrowRate()
-    this.cash = ethers.utils.formatEther(this.market.totalCash)
+    this.cash = ethers.utils.formatUnits(this.market.totalCash, this.market.token.decimals)
     this.totalSupply = this.market.getTotalSupply()
-    this.totalBorrows = ethers.utils.formatEther(this.market.totalBorrows)
+    this.totalBorrows = ethers.utils.formatUnits(
+      this.market.totalBorrows,
+      this.market.token.decimals,
+    )
+    this.loanToValue = ethers.utils.formatUnits(this.market.loanToValue, this.market.token.decimals)
   },
   methods: {
     reset() {
@@ -139,18 +147,15 @@ export default {
         })
         .then((borrowRate) => {
           this.borrowRate = borrowRate
-          return ethers.utils.formatEther(this.market.totalCash)
-        })
-        .then((cash) => {
-          this.cash = cash
-          return this.market.eventualUpdatedTotalSupply
-        })
-        .then((updatedTotalSupply) => {
-          this.totalSupply = updatedTotalSupply
-          return this.market.eventualUpdatedTotalBorrows
-        })
-        .then((updatedTotalBorrows) => {
-          this.totalBorrows = updatedTotalBorrows
+          this.cash = ethers.utils.formatUnits(this.market.totalCash, this.market.token.decimals)
+          this.totalSupply = this.market.getTotalSupply()
+          this.totalBorrows = ethers.utils.formatUnits(
+            this.market.totalBorrows.this.market.token.decimals,
+          )
+          this.loanToValue = ethers.utils.formatUnits(
+            this.market.loanToValue,
+            this.market.token.decimals,
+          )
         })
       this.$emit('dialogClosed')
     },
