@@ -10,39 +10,53 @@
               </v-list-item-avatar>
             </v-col>
             <v-col cols="6" class="pa-0 d-flex justify-start">
-              <v-list-item-subtitle class="item d-flex justify-start">
+              <v-list-item-subtitle class="itemStatus d-flex justify-start">
                 {{ token.symbol }}
               </v-list-item-subtitle>
             </v-col>
           </v-row>
         </v-col>
-        <v-col cols="2">
-          <v-list-item-subtitle class="item">
+        <v-col cols="1">
+          <v-list-item-subtitle class="itemStatus">
             {{ price | formatPrice }}<span class="ml-2 itemInfo">usd</span>
           </v-list-item-subtitle>
         </v-col>
         <v-col cols="1">
-          <v-list-item-subtitle class="item"> {{ apr }}% </v-list-item-subtitle>
+          <v-list-item-subtitle class="itemStatus">
+            {{ apr | formatPercentage }}
+          </v-list-item-subtitle>
         </v-col>
         <v-col cols="1">
-          <v-list-item-subtitle class="item"> {{ loanToValue }}% </v-list-item-subtitle>
+          <v-list-item-subtitle class="itemStatus">
+            {{ loanToValue | formatPercentage }}
+          </v-list-item-subtitle>
         </v-col>
-        <v-col cols="2">
-          <v-list-item-subtitle class="item">
+        <v-col cols="1">
+          <v-list-item-subtitle class="itemStatus">
+            {{ supplyApy | formatPercentage }}
+          </v-list-item-subtitle>
+        </v-col>
+        <v-col cols="1">
+          <v-list-item-subtitle class="itemStatus">
+            {{ borrowApy | formatPercentage }}
+          </v-list-item-subtitle>
+        </v-col>
+        <v-col cols="1">
+          <v-list-item-subtitle class="itemStatus">
             {{ totalSupply | formatNumber }}
             <span class="ml-2 itemInfo">{{ token.symbol }}</span>
           </v-list-item-subtitle>
         </v-col>
         <v-col cols="2">
-          <v-list-item-subtitle class="item">
+          <v-list-item-subtitle class="itemStatus">
             {{ totalBorrows | formatNumber }}
             <span class="ml-2 itemInfo">{{ token.symbol }}</span>
           </v-list-item-subtitle>
         </v-col>
-        <v-col cols="2" class="px-0">
+        <v-col cols="1" class="px-0">
           <v-row class="ma-0">
             <v-col cols="10" class="pa-0 d-flex align-center">
-              <v-list-item-subtitle class="item">
+              <v-list-item-subtitle class="itemStatus">
                 {{ cash | formatNumber }}
                 <span class="ml-2 itemInfo">{{ token.symbol }}</span>
               </v-list-item-subtitle>
@@ -105,6 +119,8 @@ export default {
       cash: 0, // current contract liquidity
       totalSupply: 0,
       totalBorrows: 0,
+      borrowApy: 0,
+      supplyApy: 0,
       dialog: false,
     }
   },
@@ -135,6 +151,8 @@ export default {
       this.market.token.decimals,
     )
     this.loanToValue = ethers.utils.formatUnits(this.market.loanToValue, this.market.token.decimals)
+    this.supplyApy = this.market.supplyApy
+    this.borrowApy = this.market.borrowApy
   },
   methods: {
     reset() {
@@ -156,6 +174,8 @@ export default {
             this.market.loanToValue,
             this.market.token.decimals,
           )
+          this.supplyApy = this.market.supplyApy
+          this.borrowApy = this.market.borrowApy
         })
       this.$emit('dialogClosed')
     },

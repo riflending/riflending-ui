@@ -6,7 +6,7 @@
           <v-col cols="2">
             <v-list-item-subtitle class="listTitle">Market</v-list-item-subtitle>
           </v-col>
-          <v-col cols="2">
+          <v-col cols="1">
             <v-list-item-subtitle class="listTitle">Price</v-list-item-subtitle>
           </v-col>
           <v-col cols="1">
@@ -15,13 +15,19 @@
           <v-col cols="1">
             <v-list-item-subtitle class="listTitle" title="Loan to Value">LTV</v-list-item-subtitle>
           </v-col>
-          <v-col cols="2">
+          <v-col cols="1">
+            <v-list-item-subtitle class="listTitle">Supply APY</v-list-item-subtitle>
+          </v-col>
+          <v-col cols="1">
+            <v-list-item-subtitle class="listTitle">Borrow APY</v-list-item-subtitle>
+          </v-col>
+          <v-col cols="1">
             <v-list-item-subtitle class="listTitle">Total Supplied</v-list-item-subtitle>
           </v-col>
           <v-col cols="2">
             <v-list-item-subtitle class="listTitle">Total Borrowed</v-list-item-subtitle>
           </v-col>
-          <v-col cols="2">
+          <v-col cols="1">
             <v-list-item-subtitle class="listTitle">Current Cash</v-list-item-subtitle>
           </v-col>
         </v-row>
