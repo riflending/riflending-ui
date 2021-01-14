@@ -105,6 +105,7 @@ export default class Middleware {
   }
 
   async getTotals(account) {
+    //TODO: This function shouldn't have so many new BigNumber()
     const markets = await this.getMarkets(account)
     const marketsPromises = markets.map(
       (market) =>
@@ -165,6 +166,8 @@ export default class Middleware {
    * @return 1 - (SUM_market borrowValue / SUM_market(supplyValue * colFact) )
    */
   async getAccountHealth(account) {
+    //TODO: This function shouldn't have so many new BigNumber(), casting to Number and string
+    //      try to unify criteria
     const markets = await this.getMarkets(account)
     const marketsPromises = markets.map(
       (market) =>
@@ -180,15 +183,15 @@ export default class Middleware {
               const tokenBalanceBN = new BigNumber(tokenBalance)
               const colFact = market.collateralFactorMantissa
 
-              const colNum = Number(colFact)
-              const colStr = colNum / market.factor.toString()
-              const colFactBN = new BigNumber(colStr)
+              const colFactNum = Number(colFact)
+              const colFactStr = colFactNum / market.factor.toString()
+              const colFactBN = new BigNumber(colFactStr)
 
               const borrowValue = borrowBalanceCurrentBN.multipliedBy(marketPriceBN)
               const supplyValue = tokenBalanceBN.multipliedBy(marketPriceBN)
 
-              const supByFactor = supplyValue.multipliedBy(colFactBN)
-              resolve({ borrowValue, supByFactor })
+              const supplyByFactor = supplyValue.multipliedBy(colFactBN)
+              resolve({ borrowValue, supplyByFactor })
             } catch (err) {
               reject(err)
             }
@@ -201,7 +204,7 @@ export default class Middleware {
 
     for (let i = 0, len = totals.length; i < len; i++) {
       numerator = numerator.plus(totals[i].borrowValue)
-      denominator = denominator.plus(totals[i].supByFactor)
+      denominator = denominator.plus(totals[i].supplyByFactor)
     }
 
     if (denominator == 0 || numerator == 0) return 1
