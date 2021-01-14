@@ -55,16 +55,6 @@
                   <v-col cols="1" class="pa-0"><span class="text-left">USD</span></v-col>
                 </v-row>
               </v-col>
-              <v-col cols="3">
-                <v-row class="d-flex justify-center">
-                  <v-btn small fab dark color="#008CFF">
-                    <v-icon dark color="#FFFFFF">mdi-plus</v-icon>
-                  </v-btn>
-                </v-row>
-                <!-- <v-row class="mt-2 d-flex justify-center text-center">
-                  <span>Add Funds</span>
-                </v-row> -->
-              </v-col>
             </v-row>
           </v-card>
         </v-col>
