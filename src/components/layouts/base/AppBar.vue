@@ -66,9 +66,21 @@ export default {
         // eslint-disable-next-line no-undef
         // await ethereum.enable();
         this.$provider = await this.$rLogin.connect()
-        this.$provider.on(this.$rLogin.ACCOUNTS_CHANGED, () => {
+
+        this.$provider.on('accountsChanged', () => {
           store.dispatch(constants.SESSION_CONNECT_WEB3)
         })
+
+        this.$provider.on('error', (error) => {
+          throw error
+        })
+
+        this.$provider.on('chainChanged', (chainId) => {
+          if (![31].includes(parseInt(chainId))) {
+            throw new Error('Wrong chain id')
+          }
+        })
+
         Vue.provider = this.$provider
 
         this.$web3Provider = new ethers.providers.Web3Provider(this.$provider)
@@ -79,7 +91,7 @@ export default {
         Object.assign(this.$web3Provider.formatter, { format })
         Vue.web3Provider = this.$web3Provider
       } catch (e) {
-        console.log(e)
+        this.$rLogin.clearCachedProvider()
       }
       this.connectToWeb3()
     },

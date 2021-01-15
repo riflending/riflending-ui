@@ -11,7 +11,7 @@ export default class Middleware {
   async getMarkets(account) {
     const markets = []
 
-    const addresses = Vue.web3Provider.network.chainId === 31 ? address.testnet : address.mainnet
+    const addresses = Vue?.web3Provider?.network?.chainId === 31 ? address.testnet : address.mainnet
 
     for (let cTokensDetail of cTokensDetails) {
       const {
