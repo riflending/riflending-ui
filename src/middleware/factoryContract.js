@@ -5,7 +5,7 @@ import { constants, address, abi } from './constants'
 export default class factoryContract {
   constructor() {
     this.addressContract =
-      Vue.web3Provider.network.chainId === 31 ? address.testnet : address.mainnet
+      Vue?.web3Provider?.network?.chainId === 31 ? address.testnet : address.mainnet
   }
 
   getSigner() {
