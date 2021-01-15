@@ -29,7 +29,7 @@
         <v-col class="pa-0 d-flex justify-center">
           <v-card class="graphics-card container" width="94%">
             <v-row class="ma-0 d-flex align-center">
-              <v-col cols="9" class="py-0">
+              <v-col cols="12" class="py-0">
                 <v-row class="d-flex align-center">
                   <v-col cols="6" class="px-0 text-left"><h2>Account balance:</h2></v-col>
                   <v-col cols="5" class="px-0">
@@ -55,6 +55,16 @@
                   <v-col cols="1" class="pa-0"><span class="text-left">USD</span></v-col>
                 </v-row>
               </v-col>
+              <!-- <v-col cols="3">
+                <v-row class="d-flex justify-center">
+                  <v-btn small fab dark color="#008CFF">
+                    <v-icon dark color="#FFFFFF">mdi-plus</v-icon>
+                  </v-btn>
+                </v-row>
+                <v-row class="mt-2 d-flex justify-center text-center">
+                  <span>Add Funds</span>
+                </v-row>
+              </v-col> -->
             </v-row>
           </v-card>
         </v-col>
