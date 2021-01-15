@@ -19,7 +19,7 @@ Vue.config.productionTip = false
 Vue.prototype.$middleware = Vue.middleware = new Middleware()
 // eslint-disable-next-line no-multi-assign
 Vue.prototype.$rLogin = Vue.rLogin = new RLogin({
-  cachedProvider: false,
+  cacheProvider: true,
   providerOptions: {
     walletconnect: {
       package: WalletConnectProvider,
