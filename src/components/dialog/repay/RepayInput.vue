@@ -237,7 +237,7 @@ export default {
       })
       .then((maxBorrowAllowed) => {
         this.maxBorrowAllowed = maxBorrowAllowed
-        return this.getAccountHealth(this.account)
+        return this.$middleware.getAccountHealth(this.account)
       })
       // sets health & gets collateralFactor
       .then((health) => {
@@ -294,16 +294,10 @@ export default {
         })
     },
 
-    getAccountHealth() {
-      // TODO: SEND TO MIDDLEWARE
-      if (this.supplyValue == 0 || this.borrowed == 0) return 0
-      const borrowValue = this.borrowed * this.mantissa
-      return (this.supplyValue * this.mantissa) / borrowValue
-    },
-
     asDouble(value) {
       return (value / 10 ** this.data.token.decimals).toFixed(this.data.token.decimals)
     },
+
     getValues() {
       console.log('RepayBorrow: getValues')
       // TODO check oldLiquidity usage here

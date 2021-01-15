@@ -66,7 +66,6 @@ export default class Middleware {
    *          account liquidity in excess of collateral requirements,
    *          account shortfall below collateral requirements)
    */
-
   async getAccountLiquidity(account) {
     const factoryContractInstance = new factoryContract()
     const contract = factoryContractInstance.getContractByNameAndAbiName(
@@ -108,6 +107,7 @@ export default class Middleware {
   }
 
   async getTotals(account) {
+    //TODO: This function shouldn't have so many new BigNumber()
     const markets = await this.getMarkets(account)
     const marketsPromises = markets.map(
       (market) =>
@@ -161,19 +161,56 @@ export default class Middleware {
     return liqFactor
   }
 
+  /**
+   * getAccountHealth calculates the account health factor
+   * @dev returns percentage value between 0 and 1
+   * @param account Address of the account to snapshot
+   * @return 1 - (SUM_market borrowValue / SUM_market(supplyValue * colFact) )
+   */
   async getAccountHealth(account) {
-    // DTI Debt to Income
-    // TODO: fix this function, probably not calculating the right number
-    console.log('getAccountHealth')
-    const liqFactor = await this.getLiquidationFactor()
-    console.log('getAccountHealth liquidateFactor', liqFactor)
-    if (supplyValue == 0 || borrowValue == 0) return 0
-    const { borrowValue, supplyValue } = await this.getTotals(account)
-    console.log('getAccountHealth getTotals borrow', borrowValue, ' supply', supplyValue)
-    const val = supplyValue.div(borrowValue * liqFactor)
-    console.log('val', val)
-    const ret = 1 / (1 + Math.exp(-val.toNumber()))
-    console.log('getAccountHealth return', ret)
-    return ret > 1 ? 1 : ret < 0 ? 0 : ret
+    //TODO: This function shouldn't have so many new BigNumber(), casting to Number and string
+    //      try to unify criteria
+    const markets = await this.getMarkets(account)
+    const marketsPromises = markets.map(
+      (market) =>
+        new Promise((resolve, reject) => {
+          ;(async () => {
+            try {
+              const borrowBalanceCurrent = await market.borrowBalanceCurrentFormatted(account)
+              const borrowBalanceCurrentBN = new BigNumber(borrowBalanceCurrent)
+              const marketPriceFromOracleBN = await market.getPriceInDecimals()
+              const marketPriceBN = marketPriceFromOracleBN || new BigNumber(0)
+
+              const tokenBalance = await market.getBalanceOfUnderlying(account)
+              const tokenBalanceBN = new BigNumber(tokenBalance)
+              const colFact = market.collateralFactorMantissa
+
+              const colFactNum = Number(colFact)
+              const colFactStr = colFactNum / market.factor.toString()
+              const colFactBN = new BigNumber(colFactStr)
+
+              const borrowValue = borrowBalanceCurrentBN.multipliedBy(marketPriceBN)
+              const supplyValue = tokenBalanceBN.multipliedBy(marketPriceBN)
+
+              const supplyByFactor = supplyValue.multipliedBy(colFactBN)
+              resolve({ borrowValue, supplyByFactor })
+            } catch (err) {
+              reject(err)
+            }
+          })()
+        }),
+    )
+    const totals = await Promise.all(marketsPromises)
+    let numerator = new BigNumber(0)
+    let denominator = new BigNumber(0)
+
+    for (let i = 0, len = totals.length; i < len; i++) {
+      numerator = numerator.plus(totals[i].borrowValue)
+      denominator = denominator.plus(totals[i].supplyByFactor)
+    }
+
+    if (denominator == 0 || numerator == 0) return 1
+
+    return new BigNumber(1).minus(numerator.div(denominator)).toNumber()
   }
 }
