@@ -213,4 +213,57 @@ export default class Middleware {
 
     return new BigNumber(1).minus(numerator.div(denominator)).toNumber()
   }
+
+  async getAssetsIn(account) {
+    const factoryContractInstance = new factoryContract()
+    const contract = factoryContractInstance.getContractByNameAndAbiName(
+      constants.Unitroller,
+      constants.Comptroller,
+    )
+    return await contract.getAssetsIn(account)
+  }
+
+  async getAssetsBalanceIn(account) {
+    const assets = await this.getAssetsIn(account)
+    let balances = []
+    const markets = await this.getMarkets(account)
+    for (let asset of assets) {
+      let market = markets.find((market) => market.instanceAddress === asset.toLowerCase())
+      if (market) {
+        balances.push({
+          symbol: market.token.symbol,
+          balance: await market.getBalanceOfUnderlying(account),
+          marketAddress: market.instanceAddress,
+          price: await market.getPriceInDecimals(),
+        })
+      }
+    }
+    return balances
+  }
+  async liquidateBorrowAllowed(
+    liquidateAccountAddress,
+    liquidatorAccountAddress,
+    amount,
+    addressLiquidateMarket,
+    addressCollateralMarket,
+  ) {
+    //parse amount
+    const decimal = 18
+    let amountBN = ethers.utils.parseUnits(amount.toFixed(decimal), decimal)
+    //get contract and signer
+    const factoryContractInstance = new factoryContract()
+    const contract = factoryContractInstance.getContractByNameAndAbiName(
+      constants.Unitroller,
+      constants.Comptroller,
+    )
+    const signer = contract.connect(factoryContractInstance.getSigner())
+    //call liquidateBorrowAllowed
+    return await signer.callStatic.liquidateBorrowAllowed(
+      addressLiquidateMarket,
+      addressCollateralMarket,
+      liquidatorAccountAddress,
+      liquidateAccountAddress,
+      amountBN.toString(),
+    )
+  }
 }
