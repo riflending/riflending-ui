@@ -209,6 +209,6 @@ export default class Middleware {
 
     if (denominator == 0 || numerator == 0) return 1
 
-    return Number(new BigNumber(1).minus(numerator.div(denominator)))
+    return new BigNumber(1).minus(numerator.div(denominator)).toNumber()
   }
 }
