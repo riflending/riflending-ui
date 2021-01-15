@@ -7,7 +7,7 @@
       <v-col cols="6">
         <v-row class="d-flex align-center justify-end">
           <v-col class="d-flex justify-end" cols="8">
-            {{ maxToLiquidate | formatToken(collateral.token.decimals) }}
+            {{ maxToLiquidate | formatNumber }}
           </v-col>
           <v-col class="d-flex justify-end" cols="2">
             <span>{{ collateral.token.symbol }}</span>
@@ -39,10 +39,12 @@ export default {
       type: String,
       required: true,
     },
+    //TO-DO change to String
     maxToLiquidate: {
       type: Number,
       required: true,
     },
+    //TO-DO change to String
     debt: {
       type: Number,
       required: true,
@@ -76,6 +78,7 @@ export default {
         debt: this.debt,
         maxToLiquidate: this.maxToLiquidate,
         borrowMarketAddress: this.borrowMarketAddress,
+        collateral: this.collateral,
       })
     },
   },

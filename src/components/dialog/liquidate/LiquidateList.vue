@@ -1,9 +1,8 @@
 <template>
   <div>
     <div v-if="hasAccounts" class="liquidate-list">
-      <v-row class="d-flex justify-center">
-        <h1>Select the collaterals you wish to liquidate:</h1>
-      </v-row>
+      <h1>Select the collaterals you wish to liquidate:</h1>
+      <v-row class="d-flex justify-center"> </v-row>
       <div class="container">
         <v-row>
           <v-col class="d-flex justify-center">
@@ -22,7 +21,7 @@
             :max-to-liquidate="borrow.maxToLiquidate"
             :debt="borrow.debt"
             :borrow-market-address="borrow.borrowMarketAddress"
-            :collateral="data"
+            :collateral="borrow.market"
             @selected="accountSelected"
           />
           <v-divider />
@@ -77,13 +76,45 @@ export default {
       this.$emit('selected', accountObject)
     },
     getUnhealthyAccounts(market) {
-      console.log('LiquidateList: getUnhealthyAccounts', market)
+      //get all account under water
+      market.getAccountUnderwater().then((accountsUnderwater) => {
+        for (const account of accountsUnderwater) {
+          let underwater = new Object()
+          //set instance cToken
+          underwater.borrowMarketAddress = market.instanceAddress
+          //set account to liquidate
+          underwater.borrower = account
+          //set max to liquidate => borrow of account
+          market
+            .borrowBalanceCurrentFormatted(account)
+            .then((borrowBalance) => {
+              //TO-DO see number, loss decimals
+              underwater.maxToLiquidate = Number(borrowBalance)
+              return market.getBalanceOfUnderlying(account)
+            })
+            //set asset of the account
+            .then((supply) => {
+              //TO-DO see number, loss decimals
+              underwater.debt = Number(supply)
+              underwater.market = market
+              //TO-DO validate before borrow balance
+              //validate if has borrow
+              if (Number(underwater.maxToLiquidate) !== 0) {
+                this.borrows.push(underwater)
+              }
+            })
+        }
+      })
     },
     getBorrows() {
-      this.$middleware
-        .getMarkets(this.account)
-        .then((markets) => markets.filter((market) => market.address !== this.data.market.address))
-        .then((markets) => markets.forEach((market) => this.getUnhealthyAccounts(market)))
+      this.$middleware.getMarkets(this.account).then((markets) => {
+        markets
+          .filter((market) => market.instanceAddress === this.data.market.instanceAddress)
+          .forEach((market) => {
+            console.log('market.instanceAddress', market.instanceAddress)
+            this.getUnhealthyAccounts(market)
+          })
+      })
     },
   },
 }
