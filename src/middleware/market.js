@@ -66,12 +66,6 @@ export default class Market {
     this.collateralFactorMantissa = collateralFactorMantissa
     // In the discord channel, the support team says that LTV is the same as the collateralFactor
     this.loanToValue = collateralFactorMantissa
-    console.log(
-      `CollateralFactor ${collateralFactorMantissa} - Decimals ${underlyingDecimals} - ${ethers.utils.formatUnits(
-        collateralFactorMantissa,
-        underlyingDecimals,
-      )}`,
-    )
     this.exchangeRateCurrent = exchangeRateCurrent
     this.reserveFactorMantissa = reserveFactorMantissa
     this.supplyRatePerBlock = supplyRatePerBlock
@@ -83,7 +77,6 @@ export default class Market {
 
     // Calculation based on the compound doc, see https://compound.finance/docs#protocol-math, search for APY
     const mantissa = ethers.utils.parseUnits('1', underlyingDecimals)
-    console.log('Mantissa', mantissa.toString())
     const blocksPerDay = 4 * 60 * 24
     const daysPerYear = 365
 
@@ -91,8 +84,6 @@ export default class Market {
       (Math.pow((supplyRatePerBlock / mantissa) * blocksPerDay + 1, daysPerYear - 1) - 1) * 100
     this.borrowApy =
       (Math.pow((borrowRatePerBlock / mantissa) * blocksPerDay + 1, daysPerYear - 1) - 1) * 100
-    console.log(`Supply APY for ${tokenSymbol} ${this.supplyApy} %`)
-    console.log(`Borrow APY for ${tokenSymbol} ${this.borrowApy} %`)
   }
 
   async getValueMoc() {
