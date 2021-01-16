@@ -5,7 +5,12 @@
         <div>
           <v-row class="mt-2 d-flex align-center">
             <v-col cols="3" class="ml-2 d-flex justify-end">
-              <v-img class="ml-5" src="../../../assets/rif.png" contain height="70" />
+              <v-img
+                class="ml-5"
+                :src="require(`@/assets/tokens/${data.token.logo}.png`)"
+                contain
+                height="70"
+              />
             </v-col>
             <v-col cols="3" class="d-flex justify-center">
               <h1 class="ma-0">{{ data.token.symbol }}</h1>

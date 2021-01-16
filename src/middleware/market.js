@@ -18,6 +18,7 @@ export default class Market {
       tokenSymbol,
       underlyingName,
       underlyingDecimals,
+      logo,
       account,
       collateralFactorMantissa,
       exchangeRateCurrent,
@@ -53,6 +54,7 @@ export default class Market {
     this.token.symbol = tokenSymbol
     this.token.name = underlyingName
     this.token.decimals = underlyingDecimals
+    this.token.logo = logo
     // set borrow rate
     this.factor = 1e18
     this.blocksPerYear = 1051200
