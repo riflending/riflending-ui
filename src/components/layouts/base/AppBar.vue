@@ -1,33 +1,52 @@
 <template>
-  <v-app-bar class="app-bar ma-5" color="transparent" flat>
-    <h1 class="mx-5">rLending</h1>
-    <h2>{{ title }}</h2>
-    <v-spacer />
-    <div v-if="isLogged">
-      <router-link class="mx-5" :to="{ name: 'MyActivity' }"> Home </router-link>
-      <router-link class="mx-5" :to="{ name: 'SupplyBorrow' }"> Supply/Borrow </router-link>
-      <!-- <template v-if="isOwner"> -->
-      <router-link class="mx-5" :to="{ name: 'Status' }"> Status </router-link>
-      <!-- </template> -->
-      <v-btn class="mx-5" rounded outlined color="#008CFF">
-        {{ accountCutOff }}
+  <Fragment>
+    <v-app-bar class="app-bar ma-5" color="transparent" flat>
+      <h1 class="mx-5">rLending</h1>
+      <h2>{{ title }}</h2>
+      <v-spacer />
+      <div v-if="isLogged">
+        <router-link class="mx-5" :to="{ name: 'MyActivity' }"> Home </router-link>
+        <router-link class="mx-5" :to="{ name: 'SupplyBorrow' }"> Supply/Borrow </router-link>
+        <!-- <template v-if="isOwner"> -->
+        <router-link class="mx-5" :to="{ name: 'Status' }"> Status </router-link>
+        <!-- </template> -->
+        <v-btn class="mx-5" rounded outlined color="#008CFF">
+          {{ accountCutOff }}
+        </v-btn>
+      </div>
+      <v-btn v-else id="connectButton" class="ml-5 button" rounded color="#008CFF" @click="connect">
+        <span class="mx-5">Connect wallet</span>
       </v-btn>
-    </div>
-    <v-btn v-else id="connectButton" class="ml-5 button" rounded color="#008CFF" @click="connect">
-      <span class="mx-5">Connect wallet</span>
-    </v-btn>
-  </v-app-bar>
+    </v-app-bar>
+    <v-alert
+      border="right"
+      colored-border
+      type="error"
+      elevation="2"
+      :value="shouldDisplayWarningValidNetwork"
+    >
+      The network you are trying to connect is not supported...
+    </v-alert>
+  </Fragment>
 </template>
 
 <script>
 import { mapActions, mapState, mapGetters } from 'vuex'
 import * as constants from '@/store/constants'
-import store from '@/store'
 import Vue from 'vue'
 import { ethers } from 'ethers'
+import { Fragment } from 'vue-fragment'
 
 export default {
   name: 'AppBar',
+  components: {
+    Fragment,
+  },
+  data() {
+    return {
+      shouldDisplayWarningValidNetwork: false,
+    }
+  },
   computed: {
     ...mapGetters({
       isLogged: constants.SESSION_IS_LOGGED,
@@ -61,14 +80,19 @@ export default {
     ...mapActions({
       connectToWeb3: constants.SESSION_CONNECT_WEB3,
     }),
+    validateNetwork(chainId) {
+      this.shouldDisplayWarningValidNetwork = ![31].includes(parseInt(chainId))
+    },
     async connect() {
       try {
         // eslint-disable-next-line no-undef
         // await ethereum.enable();
+        this.validateNetwork(window?.ethereum?.chainId ?? 0)
+
         this.$provider = await this.$rLogin.connect()
 
         this.$provider.on('accountsChanged', () => {
-          store.dispatch(constants.SESSION_CONNECT_WEB3)
+          window.location.reload(false)
         })
 
         this.$provider.on('error', (error) => {
@@ -76,9 +100,7 @@ export default {
         })
 
         this.$provider.on('chainChanged', (chainId) => {
-          if (![31].includes(parseInt(chainId))) {
-            throw new Error('Wrong chain id')
-          }
+          this.validateNetwork(chainId)
         })
 
         Vue.provider = this.$provider
