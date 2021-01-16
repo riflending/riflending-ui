@@ -1,7 +1,7 @@
 <template class="success-top">
   <v-row class="mx-5 d-flex align-center justify-center">
     <v-col cols="2" class="d-flex justify-center">
-      <v-img class="ml-5" src="../../assets/rif.png" width="60" />
+      <v-img class="ml-5" :src="require(`@/assets/tokens/${data.token.logo}.png`)" width="60" />
     </v-col>
     <v-col cols="3" class="item">
       <h1 class="ma-0">{{ data.token.symbol }}</h1>

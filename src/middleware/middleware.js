@@ -32,6 +32,7 @@ export default class Middleware {
         tokenSymbol: cTokensDetail.underlying.symbol,
         underlyingName: cTokensDetail.underlying.name,
         underlyingDecimals: cTokensDetail.underlying.decimals,
+        logo: cTokensDetail.logo,
         collateralFactorMantissa,
         exchangeRateCurrent,
         reserveFactorMantissa,
