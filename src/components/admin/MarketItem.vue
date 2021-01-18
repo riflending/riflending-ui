@@ -61,25 +61,24 @@
                 <span class="ml-2 itemInfo">{{ token.symbol }}</span>
               </v-list-item-subtitle>
             </v-col>
-            <!--TODO: we are going to hide this button for now, we don't know if we will have to use it later-->
-            <!--<v-col cols="2" class="pa-0">-->
-            <!--<v-btn class="pa-0 ma-0" icon @click="dialog = !dialog">-->
-            <!--<svg-->
-            <!--width="11"-->
-            <!--height="32"-->
-            <!--viewBox="0 0 11 32"-->
-            <!--fill="none"-->
-            <!--xmlns="http://www.w3.org/2000/svg"-->
-            <!--&gt;-->
-            <!--<path-->
-            <!--d="M1 1L9 16L1 31"-->
-            <!--stroke="#008CFF"-->
-            <!--stroke-width="2"-->
-            <!--stroke-linecap="round"-->
-            <!--/>-->
-            <!--</svg>-->
-            <!--</v-btn>-->
-            <!--</v-col>-->
+            <v-col cols="2" class="pa-0">
+              <v-btn class="pa-0 ma-0" icon @click="dialog = !dialog">
+                <svg
+                  width="11"
+                  height="32"
+                  viewBox="0 0 11 32"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M1 1L9 16L1 31"
+                    stroke="#008CFF"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                  />
+                </svg>
+              </v-btn>
+            </v-col>
           </v-row>
         </v-col>
       </v-row>
@@ -168,7 +167,8 @@ export default {
           this.cash = ethers.utils.formatUnits(this.market.totalCash, this.market.token.decimals)
           this.totalSupply = this.market.getTotalSupply()
           this.totalBorrows = ethers.utils.formatUnits(
-            this.market.totalBorrows.this.market.token.decimals,
+            this.market.totalBorrows,
+            this.market.token.decimals,
           )
           this.loanToValue = ethers.utils.formatUnits(
             this.market.loanToValue,
