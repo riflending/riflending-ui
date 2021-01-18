@@ -21,7 +21,7 @@
               <h2>price:</h2>
             </v-row>
             <v-row class="item d-flex justify-start">
-              <span>{{ price | formatPrice }}</span
+              <span>{{ price | formatToken(data.token.decimals) }}</span
               ><span class="ml-2 itemInfo">usd</span>
             </v-row>
           </v-col>
@@ -29,14 +29,16 @@
             <v-row>
               <h2>APR:</h2>
             </v-row>
-            <v-row class="item d-flex justify-start"> {{ apr }} % </v-row>
+            <v-row class="item d-flex justify-start"> {{ apr | formatPercentage }} </v-row>
           </v-col>
           <v-col />
           <v-col cols="2" class="mr-1">
             <v-row class="ma-0 pr-1 d-flex justify-end">
-              <h2 class="grayish">original APR:</h2>
+              <h2 class="grayish">Price 24hs:</h2>
             </v-row>
-            <v-row class="grayish item d-flex justify-end mr-1"> {{ baseApr }} % </v-row>
+            <v-row class="grayish item d-flex justify-end mr-1">
+              {{ priceChange | formatPercentage }}
+            </v-row>
           </v-col>
         </v-row>
       </div>
@@ -52,11 +54,11 @@
             <span class="ml-2 itemInfo">{{ data.token.symbol }}</span>
           </v-col>
           <v-col cols="2" />
-          <v-col cols="2" class="d-flex justify-end">
-            <h3>current cash:</h3>
+          <v-col cols="2" class="d-flex align-center justify-end">
+            <h3>Supply APY</h3>
           </v-col>
           <v-col cols="2" class="item">
-            <span>{{ cash | formatToken(data.token.decimals) }}</span>
+            <span>{{ supplyAPR | formatPercentage }} </span>
           </v-col>
           <v-col cols="1" class="d-flex justify-end">
             <span class="itemInfo">{{ data.token.symbol }}</span>
@@ -73,17 +75,77 @@
             <span class="ml-2 itemInfo">{{ data.token.symbol }}</span>
           </v-col>
           <v-col cols="2" />
-          <v-col cols="2" class="d-flex justify-end">
-            <h3>apr growth:</h3>
+          <v-col cols="2" class="d-flex align-center justify-end">
+            <h3>Borrow APY</h3>
           </v-col>
           <v-col cols="2" class="item">
-            <span>{{ growth }} %</span>
+            <span>{{ borrowAPR | formatPercentage }} </span>
           </v-col>
           <v-col cols="1" />
         </v-row>
-        <v-row>
-          <TransactionsGraph :data="dataObject" />
+        <v-row class="ma-2 d-flex justify-end">
+          <v-col cols="2">
+            <h3>Total Cash</h3>
+          </v-col>
+          <v-col cols="2" class="item">
+            <span>{{ updatedTotalReserves | formatToken(data.token.decimals) }} </span>
+          </v-col>
+          <v-col cols="1">
+            <span class="ml-2 itemInfo">{{ data.token.symbol }}</span>
+          </v-col>
+          <v-col cols="2" />
+          <v-col cols="2" class="d-flex justify-end">
+            <h3>Reserve Factor</h3>
+          </v-col>
+          <v-col cols="2" class="item">
+            <span>{{ reserveFactor | formatPercentage }} </span>
+          </v-col>
+          <v-col cols="1" />
         </v-row>
+        <!-- <v-row class="ma-2 d-flex align-center justify-space-between"> -->
+        <v-row class="ma-2 d-flex align-center justify-end">
+          <v-col cols="2">
+            <h3>Supply-Borrowed ratio</h3>
+          </v-col>
+          <v-col cols="2" class="item">
+            <span>{{ supBorRatio | formatPercentage }} </span>
+          </v-col>
+          <v-col cols="1">
+            <span class="ml-2 itemInfo">{{ data.token.symbol }}</span>
+          </v-col>
+          <v-col cols="2" />
+          <v-col cols="2" class="d-flex justify-end">
+            <h3>Collateral Factor (LTV)</h3>
+          </v-col>
+          <v-col cols="2" class="item">
+            <span>{{ collFact | formatPercentage }} </span>
+          </v-col>
+          <v-col cols="1" class="d-flex justify-end">
+            <span class="itemInfo">{{ data.token.symbol }}</span>
+          </v-col>
+        </v-row>
+        <v-row class="ma-2 d-flex justify-end">
+          <v-col cols="2">
+            <h3>Liquidation Threshold</h3>
+          </v-col>
+          <v-col cols="2" class="item">
+            <span>{{ liqThr | formatPercentage }} </span>
+          </v-col>
+          <v-col cols="1">
+            <span class="ml-2 itemInfo">{{ data.token.symbol }}</span>
+          </v-col>
+          <v-col cols="2" />
+          <v-col cols="2" class="d-flex justify-end">
+            <h3>Liquidation Penalty</h3>
+          </v-col>
+          <v-col cols="2" class="item">
+            <span>{{ liqPen | formatPercentage }} </span>
+          </v-col>
+          <v-col cols="1" />
+        </v-row>
+        <!-- <v-row>
+          <TransactionsGraph :data="dataObject" />
+        </v-row> -->
       </div>
     </v-card>
     <template v-if="priceFlag">
@@ -95,13 +157,11 @@
 <script>
 import { mapState } from 'vuex'
 import MarketPriceDialog from '@/components/dialog/market/MarketPriceDialog.vue'
-import TransactionsGraph from '@/components/admin/TransactionsGraph.vue'
 
 export default {
   name: 'MarketDialog',
   components: {
     MarketPriceDialog,
-    TransactionsGraph,
   },
   props: {
     data: {
@@ -115,8 +175,17 @@ export default {
       borrowRate: 0,
       baseBorrowRate: 0,
       price: 0,
-      updatedTotalSupply: 0,
-      updatedTotalBorrow: 0,
+      updatedTotalSupply: 0, // sum of supply in this market
+      updatedTotalBorrow: 0, // sum of borrowed in this market
+      updatedTotalReserves: 0, // sum of reserves in this market
+      supplyAPR: 0, // the supply apr
+      borrowAPR: 0, // the borrow apr
+      supBorRatio: 0, // the sup/borr ratio
+      collFact: 0, // the collateral factor
+      reserveFactor: 0, //reserveFactorMantissa
+      liqThr: 0, // the liquidation factor
+      liqPen: 0, // the liquidation penalty
+      priceChange: 0, // the price change in the last 24hs
       cash: 0,
       growth: 0,
       tokenAddress: 0,
@@ -130,9 +199,6 @@ export default {
     apr() {
       return this.borrowRate.toFixed(2)
     },
-    baseApr() {
-      return this.baseBorrowRate.toFixed(2)
-    },
     rskExplorerUrl() {
       return `https://explorer.testnet.rsk.co/address/${this.tokenAddress}`
     },
@@ -144,11 +210,27 @@ export default {
       }
     },
   },
-  created() {
-    this.data.market.eventualToken.then((tok) => {
-      this.tokenAddress = tok.address
-      this.reset()
-    })
+  async created() {
+    console.log('CREATED this.market', this.data.market)
+    this.price = await this.data.market.getPriceInDecimals()
+    console.log('this.price', this.price)
+    this.updatedTotalSupply = this.data.market.totalSupply
+    console.log('this.totalSupply', this.updatedTotalSupply, Number(this.updatedTotalSupply))
+    this.updatedTotalBorrow = this.data.market.totalBorrows
+    console.log('this.totalBorrow', this.updatedTotalBorrow, Number(this.updatedTotalBorrow))
+    this.updatedTotalReserves = this.data.market.totalCash
+    console.log('this.totalReserves', this.updatedTotalReserves, Number(this.updatedTotalReserves))
+    this.supBorRatio = Number(this.updatedTotalBorrow) / Number(this.updatedTotalSupply)
+    console.log('this.supBorRatio', this.supBorRatio)
+    this.reserveFactor = this.data.market.reserveFactorMantissa.toNumber()
+    console.log('this.reserveFactor', this.reserveFactor)
+    this.supplyAPR = this.data.market.supplyApy
+    console.log('this.supplyAPR', this.supplyAPR)
+    this.borrowAPR = this.data.market.borrowApy
+    console.log('this.borrowAPR', this.borrowAPR)
+    this.borrowRate = await this.data.market.getBorrowRate()
+    console.log('this.borrowRate APR', this.borrowRate)
+    this.reset()
   },
   methods: {
     onClickOutside() {
@@ -159,32 +241,32 @@ export default {
     },
     reset() {
       this.priceFlag = false
-      this.data.market
-        .getPrice(this.data.market.address)
-        .then((marketPrice) => {
-          this.price = marketPrice
-          return this.data.market.eventualBorrowRate
-        })
-        .then((borrowRate) => {
-          this.borrowRate = borrowRate
-          return this.data.market.eventualBaseBorrowRate
-        })
-        .then((baseBorrowRate) => {
-          this.baseBorrowRate = baseBorrowRate
-          return this.data.market.eventualUpdatedTotalSupply
-        })
-        .then((updatedTotalSupply) => {
-          this.updatedTotalSupply = updatedTotalSupply
-          return this.data.market.eventualUpdatedTotalBorrows
-        })
-        .then((updatedTotalBorrows) => {
-          this.updatedTotalBorrow = updatedTotalBorrows
-          return this.data.market.eventualCash
-        })
-        .then((cash) => {
-          this.cash = cash
-          this.growth = (this.borrowRate - this.baseBorrowRate).toFixed(2)
-        })
+      // this.data.market
+      //   .getPrice(this.data.market.address)
+      //   .then((marketPrice) => {
+      //     this.price = marketPrice
+      //     return this.data.market.eventualBorrowRate
+      //   })
+      //   .then((borrowRate) => {
+      //     this.borrowRate = borrowRate
+      //     return this.data.market.eventualBaseBorrowRate
+      //   })
+      //   .then((baseBorrowRate) => {
+      //     this.baseBorrowRate = baseBorrowRate
+      //     return this.data.market.eventualUpdatedTotalSupply
+      //   })
+      //   .then((updatedTotalSupply) => {
+      //     this.updatedTotalSupply = updatedTotalSupply
+      //     return this.data.market.eventualUpdatedTotalBorrows
+      //   })
+      //   .then((updatedTotalBorrows) => {
+      //     this.updatedTotalBorrow = updatedTotalBorrows
+      //     return this.data.market.getCash()
+      //   })
+      //   .then((cash) => {
+      //     this.cash = cash
+      //     this.growth = (this.borrowRate - this.baseBorrowRate).toFixed(2)
+      //   })
     },
   },
 }
