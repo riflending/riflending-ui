@@ -150,7 +150,10 @@ export default {
       this.market.totalBorrows,
       this.market.token.decimals,
     )
-    this.loanToValue = ethers.utils.formatUnits(this.market.loanToValue, this.market.token.decimals)
+    this.loanToValue = ethers.utils.formatUnits(
+      this.market.loanToValue.mul(100),
+      this.market.token.decimals,
+    )
     this.supplyApy = this.market.supplyApy
     this.borrowApy = this.market.borrowApy
   },
@@ -171,7 +174,7 @@ export default {
             this.market.totalBorrows.this.market.token.decimals,
           )
           this.loanToValue = ethers.utils.formatUnits(
-            this.market.loanToValue,
+            this.market.loanToValue.mul(100),
             this.market.token.decimals,
           )
           this.supplyApy = this.market.supplyApy
