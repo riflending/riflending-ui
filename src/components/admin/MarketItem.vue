@@ -6,7 +6,7 @@
           <v-row class="d-flex align-center">
             <v-col cols="6" class="pa-0 d-flex justify-end">
               <v-list-item-avatar tile size="40">
-                <v-img src="../../assets/rif.png" />
+                <v-img :src="require(`@/assets/tokens/${token.logo}.png`)" />
               </v-list-item-avatar>
             </v-col>
             <v-col cols="6" class="pa-0 d-flex justify-start">
@@ -112,6 +112,7 @@ export default {
         name: null,
         symbol: null,
         decimals: 0,
+        logo: null,
       },
       price: 0,
       borrowRate: 0,

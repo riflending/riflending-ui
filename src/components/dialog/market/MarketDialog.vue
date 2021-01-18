@@ -4,7 +4,7 @@
       <div class="container">
         <v-row class="ma-0 d-flex align-center">
           <v-col cols="1" class="d-flex justify-center">
-            <v-img class="ml-5" src="../../../assets/rif.png" />
+            <v-img class="ml-5" :src="require(`@/assets/tokens/${data.token.logo}.png`)" />
           </v-col>
           <v-col cols="2">
             <v-row class="ml-5 item d-flex justify-start">
