@@ -25,7 +25,13 @@
                   flat
                   type="number"
                   required
-                  :rules="[rules.required, rules.decimals, rules.funds, rules.maxAvailable]"
+                  :rules="[
+                    rules.collateralMarketSelected,
+                    rules.required,
+                    rules.decimals,
+                    rules.funds,
+                    rules.maxAvailable,
+                  ]"
                 />
               </v-col>
               <v-col cols="2" class="mb-6 ml-0">
@@ -65,7 +71,7 @@
               <v-col cols="2" class="d-flex justify-end">
                 <select v-model="marketSelected">
                   <option disabled value="">
-                    Collateral market
+                    Select collateral market
                     <!-- Please select your Collateral market -->
                   </option>
                   <option
@@ -115,6 +121,8 @@
 import { mapState } from 'vuex'
 import LiquidateList from '@/components/dialog/liquidate/LiquidateList.vue'
 import Loader from '@/components/common/Loader.vue'
+import BigNumber from 'bignumber.js'
+import { ethers } from 'ethers'
 export default {
   name: 'LiquidateInput',
   components: {
@@ -146,16 +154,14 @@ export default {
       funds: 0,
       max: false,
       rules: {
+        collateralMarketSelected: () => !!this.marketSelected || 'Select collateral market.',
         required: () => !!Number(this.amount) || 'Required.',
         decimals: () =>
           this.decimalPositions ||
           `Maximum ${this.data.token.decimals} decimal places for ${this.data.token.symbol}.`,
         funds: () => this.funds >= this.usdAmount / this.borrowMarketPrice || 'Not enough funds',
         maxAvailable: () =>
-          this.amount <= this.maxToLiquidate || 'There is not enough collateral to liquidate',
-        collateralMarketSelected: () =>
-          //TO-DO this rule, see why not displayed the message
-          !!this.marketSelected || 'Select collateral market.',
+          this.amount <= this.maxToLiquidate() || 'There is not enough collateral to liquidate',
       },
     }
   },
@@ -170,17 +176,6 @@ export default {
         typeof this.rules.decimals() !== 'string' &&
         typeof this.rules.required() !== 'string' &&
         typeof this.rules.maxAvailable() !== 'string'
-      )
-    },
-    maxToLiquidate() {
-      //TO-DO this min
-      //refact to select market
-      return (
-        Math.min(
-          this.maxCollateralSupplied,
-          this.accountDebt,
-          this.funds * this.borrowMarketPrice,
-        ) / this.currentMarketPrice
       )
     },
     usdAmount() {
@@ -221,7 +216,6 @@ export default {
     },
     liquidationAmount() {
       return this.amount
-      // return Number(Number(this.amount).toFixed(this.data.token.decimals))
     },
     getAvailableMarketBorrower() {
       return this.data.availableMarketBorrower
@@ -229,10 +223,27 @@ export default {
   },
   watch: {
     max() {
-      if (this.max) this.amount = this.maxToLiquidate
+      //TODO change max value use
+      this.amount = this.maxToLiquidate()
+      this.max = false
     },
   },
   methods: {
+    maxToLiquidate() {
+      return !this.marketSelected
+        ? 0
+        : Math.min(
+            //max borrow by borrower
+            this.maxCollateralSupplied,
+            //max calcultate supplied in contract by market of borrower
+            this.getCollateralMarketPriceAssetSelected().multipliedBy(
+              this.getCollateralMarketMaxAssetSelected(),
+            ),
+            //founds of liquidator
+            this.funds * this.borrowMarketPrice,
+          ) / this.currentMarketPrice
+    },
+
     async liquidateAllowed() {
       return this.$middleware
         .liquidateBorrowAllowed(
@@ -300,22 +311,26 @@ export default {
       this.assetsBalanceIn(accountObject.borrower)
         .then((balances) => {
           this.data.availableMarketBalances = balances
-          //TO-DO remove log
-          console.log('this.data.availableMarketBalances', this.data.availableMarketBalances)
           //set price market to liquidate
           return accountObject.collateral.getPriceInDecimals()
         })
         .then((price) => {
           this.borrowMarketPrice = price
           //set the asset amount of the account to liquidate
-          this.accountDebt = accountObject.debt * price
+          //cast to BigNumberJS, because price express in decimals BigNumberJS
+          this.accountDebt = new BigNumber(
+            ethers.utils.formatEther(accountObject.debt),
+          ).multipliedBy(price)
           return this.data.market.getPriceInDecimals()
         })
         //set the price of current market
         .then((price) => {
           this.currentMarketPrice = price
-          //set the max asset amount of the account to liquidate
-          this.maxCollateralSupplied = accountObject.maxToLiquidate * price
+          //set the borrow of the account to liquidate => maxToLiquidate
+          //cast to BigNumberJS, because price express in decimals BigNumberJS
+          this.maxCollateralSupplied = new BigNumber(
+            ethers.utils.formatEther(accountObject.maxToLiquidate),
+          ).multipliedBy(price)
           this.accountSelected = true
           this.liquidationAccount = accountObject.borrower
         })
@@ -335,9 +350,17 @@ export default {
     getCollateralToken(accountObject) {
       this.borrowMarketSymbol = accountObject.collateral.token.symbol
       this.borrowMarketTokenDecimals = accountObject.collateral.token.decimals
-      accountObject.collateral.getBalanceOfUnderlying(accountObject.borrower).then((funds) => {
-        this.funds = funds
-      })
+      if (!accountObject.collateral.isCRBTC) {
+        this.$middleware
+          .getWalletAccountBalance(this.account, accountObject.collateral.token.internalAddress)
+          .then((funds) => {
+            this.funds = funds
+          })
+      } else {
+        this.$middleware.getWalletAccountBalanceForRBTC(this.account).then((funds) => {
+          this.funds = funds
+        })
+      }
     },
     getCollateralMarketMaxAssetSelected() {
       try {
