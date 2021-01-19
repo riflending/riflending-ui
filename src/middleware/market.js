@@ -324,6 +324,22 @@ export default class Market {
     console.error('cToken is not listed')
   }
 
+  /**
+   * getLiquidationIncentiveMantissa for cToken.
+   * @return human number liquidationIncentiveMantissa | error beacuse the cToken is not listed on protocol
+   */
+  async getLiquidationIncentiveMantissa() {
+    // set contract Comptroller delegate (Unitroller)
+    const contract = this.factoryContract.getContractByNameAndAbiName(
+      constants.Unitroller,
+      constants.Comptroller,
+    )
+    // get is member (bool)
+    const liquidationIncentiveMantissa = await contract.liquidationIncentiveMantissa()
+    // validate token listed
+    return ethers.utils.formatEther(liquidationIncentiveMantissa)
+  }
+
   async redeemUnderlying(amount) {
     // set signer token
     const signer = this.instance.connect(this.factoryContract.getSigner())
