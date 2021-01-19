@@ -13,21 +13,7 @@
           </p>
         </v-row>
         <v-row class="my-4 d-flex align-center">
-          <v-col cols="3">
-            <v-row class="d-flex justify-center">
-              <h2>Collateral</h2>
-            </v-row>
-            <v-row class="d-flex justify-center">
-              <h3>
-                {{ maxToLiquidate | formatToken(data.token.decimals) }}
-              </h3>
-              <span>
-                {{ data.token.symbol }}
-              </span>
-            </v-row>
-          </v-col>
-          <v-divider vertical inset />
-          <v-col cols="8" class="input-col">
+          <v-col cols="8" class="input-col dialogInputLiquidate">
             <v-row class="inputBox mb-4">
               <v-col cols="10">
                 <v-text-field
@@ -51,7 +37,7 @@
                 <h4>You pay:</h4>
               </v-col>
               <v-col cols="8" class="summary-num d-flex justify-center">
-                {{ collateralAmount }}
+                {{ collateralAmount | formatNumber }}
               </v-col>
               <v-col cols="2" class="d-flex justify-end">
                 <span>{{ borrowMarketSymbol }}</span>
@@ -68,15 +54,29 @@
                 <span> USD </span>
               </v-col>
             </v-row>
+
             <v-row class="mx-0 mt-4 px-1 d-flex align-center">
               <v-col cols="2">
                 <h4>You get:</h4>
               </v-col>
-              <v-col cols="8" class="summary-num d-flex justify-center">
-                {{ liquidationAmount | formatToken(data.token.decimals) }}
+              <v-col v-show="!marketSelected" cols="8" class="summary-num d-flex justify-center">
+                {{ selectCollateralAmount }}
               </v-col>
               <v-col cols="2" class="d-flex justify-end">
-                <span>{{ data.token.symbol }}</span>
+                <select v-model="marketSelected">
+                  <option disabled value="">
+                    Collateral market
+                    <!-- Please select your Collateral market -->
+                  </option>
+                  <option
+                    v-for="option in getAvailableMarketBorrower"
+                    :key="option.text"
+                    class="justify-end"
+                    :value="option.value"
+                  >
+                    {{ option.text.toUpperCase() }}
+                  </option>
+                </select>
               </v-col>
             </v-row>
             <v-row class="mx-0 px-1 pt-1 d-flex align-center">
@@ -115,7 +115,6 @@
 import { mapState } from 'vuex'
 import LiquidateList from '@/components/dialog/liquidate/LiquidateList.vue'
 import Loader from '@/components/common/Loader.vue'
-
 export default {
   name: 'LiquidateInput',
   components: {
@@ -130,6 +129,9 @@ export default {
   },
   data() {
     return {
+      marketSelected: '',
+      availableMarketBorrower: [],
+      availableMarketBalances: [],
       waiting: false,
       liquidationAccount: '',
       accountSelected: false,
@@ -151,6 +153,9 @@ export default {
         funds: () => this.funds >= this.usdAmount / this.borrowMarketPrice || 'Not enough funds',
         maxAvailable: () =>
           this.amount <= this.maxToLiquidate || 'There is not enough collateral to liquidate',
+        collateralMarketSelected: () =>
+          //TO-DO this rule, see why not displayed the message
+          !!this.marketSelected || 'Select collateral market.',
       },
     }
   },
@@ -160,6 +165,7 @@ export default {
     }),
     validForm() {
       return (
+        typeof this.rules.collateralMarketSelected() !== 'string' &&
         typeof this.rules.funds() !== 'string' &&
         typeof this.rules.decimals() !== 'string' &&
         typeof this.rules.required() !== 'string' &&
@@ -167,6 +173,8 @@ export default {
       )
     },
     maxToLiquidate() {
+      //TO-DO this min
+      //refact to select market
       return (
         Math.min(
           this.maxCollateralSupplied,
@@ -176,7 +184,7 @@ export default {
       )
     },
     usdAmount() {
-      return this.amount * this.currentMarketPrice
+      return !this.amount ? 0 : this.currentMarketPrice.multipliedBy(this.amount).toNumber()
     },
     hasDecimals() {
       return !!Number(this.data.token.decimals)
@@ -198,13 +206,25 @@ export default {
         : this.amount
     },
     collateralAmount() {
-      return (
-        (this.amount * this.currentMarketPrice) /
-        (this.borrowMarketPrice * 10 ** this.borrowMarketTokenDecimals)
-      ).toFixed(this.borrowMarketTokenDecimals)
+      // return
+      return !this.amount
+        ? 0
+        : this.currentMarketPrice.multipliedBy(this.amount).div(this.borrowMarketPrice).toNumber()
+    },
+    selectCollateralAmount() {
+      return !this.amount || !this.marketSelected
+        ? 0
+        : this.currentMarketPrice
+            .multipliedBy(this.amount)
+            .div(this.getCollateralMarketPriceAssetSelected())
+            .toNumber()
     },
     liquidationAmount() {
-      return Number(Number(this.amount).toFixed(this.data.token.decimals))
+      return this.amount
+      // return Number(Number(this.amount).toFixed(this.data.token.decimals))
+    },
+    getAvailableMarketBorrower() {
+      return this.data.availableMarketBorrower
     },
   },
   watch: {
@@ -213,71 +233,138 @@ export default {
     },
   },
   methods: {
+    async liquidateAllowed() {
+      return this.$middleware
+        .liquidateBorrowAllowed(
+          this.liquidationAccount,
+          this.account,
+          this.collateralAmount,
+          this.borrowMarketAddress,
+          this.marketSelected.toString(),
+        )
+        .then((allowed) => {
+          allowed = allowed.toNumber()
+          // validate allowed
+          if (allowed === 0) {
+            return ''
+          }
+          return this.$middleware.getMsjErrorCodeComptroller(allowed)
+        })
+    },
+
     liquidate() {
       this.waiting = true
       this.$emit('wait')
       const market = this.data.market
-      market
-        .liquidateBorrow(
-          this.liquidationAccount,
-          this.collateralAmount * 10 ** this.borrowMarketTokenDecimals,
-          this.data.market.address,
-          this.account,
-        )
+      //call allow liquidate
+      this.liquidateAllowed()
+        .then((allowed) => {
+          // validate allowed
+          if (!allowed) {
+            //liquidate
+            return market.liquidateBorrow(
+              this.liquidationAccount,
+              this.collateralAmount,
+              this.marketSelected.toString(),
+            )
+          }
+          //fail validate allowed
+          throw allowed
+        })
         .then((res) => {
           this.waiting = false
           this.$emit('succeed', {
             hash: res.transactionHash,
             liquidateValue: this.liquidationAmount,
-            costValue: this.collateralAmount * 10 ** this.borrowMarketTokenDecimals,
+            costValue: this.collateralAmount,
             collateral: {
+              amount: this.selectCollateralAmount,
               decimals: this.borrowMarketTokenDecimals,
-              symbol: this.borrowMarketSymbol,
+              symbol: this.getCollateralMarketSymbolAssetSelected(),
             },
           })
         })
-        .catch(() => {
+        .catch((error) => {
           this.waiting = false
-          this.$emit('error')
+          console.error('ERROR liquidate()', error)
+          const userError = typeof error === 'string' ? error : error.message || ''
+          this.$emit('error', { userErrorMessage: userError })
         })
     },
     setLiquidationAccount(accountObject) {
+      //set address market to liquidate
       this.borrowMarketAddress = accountObject.borrowMarketAddress
-      this.getCollateralToken()
-        .then(() => this.data.market.getPrice(this.borrowMarketAddress))
+      //set token data
+      this.getCollateralToken(accountObject)
+      //get the asset of borrower
+      this.assetsBalanceIn(accountObject.borrower)
+        .then((balances) => {
+          this.data.availableMarketBalances = balances
+          //TO-DO remove log
+          console.log('this.data.availableMarketBalances', this.data.availableMarketBalances)
+          //set price market to liquidate
+          return accountObject.collateral.getPriceInDecimals()
+        })
         .then((price) => {
           this.borrowMarketPrice = price
+          //set the asset amount of the account to liquidate
           this.accountDebt = accountObject.debt * price
-          return this.data.market.getPrice(this.data.market.address)
+          return this.data.market.getPriceInDecimals()
         })
+        //set the price of current market
         .then((price) => {
           this.currentMarketPrice = price
+          //set the max asset amount of the account to liquidate
           this.maxCollateralSupplied = accountObject.maxToLiquidate * price
           this.accountSelected = true
+          this.liquidationAccount = accountObject.borrower
         })
-      this.liquidationAccount = accountObject.borrower
+    },
+    assetsBalanceIn(account) {
+      return this.$middleware.getAssetsBalanceIn(account).then((balances) => {
+        this.data.availableMarketBorrower = balances.map((balance) => ({
+          value: balance.marketAddress,
+          text: balance.symbol,
+        }))
+        return balances
+      })
     },
     actionSucceed(succeedObj) {
       this.emit('succeed', succeedObj)
     },
-    getCollateralToken() {
-      return new Promise((resolve, reject) => {
-        this.data.market
-          .then((token) =>
-            Promise.all([
-              token.eventualSymbol,
-              token.eventualDecimals,
-              token.eventualBalanceOf(this.account),
-            ]),
-          )
-          .then(([symbol, decimals, balance]) => {
-            this.borrowMarketSymbol = symbol
-            this.borrowMarketTokenDecimals = decimals
-            this.funds = balance
-            resolve()
-          })
-          .catch(reject)
+    getCollateralToken(accountObject) {
+      this.borrowMarketSymbol = accountObject.collateral.token.symbol
+      this.borrowMarketTokenDecimals = accountObject.collateral.token.decimals
+      accountObject.collateral.getBalanceOfUnderlying(accountObject.borrower).then((funds) => {
+        this.funds = funds
       })
+    },
+    getCollateralMarketMaxAssetSelected() {
+      try {
+        return this.data.availableMarketBalances.find(
+          (market) => market.marketAddress === this.marketSelected.toString(),
+        ).balance
+      } catch (error) {
+        return ''
+      }
+    },
+    getCollateralMarketPriceAssetSelected() {
+      try {
+        return this.data.availableMarketBalances.find(
+          (market) => market.marketAddress === this.marketSelected.toString(),
+        ).price
+      } catch (error) {
+        return ''
+      }
+    },
+    getCollateralMarketSymbolAssetSelected() {
+      try {
+        return this.data.availableMarketBalances.find(
+          (market) => market.marketAddress === this.marketSelected.toString(),
+        ).symbol
+      } catch (error) {
+        return ''
+      }
     },
   },
 }

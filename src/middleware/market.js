@@ -124,6 +124,7 @@ export default class Market {
     // set balance of account
     const balance = await this.instance.balanceOf(this.account)
     // return format (without wei)
+    //TODO fix correct format
     return ethers.utils.formatEther(balance)
   }
 
@@ -131,6 +132,7 @@ export default class Market {
     // set balance of account
     const balance = await this.instance.balanceOf(account)
     // return format (without wei)
+    //TODO fix correct format
     return ethers.utils.formatEther(balance)
   }
 
@@ -298,9 +300,9 @@ export default class Market {
   }
 
   getAmountDecimals(amount, isCtoken = false) {
-    // add decimals token
-    amount *= Math.pow(10, !isCtoken ? decimals[this.token.symbol] : decimals[this.symbol])
-    return new BigNumber(amount.toString())
+    // add decimals token to fixed
+    const decimalToFix = !isCtoken ? decimals[this.token.symbol] : decimals[this.symbol]
+    return ethers.utils.parseUnits(amount.toFixed(decimalToFix), decimalToFix)
   }
 
   /**
@@ -383,13 +385,6 @@ export default class Market {
   get eventualEvents() {
     return new Promise((resolve) => {
       resolve('10')
-    })
-  }
-  // eslint-disable-next-line no-unused-vars
-  liquidateBorrow(borrower, amount, collateralMarket, from = '') {
-    // return this.token;
-    return new Promise((resolve, reject) => {
-      this.token.then(resolve).catch(reject)
     })
   }
 
@@ -500,5 +495,88 @@ export default class Market {
     // set balance of account
     const currentExchangeRate = await this.instance.exchangeRateStored()
     return Number(currentExchangeRate)
+  }
+
+  async getAccountUnderwater() {
+    //get borrow accounts
+    // const borrowAcconts = await this.borrowAccounts();
+    const borrowAcconts = []
+    //remove this MOCK
+    borrowAcconts.push('0x48Ef3BDB04a636dafa080A4F96347D1A35Bfbf4e')
+    borrowAcconts.push('0x27598400A96D4EE85f86b0931e49cBc02adD6dF0')
+    borrowAcconts.push('0x3c5f9603D9405B16D449Ed675f4d059192bBF824')
+    borrowAcconts.push('0x455037337707D002af190d131BF3CfA7B2CA9fc5')
+    borrowAcconts.push('0x449BED8c30d909eCaCda721FECE4A9cfC940aD08')
+    borrowAcconts.push('0x517093ccD491ea12e186C58F3636816AE045b88a')
+    //TODO see if can use static method
+    let midlleware = new Middleware()
+    let underWaters = []
+    //get underwater accounts
+    for (let index = 0; index < borrowAcconts.length; index++) {
+      await midlleware.getAccountLiquidity(borrowAcconts[index]).then((liquidity) => {
+        if (new BigNumber(liquidity.accountShortfall._hex).isGreaterThan(0)) {
+          // console.log("liquidity", borrowAcconts[index], liquidity)
+          underWaters.push(borrowAcconts[index])
+        }
+      })
+    }
+    console.log('underWaters', underWaters)
+    return underWaters
+  }
+
+  async borrowAccounts() {
+    //TODO, refact turl and provider
+    const url = 'http://18.218.165.234:4444'
+    const provider = new ethers.providers.JsonRpcProvider(url)
+    // const contract = new ethers.Contract(this.instanceAddress, this.isCRBTC ? abi['cRBTC'] : abi['cErc20'], provider)
+    // const contract = new ethers.Contract('0x2b47f1b810faf99d911228a87c9c6d0d61514b9d', abi['cErc20'], provider)
+    const filterLocal = this.instance.filters.Borrow()
+    const latest = await provider.getBlockNumber()
+    // const ini = 1451746;
+    const ini = 1504046
+    let borrows = []
+    for (let index = latest; index > ini; index -= 1000) {
+      try {
+        let logs = await provider.getLogs({
+          ...filterLocal,
+          fromBlock: index - 1000,
+          toBlock: index,
+        })
+        if (logs.length > 0) {
+          //get distinct address
+          let auxiliar = [...new Set(logs.map((log) => log.address))]
+          for (let index = 0; index < auxiliar.length; index++) {
+            borrows.push(auxiliar[index])
+          }
+        }
+      } catch (error) {
+        console.error('ERROR', error)
+      }
+    }
+    //TODO see if apply distinct once
+    //get distinct address
+    borrows = borrows.filter((v, i, a) => a.indexOf(v) === i)
+    return borrows
+  }
+
+  async liquidateBorrow(liquidateAccount, amount, addressCollateralMarket) {
+    const amountBN = this.getAmountDecimals(amount)
+    let tx
+    //set signer
+    const signer = this.instance.connect(this.factoryContract.getSigner())
+    //validate crbtc
+    if (!this.isCRBTC) {
+      tx = await signer.liquidateBorrow(
+        liquidateAccount,
+        amountBN.toString(),
+        addressCollateralMarket,
+      )
+    } else {
+      tx = await signer.liquidateBorrow(liquidateAccount, addressCollateralMarket, {
+        value: amountBN.toString(),
+      })
+    }
+    // wait for mined transaction
+    return tx.wait()
   }
 }
