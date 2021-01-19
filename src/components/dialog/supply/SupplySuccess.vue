@@ -111,7 +111,7 @@ export default {
   },
   created() {
     this.data.market
-      .getBalanceOfUnderlying(this.account)
+      .getBalanceOfUnderlyingFormatted(this.account)
       .then((balance) => {
         this.tokenBalance = balance
         this.supplyOf = balance

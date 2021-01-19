@@ -99,7 +99,7 @@ export default {
       .then((price) => {
         this.price = price
         this.maxBorrowAllowed = this.getMaxAllowed(this.liquidity, this.cash)
-        return this.data.market.getBalanceOfUnderlying(this.account)
+        return this.data.market.getBalanceOfUnderlyingFormatted(this.account)
       })
       .then((balance) => {
         this.supplyOf = balance
