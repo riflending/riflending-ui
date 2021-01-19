@@ -82,7 +82,7 @@
           </v-col>
           <v-col cols="2" />
           <v-col cols="2" class="d-flex align-center justify-end">
-            <h3>Borrow interest</h3>
+            <h3>Est. Borrow interest (year)</h3>
           </v-col>
           <v-col cols="2" class="item">
             <span>{{ borrowAPR | formatPercentage }} </span>
@@ -101,7 +101,7 @@
           </v-col>
           <v-col cols="2" />
           <v-col cols="2" class="d-flex justify-end">
-            <h3>Supply interest</h3>
+            <h3>Est. Supply interest (year)</h3>
           </v-col>
           <v-col cols="2" class="item">
             <span>{{ supplyAPR | formatPercentage }} </span>
@@ -142,7 +142,7 @@
           </v-col> -->
           <v-col cols="2" />
           <v-col cols="2" class="d-flex justify-end">
-            <h3>Liquidation Penalty</h3>
+            <h3>Liquidation Incentive</h3>
           </v-col>
           <v-col cols="2" class="item">
             <span>{{ liqPen | formatPercentage }} </span>
@@ -242,6 +242,8 @@ export default {
       this.data.market.token.decimals,
     )
     console.log('this.collFact LTV', this.collFact)
+    this.liqPen = await this.data.market.getLiquidationIncentiveMantissa()
+    console.log('KLSADSASDASDASDASDA', this.liqPen)
     this.reset()
   },
   methods: {
