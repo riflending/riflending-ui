@@ -21,48 +21,54 @@
               <h2>price:</h2>
             </v-row>
             <v-row class="item d-flex justify-start">
-              <span>{{ price | formatToken(data.token.decimals) }}</span
+              <span>{{ price | formatPrice }}</span
               ><span class="ml-2 itemInfo">usd</span>
             </v-row>
           </v-col>
-          <v-col cols="2">
+          <!-- <v-col cols="2" >
             <v-row>
               <h2>APR:</h2>
             </v-row>
             <v-row class="item d-flex justify-start"> {{ apr | formatPercentage }} </v-row>
-          </v-col>
+          </v-col> -->
           <v-col />
           <v-col cols="2" class="mr-1">
+            <v-row class="ma-0 pr-1 d-flex justify-start">
+              <h2 class="grayish">APR:</h2>
+            </v-row>
+            <v-row class="item d-flex justify-start"> {{ apr | formatPercentage }} </v-row>
+          </v-col>
+          <!-- <v-col cols="2" class="mr-1">
             <v-row class="ma-0 pr-1 d-flex justify-end">
               <h2 class="grayish">Price 24hs:</h2>
             </v-row>
             <v-row class="grayish item d-flex justify-end mr-1">
               {{ priceChange | formatPercentage }}
             </v-row>
-          </v-col>
+          </v-col> -->
         </v-row>
       </div>
       <div class="container">
         <v-row class="ma-2 d-flex align-center justify-space-between">
           <v-col cols="2">
-            <h3>total supplied:</h3>
+            <h3>Total cash:</h3>
           </v-col>
           <v-col cols="2" class="item">
-            <span>{{ updatedTotalSupply | formatToken(data.token.decimals) }}</span>
+            <span>{{ updatedTotalReserves | formatToken(data.token.decimals) }} </span>
           </v-col>
           <v-col cols="1">
             <span class="ml-2 itemInfo">{{ data.token.symbol }}</span>
           </v-col>
           <v-col cols="2" />
           <v-col cols="2" class="d-flex align-center justify-end">
-            <h3>Supply APY</h3>
+            <h3>Reserve Factor</h3>
           </v-col>
           <v-col cols="2" class="item">
-            <span>{{ supplyAPR | formatPercentage }} </span>
+            <span>{{ reserveFactor | formatPercentage }} </span>
           </v-col>
-          <v-col cols="1" class="d-flex justify-end">
+          <!-- <v-col cols="1" class="d-flex justify-end">
             <span class="itemInfo">{{ data.token.symbol }}</span>
-          </v-col>
+          </v-col> -->
         </v-row>
         <v-row class="ma-2 d-flex align-center">
           <v-col cols="2">
@@ -76,7 +82,7 @@
           </v-col>
           <v-col cols="2" />
           <v-col cols="2" class="d-flex align-center justify-end">
-            <h3>Borrow APY</h3>
+            <h3>Borrow interest</h3>
           </v-col>
           <v-col cols="2" class="item">
             <span>{{ borrowAPR | formatPercentage }} </span>
@@ -85,20 +91,20 @@
         </v-row>
         <v-row class="ma-2 d-flex justify-end">
           <v-col cols="2">
-            <h3>Total Cash</h3>
+            <h3>Total Supplied</h3>
           </v-col>
           <v-col cols="2" class="item">
-            <span>{{ updatedTotalReserves | formatToken(data.token.decimals) }} </span>
+            <span>{{ updatedTotalSupply | formatToken(data.token.decimals) }}</span>
           </v-col>
           <v-col cols="1">
             <span class="ml-2 itemInfo">{{ data.token.symbol }}</span>
           </v-col>
           <v-col cols="2" />
           <v-col cols="2" class="d-flex justify-end">
-            <h3>Reserve Factor</h3>
+            <h3>Supply interest</h3>
           </v-col>
           <v-col cols="2" class="item">
-            <span>{{ reserveFactor | formatPercentage }} </span>
+            <span>{{ supplyAPR | formatPercentage }} </span>
           </v-col>
           <v-col cols="1" />
         </v-row>
@@ -110,9 +116,9 @@
           <v-col cols="2" class="item">
             <span>{{ supBorRatio | formatPercentage }} </span>
           </v-col>
-          <v-col cols="1">
+          <!-- <v-col cols="1">
             <span class="ml-2 itemInfo">{{ data.token.symbol }}</span>
-          </v-col>
+          </v-col> -->
           <v-col cols="2" />
           <v-col cols="2" class="d-flex justify-end">
             <h3>Collateral Factor (LTV)</h3>
@@ -120,9 +126,9 @@
           <v-col cols="2" class="item">
             <span>{{ collFact | formatPercentage }} </span>
           </v-col>
-          <v-col cols="1" class="d-flex justify-end">
+          <!-- <v-col cols="1" class="d-flex justify-end">
             <span class="itemInfo">{{ data.token.symbol }}</span>
-          </v-col>
+          </v-col> -->
         </v-row>
         <v-row class="ma-2 d-flex justify-end">
           <v-col cols="2">
@@ -131,9 +137,9 @@
           <v-col cols="2" class="item">
             <span>{{ liqThr | formatPercentage }} </span>
           </v-col>
-          <v-col cols="1">
+          <!-- <v-col cols="1">
             <span class="ml-2 itemInfo">{{ data.token.symbol }}</span>
-          </v-col>
+          </v-col> -->
           <v-col cols="2" />
           <v-col cols="2" class="d-flex justify-end">
             <h3>Liquidation Penalty</h3>
@@ -157,6 +163,7 @@
 <script>
 import { mapState } from 'vuex'
 import MarketPriceDialog from '@/components/dialog/market/MarketPriceDialog.vue'
+import { ethers } from 'ethers'
 
 export default {
   name: 'MarketDialog',
@@ -230,6 +237,11 @@ export default {
     console.log('this.borrowAPR', this.borrowAPR)
     this.borrowRate = await this.data.market.getBorrowRate()
     console.log('this.borrowRate APR', this.borrowRate)
+    this.collFact = ethers.utils.formatUnits(
+      this.data.market.loanToValue,
+      this.data.market.token.decimals,
+    )
+    console.log('this.collFact LTV', this.collFact)
     this.reset()
   },
   methods: {
