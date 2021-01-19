@@ -160,14 +160,19 @@ export default class Market {
   }
 
   async getUserBalanceOfUnderlying() {
-    return this.getBalanceOfUnderlying(this.account)
+    return this.getBalanceOfUnderlyingFormatted(this.account)
   }
 
-  async getBalanceOfUnderlying(account) {
+  async getBalanceOfUnderlyingFormatted(account) {
     // set balance of account
-    const balance = await this.instance.callStatic.balanceOfUnderlying(account)
+    // const balance = await this.instance.callStatic.balanceOfUnderlying(account)
+    const balance = await this.balanceOfUnderlying(account)
     // return format (without wei)
     return ethers.utils.formatEther(balance)
+  }
+
+  async balanceOfUnderlying(account) {
+    return await this.instance.callStatic.balanceOfUnderlying(account)
   }
 
   async getCash() {
@@ -457,7 +462,7 @@ export default class Market {
    */
   async getAccountValues(account) {
     const borrowValue = await this.borrowBalanceCurrent(account)
-    const tokenBalance = await this.getBalanceOfUnderlying(account)
+    const tokenBalance = await this.getBalanceOfUnderlyingFormatted(account)
     return tokenBalance, borrowValue
   }
 
