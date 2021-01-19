@@ -137,7 +137,7 @@ export default {
       usdPrice: 0,
       cash: 0, // current underlying balance stored in contract. AKA "CONTRACT LIQUIDITY"
       oldCash: 0, // balance of ctoken expressed in underlying
-      tokenBalance: 0, // getBalanceOfUnderlying(this.account) balance of this account in underlying
+      tokenBalance: 0, // getBalanceOfUnderlyingFormatted(this.account) balance of this account in underlying
       isBorrowAllowed: true, // checks whether or not the Comptroller will allow the borrow
       oldMaxBorrowAllowed: 0,
       maxBorrowAllowed: 0, // BORROW LIMIT getMaxBorrowAllowed() calculates the maximun borrow allowance. User should never borrow close to this amount, otherwise runs risk of getting automatically liquidated
@@ -235,7 +235,7 @@ export default {
       })
       .then((marketPrice) => {
         this.price = marketPrice
-        return this.data.market.getBalanceOfUnderlying(this.account)
+        return this.data.market.getBalanceOfUnderlyingFormatted(this.account)
       })
       .then((supplyValue) => {
         this.supplyValue = supplyValue
@@ -309,7 +309,7 @@ export default {
           this.oldCash = cash // balance of contract underlying AKA "CONTRACT LIQUIDITY"
           this.cash =
             cash - (cash - Number(this.contractAmount) <= 0 ? cash : Number(this.contractAmount))
-          return this.data.market.getBalanceOfUnderlying(this.account)
+          return this.data.market.getBalanceOfUnderlyingFormatted(this.account)
         })
         .then((supplyValue) => {
           this.supplyValue = supplyValue

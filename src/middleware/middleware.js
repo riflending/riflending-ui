@@ -120,7 +120,7 @@ export default class Middleware {
               const marketPriceFromOracleBN = await market.getPriceInDecimals()
               const marketPriceBN = marketPriceFromOracleBN || new BigNumber(0)
 
-              const tokenBalance = await market.getBalanceOfUnderlying(account)
+              const tokenBalance = await market.getBalanceOfUnderlyingFormatted(account)
               const tokenBalanceBN = new BigNumber(tokenBalance)
 
               const borrowValue = borrowBalanceCurrentBN.multipliedBy(marketPriceBN)
@@ -182,7 +182,7 @@ export default class Middleware {
               const marketPriceFromOracleBN = await market.getPriceInDecimals()
               const marketPriceBN = marketPriceFromOracleBN || new BigNumber(0)
 
-              const tokenBalance = await market.getBalanceOfUnderlying(account)
+              const tokenBalance = await market.getBalanceOfUnderlyingFormatted(account)
               const tokenBalanceBN = new BigNumber(tokenBalance)
               const colFact = market.collateralFactorMantissa
 
@@ -233,7 +233,7 @@ export default class Middleware {
       if (market) {
         balances.push({
           symbol: market.token.symbol,
-          balance: await market.getBalanceOfUnderlying(account),
+          balance: await market.getBalanceOfUnderlyingFormatted(account),
           marketAddress: market.instanceAddress,
           price: await market.getPriceInDecimals(),
         })
