@@ -331,7 +331,7 @@ export default class Market {
 
   /**
    * getLiquidationIncentiveMantissa for cToken.
-   * @return human number liquidationIncentiveMantissa | error beacuse the cToken is not listed on protocol
+   * @return human number liquidationIncentiveMantissa
    */
   async getLiquidationIncentiveMantissa() {
     // set contract Comptroller delegate (Unitroller)
@@ -339,9 +339,9 @@ export default class Market {
       constants.Unitroller,
       constants.Comptroller,
     )
-    // get is member (bool)
+    // get incentive mantissa
     const liquidationIncentiveMantissa = await contract.liquidationIncentiveMantissa()
-    // validate token listed
+    // return value
     return ethers.utils.formatEther(liquidationIncentiveMantissa)
   }
 
