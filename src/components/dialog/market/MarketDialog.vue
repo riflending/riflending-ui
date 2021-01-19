@@ -219,39 +219,22 @@ export default {
     },
   },
   async created() {
-    console.log('CREATED this.market', this.data.market)
     this.price = await this.data.market.getPriceInDecimals()
-    console.log('this.price', this.price)
     this.updatedTotalSupply = this.data.market.totalSupply
-    console.log('this.totalSupply', this.updatedTotalSupply, Number(this.updatedTotalSupply))
     this.updatedTotalBorrow = this.data.market.totalBorrows
-    console.log('this.totalBorrow', this.updatedTotalBorrow, Number(this.updatedTotalBorrow))
     this.updatedTotalReserves = this.data.market.totalCash
-    console.log('this.totalReserves', this.updatedTotalReserves, Number(this.updatedTotalReserves))
     this.supBorRatio = Number(this.updatedTotalBorrow) / Number(this.updatedTotalSupply)
-    console.log('this.supBorRatio', this.supBorRatio)
     this.reserveFactor = this.data.market.reserveFactorMantissa.toNumber()
-    console.log('this.reserveFactor', this.reserveFactor)
     this.supplyAPR = this.data.market.supplyApy
-    console.log('this.supplyAPR', this.supplyAPR)
     this.borrowAPR = this.data.market.borrowApy
-    console.log('this.borrowAPR', this.borrowAPR)
     this.borrowRate = await this.data.market.getBorrowRate()
-    console.log('this.borrowRate APR', this.borrowRate)
     this.collFact = ethers.utils.formatUnits(
       this.data.market.loanToValue.mul(100),
       this.data.market.token.decimals,
     )
-    console.log('this.collFact LTV', this.collFact)
     this.liqPen = await this.data.market.getLiquidationIncentiveMantissa()
-    console.log('KLSADSASDASDASDASDA', this.liqPen)
     this.mktLiqu = this.price * (this.updatedTotalReserves / 1e18)
-    console.log(
-      'LIQUIDITY',
-      this.updatedTotalReserves,
-      this.price,
-      this.price * (this.updatedTotalReserves / 1e18),
-    )
+
     this.reset()
   },
   methods: {
