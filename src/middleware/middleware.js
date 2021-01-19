@@ -241,6 +241,7 @@ export default class Middleware {
     }
     return balances
   }
+
   async liquidateBorrowAllowed(
     liquidateAccountAddress,
     liquidatorAccountAddress,
@@ -266,5 +267,16 @@ export default class Middleware {
       liquidateAccountAddress,
       amountBN.toString(),
     )
+  }
+
+  /**
+   * getRBTCPrice query the oracle to get rbtc price
+   * @return BigNumber value of the rbtc price expressed in usd
+   */
+  async getRBTCPrice() {
+    const factoryContractInstance = new factoryContract()
+    const contract = factoryContractInstance.getContract('RBTCMocOracle')
+    const [value] = await contract.callStatic.peek()
+    return new BigNumber(value)
   }
 }
