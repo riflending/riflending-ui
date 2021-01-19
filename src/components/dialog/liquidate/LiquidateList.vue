@@ -86,18 +86,16 @@ export default {
           underwater.borrower = account
           //set max to liquidate => borrow of account
           market
-            .borrowBalanceCurrentFormatted(account)
+            .borrowBalanceCurrent(account)
             .then((borrowBalance) => {
-              //TO-DO see number, loss decimals
-              underwater.maxToLiquidate = Number(borrowBalance)
-              return market.getBalanceOfUnderlying(account)
+              underwater.maxToLiquidate = borrowBalance
+              return market.balanceOfUnderlying(account)
             })
             //set asset of the account
             .then((supply) => {
-              //TO-DO see number, loss decimals
-              underwater.debt = Number(supply)
+              underwater.debt = supply
               underwater.market = market
-              //TO-DO validate before borrow balance
+              //TODO validate before borrow balance
               //validate if has borrow
               if (Number(underwater.maxToLiquidate) !== 0) {
                 this.borrows.push(underwater)
@@ -111,7 +109,6 @@ export default {
         markets
           .filter((market) => market.instanceAddress === this.data.market.instanceAddress)
           .forEach((market) => {
-            console.log('market.instanceAddress', market.instanceAddress)
             this.getUnhealthyAccounts(market)
           })
       })
