@@ -324,6 +324,22 @@ export default class Market {
     console.error('cToken is not listed')
   }
 
+  /**
+   * getLiquidationIncentiveMantissa for cToken.
+   * @return human number liquidationIncentiveMantissa
+   */
+  async getLiquidationIncentiveMantissa() {
+    // set contract Comptroller delegate (Unitroller)
+    const contract = this.factoryContract.getContractByNameAndAbiName(
+      constants.Unitroller,
+      constants.Comptroller,
+    )
+    // get incentive mantissa
+    const liquidationIncentiveMantissa = await contract.liquidationIncentiveMantissa()
+    // return value
+    return ethers.utils.formatEther(liquidationIncentiveMantissa)
+  }
+
   async redeemUnderlying(amount) {
     // set signer token
     const signer = this.instance.connect(this.factoryContract.getSigner())
