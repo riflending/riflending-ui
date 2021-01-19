@@ -7,7 +7,7 @@
       <v-col cols="6">
         <v-row class="d-flex align-center justify-end">
           <v-col class="d-flex justify-end" cols="8">
-            {{ maxToLiquidate | formatNumber }}
+            {{ maxToLiquidateFormatter | formatNumber }}
           </v-col>
           <v-col class="d-flex justify-end" cols="2">
             <span>{{ collateral.token.symbol }}</span>
@@ -32,6 +32,7 @@
 </template>
 
 <script>
+import { ethers } from 'ethers'
 export default {
   name: 'LiquidateItem',
   props: {
@@ -39,14 +40,12 @@ export default {
       type: String,
       required: true,
     },
-    //TO-DO change to String
     maxToLiquidate: {
-      type: Number,
+      type: Object,
       required: true,
     },
-    //TO-DO change to String
     debt: {
-      type: Number,
+      type: Object,
       required: true,
     },
     borrowMarketAddress: {
@@ -69,6 +68,9 @@ export default {
         this.borrower.length - 4,
         this.borrower.length,
       )}`
+    },
+    maxToLiquidateFormatter() {
+      return ethers.utils.formatEther(this.maxToLiquidate)
     },
   },
   methods: {
