@@ -68,8 +68,11 @@
               <span class="boldie">
                 For more information<br />
                 regarding this value<br />
-                check the official documentation</span
-              >
+                check the official documentation<br /><br />
+              </span>
+              <span class="boldie"> <span class="redish"> Don't let it become negative </span></span
+              ><br />
+              or your collateral might be liquidated!
             </div>
           </v-tooltip>
         </h4>
@@ -152,12 +155,12 @@ export default {
           return this.$middleware.getAccountLiquidity(this.account)
         })
         .then(({ err, accountLiquidityInExcess, accountShortfall }) => {
-          if (err) console.log('ERROR IN ACCOUNT LIQUIDITY')
-          if (accountShortfall)
-            this.totalSupplied = ethers.utils.formatEther(accountLiquidityInExcess) * this.rBTCPrice
-          else {
+          if (err != 0) console.log('ERROR IN ACCOUNT LIQUIDITY')
+          if (accountLiquidityInExcess != 0) {
             this.totalBorrowLimit =
               ethers.utils.formatEther(accountLiquidityInExcess) * this.rBTCPrice
+          } else {
+            this.totalBorrowLimit = ethers.utils.formatEther(accountShortfall) * -this.rBTCPrice
           }
         })
     },
