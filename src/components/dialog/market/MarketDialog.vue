@@ -132,10 +132,10 @@
         </v-row>
         <v-row class="ma-2 d-flex justify-end">
           <v-col cols="2">
-            <h3>Liquidation Threshold</h3>
+            <h3>Market Liquidity</h3>
           </v-col>
           <v-col cols="2" class="item">
-            <span>{{ liqThr | formatPercentage }} </span>
+            <span>{{ mktLiqu | formatPrice }} </span>
           </v-col>
           <!-- <v-col cols="1">
             <span class="ml-2 itemInfo">{{ data.token.symbol }}</span>
@@ -193,6 +193,7 @@ export default {
       liqThr: 0, // the liquidation factor
       liqPen: 0, // the liquidation penalty
       priceChange: 0, // the price change in the last 24hs
+      mktLiqu: 0, // market liquidity in usd
       cash: 0,
       growth: 0,
       tokenAddress: 0,
@@ -238,12 +239,19 @@ export default {
     this.borrowRate = await this.data.market.getBorrowRate()
     console.log('this.borrowRate APR', this.borrowRate)
     this.collFact = ethers.utils.formatUnits(
-      this.data.market.loanToValue,
+      this.data.market.loanToValue.mul(100),
       this.data.market.token.decimals,
     )
     console.log('this.collFact LTV', this.collFact)
     this.liqPen = await this.data.market.getLiquidationIncentiveMantissa()
     console.log('KLSADSASDASDASDASDA', this.liqPen)
+    this.mktLiqu = this.price * (this.updatedTotalReserves / 1e18)
+    console.log(
+      'LIQUIDITY',
+      this.updatedTotalReserves,
+      this.price,
+      this.price * (this.updatedTotalReserves / 1e18),
+    )
     this.reset()
   },
   methods: {
