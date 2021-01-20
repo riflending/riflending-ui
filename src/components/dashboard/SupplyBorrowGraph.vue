@@ -4,9 +4,6 @@
       <v-row class="ma-0">
         <h1>My Supply-Borrow Factor:</h1>
       </v-row>
-      <!-- <v-row class="ma-0">
-        <span>rLending Collateral Factor: </span><span class="ml-4">75%</span>
-      </v-row> -->
       <v-row class="ma-0 pt-1">
         <v-col cols="5" class="pa-0">
           <v-divider />
@@ -21,7 +18,6 @@
         </v-row>
         <v-row class="d-flex justify-end">
           <p class="blackish">{{ totalSupplied | formatPrice }}</p>
-          <!-- <span class="ml-2">USD</span> -->
         </v-row>
       </v-col>
       <v-col cols="6" class="d-flex justify-center">
@@ -47,7 +43,6 @@
         <v-row class="d-flex justify-start">
           <p class="blackish text-center">
             {{ totalBorrowed | formatPrice }}
-            <!-- <span class="ml-2">USD</span> -->
           </p>
         </v-row>
       </v-col>
@@ -80,9 +75,6 @@
       <v-row class="borrow-limit d-flex justify-center">
         {{ totalBorrowLimit | formatPrice }}
       </v-row>
-      <!-- <v-row class="d-flex justify-center">
-        <span>USD</span>
-      </v-row> -->
     </div>
   </div>
 </template>
