@@ -49,109 +49,91 @@
         </v-row>
       </div>
       <div class="container">
-        <v-row class="ma-2 d-flex align-center justify-space-between">
-          <v-col cols="2">
-            <h3>Total cash:</h3>
+        <v-row class="ma-2 d-flex align-center">
+          <v-col cols="3">
+            <h3>Total cash</h3>
           </v-col>
           <v-col cols="2" class="item">
             <span>{{ updatedTotalReserves | formatToken(data.token.decimals) }} </span>
           </v-col>
-          <v-col cols="1">
+          <v-col cols="0">
             <span class="ml-2 itemInfo">{{ data.token.symbol }}</span>
           </v-col>
-          <v-col cols="2" />
-          <v-col cols="2" class="d-flex align-center justify-end">
+          <v-col cols="3" class="d-flex align-center">
             <h3>Reserve Factor</h3>
           </v-col>
           <v-col cols="2" class="item">
             <span>{{ reserveFactor | formatPercentage }} </span>
           </v-col>
-          <!-- <v-col cols="1" class="d-flex justify-end">
-            <span class="itemInfo">{{ data.token.symbol }}</span>
-          </v-col> -->
         </v-row>
+
         <v-row class="ma-2 d-flex align-center">
-          <v-col cols="2">
-            <h3>total borrow:</h3>
+          <v-col cols="3">
+            <h3>Total borrow</h3>
           </v-col>
           <v-col cols="2" class="item">
             <span>{{ updatedTotalBorrow | formatToken(data.token.decimals) }}</span>
           </v-col>
-          <v-col cols="1">
+          <v-col cols="0">
             <span class="ml-2 itemInfo">{{ data.token.symbol }}</span>
           </v-col>
-          <v-col cols="2" />
-          <v-col cols="2" class="d-flex align-center justify-end">
+          <v-col cols="3" class="d-flex align-center">
             <h3>Est. Borrow interest (year)</h3>
           </v-col>
           <v-col cols="2" class="item">
             <span>{{ borrowAPR | formatPercentage }} </span>
           </v-col>
-          <v-col cols="1" />
         </v-row>
-        <v-row class="ma-2 d-flex justify-end">
-          <v-col cols="2">
+
+        <v-row class="ma-2 d-flex align-center">
+          <v-col cols="3">
             <h3>Total Supplied</h3>
           </v-col>
           <v-col cols="2" class="item">
             <span>{{ updatedTotalSupply | formatToken(data.token.decimals) }}</span>
           </v-col>
-          <v-col cols="1">
+          <v-col cols="0">
             <span class="ml-2 itemInfo">{{ data.token.symbol }}</span>
           </v-col>
-          <v-col cols="2" />
-          <v-col cols="2" class="d-flex justify-end">
+          <v-col cols="3" class="d-flex align-center">
             <h3>Est. Supply interest (year)</h3>
           </v-col>
           <v-col cols="2" class="item">
             <span>{{ supplyAPR | formatPercentage }} </span>
           </v-col>
-          <v-col cols="1" />
         </v-row>
-        <!-- <v-row class="ma-2 d-flex align-center justify-space-between"> -->
-        <v-row class="ma-2 d-flex align-center justify-end">
-          <v-col cols="2">
+
+        <v-row class="ma-2 d-flex align-center">
+          <v-col cols="3">
             <h3>Supply-Borrowed ratio</h3>
           </v-col>
           <v-col cols="2" class="item">
             <span>{{ supBorRatio | formatPercentage }} </span>
           </v-col>
-          <!-- <v-col cols="1">
-            <span class="ml-2 itemInfo">{{ data.token.symbol }}</span>
-          </v-col> -->
           <v-col cols="2" />
-          <v-col cols="2" class="d-flex justify-end">
+          <v-col cols="3" class="d-flex align-center">
             <h3>Collateral Factor (LTV)</h3>
           </v-col>
           <v-col cols="2" class="item">
             <span>{{ collFact | formatPercentage }} </span>
           </v-col>
-          <!-- <v-col cols="1" class="d-flex justify-end">
-            <span class="itemInfo">{{ data.token.symbol }}</span>
-          </v-col> -->
         </v-row>
-        <v-row class="ma-2 d-flex justify-end">
-          <v-col cols="2">
+
+        <v-row class="ma-2 d-flex align-center">
+          <v-col cols="3">
             <h3>Market Liquidity</h3>
           </v-col>
           <v-col cols="2" class="item">
             <span>{{ mktLiqu | formatPrice }} </span>
           </v-col>
-          <!-- <v-col cols="1">
-            <span class="ml-2 itemInfo">{{ data.token.symbol }}</span>
-          </v-col> -->
           <v-col cols="2" />
-          <v-col cols="2" class="d-flex justify-end">
+          <v-col cols="3" class="d-flex align-center">
             <h3>Liquidation Incentive</h3>
           </v-col>
           <v-col cols="2" class="item">
             <span>{{ liqPen | formatPercentage }} </span>
           </v-col>
-          <v-col cols="1" />
         </v-row>
-        <!-- <v-row>
-          <TransactionsGraph :data="dataObject" />
-        </v-row> -->
       </div>
     </v-card>
     <template v-if="priceFlag">
