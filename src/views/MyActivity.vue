@@ -106,7 +106,7 @@
       </v-row>
       <v-row class="ma-0">
         <v-col class="pa-0">
-          <v-card class="graphics-card container" width="94%">
+          <v-card class="graphics-card container" width="54%">
             <SupplyBorrowGraph />
           </v-card>
         </v-col>
