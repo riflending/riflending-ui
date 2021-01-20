@@ -307,7 +307,10 @@ export default class Market {
   getAmountDecimals(amount, isCtoken = false) {
     // add decimals token to fixed
     const decimalToFix = !isCtoken ? decimals[this.token.symbol] : decimals[this.symbol]
-    return ethers.utils.parseUnits(amount.toFixed(decimalToFix), decimalToFix)
+    return ethers.utils.parseUnits(
+      typeof amount === 'string' ? amount : amount.toFixed(decimalToFix),
+      decimalToFix,
+    )
   }
 
   /**
