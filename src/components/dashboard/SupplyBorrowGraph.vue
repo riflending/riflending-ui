@@ -4,9 +4,6 @@
       <v-row class="ma-0">
         <h1>My Supply-Borrow Factor:</h1>
       </v-row>
-      <v-row class="ma-0">
-        <span>rLending Collateral Factor: </span><span class="ml-4">75%</span>
-      </v-row>
       <v-row class="ma-0 pt-1">
         <v-col cols="5" class="pa-0">
           <v-divider />
@@ -21,7 +18,6 @@
         </v-row>
         <v-row class="d-flex justify-end">
           <p class="blackish">{{ totalSupplied | formatPrice }}</p>
-          <span class="ml-2">USD</span>
         </v-row>
       </v-col>
       <v-col cols="6" class="d-flex justify-center">
@@ -47,20 +43,37 @@
         <v-row class="d-flex justify-start">
           <p class="blackish text-center">
             {{ totalBorrowed | formatPrice }}
-            <span class="ml-2">USD</span>
           </p>
         </v-row>
       </v-col>
     </v-row>
     <div>
       <v-row class="d-flex justify-center">
-        <h4>Overall Borrow limit</h4>
+        <h4>
+          Overall Borrow limit<v-tooltip top color="#E5E5E5">
+            <template v-slot:activator="{ on, attrs }">
+              <v-icon small class="mx-5" v-bind="attrs" v-on="on">info</v-icon>
+            </template>
+            <div class="tooltip">
+              Your <span class="boldie">Borrow Limit</span> <br />
+              follows a complex formula <br />
+              that involves your supplied<br />
+              balance, market prices and <br />
+              the state of your loans.<br />
+              <span class="boldie">
+                For more information<br />
+                regarding this value<br />
+                check the official documentation<br /><br />
+              </span>
+              <span class="boldie"> <span class="redish"> Don't let it become negative </span></span
+              ><br />
+              or your collateral might be liquidated!
+            </div>
+          </v-tooltip>
+        </h4>
       </v-row>
       <v-row class="borrow-limit d-flex justify-center">
         {{ totalBorrowLimit | formatPrice }}
-      </v-row>
-      <v-row class="d-flex justify-center">
-        <span>USD</span>
       </v-row>
     </div>
   </div>
@@ -69,6 +82,7 @@
 <script>
 import { mapState } from 'vuex'
 import { GChart } from 'vue-google-charts'
+import { ethers } from 'ethers'
 
 export default {
   name: 'SupplyBorrowGraph',
@@ -102,6 +116,7 @@ export default {
           height: '100%',
         },
       },
+      rBTCPrice: 0,
     }
   },
   computed: {
@@ -117,16 +132,35 @@ export default {
   },
   methods: {
     getData() {
-      //removed - not being used - 2020-12-28
+      this.$middleware.getTotals(this.account).then(({ supplyValue, borrowValue }) => {
+        this.totalSupplied = supplyValue
+        this.totalBorrowed = borrowValue
+        this.getBorrowLimit()
+        this.updateDiagramData()
+      })
     },
     getBorrowLimit() {
-      //removed - not being used - 2020-12-28
+      this.$middleware
+        .getRBTCPrice()
+        .then((rBTCPrice) => {
+          this.rBTCPrice = rBTCPrice.toNumber() / 1e18
+          return this.$middleware.getAccountLiquidity(this.account)
+        })
+        .then(({ err, accountLiquidityInExcess, accountShortfall }) => {
+          if (err != 0) console.log('ERROR IN ACCOUNT LIQUIDITY')
+          if (accountLiquidityInExcess != 0) {
+            this.totalBorrowLimit =
+              ethers.utils.formatEther(accountLiquidityInExcess) * this.rBTCPrice
+          } else {
+            this.totalBorrowLimit = ethers.utils.formatEther(accountShortfall) * -this.rBTCPrice
+          }
+        })
     },
     updateDiagramData() {
       this.chartData = [
         ['Type', 'Value'],
-        ['Supplied', this.totalSupplied],
-        ['Borrowed', this.totalBorrowed],
+        ['Supplied', +this.totalSupplied],
+        ['Borrowed', +this.totalBorrowed],
       ]
     },
   },
