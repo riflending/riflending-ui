@@ -108,7 +108,7 @@ export default {
     },
   },
   mounted() {
-    this.$parent.$parent.$parent.$on('reload', this.reset)
+    this.$on('reload', this.reset)
   },
   created() {
     // set data token
@@ -137,6 +137,7 @@ export default {
   methods: {
     reset() {
       this.dialog = false
+      this.token = this.market.token
       this.market
         .borrowBalanceCurrent(this.account)
         .then((balance) => {

@@ -120,7 +120,7 @@ export default {
     },
   },
   mounted() {
-    this.$parent.$parent.$parent.$on('reload', this.reset)
+    this.$on('reload', this.reset)
   },
   created() {
     // set data token
@@ -165,6 +165,12 @@ export default {
         .then((borrowRatePerBlock) => {
           this.borrowRate = borrowRatePerBlock
         })
+      // set supply of TODO
+      this.supplyOf = this.market.supplyOf
+
+      this.market.eventualEvents.then((events) => {
+        events.allEvents().on('data', this.reset)
+      })
       this.$emit('dialogClosed')
     },
   },
