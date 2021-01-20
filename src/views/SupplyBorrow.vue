@@ -38,7 +38,6 @@
         <v-btn
           :class="[currentComponent === 'BorrowList' ? 'selected' : 'notSelected']"
           text
-          :disabled="!hasAccountLiquidityInExcess"
           @click="currentComponent = 'BorrowList'"
         >
           <span>Borrow</span>
