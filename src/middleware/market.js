@@ -259,7 +259,7 @@ export default class Market {
       // check allowance
       const allowance = await this.token.instance.allowance(account, this.instanceAddress)
       // validate if enough
-      const notEnough = new BigNumber(allowance.toString()).lt(amountBN)
+      const notEnough = allowance.lt(amount)
       if (notEnough) {
         console.log('not enough')
         // set signer token
