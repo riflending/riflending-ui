@@ -142,10 +142,6 @@ export default {
       })
     // set supply of TODO
     this.supplyOf = this.market.supplyOf
-
-    this.market.eventualEvents.then((events) => {
-      events.allEvents().on('data', this.reset)
-    })
   },
   methods: {
     reset() {
@@ -167,10 +163,6 @@ export default {
         })
       // set supply of TODO
       this.supplyOf = this.market.supplyOf
-
-      this.market.eventualEvents.then((events) => {
-        events.allEvents().on('data', this.reset)
-      })
       this.$emit('dialogClosed')
     },
   },
