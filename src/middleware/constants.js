@@ -43,7 +43,7 @@ export const address = {
     cRBTC: '0xc19F0882bf318C9f8767C7d520018888E878417b',
     RLEN: '0xcd87F7A5b353ff167a8543908649518a0c3454c1',
     MaximillionAddress: '0x0b33fa12e3363a8cb22DC8c53A1ccCb6267bEa6a',
-    RBTCMocOracle: '0x2d39cc54dc44ff27ad23a91a9b5fd750dae4b218',
+    RBTCMocOracle: '0x26a00af444928d689ddec7b4d17c0e4a8c9d407d',
     'RIF Moc Oracle': '0x9d4b2c05818a0086e641437fcb64ab6098c7bbec',
     'DAI Oracle': '0xEE1e9Bc499242D2De09d10A1AffE3A6eb687d98f',
     RIF: '0x19f64674d8a5b4e652319f5e239efd3bc969a1fe',
