@@ -93,6 +93,9 @@ export default {
       return '#24BD6B'
     },
   },
+  mounted() {
+    this.$on('reload', this.reset)
+  },
   async created() {
     this.accountHealth = await this.$middleware.getAccountHealth(this.account)
     // Take a look at the doc https://compound.finance/docs/comptroller#account-liquidity
@@ -103,9 +106,15 @@ export default {
   },
   methods: {
     reset() {
-      this.$middleware.getAccountHealth(this.account).then((accountHealth) => {
-        this.accountHealth = accountHealth
-      })
+      this.$middleware
+        .getAccountHealth(this.account)
+        .then((accountHealth) => {
+          this.accountHealth = accountHealth
+          return this.$middleware.getAccountLiquidity(this.account)
+        })
+        .then(({ accountLiquidityInExcess }) => {
+          this.hasAccountLiquidityInExcess = !accountLiquidityInExcess.isZero()
+        })
     },
   },
 }
