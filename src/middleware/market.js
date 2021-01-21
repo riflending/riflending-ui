@@ -1,3 +1,5 @@
+/* eslint-disable prettier/prettier */
+/* eslint-disable no-unreachable */
 import { ethers } from 'ethers'
 import BigNumber from 'bignumber.js'
 import factoryContract from './factoryContract'
@@ -112,12 +114,13 @@ export default class Market {
     // get price of cToken
     const priceToken = await contract.callStatic.getUnderlyingPrice(this.instanceAddress)
     // get price of rbtc
-    const valueOracle = await this.getValueMoc()
-    // price = ( price cToken in rbtc * price of rbtc) /  Oracle precision decimals
-    return new BigNumber(priceToken.toString())
-      .multipliedBy(valueOracle)
-      .div(new BigNumber(1e18))
-      .toNumber()
+    return new BigNumber(priceToken.toString()).toNumber()
+    // const valueOracle = await this.getValueMoc()
+    // // price = ( price cToken in rbtc * price of rbtc) /  Oracle precision decimals
+    // return new BigNumber(priceToken.toString())
+    //   .multipliedBy(valueOracle)
+    //   .div(new BigNumber(1e18))
+    //   .toNumber()
   }
 
   async getUserBalanceOfCtoken() {
