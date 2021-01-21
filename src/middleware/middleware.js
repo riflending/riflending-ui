@@ -150,15 +150,12 @@ export default class Middleware {
 
   // calls comptroller to retrieve the liquidationFactor
   async getLiquidationFactor() {
-    console.log('getLiquidationFactor')
     const factoryContractInstance = new factoryContract()
     let contract = factoryContractInstance.getContractByNameAndAbiName(
       constants.Unitroller,
       constants.Comptroller,
     )
-    console.log('getLiquidationFactor contract', contract)
     const liqFactor = await contract.closeFactorMantissa()
-    console.log('getLiquidationFactor', liqFactor)
     return liqFactor
   }
 
