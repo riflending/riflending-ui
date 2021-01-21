@@ -227,7 +227,6 @@ export default {
       this.updatedTotalSupply != 0
         ? Number(this.updatedTotalBorrow) / Number(this.updatedTotalSupply)
         : 0
-    // console.log("marketDialog reserveFactor", ethers.utils.formatUnits(this.data.market.reserveFactorMantissa.mul(100),this.data.market.token.decimals))
     this.reserveFactor = ethers.utils.formatUnits(
       this.data.market.reserveFactorMantissa.mul(100),
       this.data.market.token.decimals,
