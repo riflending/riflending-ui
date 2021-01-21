@@ -1,5 +1,3 @@
-/* eslint-disable prettier/prettier */
-/* eslint-disable no-unreachable */
 import { ethers } from 'ethers'
 import BigNumber from 'bignumber.js'
 import factoryContract from './factoryContract'
