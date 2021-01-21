@@ -136,6 +136,7 @@ export default {
       totalSupplied: 0,
       totalBorrowed: 0,
       showHealthWarning: null,
+      polling: null,
     }
   },
   computed: {
@@ -160,19 +161,29 @@ export default {
       return 'high'
     },
   },
-  created() {
-    this.$middleware
-      .getTotals(this.account)
-      .then(({ borrowValue, supplyValue }) => {
-        this.totalBorrowed = borrowValue
-        this.totalSupplied = supplyValue
-        this.totalBalance = supplyValue.minus(borrowValue)
-        return this.$middleware.getAccountHealth(this.account)
-      })
-      .then((health) => {
-        this.healthFactor = health > 1 ? 100 : health * 100
-        this.showHealthWarning = Number(this.healthFactor) === 0
-      })
+  beforeDestroy() {
+    clearInterval(this.polling)
+  },
+  async created() {
+    await this.fetchData()
+    this.pollData()
+  },
+  methods: {
+    pollData() {
+      this.polling = setInterval(async () => {
+        console.log('Polling my activity data')
+        await this.fetchData()
+      }, 20000)
+    },
+    async fetchData() {
+      const { borrowValue, supplyValue } = await this.$middleware.getTotals(this.account)
+      this.totalBorrowed = borrowValue
+      this.totalSupplied = supplyValue
+      this.totalBalance = supplyValue.minus(borrowValue)
+      const health = await this.$middleware.getAccountHealth(this.account)
+      this.healthFactor = health > 1 ? 100 : health * 100
+      this.showHealthWarning = Number(this.healthFactor) === 0
+    },
   },
 }
 </script>
