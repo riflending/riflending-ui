@@ -389,15 +389,24 @@ export default class Market {
   async payBorrow(amount) {
     let contractWithSigner
     let tx
+
+    // Required, please dont delete this
+    const txOptions = {
+      gasLimit: 250000,
+    }
+
     // validate crbtc
     if (this.isCRBTC) {
       // set signer token
       contractWithSigner = this.instance.connect(this.factoryContract.getSigner())
-      tx = await contractWithSigner.repayBorrow({ value: ethers.utils.parseEther(`${amount}`) })
+      tx = await contractWithSigner.repayBorrow({
+        value: ethers.utils.parseEther(`${amount}`),
+        ...txOptions,
+      })
     } else {
       // set signer cRBTC
       contractWithSigner = this.instance.connect(this.factoryContract.getSigner())
-      tx = await contractWithSigner.repayBorrow(ethers.utils.parseEther(`${amount}`))
+      tx = await contractWithSigner.repayBorrow(ethers.utils.parseEther(`${amount}`), txOptions)
     }
     // wait for mined transaction
     return tx.wait()
