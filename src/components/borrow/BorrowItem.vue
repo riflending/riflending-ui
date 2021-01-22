@@ -122,62 +122,24 @@ export default {
   mounted() {
     this.$parent.$parent.$parent.$on('reload', this.reset)
   },
-  created() {
+  async created() {
     // set data token
     this.token = this.market.token
-    this.market
-      .borrowBalanceCurrent(this.account)
-      .then((balance) => {
-        this.borrowBalance = Number(balance)
-        return this.market.getPriceInDecimals()
-      })
-      // set price
-      .then((price) => {
-        this.price = price
-        return this.market.getBorrowRate()
-      })
-
-      // set borrow rate block
-      .then((borrowRatePerBlock) => {
-        this.borrowRate = borrowRatePerBlock
-        return this.market.getCash()
-      })
-      .then((cash) => {
-        this.cash = cash
-        return this.market.checkMembership(this.account)
-      })
-      .then((checkMembership) => {
-        this.hasEnteredTheMarket = checkMembership
-      })
+    this.borrowBalance = await this.market.borrowBalanceCurrent(this.account)
+    this.price = await this.market.getPriceInDecimals()
+    this.borrowRate = await this.market.getBorrowRate()
+    this.cash = await this.market.getCash()
+    this.hasEnteredTheMarket = await this.market.checkMembership(this.account)
   },
   methods: {
-    reset() {
+    async reset() {
       this.dialog = false
       this.token = this.market.token
-      this.market
-        .borrowBalanceCurrent(this.account)
-        .then((balance) => {
-          this.borrowBalance = balance
-          return this.market.getPriceInDecimals()
-        })
-        // set price
-        .then((price) => {
-          this.price = price
-          return this.market.getBorrowRate()
-        })
-        // set borrow rate block
-        .then((borrowRatePerBlock) => {
-          this.borrowRate = borrowRatePerBlock
-          return this.market.getCash()
-        })
-        // set cash
-        .then((cash) => {
-          this.cash = cash
-          return this.market.checkMembership(this.account)
-        })
-        .then((checkMembership) => {
-          this.hasEnteredTheMarket = checkMembership
-        })
+      this.borrowBalance = await this.market.borrowBalanceCurrent(this.account)
+      this.price = await this.market.getPriceInDecimals()
+      this.borrowRate = await this.market.getBorrowRate()
+      this.cash = await this.market.getCash()
+      this.hasEnteredTheMarket = await this.market.checkMembership(this.account)
       this.$emit('dialogClosed')
     },
   },
