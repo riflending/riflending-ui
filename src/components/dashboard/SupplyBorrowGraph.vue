@@ -141,18 +141,13 @@ export default {
     },
     getBorrowLimit() {
       this.$middleware
-        .getRBTCPrice()
-        .then((rBTCPrice) => {
-          this.rBTCPrice = rBTCPrice.toNumber() / 1e18
-          return this.$middleware.getAccountLiquidity(this.account)
-        })
+        .getAccountLiquidity(this.account)
         .then(({ err, accountLiquidityInExcess, accountShortfall }) => {
-          if (err != 0) console.log('ERROR IN ACCOUNT LIQUIDITY')
+          if (err != 0) console.log('ERROR IN ACCOUNT LIQUIDITY. Code:', err)
           if (accountLiquidityInExcess != 0) {
-            this.totalBorrowLimit =
-              ethers.utils.formatEther(accountLiquidityInExcess) * this.rBTCPrice
+            this.totalBorrowLimit = ethers.utils.formatEther(accountLiquidityInExcess)
           } else {
-            this.totalBorrowLimit = ethers.utils.formatEther(accountShortfall) * -this.rBTCPrice
+            this.totalBorrowLimit = ethers.utils.formatEther(accountShortfall) * -1
           }
         })
     },
