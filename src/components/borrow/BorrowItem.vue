@@ -28,7 +28,7 @@
           <v-row class="ma-0">
             <v-col cols="9" class="pa-0 d-flex align-center">
               <v-list-item-subtitle class="item">
-                {{ borrowBalance | formatToken(token.decimals) }}
+                {{ borrowBalance | formatToken(token.decimals)}}
               </v-list-item-subtitle>
             </v-col>
             <v-col cols="3" class="pa-0">
@@ -110,54 +110,22 @@ export default {
   mounted() {
     this.$on('reload', this.reset)
   },
-  created() {
+  async created() {
     // set data token
     this.token = this.market.token
-    this.market
-      .borrowBalanceCurrent(this.account)
-      .then((balance) => {
-        this.borrowBalance = Number(balance)
-        return this.market.getPriceInDecimals()
-      })
-      // set price
-      .then((price) => {
-        this.price = price
-        return this.market.getBorrowRate()
-      })
-
-      // set borrow rate block
-      .then((borrowRatePerBlock) => {
-        this.borrowRate = borrowRatePerBlock
-        return this.market.getCash()
-      })
-      .then((cash) => {
-        this.cash = cash
-      })
+    this.borrowBalance = await this.market.borrowBalanceCurrent(this.account)
+    this.price = await this.market.getPriceInDecimals()
+    this.borrowRate = await this.market.getBorrowRate()
+    this.cash = await this.market.getCash()
   },
   methods: {
-    reset() {
+    async reset() {
       this.dialog = false
       this.token = this.market.token
-      this.market
-        .borrowBalanceCurrent(this.account)
-        .then((balance) => {
-          this.borrowBalance = balance
-          return this.market.getPriceInDecimals()
-        })
-        // set price
-        .then((price) => {
-          this.price = price
-          return this.market.getBorrowRate()
-        })
-        // set borrow rate block
-        .then((borrowRatePerBlock) => {
-          this.borrowRate = borrowRatePerBlock
-          return this.market.getCash()
-        })
-        // set cash
-        .then((cash) => {
-          this.cash = cash
-        })
+      this.borrowBalance = await this.market.borrowBalanceCurrent(this.account)
+      this.price = await this.market.getPriceInDecimals()
+      this.borrowRate = await this.market.getBorrowRate()
+      this.cash = await this.market.getCash()
       this.$emit('dialogClosed')
     },
   },
