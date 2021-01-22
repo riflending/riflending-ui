@@ -30,7 +30,7 @@ export const address = {
     Unitroller: '0x3a983C7597B3ac4fbC3E0Cf484d7631D70D04C05',
     MultiSigWallet: '0x9760d4A155058F6BeC8d9fD8D50222073e57083e',
     PriceOracleProxy: '0xBE898C9fC63c0185Bc6E403E7B9C12e341a60Aa7',
-    'MockPriceProviderMoc Dai': '0x51461e07dfb997e5fd15c1febe7a19fd931ad500',
+    'MockPriceProviderMoc Dai': '0xEE1e9Bc499242D2De09d10A1AffE3A6eb687d98f',
     'PriceOracleAdapter Rif': '0x5a9003E5f443607b7E0491dc27cAd6796D309055',
     'PriceOracleAdapter Dai': '0x238b2703A389D72098C0d1e76a326a2247bb5f26',
     'PriceOracleAdapter RBTC': '0xA349faF652185eCcFfdE885513D8ec44e89605a7',
