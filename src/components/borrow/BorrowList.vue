@@ -74,7 +74,7 @@ export default {
     this.$root.$on('toggleMarketStatusTransaction', ({ status, message }) => {
       this.toggleMarketTransactionStatus = status
       this.toggleMarketTransactionMessage = message
-      if(status === 'success') {
+      if (status === 'success') {
         this.$emit('reload')
       }
     })
