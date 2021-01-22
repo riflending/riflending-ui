@@ -462,10 +462,8 @@ export default class Market {
     const middleware = new Middleware() // maybe not necesary to load a whole Middleware here
     //set price
     const price = await this.getPrice() // current market price
-    let rbtcPrice = await this.getValueMoc() // rbtc price
-    rbtcPrice /= 1e18 // in usd
     const { accountLiquidityInExcess } = await middleware.getAccountLiquidity(account)
-    return price > 0 ? (rbtcPrice * (accountLiquidityInExcess / 1e18)) / (price / 1e18) : 0 // return max(0,borrowLimit)
+    return price > 0 ? accountLiquidityInExcess / 1e18 / (price / 1e18) : 0 // return max(0,borrowLimit)
   }
 
   /** TODO
