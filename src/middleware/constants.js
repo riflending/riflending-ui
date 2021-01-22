@@ -5757,14 +5757,14 @@ export const cTokensDetails = [
   {
     symbol: 'cRBTC',
     name: 'ctoken rbtc',
+    decimals: decimals.cRBTC,
+    underlying: { symbol: 'RBTC', name: 'RSK Smart Bitcoin', decimals: decimals.RBTC },
+    logo: 'rbtc',
     //this is use to substract the calculate liquidated amount (closed Factor * borrow borrower), because this calculate have a insignificant (but precius) % of  lost
     liquidate: {
       sub: 0.000001,
       decimalToFix: 8,
     },
-    decimals: decimals.cRBTC,
-    underlying: { symbol: 'RBTC', name: 'RSK Smart Bitcoin', decimals: decimals.RBTC },
-    logo: 'rbtc',
   },
   {
     symbol: 'cRIF',
