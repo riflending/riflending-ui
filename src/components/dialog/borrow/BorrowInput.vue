@@ -111,6 +111,7 @@
 <script>
 import { mapState } from 'vuex'
 import Loader from '@/components/common/Loader.vue'
+import BigNumber from 'bignumber.js'
 
 export default {
   name: 'BorrowInput',
@@ -207,11 +208,10 @@ export default {
     },
     maxAmount() {
       if (this.maxAmount) {
-        const value = Math.min(
-          this.oldMaxBorrowAllowed,
-          this.cash / this.data.market.token.decimals,
-        )
-        this.amount = value.toFixed(6)
+        const value = new BigNumber(Math.min(this.oldMaxBorrowAllowed, this.cash / Number(1e18)))
+          .decimalPlaces(6, BigNumber.ROUND_DOWN)
+          .toNumber()
+        this.amount = value
       }
       if (!this.maxAmount && this.amount === this.oldMaxBorrowAllowed) this.amount = null
     },
