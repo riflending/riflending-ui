@@ -205,8 +205,14 @@ export default {
     this.updatedTotalSupply = this.data.market.totalSupply
     this.updatedTotalBorrow = this.data.market.totalBorrows
     this.updatedTotalReserves = this.data.market.totalCash
-    this.supBorRatio = Number(this.updatedTotalBorrow) / Number(this.updatedTotalSupply)
-    this.reserveFactor = this.data.market.reserveFactorMantissa.toNumber()
+    this.supBorRatio =
+      this.updatedTotalSupply != 0
+        ? Number(this.updatedTotalBorrow) / Number(this.updatedTotalSupply)
+        : 0
+    this.reserveFactor = ethers.utils.formatUnits(
+      this.data.market.reserveFactorMantissa.mul(100),
+      this.data.market.token.decimals,
+    )
     this.supplyAPR = this.data.market.supplyApy
     this.borrowAPR = this.data.market.borrowApy
     this.borrowRate = await this.data.market.getBorrowRate()
