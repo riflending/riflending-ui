@@ -36,7 +36,7 @@
       <div class="my-5 py-5">
         <v-row class="d-flex align-center">
           <v-col cols="2" />
-          <v-col cols="3" class="d-flex justify-end">
+          <v-col align="end" cols="3" class="d-flex justify-end">
             <h3>Total supply in contract:</h3>
           </v-col>
           <v-col cols="4">
