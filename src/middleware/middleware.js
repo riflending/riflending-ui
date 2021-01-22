@@ -276,4 +276,17 @@ export default class Middleware {
     const [value] = await contract.callStatic.peek()
     return new BigNumber(value)
   }
+
+  /**
+   * Check if some market was entered
+   * @param account
+   * @returns {Promise<boolean>}
+   */
+  async hasEnteredToSomeMarket(account) {
+    const markets = await this.getMarkets(account)
+    const marketsMemberships = await Promise.all(
+      markets.map((market) => market.checkMembership(account)),
+    )
+    return marketsMemberships.some((value) => value)
+  }
 }

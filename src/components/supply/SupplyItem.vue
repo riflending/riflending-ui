@@ -120,7 +120,7 @@ export default {
     },
   },
   mounted() {
-    this.$on('reload', this.reset)
+    this.$parent.$parent.$parent.$on('reload', this.reset)
   },
   created() {
     // set data token
