@@ -1,7 +1,7 @@
 import { ethers } from 'ethers'
 import BigNumber from 'bignumber.js'
 import factoryContract from './factoryContract'
-import { constants, decimals } from './constants'
+import { constants, decimals, abi } from './constants'
 import Middleware from './middleware'
 
 BigNumber.set({ EXPONENTIAL_AT: [-18, 36] })
@@ -384,15 +384,24 @@ export default class Market {
   async payBorrow(amount) {
     let contractWithSigner
     let tx
+
+    // Required, please dont delete this
+    const txOptions = {
+      gasLimit: 250000,
+    }
+
     // validate crbtc
     if (this.isCRBTC) {
       // set signer token
       contractWithSigner = this.instance.connect(this.factoryContract.getSigner())
-      tx = await contractWithSigner.repayBorrow({ value: ethers.utils.parseEther(`${amount}`) })
+      tx = await contractWithSigner.repayBorrow({
+        value: ethers.utils.parseEther(`${amount}`),
+        ...txOptions,
+      })
     } else {
       // set signer cRBTC
       contractWithSigner = this.instance.connect(this.factoryContract.getSigner())
-      tx = await contractWithSigner.repayBorrow(ethers.utils.parseEther(`${amount}`))
+      tx = await contractWithSigner.repayBorrow(ethers.utils.parseEther(`${amount}`), txOptions)
     }
     // wait for mined transaction
     return tx.wait()
@@ -516,15 +525,16 @@ export default class Market {
 
   async getAccountUnderwater() {
     //get borrow accounts
-    // const borrowAcconts = await this.borrowAccounts();
-    const borrowAcconts = []
+    const borrowAcconts = await this.borrowAccounts()
+    // const borrowAcconts = []
     //remove this MOCK
-    borrowAcconts.push('0x48Ef3BDB04a636dafa080A4F96347D1A35Bfbf4e')
-    borrowAcconts.push('0x27598400A96D4EE85f86b0931e49cBc02adD6dF0')
-    borrowAcconts.push('0x3c5f9603D9405B16D449Ed675f4d059192bBF824')
-    borrowAcconts.push('0x455037337707D002af190d131BF3CfA7B2CA9fc5')
-    borrowAcconts.push('0x449BED8c30d909eCaCda721FECE4A9cfC940aD08')
-    borrowAcconts.push('0x517093ccD491ea12e186C58F3636816AE045b88a')
+    // borrowAcconts.push('0xE02e4796345b1b938F34342194C51A76A922aa1b')
+    // borrowAcconts.push('0x48Ef3BDB04a636dafa080A4F96347D1A35Bfbf4e')
+    // borrowAcconts.push('0x27598400A96D4EE85f86b0931e49cBc02adD6dF0')
+    // borrowAcconts.push('0x3c5f9603D9405B16D449Ed675f4d059192bBF824')
+    // borrowAcconts.push('0x455037337707D002af190d131BF3CfA7B2CA9fc5')
+    // borrowAcconts.push('0x449BED8c30d909eCaCda721FECE4A9cfC940aD08')
+    // borrowAcconts.push('0x517093ccD491ea12e186C58F3636816AE045b88a')
     //TODO see if can use static method
     let midlleware = new Middleware()
     let underWaters = []
@@ -545,8 +555,7 @@ export default class Market {
     //TODO, refact turl and provider
     const url = 'http://18.218.165.234:4444'
     const provider = new ethers.providers.JsonRpcProvider(url)
-    // const contract = new ethers.Contract(this.instanceAddress, this.isCRBTC ? abi['cRBTC'] : abi['cErc20'], provider)
-    // const contract = new ethers.Contract('0x2b47f1b810faf99d911228a87c9c6d0d61514b9d', abi['cErc20'], provider)
+    const abiCtoken = this.isCRBTC ? abi['cRBTC'] : abi['cErc20']
     const filterLocal = this.instance.filters.Borrow()
     const latest = await provider.getBlockNumber()
     // const ini = 1451746;
@@ -560,8 +569,16 @@ export default class Market {
           toBlock: index,
         })
         if (logs.length > 0) {
+          //get account of log
+          let auxiliar = logs.map(function (element) {
+            const iface = new ethers.utils.Interface(abiCtoken)
+            //return first element of event (borrower)
+            //TODO fix "args[0]"
+            return iface.parseLog(element).args[0]
+          })
           //get distinct address
-          let auxiliar = [...new Set(logs.map((log) => log.address))]
+          auxiliar = auxiliar.filter((v, i, a) => a.indexOf(v) === i)
+
           for (let index = 0; index < auxiliar.length; index++) {
             borrows.push(auxiliar[index])
           }
