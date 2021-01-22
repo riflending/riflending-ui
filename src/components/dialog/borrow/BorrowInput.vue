@@ -206,7 +206,10 @@ export default {
       }
     },
     maxAmount() {
-      if (this.maxAmount) this.amount = Math.min(this.oldMaxBorrowAllowed, this.cash / 1e18)
+      if (this.maxAmount) {
+        const value = Math.min(this.oldMaxBorrowAllowed, this.cash / this.data.market.token.decimals)
+        this.amount = value.toFixed(6)
+      }
       if (!this.maxAmount && this.amount === this.oldMaxBorrowAllowed) this.amount = null
     },
   },
