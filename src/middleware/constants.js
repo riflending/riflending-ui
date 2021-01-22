@@ -5757,6 +5757,11 @@ export const cTokensDetails = [
   {
     symbol: 'cRBTC',
     name: 'ctoken rbtc',
+    //this is use to substract the calculate liquidated amount (closed Factor * borrow borrower), because this calculate have a insignificant (but precius) % of  lost
+    liquidate: {
+      sub: 0.000001,
+      decimalToFix: 8,
+    },
     decimals: decimals.cRBTC,
     underlying: { symbol: 'RBTC', name: 'RSK Smart Bitcoin', decimals: decimals.RBTC },
     logo: 'rbtc',
@@ -5767,6 +5772,11 @@ export const cTokensDetails = [
     decimals: decimals.cRIF,
     underlying: { symbol: 'RIF', name: 'rLending Rif', decimals: decimals.RIF },
     logo: 'rif',
+    //this is use to substract the calculate liquidated amount (closed Factor * borrow borrower), because this calculate have a insignificant (but precius) % of  lost
+    liquidate: {
+      sub: 0.001,
+      decimalToFix: 6,
+    },
   },
   {
     symbol: 'crDAI',
@@ -5774,6 +5784,11 @@ export const cTokensDetails = [
     decimals: decimals.crDAI,
     underlying: { symbol: 'rDAI', name: 'rLending Dai', decimals: decimals.rDAI },
     logo: 'dai',
+    //this is use to substract the calculate liquidated amount (closed Factor * borrow borrower), because this calculate have a insignificant (but precius) % of  lost
+    liquidate: {
+      sub: 0.0001,
+      decimalToFix: 6,
+    },
   },
 ]
 
