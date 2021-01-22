@@ -50,7 +50,7 @@
         colored-border
         type="error"
         elevation="2"
-        :value="!hasAccountLiquidityInExcess"
+        :value="!hasEnteredToSomeMarket"
       >
         In order to borrow in a market, you must add collateral first. You can do it by clicking on
         the toggle button.
@@ -77,7 +77,7 @@ export default {
     return {
       accountHealth: 1,
       currentComponent: 'SupplyList',
-      hasAccountLiquidityInExcess: true,
+      hasEnteredToSomeMarket: true,
     }
   },
   computed: {
@@ -95,26 +95,16 @@ export default {
   },
   mounted() {
     this.$on('reload', this.reset)
+    this.$root.$on('toggleMarketStatusTransaction', this.reset)
   },
   async created() {
     this.accountHealth = await this.$middleware.getAccountHealth(this.account)
-    // Take a look at the doc https://compound.finance/docs/comptroller#account-liquidity
-    // The account Liquidity represents the USD value borrowable by a user, before it reaches liquidation
-    // If the user never deposited collateral, this value is zero
-    const { accountLiquidityInExcess } = await this.$middleware.getAccountLiquidity(this.account)
-    this.hasAccountLiquidityInExcess = !accountLiquidityInExcess.isZero()
+    this.hasEnteredToSomeMarket = await this.$middleware.hasEnteredToSomeMarket(this.account)
   },
   methods: {
-    reset() {
-      this.$middleware
-        .getAccountHealth(this.account)
-        .then((accountHealth) => {
-          this.accountHealth = accountHealth
-          return this.$middleware.getAccountLiquidity(this.account)
-        })
-        .then(({ accountLiquidityInExcess }) => {
-          this.hasAccountLiquidityInExcess = !accountLiquidityInExcess.isZero()
-        })
+    async reset() {
+      this.accountHealth = await this.$middleware.getAccountHealth(this.account)
+      this.hasEnteredToSomeMarket = await this.$middleware.hasEnteredToSomeMarket(this.account)
     },
   },
 }

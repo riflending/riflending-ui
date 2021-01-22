@@ -2,7 +2,7 @@
   <div class="borrow-item dialog">
     <v-list-item>
       <v-row class="my-5 mx-0 d-flex align-center">
-        <v-col cols="3">
+        <v-col cols="2">
           <v-row class="d-flex align-center">
             <v-col cols="6" class="pa-0 d-flex justify-end">
               <v-list-item-avatar tile size="40">
@@ -24,15 +24,24 @@
         <v-col cols="2">
           <v-list-item-subtitle class="item"> {{ apr }}% </v-list-item-subtitle>
         </v-col>
-        <v-col cols="4" class="px-0">
+        <v-col cols="3" class="px-0">
           <v-row class="ma-0">
             <v-col cols="9" class="pa-0 d-flex align-center">
               <v-list-item-subtitle class="item">
-                {{ borrowBalance | formatToken(token.decimals)}}
+                {{ borrowBalance | formatToken(token.decimals) }}
+              </v-list-item-subtitle>
+            </v-col>
+          </v-row>
+        </v-col>
+        <v-col cols="2" class="px-0">
+          <v-row class="ma-0">
+            <v-col cols="9" class="pa-0 d-flex align-center">
+              <v-list-item-subtitle class="item">
+                <ToggleMarketButton :market="market" />
               </v-list-item-subtitle>
             </v-col>
             <v-col cols="3" class="pa-0">
-              <v-btn class="pa-0" icon @click="dialog = !dialog">
+              <v-btn class="pa-0" icon :disabled="!hasEnteredTheMarket" @click="dialog = !dialog">
                 <svg
                   width="11"
                   height="32"
@@ -63,11 +72,13 @@
 <script>
 import { mapState } from 'vuex'
 import BorrowDialog from '@/components/dialog/borrow/BorrowDialog.vue'
+import ToggleMarketButton from '@/components/common/ToggleMarketButton.vue'
 
 export default {
   name: 'BorrowItem',
   components: {
     BorrowDialog,
+    ToggleMarketButton,
   },
   props: {
     market: {
@@ -88,6 +99,7 @@ export default {
       cash: 0,
       dialog: false,
       borrowBalance: 0,
+      hasEnteredTheMarket: true,
     }
   },
   computed: {
@@ -108,7 +120,7 @@ export default {
     },
   },
   mounted() {
-    this.$on('reload', this.reset)
+    this.$parent.$parent.$parent.$on('reload', this.reset)
   },
   async created() {
     // set data token
@@ -117,6 +129,7 @@ export default {
     this.price = await this.market.getPriceInDecimals()
     this.borrowRate = await this.market.getBorrowRate()
     this.cash = await this.market.getCash()
+    this.hasEnteredTheMarket = await this.market.checkMembership(this.account)
   },
   methods: {
     async reset() {
@@ -126,6 +139,7 @@ export default {
       this.price = await this.market.getPriceInDecimals()
       this.borrowRate = await this.market.getBorrowRate()
       this.cash = await this.market.getCash()
+      this.hasEnteredTheMarket = await this.market.checkMembership(this.account)
       this.$emit('dialogClosed')
     },
   },

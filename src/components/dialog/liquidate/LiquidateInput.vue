@@ -123,6 +123,7 @@ import LiquidateList from '@/components/dialog/liquidate/LiquidateList.vue'
 import Loader from '@/components/common/Loader.vue'
 import BigNumber from 'bignumber.js'
 import { ethers } from 'ethers'
+import { cTokensDetails } from '../../../middleware/constants'
 export default {
   name: 'LiquidateInput',
   components: {
@@ -149,7 +150,9 @@ export default {
       currentMarketPrice: 0,
       borrowMarketTokenDecimals: 0,
       maxCollateralSupplied: 0,
+      closeFactor: 0,
       borrowMarketSymbol: '',
+      cMarketSymbol: '',
       amount: '0',
       funds: 0,
       max: false,
@@ -230,18 +233,27 @@ export default {
   },
   methods: {
     maxToLiquidate() {
-      return !this.marketSelected
-        ? 0
-        : Math.min(
-            //max borrow by borrower
-            this.maxCollateralSupplied,
-            //max calcultate supplied in contract by market of borrower
-            this.getCollateralMarketPriceAssetSelected().multipliedBy(
-              this.getCollateralMarketMaxAssetSelected(),
-            ),
-            //founds of liquidator
-            this.funds * this.borrowMarketPrice,
-          ) / this.currentMarketPrice
+      if (!this.marketSelected) return 0
+      // total borrow * close factor
+      const borrowPerCloseFactor = this.setMaxClose(
+        new BigNumber(this.closeFactor)
+          .multipliedBy(this.maxCollateralSupplied)
+          .div(this.currentMarketPrice),
+      ).toNumber()
+      //max calcultate supplied in contract by market of borrower
+      const maxAssetCollateralBorrower = this.getCollateralMarketPriceAssetSelected()
+        .multipliedBy(this.getCollateralMarketMaxAssetSelected())
+        .div(this.currentMarketPrice)
+        .toNumber()
+      //calculate MIN
+      return Math.min(
+        //max borrow by borrower
+        this.maxCollateralSupplied,
+        borrowPerCloseFactor,
+        maxAssetCollateralBorrower,
+        //founds of liquidator
+        Number(this.funds),
+      )
     },
 
     async liquidateAllowed() {
@@ -303,6 +315,7 @@ export default {
         })
     },
     setLiquidationAccount(accountObject) {
+      this.cMarketSymbol = this.data.market.symbol
       //set address market to liquidate
       this.borrowMarketAddress = accountObject.borrowMarketAddress
       //set token data
@@ -333,6 +346,11 @@ export default {
           ).multipliedBy(price)
           this.accountSelected = true
           this.liquidationAccount = accountObject.borrower
+          return this.$middleware.getLiquidationFactor()
+        })
+        .then((closeFactor) => {
+          //cast to BigNumberJS,
+          this.closeFactor = new BigNumber(ethers.utils.formatEther(closeFactor))
         })
     },
     assetsBalanceIn(account) {
@@ -385,6 +403,19 @@ export default {
         return this.data.availableMarketBalances.find(
           (market) => market.marketAddress === this.marketSelected.toString(),
         ).symbol
+      } catch (error) {
+        return ''
+      }
+    },
+
+    setMaxClose(closeFactorPerMaxBorrow) {
+      try {
+        const liquidate = cTokensDetails.find(
+          (value) => value.symbol === this.cMarketSymbol.toString(),
+        ).liquidate
+        return closeFactorPerMaxBorrow
+          .minus(liquidate.sub)
+          .decimalPlaces(liquidate.decimalToFix, BigNumber.ROUND_DOWN)
       } catch (error) {
         return ''
       }

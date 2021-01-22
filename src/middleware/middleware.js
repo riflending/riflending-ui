@@ -150,15 +150,12 @@ export default class Middleware {
 
   // calls comptroller to retrieve the liquidationFactor
   async getLiquidationFactor() {
-    console.log('getLiquidationFactor')
     const factoryContractInstance = new factoryContract()
     let contract = factoryContractInstance.getContractByNameAndAbiName(
       constants.Unitroller,
       constants.Comptroller,
     )
-    console.log('getLiquidationFactor contract', contract)
     const liqFactor = await contract.closeFactorMantissa()
-    console.log('getLiquidationFactor', liqFactor)
     return liqFactor
   }
 
@@ -278,5 +275,18 @@ export default class Middleware {
     const contract = factoryContractInstance.getContract('RBTCMocOracle')
     const [value] = await contract.callStatic.peek()
     return new BigNumber(value)
+  }
+
+  /**
+   * Check if some market was entered
+   * @param account
+   * @returns {Promise<boolean>}
+   */
+  async hasEnteredToSomeMarket(account) {
+    const markets = await this.getMarkets(account)
+    const marketsMemberships = await Promise.all(
+      markets.map((market) => market.checkMembership(account)),
+    )
+    return marketsMemberships.some((value) => value)
   }
 }
