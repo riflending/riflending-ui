@@ -394,7 +394,9 @@ export default class Market {
     const txOptions = {
       gasLimit: 250000,
     }
-
+    //validate allowance
+    if (!(await this.isAllowance(this.account, ethers.utils.parseEther(`${amount}`))))
+      await this.approveWithMaxUint()
     // validate crbtc
     if (this.isCRBTC) {
       // set signer token
@@ -619,5 +621,23 @@ export default class Market {
     }
     // wait for mined transaction
     return tx.wait()
+  }
+
+  async isAllowance(account, amountBN) {
+    //validate not crbtc
+    if (this.isCRBTC) return true
+    // check allowance
+    const allowance = await this.token.instance.allowance(account, this.instanceAddress)
+    // validate if enough
+    return !allowance.lt(amountBN)
+  }
+
+  async approveWithMaxUint() {
+    if (!this.isCRBTC) {
+      const signer = this.token.instance.connect(this.factoryContract.getSigner())
+      // approve
+      const txSigner = await signer.approve(this.instanceAddress, ethers.constants.MaxUint256)
+      return txSigner.wait()
+    }
   }
 }
