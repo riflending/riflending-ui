@@ -200,7 +200,6 @@ export default {
   },
   watch: {
     amount() {
-      this.getValues()
       if (this.maxAmount && this.amount !== this.oldMaxBorrowAllowed) this.maxAmount = false
       if (this.amount === this.oldMaxBorrowAllowed) {
         this.maxAmount = true
