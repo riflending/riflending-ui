@@ -634,10 +634,10 @@ export default class Market {
 
   async approveWithMaxUint() {
     if (!this.isCRBTC) {
-      const signer = this.token.instance.connect(this.factoryContract.getSigner())
+      const cTokenSigner = this.token.instance.connect(this.factoryContract.getSigner())
       // approve
-      const txSigner = await signer.approve(this.instanceAddress, ethers.constants.MaxUint256)
-      return txSigner.wait()
+      const tx = await cTokenSigner.approve(this.instanceAddress, ethers.constants.MaxUint256)
+      return tx.wait()
     }
   }
 }
