@@ -10,6 +10,7 @@ import vuetify from './plugins/vuetify'
 import 'roboto-fontface/css/roboto/roboto-fontface.css'
 import '@mdi/font/css/materialdesignicons.css'
 import './styles/main.scss'
+import VueGtag from 'vue-gtag'
 
 require('./filters')
 
@@ -36,6 +37,16 @@ Vue.prototype.$rLogin = Vue.rLogin = new RLogin({
 
 Vue.prototype.$provider = null
 Vue.prototype.$web3Provider = null
+
+Vue.use(
+  VueGtag,
+  {
+    config: { id: process.env.VUE_APP_GOOGLE_ANALYTICS_ID },
+    appName: process.env.VUE_APP_GOOGLE_ANALYTICS_APPLICATION_NAME,
+    pageTrackerScreenviewEnabled: true,
+  },
+  router,
+)
 
 new Vue({
   router,
