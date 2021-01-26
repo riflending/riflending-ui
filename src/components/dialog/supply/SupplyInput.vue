@@ -87,13 +87,26 @@
         </v-row>
       </div>
       <v-row class="my-5 d-flex justify-center">
-        <v-btn class="button" rounded color="#008CFF" :disabled="!validForm" @click="supply">
+        <v-btn
+          v-if="needApproval"
+          class="button"
+          rounded
+          color="#00A24D"
+          :disabled="!validForm"
+          @click="approve"
+        >
+          Approve
+        </v-btn>
+        <v-btn v-else class="button" rounded color="#008CFF" :disabled="!validForm" @click="supply">
           Supply tokens
         </v-btn>
       </v-row>
     </template>
-    <template v-else>
+    <template v-else-if="!approveDialog">
       <Loader />
+    </template>
+    <template v-else>
+      <Approve dialog-father-name="Supply" @backToMainDialog="closeTemplateApprove" />
     </template>
   </div>
 </template>
@@ -101,11 +114,13 @@
 <script>
 import { mapState } from 'vuex'
 import Loader from '@/components/common/Loader.vue'
+import Approve from '@/components/common/Approve.vue'
 
 export default {
   name: 'SupplyInput',
   components: {
     Loader,
+    Approve,
   },
   props: {
     data: {
@@ -130,6 +145,8 @@ export default {
       tokenBalance: 0,
       collateralFactor: 0,
       mantissa: 0,
+      needApproval: true,
+      approveDialog: false,
       rules: {
         required: () => (!!Number(this.amount) && Math.sign(this.amount) == 1) || 'Required.',
         decimals: () =>
@@ -190,8 +207,12 @@ export default {
     },
   },
   created() {
-    this.$middleware
-      .getAccountLiquidity(this.account)
+    this.data.market
+      .isAllowance(this.account)
+      .then((allow) => {
+        this.needApproval = !allow
+        return this.$middleware.getAccountLiquidity(this.account)
+      })
       .then(({ accountLiquidityInExcess }) => {
         this.liquidity = Number(accountLiquidityInExcess)
         return this.data.market.getCash()
@@ -236,11 +257,31 @@ export default {
       })
   },
   methods: {
+    closeTemplateApprove() {
+      this.waiting = false
+      this.approveDialog = false
+      this.$emit('approve')
+    },
+    approve() {
+      this.waiting = true
+      this.$emit('wait')
+      this.data.market
+        .approveWithMaxUint()
+        .then(() => {
+          this.approveDialog = true
+          this.needApproval = false
+        })
+        .catch((error) => {
+          this.waiting = false
+          const userError = typeof error === 'string' ? error : error.message || ''
+          this.$emit('error', { userErrorMessage: userError })
+        })
+    },
     supply() {
       this.waiting = true
       this.$emit('wait')
       this.data.market
-        .supply(this.amount, this.account)
+        .supply(this.amount)
         .then((res) => {
           this.waiting = false
           this.$emit('succeed', {
