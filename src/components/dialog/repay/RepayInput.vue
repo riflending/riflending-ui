@@ -202,8 +202,13 @@ export default {
         //maxRepayAllowed <= maxAmountBalanceAllowed
         if (
           ethers.utils
-            .parseEther(this.maxRepayAllowed)
-            .lte(ethers.utils.parseEther(this.maxAmountBalanceAllowed))
+            .parseUnits(this.maxRepayAllowed, this.data.market.token.decimals)
+            .lte(
+              ethers.utils.parseUnits(
+                this.maxAmountBalanceAllowed,
+                this.data.market.token.decimals,
+              ),
+            )
         ) {
           this.amount = this.maxRepayAllowed
         } else this.amount = this.maxAmountBalanceAllowed
