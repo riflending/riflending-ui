@@ -112,12 +112,7 @@ export default class Market {
     // get price of cToken
     const priceToken = await contract.callStatic.getUnderlyingPrice(this.instanceAddress)
     // get price of rbtc
-    const valueOracle = await this.getValueMoc()
-    // price = ( price cToken in rbtc * price of rbtc) /  Oracle precision decimals
-    return new BigNumber(priceToken.toString())
-      .multipliedBy(valueOracle)
-      .div(new BigNumber(1e18))
-      .toNumber()
+    return new BigNumber(priceToken.toString()).toNumber()
   }
 
   async getUserBalanceOfCtoken() {
@@ -476,10 +471,8 @@ export default class Market {
     const middleware = new Middleware() // maybe not necesary to load a whole Middleware here
     //set price
     const price = await this.getPrice() // current market price
-    let rbtcPrice = await this.getValueMoc() // rbtc price
-    rbtcPrice /= 1e18 // in usd
     const { accountLiquidityInExcess } = await middleware.getAccountLiquidity(account)
-    return price > 0 ? (rbtcPrice * (accountLiquidityInExcess / 1e18)) / (price / 1e18) : 0 // return max(0,borrowLimit)
+    return price > 0 ? accountLiquidityInExcess / 1e18 / (price / 1e18) : 0 // return max(0,borrowLimit)
   }
 
   /** TODO
