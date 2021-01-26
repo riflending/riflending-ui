@@ -47,7 +47,6 @@ export default {
   },
   async created() {
     this.value = await this.market.checkMembership(this.account)
-    console.log(`Market membership:`, this.market.symbol, `"${this.value}"`)
     this.titleMessage = this.value
       ? 'This asset will no longer be used towards your borrowing limit, and can’t be seized in liquidation.'
       : 'Each asset used as collateral increases your borrowing limit. Be careful, this can subject the asset to being seized in liquidation'

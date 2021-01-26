@@ -46,7 +46,8 @@ if (process.env.VUE_APP_SENTRY_DSN) {
     Vue,
     dsn: process.env.VUE_APP_SENTRY_DSN,
     integrations: [new Integrations.BrowserTracing()],
-
+    release: 'rlending-ui@' + process.env.npm_package_version,
+    logErrors: true,
     // We recommend adjusting this value in production, or using tracesSampler
     // for finer control
     tracesSampleRate: 1.0,

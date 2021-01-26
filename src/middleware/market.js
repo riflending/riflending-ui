@@ -212,7 +212,6 @@ export default class Market {
     // set signer
     const contractWithSigner = contract.connect(this.factoryContract.getSigner())
     // send transaction
-    console.log(`Instance address ${this.instanceAddress}`)
     const tx = await contractWithSigner.enterMarkets([this.instanceAddress])
     // await result transaction
     return tx.wait()
@@ -231,7 +230,6 @@ export default class Market {
     // set signer
     const contractWithSigner = contract.connect(this.factoryContract.getSigner())
     // send transaction
-    console.log(`Instance address ${this.instanceAddress}`)
     const tx = await contractWithSigner.exitMarket(this.instanceAddress)
     // await result transaction
     return tx.wait()
@@ -243,6 +241,10 @@ export default class Market {
    * @return {Promise<TXResult>} the wait mined transaction
    */
   async supply(amount) {
+    // Required, please dont delete this
+    const txOptions = {
+      gasLimit: 250000,
+    }
     // add decimals token
     const amountBN = this.getAmountDecimals(amount)
     let tx
@@ -250,13 +252,14 @@ export default class Market {
     if (!this.isCRBTC) {
       // mint token
       const signerCtoken = this.instance.connect(this.factoryContract.getSigner())
-      tx = await signerCtoken.mint(amountBN.toString())
+      tx = await signerCtoken.mint(amountBN.toString(), txOptions)
     } else {
       // set signer cRBTC
       const signer = this.instance.connect(this.factoryContract.getSigner())
       // set value
       const overrides = {
         value: amountBN.toString(),
+        ...txOptions,
       }
       // mint crbtc
       tx = await signer.mint(overrides)
