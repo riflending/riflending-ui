@@ -10,6 +10,8 @@ import vuetify from './plugins/vuetify'
 import 'roboto-fontface/css/roboto/roboto-fontface.css'
 import '@mdi/font/css/materialdesignicons.css'
 import './styles/main.scss'
+import * as Sentry from '@sentry/browser'
+import { Integrations } from '@sentry/tracing'
 
 require('./filters')
 
@@ -36,6 +38,17 @@ Vue.prototype.$rLogin = Vue.rLogin = new RLogin({
 
 Vue.prototype.$provider = null
 Vue.prototype.$web3Provider = null
+
+// Sentry log error service configuration
+Sentry.init({
+  Vue,
+  dsn: process.env.VUE_APP_SENTRY_DSN,
+  integrations: [new Integrations.BrowserTracing()],
+
+  // We recommend adjusting this value in production, or using tracesSampler
+  // for finer control
+  tracesSampleRate: 1.0,
+})
 
 new Vue({
   router,
