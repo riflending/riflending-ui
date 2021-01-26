@@ -40,26 +40,33 @@ Vue.prototype.$rLogin = Vue.rLogin = new RLogin({
 Vue.prototype.$provider = null
 Vue.prototype.$web3Provider = null
 
-// Sentry log error service configuration
-Sentry.init({
-  Vue,
-  dsn: process.env.VUE_APP_SENTRY_DSN,
-  integrations: [new Integrations.BrowserTracing()],
+if (process.env.VUE_APP_SENTRY_DSN) {
+  // Sentry log error service configuration
+  Sentry.init({
+    Vue,
+    dsn: process.env.VUE_APP_SENTRY_DSN,
+    integrations: [new Integrations.BrowserTracing()],
 
-  // We recommend adjusting this value in production, or using tracesSampler
-  // for finer control
-  tracesSampleRate: 1.0,
-})
+    // We recommend adjusting this value in production, or using tracesSampler
+    // for finer control
+    tracesSampleRate: 1.0,
+  })
+}
 
-Vue.use(
-  VueGtag,
-  {
-    config: { id: process.env.VUE_APP_GOOGLE_ANALYTICS_ID },
-    appName: process.env.VUE_APP_GOOGLE_ANALYTICS_APPLICATION_NAME,
-    pageTrackerScreenviewEnabled: true,
-  },
-  router,
-)
+if (
+  process.env.VUE_APP_GOOGLE_ANALYTICS_ID &&
+  process.env.VUE_APP_GOOGLE_ANALYTICS_APPLICATION_NAME
+) {
+  Vue.use(
+    VueGtag,
+    {
+      config: { id: process.env.VUE_APP_GOOGLE_ANALYTICS_ID },
+      appName: process.env.VUE_APP_GOOGLE_ANALYTICS_APPLICATION_NAME,
+      pageTrackerScreenviewEnabled: true,
+    },
+    router,
+  )
+}
 
 new Vue({
   router,
