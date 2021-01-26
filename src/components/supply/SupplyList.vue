@@ -12,12 +12,13 @@
           <v-col cols="2">
             <v-list-item-subtitle class="listTitle">APR</v-list-item-subtitle>
           </v-col>
-          <v-col cols="3">
+          <v-col cols="2">
             <v-list-item-subtitle class="listTitle">Supplied</v-list-item-subtitle>
           </v-col>
           <v-col cols="2">
             <v-list-item-subtitle class="listTitle">Collateral</v-list-item-subtitle>
           </v-col>
+          <v-col cols="1"> </v-col>
         </v-row>
       </v-list-item>
       <v-divider />
