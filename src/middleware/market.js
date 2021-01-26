@@ -438,6 +438,35 @@ export default class Market {
   }
 
   /**
+   * getMaxWithdrawAllowed Calculates max withdraw allowance for this account in this market
+   * @dev to be used in Withdraw modal
+   * @param {address} account the address of the account
+   * @return {Number} res the max redeemable amount in underlying
+   */
+  async getMaxWithdrawAllowed(account) {
+    // pseudo-code
+    // if user not entered market:
+    //   return min(user balance, market balance)
+    // else:
+    //   return min(user liquidity * asset price / collateralFactor, market balance)
+    const member = await this.checkMembership(account)
+    const balance = await this.getUserBalanceOfUnderlying()
+
+    if (!member) {
+      const contractCash = await this.getCash()
+      return contractCash > balance ? balance : contractCash
+    } else {
+      const middleware = new Middleware() // maybe not necesary to load a whole Middleware here
+      const { accountLiquidityInExcess } = await middleware.getAccountLiquidity(account)
+      const liquidityBN = new BigNumber(accountLiquidityInExcess.toString())
+      const price = await this.getPrice() // current market price
+      const colFact = await this.getCollateralFactorMantissa()
+      const allowance = liquidityBN.multipliedBy(price).div(colFact)
+      return balance > allowance ? allowance : balance
+    }
+  }
+
+  /**
    * borrowAllowed Calls Comptroller to check if borrow is
    *   allowed for this user in this market with this amount
    * @dev to be used in borrow modal
