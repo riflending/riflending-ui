@@ -26,7 +26,7 @@
             class="mb-12"
             text
             color="#008CFF"
-            :disabled="!maxBorrowAllowed"
+            :disabled="!maxWithdrawAllowed"
             @click="maxAmount = true"
             >max</v-btn
           >
@@ -252,7 +252,11 @@ export default {
         this.collateralFactor = collateralFactor * this.mantissa
         // sets debt
         this.debt = (this.borrowValue * (this.mantissa + this.collateralFactor)) / this.mantissa
-        this.maxWithdrawAllowed = this.getMaxWithdrawAllowed(this.supplyOf, this.cash)
+        // return this.data.market.getMaxWithdrawAllowed(this.supplyOf, this.cash)
+        return this.data.market.getMaxWithdrawAllowed(this.account)
+      })
+      .then((maxRedeemAllowed) => {
+        this.maxWithdrawAllowed = maxRedeemAllowed
         return this.data.market.getMaxBorrowAllowed(this.account)
       })
       .then((maxBorrowAllowed) => {
@@ -302,11 +306,7 @@ export default {
     asDouble(value) {
       return (Number(value) / 10 ** this.data.token.decimals).toFixed(this.data.token.decimals)
     },
-    getMaxWithdrawAllowed(supplyOf, cash) {
-      const allowed = cash > supplyOf - this.debt ? supplyOf - this.debt : cash
-      // return this.asDouble(allowed);
-      return allowed
-    },
+
     async getValues() {
       this.supplyBalanceInfo = Number(this.amount)
       // TODO Why this return nothing ?
