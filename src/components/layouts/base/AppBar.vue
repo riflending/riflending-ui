@@ -100,7 +100,7 @@ export default {
         })
 
         this.$provider.on('chainChanged', (chainId) => {
-          this.validateNetwork(chainId)
+          window.location.reload(false)
         })
 
         Vue.provider = this.$provider
