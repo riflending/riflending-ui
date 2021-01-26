@@ -99,7 +99,7 @@ export default {
           throw error
         })
 
-        this.$provider.on('chainChanged', (chainId) => {
+        this.$provider.on('chainChanged', () => {
           window.location.reload(false)
         })
 
