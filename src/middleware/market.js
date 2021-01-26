@@ -330,19 +330,27 @@ export default class Market {
   }
 
   async redeemUnderlying(amount) {
+    // Required, please dont delete this
+    const txOptions = {
+      gasLimit: 250000,
+    }
     // set signer token
     const signer = this.instance.connect(this.factoryContract.getSigner())
     // send redeemUnderlying
-    const tx = await signer.redeemUnderlying(amount.toString())
+    const tx = await signer.redeemUnderlying(amount.toString(), txOptions)
     // wait for mined transaction
     return tx.wait()
   }
 
   async redeem(amount) {
+    // Required, please dont delete this
+    const txOptions = {
+      gasLimit: 250000,
+    }
     // set signer token
     const signer = this.instance.connect(this.factoryContract.getSigner())
     // send redeem
-    const tx = await signer.redeem(amount.toString())
+    const tx = await signer.redeem(amount.toString(), txOptions)
     // wait for mined transaction
     return tx.wait()
   }
