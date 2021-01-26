@@ -198,7 +198,21 @@ export default {
       if (this.amount === this.maxRepayAllowed) this.maxAmount = true
     },
     maxAmount() {
-      if (this.maxAmount) this.amount = this.maxRepayAllowed
+      if (this.maxAmount) {
+        //maxRepayAllowed <= maxAmountBalanceAllowed
+        if (
+          ethers.utils
+            .parseUnits(this.maxRepayAllowed, this.data.market.token.decimals)
+            .lte(
+              ethers.utils.parseUnits(
+                this.maxAmountBalanceAllowed,
+                this.data.market.token.decimals,
+              ),
+            )
+        ) {
+          this.amount = this.maxRepayAllowed
+        } else this.amount = this.maxAmountBalanceAllowed
+      }
       if (!this.maxAmount && this.amount === this.maxRepayAllowed) this.amount = null
     },
   },
@@ -253,8 +267,7 @@ export default {
         this.maxRepayAllowed = ethers.utils.formatEther(borrowBy)
         this.borrowBy = Number(borrowBy)
         this.oldBorrowBy = Number(borrowBy)
-        const internalAddressOfToken = this.data.market.token?.internalAddress
-        return internalAddressOfToken
+        return !this.data.market.isCRBTC
           ? this.$middleware.getWalletAccountBalance(
               this.account,
               this.data.market.token?.internalAddress,
