@@ -37,6 +37,7 @@
             @succeed="actionSucceed"
             @wait="waiting = true"
             @error="actionError"
+            @approve="backToDialog"
           />
         </template>
       </template>
@@ -170,6 +171,11 @@ export default {
       this.liquidateValue = succeedObject.liquidateValue
       this.collateral = succeedObject.collateral
       this.costValue = succeedObject.costValue
+    },
+    backToDialog() {
+      this.succeed = false
+      this.waiting = false
+      this.errorDialog = false
     },
     onClickOutside() {
       if (!this.waiting && !this.succeed) {
