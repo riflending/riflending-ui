@@ -85,13 +85,26 @@
         </v-row>
       </div>
       <v-row class="my-5 d-flex justify-center">
-        <v-btn class="button" rounded color="#008CFF" :disabled="!validForm" @click="repay">
+        <v-btn
+          v-if="needApproval"
+          class="button"
+          rounded
+          color="#00A24D"
+          :disabled="!validForm"
+          @click="approve"
+        >
+          Approve
+        </v-btn>
+        <v-btn v-else class="button" rounded color="#008CFF" :disabled="!validForm" @click="repay">
           Repay tokens
         </v-btn>
       </v-row>
     </template>
-    <template v-else>
+    <template v-else-if="!approveDialog">
       <Loader />
+    </template>
+    <template v-else>
+      <Approve dialog-father-name="Repay" @backToMainDialog="closeTemplateApprove" />
     </template>
   </div>
 </template>
@@ -99,12 +112,14 @@
 <script>
 import { mapState } from 'vuex'
 import Loader from '@/components/common/Loader.vue'
+import Approve from '@/components/common/Approve.vue'
 import { ethers } from 'ethers'
 
 export default {
   name: 'RepayInput',
   components: {
     Loader,
+    Approve,
   },
   props: {
     data: {
@@ -132,6 +147,8 @@ export default {
       collateralFactor: 0,
       mantissa: 0,
       maxAmountBalanceAllowed: 0,
+      needApproval: true,
+      approveDialog: false,
       rules: {
         required: () => !!Number(this.amount) || 'Required.',
         decimals: () =>
@@ -220,10 +237,13 @@ export default {
     this.mantissa = Number(1e6)
     this.collateralFactor = Number(0.5e18)
 
-    // TODO: updateBorrowBy pending !!!!
-    // gets liquidity
-    this.$middleware
-      .getAccountLiquidity(this.account)
+    this.data.market
+      .isAllowance(this.account)
+      .then((allow) => {
+        this.needApproval = !allow
+        // gets liquidity
+        return this.$middleware.getAccountLiquidity(this.account)
+      })
       .then(({ accountLiquidityInExcess }) => {
         this.liquidity = accountLiquidityInExcess
         return this.data.market.getCash()
@@ -280,6 +300,26 @@ export default {
       })
   },
   methods: {
+    closeTemplateApprove() {
+      this.waiting = false
+      this.approveDialog = false
+      this.$emit('approve')
+    },
+    approve() {
+      this.waiting = true
+      this.$emit('wait')
+      this.data.market
+        .approveWithMaxUint()
+        .then(() => {
+          this.approveDialog = true
+          this.needApproval = false
+        })
+        .catch((error) => {
+          this.waiting = false
+          const userError = typeof error === 'string' ? error : error.message || ''
+          this.$emit('error', { userErrorMessage: userError })
+        })
+    },
     repay() {
       this.waiting = true
       this.$emit('wait')
