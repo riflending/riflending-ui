@@ -226,7 +226,9 @@ export default class Middleware {
     let balances = []
     const markets = await this.getMarkets(account)
     for (let asset of assets) {
-      let market = markets.find((market) => market.instanceAddress === asset.toLowerCase())
+      let market = markets.find(
+        (market) => market.instanceAddress.toLowerCase() === asset.toLowerCase(),
+      )
       if (market) {
         balances.push({
           symbol: market.token.symbol,
