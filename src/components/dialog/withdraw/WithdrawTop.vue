@@ -1,5 +1,5 @@
 <template>
-  <v-row class="ma-0 d-flex align-center">
+  <v-row class="withdraw-top ma-0 d-flex align-center">
     <v-col cols="2" class="d-flex justify-center">
       <v-img class="ml-5" :src="require(`@/assets/tokens/${data.token.logo}.png`)" width="60" />
     </v-col>
@@ -8,7 +8,7 @@
         <h1 class="ma-0">{{ data.token.symbol }}</h1>
       </v-row>
       <v-row class="d-flex justify-center">
-        <a class="ml-2 listTitle" target="_blank" :href="rskExplorerUrl">
+        <a v-if="!isCRBTC" class="ml-2 listTitle" target="_blank" :href="rskExplorerUrl">
           {{ data.token.symbol }} Addr
         </a>
       </v-row>
@@ -44,8 +44,9 @@ export default {
     return {
       price: 0,
       borrowRate: 0,
-      tokenAddress: 0,
       tokenDecimals: 0,
+      tokenAddress: '',
+      isCRBTC: false,
     }
   },
   computed: {
@@ -57,12 +58,13 @@ export default {
     },
   },
   created() {
+    this.isCRBTC = this.data.market.isCRBTC
+    this.tokenAddress = this.isCRBTC ? '' : this.data.market.token.instance.address
+    this.tokenDecimals = this.data.market.token.decimals
     this.data.market
       .getPriceInDecimals()
       .then((price) => {
         this.price = price
-        this.tokenAddress = this.data.market.token.address
-        this.tokenDecimals = this.data.market.token.decimals
         return this.data.market.getBorrowRate()
       })
       .then((borrowRate) => {

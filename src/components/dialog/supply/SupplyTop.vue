@@ -1,5 +1,5 @@
-<template class="supply-top">
-  <v-row class="ma-0 d-flex align-center">
+<template>
+  <v-row class="supply-top ma-0 d-flex align-center">
     <v-col cols="2" class="d-flex justify-center">
       <v-img class="ml-5" :src="require(`@/assets/tokens/${data.token.logo}.png`)" width="60" />
     </v-col>
@@ -8,7 +8,7 @@
         <h1 class="ma-0">{{ data.token.symbol }}</h1>
       </v-row>
       <v-row class="d-flex justify-center">
-        <a class="ml-2 listTitle" target="_blank" :href="rskExplorerUrl">
+        <a v-if="!isCRBTC" class="ml-2 listTitle" target="_blank" :href="rskExplorerUrl">
           {{ data.token.symbol }} Addr
         </a>
       </v-row>
@@ -54,7 +54,8 @@ export default {
       price: 0,
       tokenBalance: 0,
       tokenBalancePrice: 0,
-      tokenAddress: 0,
+      tokenAddress: '',
+      isCRBTC: false,
     }
   },
   computed: {
@@ -70,7 +71,8 @@ export default {
   },
   created() {
     // set token address
-    this.tokenAddress = this.data.market.token.instance
+    this.isCRBTC = this.data.market.isCRBTC
+    this.tokenAddress = this.isCRBTC ? '' : this.data.market.token.instance.address
     // set token balance
     this.data.market
       .getUserBalanceOfUnderlying()
