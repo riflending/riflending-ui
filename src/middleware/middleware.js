@@ -8,11 +8,13 @@ import { constants, address, errorCodes, cTokensDetails } from './constants'
 BigNumber.set({ EXPONENTIAL_AT: [-18, 36] })
 
 export default class Middleware {
+  getAddresses() {
+    return Vue?.web3Provider?.network?.chainId === 31 ? address.testnet : address.mainnet
+  }
+
   async getMarkets(account) {
     const markets = []
-
-    const addresses = Vue?.web3Provider?.network?.chainId === 31 ? address.testnet : address.mainnet
-
+    const addresses = this.getAddresses()
     for (let cTokensDetail of cTokensDetails) {
       const {
         collateralFactorMantissa,
@@ -227,7 +229,9 @@ export default class Middleware {
     let balances = []
     const markets = await this.getMarkets(account)
     for (let asset of assets) {
-      let market = markets.find((market) => market.instanceAddress === asset.toLowerCase())
+      let market = markets.find(
+        (market) => market.instanceAddress.toLowerCase() === asset.toLowerCase(),
+      )
       if (market) {
         balances.push({
           symbol: market.token.symbol,
@@ -289,5 +293,51 @@ export default class Middleware {
       markets.map((market) => market.checkMembership(account)),
     )
     return marketsMemberships.some((value) => value)
+  }
+
+  /**
+   * Check if the market is approve
+   * @param account
+   * @param marketSymbol
+   * @returns bool = false need approve
+   */
+  async isAccountAllowanceInMarket(account, marketSymbol) {
+    //validate symbol
+    const symbol = constants[marketSymbol]
+    const cTokenDetail = cTokensDetails.find((element) => element.underlying.symbol == symbol)
+    if (!cTokenDetail || !symbol) return false
+    //validate not crbtc
+    if (symbol === constants['RBTC']) return true
+    const addresses = this.getAddresses()
+    //set amount
+    const amountBN = ethers.utils.parseUnits('1', cTokenDetail.underlying.decimals)
+    const factoryContractInstance = new factoryContract()
+    //set contract
+    const contract = factoryContractInstance.getContractToken(symbol)
+    // check allowance
+    const allowance = await contract.allowance(account, addresses[cTokenDetail.symbol])
+    // validate if enough
+    return !allowance.lt(amountBN)
+  }
+
+  async approveMarketWithMaxUint(marketSymbol) {
+    //validate symbol
+    const symbol = constants[marketSymbol]
+    const cTokenDetail = cTokensDetails.find((element) => element.underlying.symbol == symbol)
+    if (!cTokenDetail || !symbol) return
+    //validate not crbtc
+    if (symbol === constants['RBTC']) return
+    const addresses = this.getAddresses()
+    const factoryContractInstance = new factoryContract()
+    //set contract
+    const contract = factoryContractInstance.getContractToken(symbol)
+    //set signer
+    const cTokenSigner = contract.connect(factoryContractInstance.getSigner())
+    // approve
+    const tx = await cTokenSigner.approve(
+      addresses[cTokenDetail.symbol],
+      ethers.constants.MaxUint256,
+    )
+    return tx.wait()
   }
 }

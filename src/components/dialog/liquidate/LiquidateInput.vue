@@ -105,14 +105,34 @@
           </v-col>
         </v-row>
         <v-row class="my-6 d-flex justify-center">
-          <v-btn class="button" rounded color="#008CFF" :disabled="!validForm" @click="liquidate">
+          <v-btn
+            v-if="needApproval"
+            class="button"
+            rounded
+            color="#00A24D"
+            :disabled="!validForm"
+            @click="approve"
+          >
+            Approve
+          </v-btn>
+          <v-btn
+            v-else
+            class="button"
+            rounded
+            color="#008CFF"
+            :disabled="!validForm"
+            @click="liquidate"
+          >
             Liquidate account
           </v-btn>
         </v-row>
       </div>
     </template>
-    <template v-else>
+    <template v-else-if="!approveDialog">
       <Loader />
+    </template>
+    <template v-else>
+      <Approve dialog-father-name="Liquidate" @backToMainDialog="closeTemplateApprove" />
     </template>
   </div>
 </template>
@@ -124,11 +144,14 @@ import Loader from '@/components/common/Loader.vue'
 import BigNumber from 'bignumber.js'
 import { ethers } from 'ethers'
 import { cTokensDetails } from '../../../middleware/constants'
+import Approve from '@/components/common/Approve.vue'
+
 export default {
   name: 'LiquidateInput',
   components: {
     Loader,
     LiquidateList,
+    Approve,
   },
   props: {
     data: {
@@ -156,6 +179,8 @@ export default {
       amount: '0',
       funds: 0,
       max: false,
+      needApproval: true,
+      approveDialog: false,
       rules: {
         collateralMarketSelected: () => !!this.marketSelected || 'Select collateral market.',
         required: () => !!Number(this.amount) || 'Required.',
@@ -230,8 +255,31 @@ export default {
       this.amount = this.maxToLiquidate()
       this.max = false
     },
+    marketSelected() {
+      this.$middleware
+        .isAccountAllowanceInMarket(this.account, this.getCollateralMarketSymbolAssetSelected())
+        .then((allow) => {
+          this.needApproval = !allow
+        })
+    },
   },
   methods: {
+    approve() {
+      this.waiting = true
+      this.$emit('wait')
+      this.$middleware
+        .approveMarketWithMaxUint(this.getCollateralMarketSymbolAssetSelected())
+        .then(() => {
+          this.approveDialog = true
+          this.needApproval = false
+        })
+        .catch((error) => {
+          this.waiting = false
+          const userError = typeof error === 'string' ? error : error.message || ''
+          this.$emit('error', { userErrorMessage: userError })
+        })
+    },
+
     maxToLiquidate() {
       if (!this.marketSelected) return 0
       // total borrow * close factor
@@ -419,6 +467,11 @@ export default {
       } catch (error) {
         return ''
       }
+    },
+    closeTemplateApprove() {
+      this.waiting = false
+      this.approveDialog = false
+      this.$emit('approve')
     },
   },
 }
