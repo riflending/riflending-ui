@@ -204,7 +204,6 @@ export default {
     },
     maxAmount() {
       this.getValues()
-      console.log('this.maxWithdrawAllowed', this.maxWithdrawAllowed)
       if (this.maxAmount) this.amount = this.maxWithdrawAllowed
       if (!this.maxAmount && this.amount === this.maxWithdrawAllowed) this.amount = null
     },
