@@ -299,7 +299,7 @@ export default class Middleware {
   /**
    * Check if the market is approve
    * @param account
-   * @param amountBN => amount in BN
+   * @param marketSymbol
    * @returns bool = false need approve
    */
   async isAccountAllowanceInMarket(account, marketSymbol) {
