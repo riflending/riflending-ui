@@ -55,11 +55,7 @@
               <v-icon small class="mx-5" v-bind="attrs" v-on="on">info</v-icon>
             </template>
             <div class="tooltip">
-              Your <span class="boldie">Borrow Limit</span> <br />
-              follows a complex formula <br />
-              that involves your supplied<br />
-              balance, market prices and <br />
-              the state of your loans.<br />
+              This is your <span class="boldie">Borrow Limit</span> <br />
               <span class="boldie">
                 For more information<br />
                 regarding this value<br />
@@ -124,7 +120,7 @@ export default {
       account: (state) => state.Session.account,
     }),
     supplyBorrow() {
-      return !!this.totalBorrowed || !!this.totalSupply
+      return !!Number(this.totalBorrowed) || !!Number(this.totalSupply)
     },
   },
   created() {

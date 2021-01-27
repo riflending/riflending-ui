@@ -45,7 +45,7 @@ export default class Middleware {
         account,
       }
 
-      markets.push(new Market(options))
+      markets.push(new Market(options, this))
     }
     return markets
   }
@@ -109,6 +109,7 @@ export default class Middleware {
 
   async getTotals(account) {
     //TODO: This function shouldn't have so many new BigNumber()
+    //TODO rename to getTotalSupplysAndBorrows
     const markets = await this.getMarkets(account)
     const marketsPromises = markets.map(
       (market) =>

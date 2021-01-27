@@ -171,7 +171,6 @@ export default {
   methods: {
     pollData() {
       this.polling = setInterval(async () => {
-        console.log('Polling my activity data')
         await this.fetchData()
       }, 20000)
     },

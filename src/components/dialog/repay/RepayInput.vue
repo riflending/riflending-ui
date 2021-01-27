@@ -268,10 +268,7 @@ export default {
         this.borrowBy = Number(borrowBy)
         this.oldBorrowBy = Number(borrowBy)
         return !this.data.market.isCRBTC
-          ? this.$middleware.getWalletAccountBalance(
-              this.account,
-              this.data.market.token?.internalAddress,
-            )
+          ? this.$middleware.getWalletAccountBalance(this.account, this.data.market.token?.address)
           : this.$middleware.getWalletAccountBalanceForRBTC(this.account)
       })
       .then((balanceOfToken) => {

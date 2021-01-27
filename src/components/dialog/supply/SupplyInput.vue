@@ -236,12 +236,9 @@ export default {
       })
       .then((maxBorrowAllowed) => {
         this.maxBorrowAllowed = maxBorrowAllowed
-        const internalAddressOfToken = this.data.market.token?.internalAddress
+        const internalAddressOfToken = this.data.market.token?.address
         return internalAddressOfToken
-          ? this.$middleware.getWalletAccountBalance(
-              this.account,
-              this.data.market.token?.internalAddress,
-            )
+          ? this.$middleware.getWalletAccountBalance(this.account, this.data.market.token?.address)
           : this.$middleware.getWalletAccountBalanceForRBTC(this.account)
       })
       .then((balanceOfToken) => {

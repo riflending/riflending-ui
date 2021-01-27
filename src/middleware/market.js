@@ -2,7 +2,6 @@ import { ethers } from 'ethers'
 import BigNumber from 'bignumber.js'
 import factoryContract from './factoryContract'
 import { constants, decimals, abi } from './constants'
-import Middleware from './middleware'
 
 BigNumber.set({ EXPONENTIAL_AT: [-18, 36] })
 
@@ -11,7 +10,7 @@ BigNumber.set({ EXPONENTIAL_AT: [-18, 36] })
  */
 export default class Market {
   // constructor() {}
-  constructor(market) {
+  constructor(market, middleware) {
     const {
       cTokenSymbol,
       cTokenDecimals,
@@ -30,7 +29,7 @@ export default class Market {
       totalReserves,
       totalSupply,
     } = market
-
+    this.middleware = middleware
     this.account = account
     // TODO see if factoryContract go to middleware class
     this.factoryContract = new factoryContract()
@@ -48,7 +47,7 @@ export default class Market {
     // validate cRBTC
     if (cTokenSymbol !== 'cRBTC') {
       this.token.instance = this.factoryContract.getContractToken(tokenSymbol)
-      this.token.internalAddress = this.token.instance.address.toLowerCase()
+      this.token.address = this.token.instance.address.toLowerCase()
     }
     // set data token
     this.token.symbol = tokenSymbol
@@ -212,7 +211,6 @@ export default class Market {
     // set signer
     const contractWithSigner = contract.connect(this.factoryContract.getSigner())
     // send transaction
-    console.log(`Instance address ${this.instanceAddress}`)
     const tx = await contractWithSigner.enterMarkets([this.instanceAddress])
     // await result transaction
     return tx.wait()
@@ -231,7 +229,6 @@ export default class Market {
     // set signer
     const contractWithSigner = contract.connect(this.factoryContract.getSigner())
     // send transaction
-    console.log(`Instance address ${this.instanceAddress}`)
     const tx = await contractWithSigner.exitMarket(this.instanceAddress)
     // await result transaction
     return tx.wait()
@@ -243,6 +240,10 @@ export default class Market {
    * @return {Promise<TXResult>} the wait mined transaction
    */
   async supply(amount) {
+    // Required, please dont delete this
+    const txOptions = {
+      gasLimit: 250000,
+    }
     // add decimals token
     const amountBN = this.getAmountDecimals(amount)
     let tx
@@ -250,13 +251,14 @@ export default class Market {
     if (!this.isCRBTC) {
       // mint token
       const signerCtoken = this.instance.connect(this.factoryContract.getSigner())
-      tx = await signerCtoken.mint(amountBN.toString())
+      tx = await signerCtoken.mint(amountBN.toString(), txOptions)
     } else {
       // set signer cRBTC
       const signer = this.instance.connect(this.factoryContract.getSigner())
       // set value
       const overrides = {
         value: amountBN.toString(),
+        ...txOptions,
       }
       // mint crbtc
       tx = await signer.mint(overrides)
@@ -327,19 +329,27 @@ export default class Market {
   }
 
   async redeemUnderlying(amount) {
+    // Required, please dont delete this
+    const txOptions = {
+      gasLimit: 250000,
+    }
     // set signer token
     const signer = this.instance.connect(this.factoryContract.getSigner())
     // send redeemUnderlying
-    const tx = await signer.redeemUnderlying(amount.toString())
+    const tx = await signer.redeemUnderlying(amount.toString(), txOptions)
     // wait for mined transaction
     return tx.wait()
   }
 
   async redeem(amount) {
+    // Required, please dont delete this
+    const txOptions = {
+      gasLimit: 250000,
+    }
     // set signer token
     const signer = this.instance.connect(this.factoryContract.getSigner())
     // send redeem
-    const tx = await signer.redeem(amount.toString())
+    const tx = await signer.redeem(amount.toString(), txOptions)
     // wait for mined transaction
     return tx.wait()
   }
@@ -446,8 +456,7 @@ export default class Market {
       const contractCash = await this.getCash()
       return contractCash > balance ? balance : contractCash
     } else {
-      const middleware = new Middleware() // maybe not necesary to load a whole Middleware here
-      const { accountLiquidityInExcess } = await middleware.getAccountLiquidity(account)
+      const { accountLiquidityInExcess } = await this.middleware.getAccountLiquidity(account)
       const liquidityBN = new BigNumber(accountLiquidityInExcess.toString())
       const price = await this.getPrice() // current market price
       const colFact = await this.getCollateralFactorMantissa()
@@ -475,7 +484,6 @@ export default class Market {
       account,
       amountBN.toString(),
     )
-    console.log('market.js borrowAllowed? response', response)
     return { allowed: response.toNumber() === 0, errorCode: response }
   }
 
@@ -487,11 +495,10 @@ export default class Market {
    * @return {Number} res the max borrowable amount
    */
   async getMaxBorrowAllowed(account) {
-    const middleware = new Middleware() // maybe not necesary to load a whole Middleware here
     //set price
     const price = await this.getPrice() // current market price
-    const { accountLiquidityInExcess } = await middleware.getAccountLiquidity(account)
-    return price > 0 ? accountLiquidityInExcess / 1e18 / (price / 1e18) : 0 // return max(0,borrowLimit)
+    const { accountLiquidityInExcess } = await this.middleware.getAccountLiquidity(account)
+    return price > 0 ? accountLiquidityInExcess / price : 0 // return max(0,borrowLimit)
   }
 
   /** TODO
@@ -555,11 +562,10 @@ export default class Market {
     // borrowAcconts.push('0x449BED8c30d909eCaCda721FECE4A9cfC940aD08')
     // borrowAcconts.push('0x517093ccD491ea12e186C58F3636816AE045b88a')
     //TODO see if can use static method
-    let midlleware = new Middleware()
     let underWaters = []
     //get underwater accounts
     for (let index = 0; index < borrowAcconts.length; index++) {
-      await midlleware.getAccountLiquidity(borrowAcconts[index]).then((liquidity) => {
+      await this.midlleware.getAccountLiquidity(borrowAcconts[index]).then((liquidity) => {
         if (new BigNumber(liquidity.accountShortfall._hex).isGreaterThan(0)) {
           // console.log("liquidity", borrowAcconts[index], liquidity)
           underWaters.push(borrowAcconts[index])
