@@ -14,9 +14,7 @@ export default class Middleware {
 
   async getMarkets(account) {
     const markets = []
-
     const addresses = this.getAddresses()
-
     for (let cTokensDetail of cTokensDetails) {
       const {
         collateralFactorMantissa,
@@ -305,19 +303,18 @@ export default class Middleware {
   async isAccountAllowanceInMarket(account, marketSymbol) {
     //validate symbol
     const symbol = constants[marketSymbol]
-    const decimals = cTokensDetails.find((element) => element.underlying.symbol == symbol)
-      ?.underlying.decimals
-    if (!decimals || !symbol) return false
+    const cTokenDetail = cTokensDetails.find((element) => element.underlying.symbol == symbol)
+    if (!cTokenDetail || !symbol) return false
     //validate not crbtc
     if (symbol === constants['RBTC']) return true
     const addresses = this.getAddresses()
     //set amount
-    const amountBN = ethers.utils.parseUnits('1', decimals)
+    const amountBN = ethers.utils.parseUnits('1', cTokenDetail.underlying.decimals)
     const factoryContractInstance = new factoryContract()
     //set contract
     const contract = factoryContractInstance.getContractToken(symbol)
     // check allowance
-    const allowance = await contract.allowance(account, addresses[symbol])
+    const allowance = await contract.allowance(account, addresses[cTokenDetail.symbol])
     // validate if enough
     return !allowance.lt(amountBN)
   }
@@ -325,9 +322,8 @@ export default class Middleware {
   async approveMarketWithMaxUint(marketSymbol) {
     //validate symbol
     const symbol = constants[marketSymbol]
-    const decimals = cTokensDetails.find((element) => element.underlying.symbol == symbol)
-      ?.underlying.decimals
-    if (!decimals || !symbol) return false
+    const cTokenDetail = cTokensDetails.find((element) => element.underlying.symbol == symbol)
+    if (!cTokenDetail || !symbol) return
     //validate not crbtc
     if (symbol === constants['RBTC']) return
     const addresses = this.getAddresses()
@@ -337,7 +333,10 @@ export default class Middleware {
     //set signer
     const cTokenSigner = contract.connect(factoryContractInstance.getSigner())
     // approve
-    const tx = await cTokenSigner.approve(addresses[symbol], ethers.constants.MaxUint256)
+    const tx = await cTokenSigner.approve(
+      addresses[cTokenDetail.symbol],
+      ethers.constants.MaxUint256,
+    )
     return tx.wait()
   }
 }
