@@ -30,6 +30,7 @@
             @succeed="actionSucceed"
             @wait="waiting = true"
             @error="actionError"
+            @approve="backToDialog"
           />
         </template>
       </template>
@@ -134,6 +135,11 @@ export default {
       this.borrowed = succeedObject.borrowed
       this.borrowBalanceInfo = succeedObject.borrowBalanceInfo
       this.succeed = true
+      this.waiting = false
+      this.errorDialog = false
+    },
+    backToDialog() {
+      this.succeed = false
       this.waiting = false
       this.errorDialog = false
     },

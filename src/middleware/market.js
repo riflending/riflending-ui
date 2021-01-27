@@ -382,14 +382,6 @@ export default class Market {
     const txOptions = {
       gasLimit: 250000,
     }
-    //validate allowance
-    if (
-      !(await this.isAllowance(
-        this.account,
-        ethers.utils.parseUnits(`${amount}`, this.token.decimals),
-      ))
-    )
-      await this.approveWithMaxUint()
     // validate crbtc
     if (this.isCRBTC) {
       // set signer token
