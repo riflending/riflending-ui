@@ -1,7 +1,7 @@
 <template>
   <div>
     <template v-if="!waiting">
-      <v-row class="inputBox">
+      <v-row class="withdraw-input inputBox">
         <v-col cols="10">
           <v-text-field
             v-model="amount"
@@ -204,6 +204,7 @@ export default {
     },
     maxAmount() {
       this.getValues()
+      console.log('this.maxWithdrawAllowed', this.maxWithdrawAllowed)
       if (this.maxAmount) this.amount = this.maxWithdrawAllowed
       if (!this.maxAmount && this.amount === this.maxWithdrawAllowed) this.amount = null
     },
@@ -337,10 +338,6 @@ export default {
 
           this.liquidity = newBorrowValue < newSupplyValue ? newSupplyValue - newBorrowValue : 0
         })
-
-      // TODO this code is never reached because the empty return on the line 313
-      // eslint-disable-next-line no-unreachable
-      this.maxWithdrawAllowed = this.getMaxWithdrawAllowed(this.oldSupplyOf, this.oldCash)
     },
   },
 }

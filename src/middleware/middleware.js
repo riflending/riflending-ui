@@ -45,7 +45,7 @@ export default class Middleware {
         account,
       }
 
-      markets.push(new Market(options))
+      markets.push(new Market(options, this))
     }
     return markets
   }

@@ -370,7 +370,7 @@ export default {
       this.borrowMarketTokenDecimals = accountObject.collateral.token.decimals
       if (!accountObject.collateral.isCRBTC) {
         this.$middleware
-          .getWalletAccountBalance(this.account, accountObject.collateral.token.internalAddress)
+          .getWalletAccountBalance(this.account, accountObject.collateral.token.address)
           .then((funds) => {
             this.funds = funds
           })

@@ -59,7 +59,7 @@ export default {
   },
   created() {
     this.isCRBTC = this.data.market.isCRBTC
-    this.tokenAddress = this.isCRBTC ? '' : this.data.market.token.instance.address
+    this.tokenAddress = this.isCRBTC ? '' : this.data.market.token.address
     this.tokenDecimals = this.data.market.token.decimals
     this.data.market
       .getPriceInDecimals()

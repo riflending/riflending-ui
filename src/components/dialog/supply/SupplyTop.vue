@@ -72,7 +72,7 @@ export default {
   created() {
     // set token address
     this.isCRBTC = this.data.market.isCRBTC
-    this.tokenAddress = this.isCRBTC ? '' : this.data.market.token.instance.address
+    this.tokenAddress = this.isCRBTC ? '' : this.data.market.token.address
     // set token balance
     this.data.market
       .getUserBalanceOfUnderlying()
