@@ -1,5 +1,5 @@
 <template>
-  <div class="supply-success">
+  <div class="approve">
     <div class="successBox">
       <v-row class="my-5 d-flex justify-center">
         <h1 class="blueish">Success!</h1>
