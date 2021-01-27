@@ -240,32 +240,15 @@ export default class Market {
   /**
    * Supply the specified amount from this market.
    * @param {number} amount of this market's token to be supply.
-   * @param {address} account the address of the account
    * @return {Promise<TXResult>} the wait mined transaction
    */
-  async supply(amount, account) {
+  async supply(amount) {
     // add decimals token
     const amountBN = this.getAmountDecimals(amount)
-    console.log('amountBN', amountBN)
     let tx
     // validate crbtc
     if (!this.isCRBTC) {
-      console.log('not CRBTC', amountBN)
-      // check allowance
-      const allowance = await this.token.instance.allowance(account, this.instanceAddress)
-      // validate if enough
-      const notEnough = allowance.lt(amountBN)
-      if (notEnough) {
-        console.log('not enough')
-        // set signer token
-        const signer = this.token.instance.connect(this.factoryContract.getSigner())
-        // approve
-        const txSigner = await signer.approve(this.instanceAddress, ethers.constants.MaxUint256)
-        await txSigner.wait()
-      }
-      console.log('before mint')
       // mint token
-      console.log('amountBN.toString()', amountBN.toString())
       const signerCtoken = this.instance.connect(this.factoryContract.getSigner())
       tx = await signerCtoken.mint(amountBN.toString())
     } else {
@@ -650,7 +633,13 @@ export default class Market {
     return tx.wait()
   }
 
-  async isAllowance(account, amountBN) {
+  /**
+   * Check if the market is approve
+   * @param account
+   * @param amountBN => amount in BN
+   * @returns bool = false need approve
+   */
+  async isAllowance(account, amountBN = this.getAmountDecimals(1)) {
     //validate not crbtc
     if (this.isCRBTC) return true
     // check allowance
