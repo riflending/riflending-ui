@@ -114,13 +114,13 @@ export default class Market {
     return new BigNumber(priceToken.toString()).toNumber()
   }
 
-  async getUserBalanceOfCtoken() {
+  async getCurrentUserBalanceOfCtoken() {
     return this.getBalanceOfCtoken(this.account)
   }
 
-  async getBalanceOfCtoken(address) {
+  async getAccountBalanceOfCtoken(account) {
     // set balance of address
-    const balance = await this.instance.balanceOf(address)
+    const balance = await this.instance.balanceOf(account)
     // return format (without wei)
     return ethers.utils.formatUnits(balance, this.decimals)
   }
