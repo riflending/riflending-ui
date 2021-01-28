@@ -1,4 +1,4 @@
-export const cRBTC = [
+export const CRBTC = [
   {
     inputs: [
       { internalType: 'contract ComptrollerInterface', name: 'comptroller_', type: 'address' },

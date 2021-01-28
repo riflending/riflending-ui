@@ -1,4 +1,4 @@
-export const cErc20 = [
+export const CERC20 = [
   {
     constant: true,
     inputs: [],

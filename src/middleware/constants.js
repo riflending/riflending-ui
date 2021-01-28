@@ -1,7 +1,7 @@
 import { Erc20 } from '../abis/erc20'
-import { cErc20 } from '../abis/cErc20'
+import { CERC20 } from '../abis/cErc20'
 import { Comptroller } from '../abis/comptroller'
-import { cRBTC } from '../abis/cRBTC'
+import { CRBTC } from '../abis/cRBTC'
 import { CToken } from '../abis/cToken'
 import { GovernorAlpha } from '../abis/governorAlpha'
 import { JumpRateModelV2 } from '../abis/jumpRateModelV2'
@@ -15,9 +15,9 @@ import { WhitePaperInterestRateModel } from '../abis/whitePaperInterestRateModel
 
 export const abi = {
   Erc20: Erc20,
-  cErc20: cErc20,
+  cErc20: CERC20,
   Comptroller: Comptroller,
-  cRBTC: cRBTC,
+  cRBTC: CRBTC,
   CToken: CToken,
   GovernorAlpha: GovernorAlpha,
   JumpRateModelV2: JumpRateModelV2,
