@@ -144,8 +144,6 @@ export default {
       borrowLimitInfo: null,
       tokenBalance: 0,
       accountHealth: 0,
-      collateralFactor: 0,
-      mantissa: 0,
       maxAmountBalanceAllowed: 0,
       needApproval: true,
       approveDialog: false,
@@ -234,9 +232,6 @@ export default {
     },
   },
   created() {
-    this.mantissa = Number(1e6)
-    this.collateralFactor = Number(0.5e18)
-
     this.data.market
       .isAllowance(this.account)
       .then((allow) => {
@@ -273,14 +268,9 @@ export default {
         this.maxBorrowAllowed = maxBorrowAllowed
         return this.$middleware.getAccountHealth(this.account)
       })
-      // sets health & gets collateralFactor
+      // sets health
       .then((health) => {
         this.accountHealth = health
-        return this.$middleware.getCollateralFactor()
-      })
-      // sets
-      .then((collateralFactor) => {
-        this.collateralFactor = collateralFactor * this.mantissa
         return this.data.market.borrowBalanceCurrent(this.account)
       })
       .then((borrowBy) => {

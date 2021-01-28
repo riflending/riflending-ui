@@ -256,7 +256,7 @@ export default {
         return this.data.market.getMaxWithdrawAllowed(this.account)
       })
       .then((maxRedeemAllowed) => {
-        this.maxWithdrawAllowed = maxRedeemAllowed
+        this.maxWithdrawAllowed = maxRedeemAllowed.toFixed(this.data.market.token.decimals)
         return this.data.market.getMaxBorrowAllowed(this.account)
       })
       .then((maxBorrowAllowed) => {

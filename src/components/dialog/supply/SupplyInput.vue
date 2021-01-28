@@ -143,8 +143,6 @@ export default {
       supplyBalanceInfo: null,
       borrowLimitInfo: null,
       tokenBalance: 0,
-      collateralFactor: 0,
-      mantissa: 0,
       needApproval: true,
       approveDialog: false,
       rules: {
@@ -244,13 +242,6 @@ export default {
       .then((balanceOfToken) => {
         this.maxAmountBalanceAllowed = balanceOfToken
         return this.data.market.getCurrentExchangeRate()
-      })
-      .then((mantissa) => {
-        this.mantissa = mantissa
-        return this.data.market.getCollateralFactorMantissa()
-      })
-      .then((collateralFactor) => {
-        this.collateralFactor = collateralFactor
       })
   },
   methods: {

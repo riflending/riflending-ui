@@ -54,11 +54,14 @@ export default class Middleware {
 
   async getCTokenMetadata(cTokenAddress) {
     const factoryContractInstance = new factoryContract()
-    const contract = factoryContractInstance.getContractByNameAndAbiName(
-      constants.RlendingLens,
-      constants.RlendingLens,
-    )
+    const contract = factoryContractInstance.getContract(constants.RlendingLens)
     return contract.callStatic.cTokenMetadata(cTokenAddress)
+  }
+
+  async cTokenBalancesAll(cTokensList, account) {
+    const factoryContractInstance = new factoryContract()
+    const contract = factoryContractInstance.getContract(constants.RlendingLens)
+    return contract.callStatic.cTokenBalancesAll(cTokensList, account)
   }
 
   /**
@@ -113,6 +116,7 @@ export default class Middleware {
     //TODO: This function shouldn't have so many new BigNumber()
     //TODO rename to getTotalSupplysAndBorrows
     const markets = await this.getMarkets(account)
+    //  const result = await this.cTokenBalancesAll(markets, account)
     const marketsPromises = markets.map(
       (market) =>
         new Promise((resolve, reject) => {
