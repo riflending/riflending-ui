@@ -102,31 +102,25 @@ export default {
       .getAccountLiquidity(this.account)
       // sets liquidity
       .then(({ accountLiquidityInExcess }) => {
-        console.log('repaySuccess: liquidity', accountLiquidityInExcess)
         this.liquidity = Number(accountLiquidityInExcess)
-        console.log('repaySuccess: Number(liquidity)', this.liquidity)
         return this.data.market.getCash()
       })
       // sets cash
       .then((cash) => {
         this.cash = cash
-        console.log('repaySuccess: cash', this.cash)
         return this.data.market.getBorrowRate()
       })
       .then((borrowRate) => {
         this.borrowRate = borrowRate
-        console.log('repaySuccess: borrowRate', this.borrowRate)
         return this.data.market.getPriceInDecimals()
       })
       // sets price
       .then((price) => {
         this.price = price
-        console.log('repaySuccess: price', this.price)
         return this.data.market.borrowBalanceCurrent(this.account)
       })
       .then((borrowBy) => {
         this.borrowBy = Number(borrowBy)
-        console.log('success! borrowby', this.borrowBy)
         this.borrowBalanceInfo = Number(this.contractAmount)
         return this.data.market.getMaxBorrowAllowed(this.account)
       })
@@ -134,10 +128,9 @@ export default {
         this.maxBorrowAllowed = maxBorrowAllowed
         return this.$middleware.getAccountHealth(this.account)
       })
-      // sets health & gets collateralFactor
+      // sets health
       .then((health) => {
         this.accountHealth = health
-        return this.$middleware.getCollateralFactor()
       })
   },
   methods: {

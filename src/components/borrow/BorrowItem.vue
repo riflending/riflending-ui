@@ -87,7 +87,6 @@ export default {
       },
       price: 0,
       borrowRate: 0,
-      cash: 0,
       dialog: false,
       borrowBalance: 0,
       hasEnteredTheMarket: true,
@@ -119,7 +118,6 @@ export default {
     this.borrowBalance = await this.market.borrowBalanceCurrent(this.account)
     this.price = await this.market.getPriceInDecimals()
     this.borrowRate = await this.market.getBorrowRate()
-    this.cash = await this.market.getCash()
     this.hasEnteredTheMarket = await this.market.checkMembership(this.account)
   },
   methods: {
@@ -129,7 +127,6 @@ export default {
       this.borrowBalance = await this.market.borrowBalanceCurrent(this.account)
       this.price = await this.market.getPriceInDecimals()
       this.borrowRate = await this.market.getBorrowRate()
-      this.cash = await this.market.getCash()
       this.hasEnteredTheMarket = await this.market.checkMembership(this.account)
       this.$emit('dialogClosed')
     },

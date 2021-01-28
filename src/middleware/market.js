@@ -31,7 +31,6 @@ export default class Market {
     } = market
     this.middleware = middleware
     this.account = account
-    // TODO see if factoryContract go to middleware class
     this.factoryContract = new factoryContract()
     this.isCRBTC = cTokenSymbol === 'cRBTC'
     // TODO see delete eventuan web, uses in vue
@@ -128,12 +127,6 @@ export default class Market {
   async getTotalBorrowsCurrent(formatted) {
     // Total Borrows is the amount of underlying currently loaned out by the market, and the amount upon which interest is accumulated to suppliers of the market.
     const balance = await this.instance.callStatic.totalBorrowsCurrent()
-    return formatted ? ethers.utils.formatEther(balance) : balance
-  }
-
-  async getTotalCash(formatted) {
-    // Cash is the amount of underlying balance owned by this cToken contract. One may query the total amount of cash currently available to this market.
-    const balance = await this.instance.callStatic.getCash()
     return formatted ? ethers.utils.formatEther(balance) : balance
   }
 
@@ -286,21 +279,10 @@ export default class Market {
   /**
    * @dev collateralFactorMantissa, scaled by 1e18, is multiplied by a supply balance to determine how much value can be borrowed
    * getCollateralFactorMantissa for cToken.
-   * @return human number collateralFactorMantisa | error beacuse the cToken is not listed on protocol
+   * @return human number collateralFactorMantisa
    */
-  async getCollateralFactorMantissa() {
-    // set contract Comptroller delegate (Unitroller)
-    const contract = this.factoryContract.getContractByNameAndAbiName(
-      constants.Unitroller,
-      constants.Comptroller,
-    )
-    // get is member (bool)
-    const [isListed, collateralFactorMantissa] = await contract.markets(this.instanceAddress)
-    // validate token listed
-    if (isListed) {
-      return ethers.utils.formatEther(collateralFactorMantissa)
-    }
-    console.error('cToken is not listed')
+  getCollateralFactorMantissa() {
+    return ethers.utils.formatEther(this.collateralFactorMantissa)
   }
 
   /**
@@ -432,21 +414,31 @@ export default class Market {
     // if user not entered market:
     //   return min(user balance, market balance)
     // else:
-    //   return min(user liquidity * asset price / collateralFactor, market balance)
-    const member = await this.checkMembership(account)
-    const balance = await this.getUserBalanceOfUnderlying()
+    //   return min(user liquidity / (asset price * collateralFactor), market balance)
+    //   this value comes from  https://github.com/riflending/rlending-protocol/blob/master/contracts/Comptroller.sol#L717
+    //   we don't need the exchangeRate at this point as we want the result in the underlying and not in cTokens
 
-    if (!member) {
-      const contractCash = await this.getCash()
-      return contractCash > balance ? balance : contractCash
-    } else {
-      const { accountLiquidityInExcess } = await this.middleware.getAccountLiquidity(account)
-      const liquidityBN = new BigNumber(accountLiquidityInExcess.toString())
-      const price = await this.getPrice() // current market price
-      const colFact = await this.getCollateralFactorMantissa()
-      const allowance = liquidityBN.multipliedBy(price).div(colFact)
-      return balance > allowance ? allowance : balance
-    }
+    const balance = new BigNumber((await this.getUserBalanceOfUnderlying()).toString())
+    const contractCash = new BigNumber((await this.getCash()) / 10 ** this.token.decimals)
+    let maxWithdrawAllowed = contractCash.gt(balance) ? balance : contractCash
+    const member = await this.checkMembership(account)
+    if (!member) return maxWithdrawAllowed
+
+    const { accountLiquidityInExcess } = await this.middleware.getAccountLiquidity(account)
+    const liquidityInExcess = new BigNumber(accountLiquidityInExcess.toString()).div(10 ** 18)
+    if (liquidityInExcess.lte(0)) return BigNumber(0)
+
+    const price = new BigNumber(await this.getPrice()).div(10 ** 18) // current market price
+    const collateralFactor = new BigNumber(this.collateralFactorMantissa.toString()).div(10 ** 18)
+
+    const tokensToDenom = collateralFactor.times(price)
+    const maxAmountByLiquidityInExcess = liquidityInExcess.div(tokensToDenom)
+
+    maxWithdrawAllowed = maxWithdrawAllowed.gt(maxAmountByLiquidityInExcess)
+      ? maxAmountByLiquidityInExcess
+      : maxWithdrawAllowed
+
+    return maxWithdrawAllowed
   }
 
   /**
@@ -513,14 +505,25 @@ export default class Market {
   }
 
   /**
-   * getSnapshot returns the current status of a given account in this market
+   * getAccountSnapshot returns the current status of a given account in this market
    * @dev to be used in
    * @param account Address of the account to snapshot
    * @return (possible error, accrued ctoken balance, borrow balance, current exchange rate mantissa) all in BigNumber
    */
-  async getSnapshot(account) {
+  async getAccountSnapshot(account) {
     // calls cToken contract
-    return this.instance.getAccountSnapshot(account)
+    const [
+      err,
+      cTokenBalance,
+      borrowBalance,
+      exchangeRateMantissa,
+    ] = await this.instance.getAccountSnapshot(account)
+    return {
+      err: err,
+      cTokenBalance: new BigNumber(cTokenBalance.toString()),
+      borrowBalance: new BigNumber(borrowBalance.toString()),
+      exchangeRateMantissa: new BigNumber(exchangeRateMantissa.toString()),
+    }
   }
 
   /**

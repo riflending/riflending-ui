@@ -145,8 +145,6 @@ export default {
       borrowAllowance: 0,
       borrowBalanceInfo: null,
       borrowLimitInfo: null, // Borrow difference - gray number to be shown to the side
-      collateralFactor: 0, // getCollateralFactorMantissa()
-      mantissa: 0, // getCurrentExchangeRate() current exchange rate mantissa to convert underlying to ctoken
       rules: {
         required: () => !!Number(this.amount) || 'Required.',
         allowed: () => this.isBorrowAllowed || "Borrow won't be allowed by the protocol", // TODO: currently not being used
@@ -244,10 +242,6 @@ export default {
       })
       .then((supplyValue) => {
         this.supplyValue = supplyValue
-        return this.data.market.getCurrentExchangeRate()
-      })
-      .then((mantissa) => {
-        this.mantissa = mantissa
         return this.data.market.getMaxBorrowAllowed(this.account)
       })
       .then((maxBorrowAllowed) => {
