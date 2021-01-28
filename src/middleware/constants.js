@@ -33,7 +33,7 @@ export const address = {
     'MockPriceProviderMoc Dai': '0xee1e9bc499242d2de09d10a1affe3a6eb687d98f',
     'PriceOracleAdapter Rif': '0x5a9003e5f443607b7e0491dc27cad6796d309055',
     'PriceOracleAdapter Dai': '0x238b2703A389D72098C0d1e76a326a2247bb5f26',
-    'PriceOracleAdapter RBTC': '0x238b2703a389d72098c0d1e76a326a2247bb5f26',
+    'PriceOracleAdapter RBTC': '0xc02c09c578ae2680796e33f6662b779580cd84b6',
     Comptroller: '0x2e64b3acd75d86a8ff17b98e02dae4dcf2852a94',
     JumpRateModelV2: '0xf8b35564e85800d60043ccdde0af47ba3463b6ce',
     WhitePaperInterestRateModel: '0xa9a4da01daea36da9000f83f34691ba6132e5e87',
