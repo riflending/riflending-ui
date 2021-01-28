@@ -284,6 +284,7 @@ export default class Market {
   }
 
   /**
+   * @dev collateralFactorMantissa, scaled by 1e18, is multiplied by a supply balance to determine how much value can be borrowed
    * getCollateralFactorMantissa for cToken.
    * @return human number collateralFactorMantisa | error beacuse the cToken is not listed on protocol
    */
