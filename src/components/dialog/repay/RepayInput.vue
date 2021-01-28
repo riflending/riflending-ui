@@ -57,7 +57,7 @@
           <v-col cols="4">
             <v-row class="ma-0 d-flex align-center">
               <v-col cols="7" class="d-flex justify-center">
-                <h1>{{ borrowBy | formatToken(data.token.decimals) }}</h1>
+                <h1>{{ userTotalBorrow | formatNumber }}</h1>
               </v-col>
             </v-row>
           </v-col>
@@ -131,13 +131,8 @@ export default {
     return {
       waiting: false,
       maxAmount: false,
-      price: 0,
       amount: '0',
-      oldBorrowBy: 0,
-      borrowBy: 0,
-      borrowRate: 0,
-      liquidity: 0,
-      cash: 0,
+      userTotalBorrow: 0,
       maxRepayAllowed: 0,
       maxBorrowAllowed: 0,
       borrowBalanceInfo: null,
@@ -153,13 +148,13 @@ export default {
           this.decimalPositions ||
           `Maximum ${this.data.token.decimals} decimal places for ${this.data.token.symbol}.`,
         debtExists: () =>
-          (this.maxRepayAllowed > 0 && !!this.contractAmount) ||
+          (this.userTotalBorrow > 0 && !!this.contractAmount) ||
           'You do not have a debt on this market.',
         hasEnoughTokens: () =>
-          this.maxAmountBalanceAllowed >= Number(this.amount) ||
+          Number(this.maxAmountBalanceAllowed) >= Number(this.amount) ||
           `You do not have enough ${this.data.token.symbol}`,
         notBiggerThanDebt: () =>
-          this.maxRepayAllowed >= Number(this.amount) || 'You do not owe that much.',
+          this.userTotalBorrow >= Number(this.amount) || 'You do not owe that much.',
       },
     }
   },
@@ -169,15 +164,6 @@ export default {
     }),
     healthFactor() {
       return this.accountHealth >= 1 ? 100 : (this.accountHealth * 100).toFixed(2)
-    },
-    borrowed() {
-      return this.asDouble(this.borrowBy)
-    },
-    balanceAsDouble() {
-      return this.asDouble(this.tokenBalance)
-    },
-    maxBorrowAllowedAsDouble() {
-      return this.asDouble(this.maxBorrowAllowed)
     },
     contractAmount() {
       return Number(this.amount).toFixed(this.data.token.decimals).replace('.', '')
@@ -208,13 +194,11 @@ export default {
   },
   watch: {
     amount() {
-      this.getValues()
-      if (this.maxAmount && this.amount !== this.maxRepayAllowed) this.maxAmount = false
-      if (this.amount === this.maxRepayAllowed) this.maxAmount = true
+      if (this.maxAmount && this.amount !== this.userTotalBorrow) this.maxAmount = false
+      if (this.amount === this.userTotalBorrow) this.maxAmount = true
     },
     maxAmount() {
       if (this.maxAmount) {
-        //maxRepayAllowed <= maxAmountBalanceAllowed
         if (
           ethers.utils
             .parseUnits(this.maxRepayAllowed, this.data.market.token.decimals)
@@ -228,40 +212,15 @@ export default {
           this.amount = this.maxRepayAllowed
         } else this.amount = this.maxAmountBalanceAllowed
       }
-      if (!this.maxAmount && this.amount === this.maxRepayAllowed) this.amount = null
+      if (!this.maxAmount && this.amount === this.userTotalBorrow) this.amount = null
     },
   },
   created() {
+    //set is market allow
     this.data.market
       .isAllowance(this.account)
       .then((allow) => {
         this.needApproval = !allow
-        // gets liquidity
-        return this.$middleware.getAccountLiquidity(this.account)
-      })
-      .then(({ accountLiquidityInExcess }) => {
-        this.liquidity = accountLiquidityInExcess
-        return this.data.market.getCash()
-      })
-      // gets borrowRate
-      .then((cash) => {
-        this.cash = cash
-        return this.data.market.getBorrowRate()
-      })
-      // gets marketPrice
-      .then((borrowRate) => {
-        this.borrowRate = borrowRate
-        return this.data.market.getPriceInDecimals()
-      })
-      // gets token balance
-      .then((price) => {
-        this.price = price
-        return this.data.market.getUserBalanceOfUnderlying()
-      })
-      // sets account balance and health
-      .then((tokenBalance) => {
-        this.tokenBalance = tokenBalance
-        this.supplyValue = tokenBalance
         return this.data.market.getMaxBorrowAllowed(this.account)
       })
       .then((maxBorrowAllowed) => {
@@ -273,20 +232,18 @@ export default {
         this.accountHealth = health
         return this.data.market.borrowBalanceCurrent(this.account)
       })
-      .then((borrowBy) => {
-        this.maxRepayAllowed = ethers.utils.formatEther(borrowBy)
-        this.borrowBy = Number(borrowBy)
-        this.oldBorrowBy = Number(borrowBy)
+      .then((borrowBalance) => {
+        this.maxRepayAllowed = ethers.utils.formatUnits(
+          borrowBalance,
+          this.data.market.token.decimals,
+        )
+        this.userTotalBorrow = Number(this.maxRepayAllowed)
         return !this.data.market.isCRBTC
           ? this.$middleware.getWalletAccountBalance(this.account, this.data.market.token?.address)
           : this.$middleware.getWalletAccountBalanceForRBTC(this.account)
       })
       .then((balanceOfToken) => {
         this.maxAmountBalanceAllowed = balanceOfToken
-        return this.data.market.getMaxBorrowAllowed(this.account)
-      })
-      .then((maxBorrowAllowed) => {
-        this.maxBorrowAllowed = maxBorrowAllowed
       })
   },
   methods: {
@@ -324,7 +281,6 @@ export default {
           })
         })
         .catch((error) => {
-          console.log('ERROR repayBorrow()', error)
           // validate user error message
           const userError = typeof error === 'string' ? error : error.message || ''
           this.$emit('error', {
@@ -332,40 +288,6 @@ export default {
           })
           this.waiting = false
         })
-    },
-
-    asDouble(value) {
-      return (value / 10 ** this.data.token.decimals).toFixed(this.data.token.decimals)
-    },
-
-    getValues() {
-      console.log('RepayBorrow: getValues')
-      // TODO check oldLiquidity usage here
-      // eslint-disable-next-line no-unused-vars
-      let oldLiquidity
-      let oldCash
-      this.data.market
-        .borrowBalanceCurrent(this.account)
-        .then((borrowBy) => {
-          if (Number(borrowBy) - Number(this.contractAmount) > 0) {
-            this.borrowBy = Number(borrowBy) - Number(this.contractAmount)
-          }
-        })
-        .then(() => this.$middleware.getAccountLiquidity(this.account))
-        .then(({ accountLiquidityInExcess }) => {
-          oldLiquidity = accountLiquidityInExcess
-          return this.data.market.getCash()
-        })
-        .then((cash) => {
-          oldCash = cash
-          this.cash = oldCash + Number(this.contractAmount)
-          return this.data.market.getBorrowRate()
-        })
-
-      this.supplyBalanceInfo = Number(this.amount)
-      this.borrowBalanceInfo = Number(this.contractAmount)
-
-      console.log('RepayBorrow: this.supplyBalanceInfo', this.supplyBalanceInfo)
     },
   },
 }
