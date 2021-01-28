@@ -299,39 +299,6 @@ export default {
           this.waiting = false
         })
     },
-    async getValues() {
-      this.data.market
-        .borrowBalanceCurrent(this.account)
-        .then((borrowBy) => {
-          this.borrowBy = Number(borrowBy) + Number(this.contractAmount)
-          return this.$middleware.getAccountLiquidity(this.account)
-        })
-        .then(({ accountLiquidityInExcess }) => {
-          this.oldLiquidity = accountLiquidityInExcess // user's liquid assets in the protocol
-          return this.data.market.getCash() // gets underlying balance stored in contract
-        })
-        .then((cash) => {
-          this.oldCash = cash // balance of contract underlying AKA "CONTRACT LIQUIDITY"
-          this.cash =
-            cash - (cash - Number(this.contractAmount) <= 0 ? cash : Number(this.contractAmount))
-          return this.data.market.getBalanceOfUnderlyingFormatted(this.account)
-        })
-        .then((supplyValue) => {
-          this.supplyValue = supplyValue
-          const newBorrowValue =
-            ((this.borrowBy + Number(this.contractAmount) * this.price) *
-              (this.collateralFactor + this.mantissa)) /
-            this.mantissa
-          const newSupplyValue = supplyValue
-          this.liquidity = newBorrowValue < newSupplyValue ? newSupplyValue - newBorrowValue : 0
-          return this.data.market.getMaxBorrowAllowed(this.account)
-        })
-        .then((maxBorrowAllowed) => {
-          this.maxBorrowAllowed = maxBorrowAllowed
-          this.borrowAllowance = maxBorrowAllowed
-          this.borrowBalanceInfo = Number(this.contractAmount)
-        })
-    },
   },
 }
 </script>
