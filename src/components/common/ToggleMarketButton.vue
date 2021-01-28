@@ -12,13 +12,18 @@
       <span class="toggle-background" :class="backgroundStyles" />
       <span class="toggle-indicator" :style="indicatorStyles" />
     </span>
+    <Confirm ref="confirm"></Confirm>
   </div>
 </template>
 <script>
 import { mapState } from 'vuex'
+import Confirm from '@/components/common/Confirm.vue'
 
 export default {
   name: 'ToggleMarketButton',
+  components: {
+    Confirm,
+  },
   props: {
     market: {
       type: Object,
@@ -53,10 +58,13 @@ export default {
   },
   methods: {
     async toggle() {
-      const message = this.value
+      const title = this.value ? 'Exit the market' : 'Enter the market'
+
+      const description = this.value
         ? 'Are you sure you want to exit the market?'
         : 'Are you sure you want to enter the market?'
-      const result = confirm(message)
+
+      const result = await this.$refs.confirm.open(title, description)
       if (result) {
         try {
           this.$root.$emit('toggleMarketStatusTransaction', {
