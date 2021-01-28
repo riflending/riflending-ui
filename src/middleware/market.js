@@ -115,24 +115,14 @@ export default class Market {
   }
 
   async getUserBalanceOfCtoken() {
-    // set balance of account
-    const balance = await this.instance.balanceOf(this.account)
-    // return format (without wei)
-    //TODO fix correct format
-    return ethers.utils.formatEther(balance)
+    return this.getBalanceOfCtoken(this.account)
   }
 
-  async getBalanceOfCtoken(account) {
-    // set balance of account
-    const balance = await this.instance.balanceOf(account)
+  async getBalanceOfCtoken(address) {
+    // set balance of address
+    const balance = await this.instance.balanceOf(address)
     // return format (without wei)
-    //TODO fix correct format
-    return ethers.utils.formatEther(balance)
-  }
-
-  async getLockedBalance(tokenAddress) {
-    const balance = await this.token.instance.balanceOf(tokenAddress)
-    return ethers.utils.formatEther(balance)
+    return ethers.utils.formatUnits(balance, this.decimals)
   }
 
   async getTotalBorrowsCurrent(formatted) {
@@ -342,6 +332,7 @@ export default class Market {
   }
 
   async redeem(amount) {
+    const amountBN = this.getAmountDecimals(amount, true)
     // Required, please dont delete this
     const txOptions = {
       gasLimit: 250000,
@@ -349,7 +340,7 @@ export default class Market {
     // set signer token
     const signer = this.instance.connect(this.factoryContract.getSigner())
     // send redeem
-    const tx = await signer.redeem(amount.toString(), txOptions)
+    const tx = await signer.redeem(amountBN.toString(), txOptions)
     // wait for mined transaction
     return tx.wait()
   }
@@ -544,27 +535,16 @@ export default class Market {
   async getAccountUnderwater() {
     //get borrow accounts
     const borrowAcconts = await this.borrowAccounts()
-    // const borrowAcconts = []
-    //remove this MOCK
-    // borrowAcconts.push('0xE02e4796345b1b938F34342194C51A76A922aa1b')
-    // borrowAcconts.push('0x48Ef3BDB04a636dafa080A4F96347D1A35Bfbf4e')
-    // borrowAcconts.push('0x27598400A96D4EE85f86b0931e49cBc02adD6dF0')
-    // borrowAcconts.push('0x3c5f9603D9405B16D449Ed675f4d059192bBF824')
-    // borrowAcconts.push('0x455037337707D002af190d131BF3CfA7B2CA9fc5')
-    // borrowAcconts.push('0x449BED8c30d909eCaCda721FECE4A9cfC940aD08')
-    // borrowAcconts.push('0x517093ccD491ea12e186C58F3636816AE045b88a')
-    //TODO see if can use static method
     let underWaters = []
     //get underwater accounts
     for (let index = 0; index < borrowAcconts.length; index++) {
-      await this.midlleware.getAccountLiquidity(borrowAcconts[index]).then((liquidity) => {
+      await this.middleware.getAccountLiquidity(borrowAcconts[index]).then((liquidity) => {
         if (new BigNumber(liquidity.accountShortfall._hex).isGreaterThan(0)) {
           // console.log("liquidity", borrowAcconts[index], liquidity)
           underWaters.push(borrowAcconts[index])
         }
       })
     }
-    console.log('underWaters', underWaters)
     return underWaters
   }
 
