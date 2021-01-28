@@ -97,7 +97,7 @@ export const address = {
     cRBTC: '0xa04bb527be81bb92b59059a45206101b2d11200d',
     RLEN: '0xcbf15821e5ecb15d46af5d98bf25b7ce49e4ebd2',
     MaximillionAddress: '0x5edd33c93086bef90692a3db1cbc51104734b851',
-    'RBTC Moc Oracle': '0x2d39cc54dc44ff27ad23a91a9b5fd750dae4b218',
+    'RBTC Moc Oracle': '0x26a00af444928d689ddec7b4d17c0e4a8c9d407d',
     'RIF Moc Oracle': '0x9d4b2c05818a0086e641437fcb64ab6098c7bbec',
     RIF: '0x19f64674d8a5b4e652319f5e239efd3bc969a1fe',
     rDAI: '0x0d86fca9be034a363cf12c9834af08d54a10451c',

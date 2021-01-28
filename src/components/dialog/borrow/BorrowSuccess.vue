@@ -84,7 +84,6 @@ export default {
     return {
       tokenBalance: 0,
       liquidity: 0,
-      cash: 0,
       price: 0,
       maxBorrowAllowed: 0,
       borrowBy: 0,
@@ -105,11 +104,6 @@ export default {
       })
       .then(({ accountLiquidityInExcess }) => {
         this.liquidity = accountLiquidityInExcess
-        return this.data.market.getCash()
-      })
-      .then((cash) => {
-        this.cash = cash
-        console.log('success! cash', this.cash)
         return this.data.market.getPriceInDecimals()
       })
       .then((marketPrice) => {
