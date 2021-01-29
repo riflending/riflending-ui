@@ -122,8 +122,7 @@ export default class Middleware {
         new Promise((resolve, reject) => {
           ;(async () => {
             try {
-              const borrowBalanceCurrent = await market.borrowBalanceCurrentFormatted(account)
-              const borrowBalanceCurrentBN = new BigNumber(borrowBalanceCurrent)
+              const borrowBalanceCurrentBN = await market.borrowBalanceCurrentFormatted(account)
               const marketPriceFromOracleBN = await market.getPriceInDecimals()
               const marketPriceBN = marketPriceFromOracleBN || new BigNumber(0)
 
@@ -181,8 +180,7 @@ export default class Middleware {
         new Promise((resolve, reject) => {
           ;(async () => {
             try {
-              const borrowBalanceCurrent = await market.borrowBalanceCurrentFormatted(account)
-              const borrowBalanceCurrentBN = new BigNumber(borrowBalanceCurrent)
+              const borrowBalanceCurrentBN = await market.borrowBalanceCurrentFormatted(account)
               const marketPriceFromOracleBN = await market.getPriceInDecimals()
               const marketPriceBN = marketPriceFromOracleBN || new BigNumber(0)
 
