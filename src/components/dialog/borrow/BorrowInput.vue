@@ -136,11 +136,9 @@ export default {
       amount: 0,
       userTotalBorrow: 0,
       cash: 0,
-      isBorrowAllowed: true, // checks whether or not the Comptroller will allow the borrow
+      isBorrowAllowed: true,
       oldMaxBorrowAllowed: 0,
-      maxBorrowAllowed: 0, // BORROW LIMIT getMaxBorrowAllowed() calculates the maximun borrow allowance. User should never borrow close to this amount, otherwise runs risk of getting automatically liquidated
-      borrowBalanceInfo: null,
-      borrowLimitInfo: null, // Borrow difference - gray number to be shown to the side
+      maxBorrowAllowed: 0,
       rules: {
         required: () => !!Number(this.amount) || 'Required.',
         allowed: () => this.isBorrowAllowed || "Borrow won't be allowed by the protocol", // TODO: currently not being used
@@ -161,9 +159,6 @@ export default {
     ...mapState({
       account: (state) => state.Session.account,
     }),
-    contractAmount() {
-      return Number(this.amount).toFixed(this.data.token.decimals).replace('.', '')
-    },
     validForm() {
       return (
         typeof this.rules.enteredMarket() !== 'string' &&
