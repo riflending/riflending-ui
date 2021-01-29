@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div v-if="hasAccounts" class="liquidate-list">
+    <div v-if="hasAccounts && status === 'finished'" class="liquidate-list">
       <h1>Select the collaterals you wish to liquidate:</h1>
       <v-row class="d-flex justify-center"> </v-row>
       <div class="container">
@@ -28,7 +28,7 @@
         </v-list>
       </div>
     </div>
-    <div v-else class="py-6 empty-liquidate">
+    <div v-else-if="status === 'finished' && !hasAccounts" class="py-6 empty-liquidate">
       <v-row class="my-6 d-flex justify-center">
         <v-icon class="d-flex justify-center" x-large color="#000000"> error_outline </v-icon>
       </v-row>
@@ -36,6 +36,12 @@
         <h1>There are no accounts available to be liquidated</h1>
       </v-row>
       <v-row class="my-6 d-flex justify-center"> Please check later. </v-row>
+    </div>
+    <div v-else class="py-6 empty-liquidate">
+      <v-row class="my-6 d-flex justify-center"> Wait until load... </v-row>
+      <v-row class="my-6 d-flex justify-center">
+        <v-progress-circular indeterminate :size="30" color="#008CFF" />
+      </v-row>
     </div>
   </div>
 </template>
@@ -58,6 +64,7 @@ export default {
   data() {
     return {
       borrows: [],
+      status: null,
     }
   },
   computed: {
@@ -75,43 +82,40 @@ export default {
     accountSelected(accountObject) {
       this.$emit('selected', accountObject)
     },
-    getUnhealthyAccounts(market) {
+    async getUnhealthyAccounts(market) {
       //get all account under water
-      market.getAccountUnderwater().then((accountsUnderwater) => {
-        for (const account of accountsUnderwater) {
-          let underwater = new Object()
-          //set instance cToken
-          underwater.borrowMarketAddress = market.instanceAddress
-          //set account to liquidate
-          underwater.borrower = account
-          //set max to liquidate => borrow of account
-          market
-            .borrowBalanceCurrent(account)
-            .then((borrowBalance) => {
-              underwater.maxToLiquidate = borrowBalance
-              return market.balanceOfUnderlying(account)
-            })
-            //set asset of the account
-            .then((supply) => {
-              underwater.debt = supply
-              underwater.market = market
-              //TODO validate before borrow balance
-              //validate if has borrow
-              if (Number(underwater.maxToLiquidate) !== 0) {
-                this.borrows.push(underwater)
-              }
-            })
+      const accounts = await market.getAccountUnderwater()
+      for (const account of accounts) {
+        const borrowBalance = await market.borrowBalanceCurrent(account)
+        const supply = await market.balanceOfUnderlying(account)
+        if (borrowBalance.isZero()) {
+          continue
         }
-      })
+        let underwater = {
+          //set instance cToken
+          borrowMarketAddress: market.instanceAddress,
+          //set account to liquidate
+          borrower: account,
+          //set max to liquidate => borrow of account
+          maxToLiquidate: borrowBalance,
+          //set asset of the account
+          debt: supply,
+          market: market,
+        }
+        this.borrows.push(underwater)
+      }
     },
-    getBorrows() {
-      this.$middleware.getMarkets(this.account).then((markets) => {
-        markets
-          .filter((market) => market.instanceAddress === this.data.market.instanceAddress)
-          .forEach((market) => {
-            this.getUnhealthyAccounts(market)
-          })
-      })
+    async getBorrows() {
+      this.status = 'loading'
+      const markets = await this.$middleware.getMarkets(this.account)
+      const marketsFiltered = markets.filter(
+        (market) => market.instanceAddress === this.data.market.instanceAddress,
+      )
+      const marketsFilteredPromises = marketsFiltered.map((market) =>
+        this.getUnhealthyAccounts(market),
+      )
+      await Promise.all(marketsFilteredPromises)
+      this.status = 'finished'
     },
   },
 }
