@@ -83,6 +83,7 @@ export default {
     }),
     validateNetwork(chainId) {
       this.shouldDisplayWarningValidNetwork = ![NETWORK_ID].includes(parseInt(chainId))
+      // Close the alert in 5 seconds
       setTimeout(() => {
         this.shouldDisplayWarningValidNetwork = false
       }, 5000)
