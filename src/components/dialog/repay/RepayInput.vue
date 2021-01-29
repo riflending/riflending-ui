@@ -27,7 +27,7 @@
             text
             color="#008CFF"
             :disabled="!maxRepayAllowed"
-            @click="maxAmount = true"
+            @click="setMaxAmount"
             >max</v-btn
           >
         </v-col>
@@ -130,7 +130,7 @@ export default {
   data() {
     return {
       waiting: false,
-      maxAmount: false,
+      isAmountMax: false,
       amount: '0',
       userTotalBorrow: 0,
       maxRepayAllowed: 0,
@@ -194,25 +194,8 @@ export default {
   },
   watch: {
     amount() {
-      if (this.maxAmount && this.amount !== this.userTotalBorrow) this.maxAmount = false
-      if (this.amount === this.userTotalBorrow) this.maxAmount = true
-    },
-    maxAmount() {
-      if (this.maxAmount) {
-        if (
-          ethers.utils
-            .parseUnits(this.maxRepayAllowed, this.data.market.token.decimals)
-            .lte(
-              ethers.utils.parseUnits(
-                this.maxAmountBalanceAllowed,
-                this.data.market.token.decimals,
-              ),
-            )
-        ) {
-          this.amount = this.maxRepayAllowed
-        } else this.amount = this.maxAmountBalanceAllowed
-      }
-      if (!this.maxAmount && this.amount === this.userTotalBorrow) this.amount = null
+      if (this.amount === this.getMaxAmount()) this.isAmountMax = true
+      else this.isAmountMax = false
     },
   },
   created() {
@@ -268,26 +251,50 @@ export default {
         })
     },
     repay() {
-      this.waiting = true
-      this.$emit('wait')
-      this.data.market
-        .payBorrow(this.amount)
-        .then((res) => {
-          this.waiting = false
-          this.$emit('succeed', {
-            hash: res.transactionHash,
-            borrowLimitInfo: this.borrowLimitInfo,
-            borrowBalanceInfo: this.borrowBalanceInfo,
+      //get amount
+      this.validateMaxToRepay().then((amount) => {
+        this.waiting = true
+        this.$emit('wait')
+        this.data.market
+          .payBorrow(amount)
+          .then((res) => {
+            this.waiting = false
+            this.$emit('succeed', {
+              hash: res.transactionHash,
+              borrowLimitInfo: this.borrowLimitInfo,
+              borrowBalanceInfo: this.borrowBalanceInfo,
+            })
           })
-        })
-        .catch((error) => {
-          // validate user error message
-          const userError = typeof error === 'string' ? error : error.message || ''
-          this.$emit('error', {
-            userErrorMessage: userError,
+          .catch((error) => {
+            // validate user error message
+            const userError = typeof error === 'string' ? error : error.message || ''
+            this.$emit('error', {
+              userErrorMessage: userError,
+            })
+            this.waiting = false
           })
-          this.waiting = false
-        })
+      })
+    },
+    async validateMaxToRepay() {
+      //validate if max
+      if (!this.isAmountMax) return this.amount
+      //validate if amount !== maxBorrow
+      if (this.maxRepayAllowed !== this.amount) return this.amount
+      //get the max borrow again
+      return this.data.market.borrowBalanceCurrent(this.account).then((borrowBalance) => {
+        return ethers.utils.formatUnits(borrowBalance, this.data.market.token.decimals)
+      })
+    },
+    getMaxAmount() {
+      return ethers.utils
+        .parseUnits(this.maxRepayAllowed, this.data.market.token.decimals)
+        .lte(ethers.utils.parseUnits(this.maxAmountBalanceAllowed, this.data.market.token.decimals))
+        ? this.maxRepayAllowed
+        : this.maxAmountBalanceAllowed
+    },
+    setMaxAmount() {
+      this.isAmountMax = true
+      this.amount = this.getMaxAmount()
     },
   },
 }
