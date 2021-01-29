@@ -58,7 +58,7 @@ export const constants = {
 }
 
 export const address = {
-  testnet: {
+  31: {
     // rsk testnet deployed contracts
     Unitroller: '0x3a983c7597b3ac4fbc3e0cf484d7631d70d04c05',
     MultiSigWallet: '0x9760d4a155058f6bec8d9fd8d50222073e57083e',
@@ -81,7 +81,7 @@ export const address = {
     RIF: '0x19f64674d8a5b4e652319f5e239efd3bc969a1fe',
     rDAI: '0x0d86fca9be034a363cf12c9834af08d54a10451c',
   },
-  mainnet: {
+  30: {
     /* TODO - uptate this to RSK mainnet addresses */
     Unitroller: '0x51401d51f7cfc1a91f88a973edd0762d2021bb5b',
     MultiSigWallet: '0x0fce7d2e8e0a92ba6068a54ed2a7e628ea022e72',
