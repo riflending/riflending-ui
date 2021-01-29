@@ -79,6 +79,7 @@ export default {
       succeed: false,
       waiting: false,
       borrowBalanceInfo: null,
+      pay: null,
       hash: null,
       errorDialog: null,
       userErrorMessage: null,
@@ -97,6 +98,8 @@ export default {
         token: this.data.token,
         borrowBalanceInfo: this.borrowBalanceInfo,
         hash: this.hash,
+        pay: this.pay,
+        borrowed: this.borrowed,
       }
     },
     errorObject() {
@@ -134,6 +137,7 @@ export default {
       this.hash = succeedObject.hash
       this.borrowed = succeedObject.borrowed
       this.borrowBalanceInfo = succeedObject.borrowBalanceInfo
+      this.pay = succeedObject.pay
       this.succeed = true
       this.waiting = false
       this.errorDialog = false
