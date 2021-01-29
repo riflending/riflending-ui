@@ -261,8 +261,7 @@ export default {
             this.waiting = false
             this.$emit('succeed', {
               hash: res.transactionHash,
-              borrowLimitInfo: this.borrowLimitInfo,
-              borrowBalanceInfo: this.borrowBalanceInfo,
+              pay: amount,
             })
           })
           .catch((error) => {
