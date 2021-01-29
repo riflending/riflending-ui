@@ -15,19 +15,49 @@ In this screen you will have an overview of the status of your account (Totals s
 
 ---
 ## How to make a deposit:
-**rLending** deposits are easy! After you have _*connected your Metamask wallet_ you will be logged in and ready to supply funds.
-[LALALALALA.GRAFICO.LALALALALA]
+**rLending** deposits are easy! After you have _connected your Metamask wallet_ you will be logged in and ready to supply funds.
+
 When you are ready to make a deposit, you will have to click on the **Supply / Borrow** tab, where you will be able to see the current status of your supplied assets.
-[LALALALALA.GRAFICO.LALALALALA]
-Click on the asset you wish to supply (in this example, we're supplying RIF).
-[LALALALALA.GRAFICO.LALALALALA]
+![Supply List](pictures/supplyList-0.jpg)
+
+If this is the first time supplying, you might see a notice that lets you know how the toggle button works. We will go over it on the next section, in order to **Borrow assets**.
+
+For now, click on the asset you wish to supply (in this example, we're supplying rBTC).
+
+![Supply Input](pictures/supplyInput-2.jpg)
+At the top of this screen you will find the asset's data, current price and the amount of this token you have supplied **converted to USD**.
+
 Select the amount you wish to provide, and then click on **Supply Tokens**
+This will promtp your *Metamask* for validation on the transaction.
+
+After the transaction has been broadcasted you will recieve confirmation and your funds will be credited to your account.
+
+![Supply Success](pictures/supplySuccess.jpg)
+
+In this last screen we double check the amount we have supplied in **Supply Balance**. We can also see the current liquidity the contract is holding in **Supplied to contract**. The **Borrow Limit** will not show unless the account has provided collateral. We will do this in the next section.
+
+When a user supplies balance they immediately start earning interests, so **Congratulations! You are already earning interests!!**
 
 ---
 ## How to make a borrow:
-All right, when a user supplies balance they immediately start earning interests... but where do those interests come from? Short answer: Borrowers! Those that borrow crypto assets from the **rLending** protocol pay a varying interest rate every Ethereum block. The interest that borrowers pay produces the interest that suppliers earn.
 
-Before you can borrow you need to collateralize your account!  An asset that is supplied to the protocol is not usable as collateral initially. In order to inform the protocol that you wish to use an asset as collateral, you must “enter the market” for that asset. An account can enter multiple markets at one time. You can do this by toggling the [LALALALALA.GRAFICO.LALALALALA]
+All right, when a user supplies balance they immediately start earning interests... but where do those interests come from? Short answer: _Borrowers_! Those accounts that borrow crypto assets from the **rLending** protocol pay a varying interest rate every rBTC block. The interest that borrowers pay produces the interest that suppliers earn.
+
+Before you can borrow you need to collateralize your account!  An asset that is supplied to the protocol is not usable as collateral initially. In order to inform the protocol that you wish to use an asset as collateral, you must “enter the market” for that asset.
+
+**Toggle the Collateral column to enter your supplied funds as collateral**
+![Toggling Market](pictures/toggle.jpg)
+This will promtp you for confirmation. If you confirm, this will then prompt your *Metamask* for confirmation, since this is a transaction that requires GAS.
+
+If successful, you will receive confirmation and the borrowing warning will dissapear from the background.
+
+![Entered Market](pictures/enteredMarket.jpg)
+
+An account can enter multiple markets at one time. You can do this by toggling each one you would like to operate with.
+**It is important to notice that in order to borrow from a market, you also need to enter that market, even if your account hasn't supplied balance to that market.**
+
+In this example we will be borrowing **RIF**
+
 ---
 # How to make a withdrawal:
 If at some point you decide you want to withdraw your funds, you should know you will be reedming your cToken balance in exchange for their respective underlying assets. Withdrawals are accessed through the Supply menu, in the Supply/Borrow page.
