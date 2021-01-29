@@ -9,15 +9,20 @@ A cToken's collateral factor can range from 0-90\%, and represents the proportio
 
 Generally, large or liquid assets have high collateral factors, while small or illiquid assets have low collateral factors. If an asset has a 0\% collateral factor, it can't be used as collateral (or seized in liquidation), though it can still be borrowed.
 
+---
+## Exchange Rates:
 
-# Exchange Rates:
+---
+## Calculating Interests:
 
-# Calculating Interests:
+---
+## Annual Percentage Yield:
 
-# Annual Percentage Yield:
+---
+## Loan to Value":
 
-# Loan to Value":
+---
+## Liquidation Incentive:
 
-# Liquidation Incentive:
-
-# Reserve Factor:
+---
+## Reserve Factor:
