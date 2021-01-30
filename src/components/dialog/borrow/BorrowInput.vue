@@ -27,14 +27,15 @@
             text
             color="#008CFF"
             :disabled="!oldMaxBorrowAllowed"
-            @click="maxAmount = true"
+            @click="setMaxAmount"
             >max</v-btn
           >
         </v-col>
       </v-row>
       <v-row class="ma-0 my-5 d-flex justify-center">
         <p class="buyMoreTokens">
-          Would you like to <a target="_blank" href="https://app.rskswap.com/">buy more tokens</a>
+          Would you like to
+          <a target="_blank" href="https://app.rskswap.com/">buy more tokens</a>
         </p>
       </v-row>
       <div class="my-5 py-5">
@@ -48,9 +49,11 @@
               <v-col cols="7" class="d-flex justify-center">
                 <v-tooltip top>
                   <template v-slot:activator="{ on, attrs }">
-                    <h1 v-bind="attrs" v-on="on">{{ cash | formatToken(data.token.decimals) }}</h1>
+                    <h1 v-bind="attrs" v-on="on">
+                      {{ cash | formatNumber }}
+                    </h1>
                   </template>
-                  <span>{{ cash | formatToken(data.token.decimals) }}</span>
+                  <span>{{ cash }}</span>
                 </v-tooltip>
               </v-col>
               <v-col cols="5" />
@@ -69,7 +72,9 @@
           <v-col cols="4">
             <v-row class="ma-0 d-flex align-center">
               <v-col cols="7" class="d-flex justify-center">
-                <h1>{{ borrowBy | formatToken(data.token.decimals) }}</h1>
+                <h1>
+                  {{ userTotalBorrow | formatNumber }}
+                </h1>
               </v-col>
             </v-row>
           </v-col>
@@ -126,25 +131,14 @@ export default {
   },
   data() {
     return {
-      waiting: false, // ???
-      maxAmount: false, // ??? if MAX button was clicked
-      price: 0,
-      amount: '0', // user generated input
-      borrowBy: 0, // borrowBalanceCurrent() The borrowed balance of current acount in this market with accrued interests
-      borrowRate: 0,
-      liquidity: 0, // users liquid assets in the protocol
-      oldLiquidity: 0, // users liquid assets in the protocol
-      supplyValue: 0, // user's liquidity in underlying
-      usdPrice: 0,
-      cash: 0, // current underlying balance stored in contract. AKA "CONTRACT LIQUIDITY"
-      oldCash: 0, // balance of ctoken expressed in underlying
-      tokenBalance: 0, // getBalanceOfUnderlyingFormatted(this.account) balance of this account in underlying
-      isBorrowAllowed: true, // checks whether or not the Comptroller will allow the borrow
+      waiting: false,
+      isAmountMax: false,
+      amount: 0,
+      userTotalBorrow: 0,
+      cash: 0,
+      isBorrowAllowed: true,
       oldMaxBorrowAllowed: 0,
-      maxBorrowAllowed: 0, // BORROW LIMIT getMaxBorrowAllowed() calculates the maximun borrow allowance. User should never borrow close to this amount, otherwise runs risk of getting automatically liquidated
-      borrowAllowance: 0,
-      borrowBalanceInfo: null,
-      borrowLimitInfo: null, // Borrow difference - gray number to be shown to the side
+      maxBorrowAllowed: 0,
       rules: {
         required: () => !!Number(this.amount) || 'Required.',
         allowed: () => this.isBorrowAllowed || "Borrow won't be allowed by the protocol", // TODO: currently not being used
@@ -152,10 +146,10 @@ export default {
           this.decimalPositions ||
           `Maximum ${this.data.token.decimals} decimal places for ${this.data.token.symbol}.`,
         marketCash: () =>
-          this.oldCash - Number(this.contractAmount) >= 0 ||
+          Number(this.cash) - Number(this.amount) >= 0 ||
           `This market doesn't have enough ${this.data.token.symbol} liquidity`,
         liquidity: () =>
-          Number(this.amount) < this.maxBorrowAllowed ||
+          Number(this.amount) <= Number(this.maxBorrowAllowed) ||
           "You don't have enough liquidity, supply more collateral to raise your Borrow Limit.",
         enteredMarket: () => true || '', // TODO: currently not being used
       },
@@ -165,12 +159,6 @@ export default {
     ...mapState({
       account: (state) => state.Session.account,
     }),
-    apr() {
-      return this.borrowRate.toFixed(2)
-    },
-    contractAmount() {
-      return Number(this.amount).toFixed(this.data.token.decimals).replace('.', '')
-    },
     validForm() {
       return (
         typeof this.rules.enteredMarket() !== 'string' &&
@@ -198,57 +186,27 @@ export default {
   },
   watch: {
     amount() {
-      if (this.maxAmount && this.amount !== this.oldMaxBorrowAllowed) this.maxAmount = false
-      if (this.amount === this.oldMaxBorrowAllowed) {
-        this.maxAmount = true
-      }
-    },
-    maxAmount() {
-      if (this.maxAmount) {
-        const value = new BigNumber(Math.min(this.oldMaxBorrowAllowed, this.cash / Number(1e18)))
-          .decimalPlaces(6, BigNumber.ROUND_DOWN)
-          .toNumber()
-        this.amount = value
-      }
-      if (!this.maxAmount && this.amount === this.oldMaxBorrowAllowed) this.amount = null
+      if (this.amount === this.getMaxAmount()) this.isAmountMax = true
+      else this.isAmountMax = false
     },
   },
   created() {
     this.data.market
-      .borrowBalanceCurrent(this.account)
-      .then((borrowBy) => {
-        this.borrowBy = Number(borrowBy)
-        return this.$middleware.getAccountLiquidity(this.account)
-      })
-      .then(({ accountLiquidityInExcess }) => {
-        this.oldLiquidity = accountLiquidityInExcess // liquid assets in the protocol
-        this.liquidity = accountLiquidityInExcess // liquid assets in the protocol
-        return this.data.market.getCash()
+      .borrowBalanceCurrentFormatted(this.account)
+      .then((borrowBalance) => {
+        this.userTotalBorrow = borrowBalance.toString()
+        return this.data.market.getMarketCash()
       })
       .then((cash) => {
-        // the amount of underlying stored in contract AKA "CONTRACT LIQUIDITY"
-        this.oldCash = cash
-        this.cash = cash
-        return this.data.market.getBorrowRate()
-      })
-      .then((borrowRate) => {
-        // TODO: double check, perhaps this is not being used
-        this.borrowRate = borrowRate
-        return this.data.market.getPrice(this.data.market.address)
-      })
-      .then((marketPrice) => {
-        this.price = marketPrice
-        return this.data.market.getBalanceOfUnderlyingFormatted(this.account)
-      })
-      .then((supplyValue) => {
-        this.supplyValue = supplyValue
-        return this.data.market.getMaxBorrowAllowed(this.account)
+        this.cash = cash.toString()
+        return this.data.market.maxBorrowAllowedByAccount(this.account)
       })
       .then((maxBorrowAllowed) => {
-        this.maxBorrowAllowed = maxBorrowAllowed
-        this.oldMaxBorrowAllowed = maxBorrowAllowed
-        this.borrowAllowance = maxBorrowAllowed
-        this.borrowBalanceInfo = Number(this.contractAmount)
+        this.maxBorrowAllowed = maxBorrowAllowed.toFixed(
+          this.data.token.decimals,
+          BigNumber.ROUND_DOWN,
+        )
+        this.oldMaxBorrowAllowed = this.maxBorrowAllowed
       })
   },
   methods: {
@@ -269,22 +227,18 @@ export default {
         .then((allowed) => {
           if (!allowed) {
             this.isBorrowAllowed = true // probably get rid of this variable alltogether.
-            console.log('borrow() borrow was allowed. Sending tx...')
             return this.data.market.borrow(this.amount)
           }
           throw allowed
         })
         .then((res) => {
           this.waiting = false
-          console.log('BorrowInput() transaction sent: ', res)
           this.$emit('succeed', {
             hash: res.transactionHash,
-            borrowLimitInfo: this.borrowLimitInfo,
-            borrowBalanceInfo: this.borrowBalanceInfo,
+            borrowed: this.amount,
           })
         })
         .catch((error) => {
-          console.log('ERROR borrow()', error)
           // validate user error message
           const userError = typeof error === 'string' ? error : error.message || ''
           this.$emit('error', {
@@ -292,6 +246,15 @@ export default {
           })
           this.waiting = false
         })
+    },
+    getMaxAmount() {
+      return new BigNumber(this.maxBorrowAllowed).gt(new BigNumber(this.cash))
+        ? this.cash
+        : this.maxBorrowAllowed
+    },
+    setMaxAmount() {
+      this.isAmountMax = true
+      this.amount = this.getMaxAmount()
     },
   },
 }

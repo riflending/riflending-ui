@@ -8,7 +8,7 @@
         <div class="text-center">
           You have successfully repayed <br />
           <span class="greenish">
-            {{ data.borrowBalanceInfo | formatToken(data.token.decimals) }}
+            {{ data.pay | formatNumber }}
           </span>
           <span class="greenish">{{ data.token.symbol }}</span>
           to this Market.
@@ -33,7 +33,7 @@
           <h3>borrow balance:</h3>
         </v-col>
         <v-col cols="3">
-          <h1 class="text-center">{{ borrowBy | formatToken(data.token.decimals) }}</h1>
+          <h1 class="text-center">{{ totalBorrow | formatNumber }}</h1>
         </v-col>
         <v-col cols="2">
           <span class="itemInfo">{{ data.token.symbol }}</span>
@@ -66,6 +66,7 @@
 <script>
 import { mapState } from 'vuex'
 import TransactionHash from '@/components/common/TransactionHash.vue'
+import { ethers } from 'ethers'
 
 export default {
   name: 'BorrowSuccess',
@@ -80,12 +81,8 @@ export default {
   },
   data() {
     return {
-      tokenBalance: 0,
-      liquidity: 0,
-      cash: 0,
-      price: 0,
       maxBorrowAllowed: 0,
-      borrowBy: 0,
+      totalBorrow: 0,
       accountHealth: 0,
     }
   },
@@ -98,37 +95,16 @@ export default {
     },
   },
   created() {
-    this.$middleware
-      .getAccountLiquidity(this.account)
-      // sets liquidity
-      .then(({ accountLiquidityInExcess }) => {
-        this.liquidity = Number(accountLiquidityInExcess)
-        return this.data.market.getCash()
-      })
-      // sets cash
-      .then((cash) => {
-        this.cash = cash
-        return this.data.market.getBorrowRate()
-      })
-      .then((borrowRate) => {
-        this.borrowRate = borrowRate
-        return this.data.market.getPriceInDecimals()
-      })
-      // sets price
-      .then((price) => {
-        this.price = price
-        return this.data.market.borrowBalanceCurrent(this.account)
-      })
-      .then((borrowBy) => {
-        this.borrowBy = Number(borrowBy)
-        this.borrowBalanceInfo = Number(this.contractAmount)
+    this.data.market
+      .borrowBalanceCurrent(this.account)
+      .then((borrow) => {
+        this.totalBorrow = ethers.utils.formatUnits(borrow, this.data.market.token.decimals)
         return this.data.market.getMaxBorrowAllowed(this.account)
       })
       .then((maxBorrowAllowed) => {
         this.maxBorrowAllowed = maxBorrowAllowed
         return this.$middleware.getAccountHealth(this.account)
       })
-      // sets health
       .then((health) => {
         this.accountHealth = health
       })
@@ -136,10 +112,6 @@ export default {
   methods: {
     closeDialog() {
       this.$emit('closeDialog')
-    },
-    getMaxAllowed(liquidity, cash) {
-      const allowed = this.price > 0 ? Math.floor(liquidity / (this.price * 2)) : 0
-      return allowed >= cash ? cash : allowed
     },
   },
 }

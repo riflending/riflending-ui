@@ -105,12 +105,17 @@ export default class Market {
   }
 
   async getPrice() {
-    // set contract
-    const contract = this.factoryContract.getContract('PriceOracleProxy')
     // get price of cToken
-    const priceToken = await contract.callStatic.getUnderlyingPrice(this.instanceAddress)
+    const priceToken = await this.getUnderlyingPrice()
     // get price of rbtc
     return new BigNumber(priceToken.toString()).toNumber()
+  }
+
+  async getUnderlyingPrice() {
+    // set contract
+    const contract = this.factoryContract.getContract('PriceOracleProxy')
+    // get price of underlying
+    return await contract.callStatic.getUnderlyingPrice(this.instanceAddress)
   }
 
   async getCurrentUserBalanceOfCtoken() {
@@ -142,10 +147,9 @@ export default class Market {
 
   async getBalanceOfUnderlyingFormatted(account) {
     // set balance of account
-    // const balance = await this.instance.callStatic.balanceOfUnderlying(account)
     const balance = await this.balanceOfUnderlying(account)
     // return format (without wei)
-    return ethers.utils.formatEther(balance)
+    return ethers.utils.formatUnits(balance, this.token.decimals)
   }
 
   async balanceOfUnderlying(account) {
@@ -156,6 +160,13 @@ export default class Market {
     // get balance of contract expressed in underlying
     const cash = await this.instance.getCash()
     return Number(cash)
+  }
+
+  async getMarketCash() {
+    // get balance of contract expressed in underlying
+    return new BigNumber(
+      ethers.utils.formatUnits(await this.instance.callStatic.getCash(), this.token.decimals),
+    )
   }
 
   async getBorrowRate() {
@@ -477,6 +488,22 @@ export default class Market {
     return price > 0 ? accountLiquidityInExcess / price : 0 // return max(0,borrowLimit)
   }
 
+  async maxBorrowAllowedByAccount(account) {
+    //set price
+    const price = new BigNumber(
+      ethers.utils.formatUnits(await this.getUnderlyingPrice(), this.token.decimals),
+    )
+    const accountLiquidityInExcess = new BigNumber(
+      ethers.utils.formatUnits(
+        (await this.middleware.getAccountLiquidity(account)).accountLiquidityInExcess,
+      ),
+      this.token.decimals,
+    )
+
+    const zero = new BigNumber(0)
+    return price.gt(zero) ? accountLiquidityInExcess.div(price) : zero
+  }
+
   /** TODO
    * Gets the equivalent of rbank getAccountValues() ¯\_(ツ)_/¯
    * @dev research DefiProt contracts to understand what this does
@@ -501,7 +528,7 @@ export default class Market {
 
   async borrowBalanceCurrentFormatted(account) {
     const balance = await this.borrowBalanceCurrent(account)
-    return ethers.utils.formatEther(balance)
+    return new BigNumber(ethers.utils.formatUnits(balance, this.token.decimals))
   }
 
   /**
@@ -554,14 +581,13 @@ export default class Market {
 
   async borrowAccounts() {
     //TODO, refact turl and provider
-    const url = 'http://18.218.165.234:4444'
-    const provider = new ethers.providers.JsonRpcProvider(url)
+    let borrows = []
+    if (!process.env.VUE_APP_HTTP_PROVIDER) return borrows
+    const provider = new ethers.providers.JsonRpcProvider(process.env.VUE_APP_HTTP_PROVIDER)
     const abiCtoken = this.isCRBTC ? abi['cRBTC'] : abi['cErc20']
     const filterLocal = this.instance.filters.Borrow()
     const latest = await provider.getBlockNumber()
-    // const ini = 1451746;
     const ini = 1504046
-    let borrows = []
     for (let index = latest; index > ini; index -= 1000) {
       try {
         let logs = await provider.getLogs({

@@ -8,7 +8,7 @@
         <div class="text-center">
           You have successfully borrowed <br />
           <span class="greenish">
-            {{ data.borrowBalanceInfo | formatToken(data.token.decimals) }}
+            {{ data.borrowed | formatNumber }}
           </span>
           <span class="greenish">{{ data.token.symbol }}</span>
           from this Market.
@@ -22,7 +22,7 @@
           <h3>borrow balance:</h3>
         </v-col>
         <v-col cols="3">
-          <h1 class="text-center">{{ borrowBy | formatToken(data.token.decimals) }}</h1>
+          <h1 class="text-center">{{ userTotalBorrow | formatNumber }}</h1>
         </v-col>
         <v-col cols="2">
           <span class="itemInfo">{{ data.token.symbol }}</span>
@@ -68,6 +68,7 @@
 <script>
 import { mapState } from 'vuex'
 import TransactionHash from '@/components/common/TransactionHash.vue'
+import BigNumber from 'bignumber.js'
 
 export default {
   name: 'BorrowSuccess',
@@ -83,10 +84,8 @@ export default {
   data() {
     return {
       tokenBalance: 0,
-      liquidity: 0,
-      price: 0,
       maxBorrowAllowed: 0,
-      borrowBy: 0,
+      userTotalBorrow: 0,
     }
   },
   computed: {
@@ -99,25 +98,17 @@ export default {
       .getUserBalanceOfUnderlying()
       .then((balance) => {
         this.tokenBalance = balance
-        console.log('success! balance', this.tokenBalance, ' account: ', this.account)
-        return this.$middleware.getAccountLiquidity(this.account)
-      })
-      .then(({ accountLiquidityInExcess }) => {
-        this.liquidity = accountLiquidityInExcess
-        return this.data.market.getPriceInDecimals()
-      })
-      .then((marketPrice) => {
-        this.price = Number(marketPrice)
-        console.log('success! marketprice', this.price)
-        return this.data.market.borrowBalanceCurrent(this.account)
+        return this.data.market.borrowBalanceCurrentFormatted(this.account)
       })
       .then((borrowBy) => {
-        this.borrowBy = Number(borrowBy)
-        console.log('success! borrowby', this.borrowBy)
-        return this.data.market.getMaxBorrowAllowed(this.account)
+        this.userTotalBorrow = borrowBy
+        return this.data.market.maxBorrowAllowedByAccount(this.account)
       })
       .then((maxBorrowAllowed) => {
-        this.maxBorrowAllowed = maxBorrowAllowed
+        this.maxBorrowAllowed = maxBorrowAllowed.toFixed(
+          this.data.token.decimals,
+          BigNumber.ROUND_DOWN,
+        )
       })
   },
   methods: {
