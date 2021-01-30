@@ -40,7 +40,7 @@
           </v-col>
           <v-col cols="4">
             <v-col cols="7" class="d-flex justify-center">
-              <h1>{{ apr }}%</h1>
+              <h1>{{ supplyRate | formatPercentage }}</h1>
             </v-col>
             <v-col cols="5" />
           </v-col>
@@ -136,7 +136,7 @@ export default {
       amount: '0',
       maxAmountBalanceAllowed: 0,
       supplyOf: 0,
-      borrowRate: 0,
+      supplyRate: 0,
       liquidity: 0,
       cash: 0,
       maxBorrowAllowed: 0,
@@ -162,9 +162,6 @@ export default {
     ...mapState({
       account: (state) => state.Session.account,
     }),
-    apr() {
-      return this.borrowRate.toFixed(2)
-    },
     balanceAsDouble() {
       return this.asDouble(this.tokenBalance)
     },
@@ -217,10 +214,10 @@ export default {
       })
       .then((cash) => {
         this.cash = cash
-        return this.data.market.getBorrowRate()
+        return this.data.market.getSupplyRate()
       })
-      .then((borrowRate) => {
-        this.borrowRate = borrowRate
+      .then((supplyRate) => {
+        this.supplyRate = supplyRate
         return this.data.market.getPriceInDecimals()
       })
       .then((price) => {
@@ -306,7 +303,7 @@ export default {
         .then((cash) => {
           oldCash = cash
           this.cash = oldCash + Number(this.contractAmount)
-          return this.data.market.getBorrowRate()
+          return this.data.market.getSupplyRate()
         })
     },
   },

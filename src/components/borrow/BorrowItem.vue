@@ -22,7 +22,9 @@
           </v-list-item-subtitle>
         </v-col>
         <v-col cols="2">
-          <v-list-item-subtitle class="item"> {{ apr }}% </v-list-item-subtitle>
+          <v-list-item-subtitle class="item">
+            {{ borrowRate | formatPercentage }}
+          </v-list-item-subtitle>
         </v-col>
         <v-col cols="2" class="px-0">
           <v-row class="ma-0">
@@ -96,9 +98,6 @@ export default {
     ...mapState({
       account: (state) => state.Session.account,
     }),
-    apr() {
-      return this.borrowRate.toFixed(2)
-    },
     dataObject() {
       return {
         flag: this.dialog,

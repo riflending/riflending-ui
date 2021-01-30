@@ -2,13 +2,17 @@ import { ethers } from 'ethers'
 import Vue from 'vue'
 import BigNumber from 'bignumber.js'
 import Market from './market'
-import factoryContract from './factoryContract'
+import FactoryContract from './factoryContract'
 import { constants, address, errorCodes, cTokensDetails } from './constants'
 import { NETWORK_ID } from '../config/constants'
 
 BigNumber.set({ EXPONENTIAL_AT: [-18, 36] })
 
 export default class Middleware {
+  constructor() {
+    this.factoryContractInstance = new FactoryContract()
+    this.factor = 10 ** 18
+  }
   getAddresses() {
     const chainId = +Vue?.web3Provider?.network?.chainId || NETWORK_ID
     return address[chainId]
@@ -55,13 +59,13 @@ export default class Middleware {
   }
 
   async getCTokenMetadata(cTokenAddress) {
-    const factoryContractInstance = new factoryContract()
+    const factoryContractInstance = new FactoryContract()
     const contract = factoryContractInstance.getContract(constants.RlendingLens)
     return contract.callStatic.cTokenMetadata(cTokenAddress)
   }
 
   async cTokenBalancesAll(cTokensList, account) {
-    const factoryContractInstance = new factoryContract()
+    const factoryContractInstance = new FactoryContract()
     const contract = factoryContractInstance.getContract(constants.RlendingLens)
     return contract.callStatic.cTokenBalancesAll(cTokensList, account)
   }
@@ -75,7 +79,7 @@ export default class Middleware {
    *          account shortfall below collateral requirements)
    */
   async getAccountLiquidity(account) {
-    const factoryContractInstance = new factoryContract()
+    const factoryContractInstance = new FactoryContract()
     const contract = factoryContractInstance.getContractByNameAndAbiName(
       constants.Unitroller,
       constants.Comptroller,
@@ -114,41 +118,100 @@ export default class Middleware {
     return ethers.utils.formatEther(balance)
   }
 
-  async getTotals(account) {
-    //TODO: This function shouldn't have so many new BigNumber()
-    //TODO rename to getTotalSupplysAndBorrows
+  async getAllMarketsTotals(account) {
     const markets = await this.getMarkets(account)
-    //  const result = await this.cTokenBalancesAll(markets, account)
-    const marketsPromises = markets.map(
-      (market) =>
-        new Promise((resolve, reject) => {
-          ;(async () => {
-            try {
-              const borrowBalanceCurrentBN = await market.borrowBalanceCurrentFormatted(account)
-              const marketPriceFromOracleBN = await market.getPriceInDecimals()
-              const marketPriceBN = marketPriceFromOracleBN || new BigNumber(0)
-
-              const tokenBalance = await market.getBalanceOfUnderlyingFormatted(account)
-              const tokenBalanceBN = new BigNumber(tokenBalance)
-
-              const borrowValue = borrowBalanceCurrentBN.multipliedBy(marketPriceBN)
-              const supplyValue = tokenBalanceBN.multipliedBy(marketPriceBN)
-              resolve({ borrowValue, supplyValue })
-            } catch (err) {
-              reject(err)
-            }
-          })()
-        }),
+    const marketsIn = (await this.getAssetsIn(account)).map((addr) => addr.toLowerCase())
+    const multicallContract = this.factoryContractInstance.getContract(constants.Multicall)
+    const priceOracleProxyContract = this.factoryContractInstance.getContract(
+      constants.PriceOracleProxy,
     )
-    const totals = await Promise.all(marketsPromises)
-    const totalsReduced = totals.reduce(
-      (previousValue, currentValue) => ({
-        borrowValue: previousValue.borrowValue.plus(currentValue.borrowValue),
-        supplyValue: previousValue.supplyValue.plus(currentValue.supplyValue),
+    const cTokenContract = this.factoryContractInstance.getContract(constants.cRBTC)
+
+    let callArguments = []
+    for (let i = 0; i < markets.length; i++) {
+      callArguments.push({
+        target: priceOracleProxyContract.address,
+        callData: priceOracleProxyContract.interface.encodeFunctionData('getUnderlyingPrice', [
+          markets[i].instanceAddress,
+        ]),
+      })
+      callArguments.push({
+        target: markets[i].instanceAddress,
+        callData: cTokenContract.interface.encodeFunctionData('getAccountSnapshot', [account]),
+      })
+    }
+
+    const results = await multicallContract.callStatic.aggregate(callArguments)
+
+    let marketsTotals = []
+    for (var i = 0; i < markets.length; i++) {
+      const underlyingPrice = priceOracleProxyContract.interface.decodeFunctionResult(
+        'getUnderlyingPrice',
+        results.returnData[i * 2],
+      )
+      const underlyingPriceBN = new BigNumber(underlyingPrice.toString()).div(this.factor)
+
+      const [
+        err,
+        cTokenBalance,
+        borrowBalance,
+        exchangeRateMantissa,
+      ] = cTokenContract.interface.decodeFunctionResult(
+        'getAccountSnapshot',
+        results.returnData[i * 2 + 1],
+      )
+      const cTokenBalanceBN =
+        Number(err) === 0
+          ? new BigNumber(cTokenBalance.toString()).div(this.factor)
+          : new BigNumber(0)
+      const borrowBalanceBN =
+        Number(err) === 0
+          ? new BigNumber(borrowBalance.toString()).div(this.factor)
+          : new BigNumber(0)
+      const exchangeRateBN =
+        Number(err) === 0
+          ? new BigNumber(exchangeRateMantissa.toString()).div(this.factor)
+          : new BigNumber(1)
+
+      const underlyingBalanceBN = cTokenBalanceBN.times(exchangeRateBN)
+      const collateralFactorBN = new BigNumber(markets[i].collateralFactorMantissa.toString()).div(
+        this.factor,
+      )
+
+      marketsTotals.push({
+        address: markets[i].instanceAddress,
+        isInMarket: marketsIn.includes(markets[i].instanceAddress),
+        collateralFactorMantissa: collateralFactorBN,
+        symbol: markets[i].symbol,
+        decimals: markets[i].decimals,
+        cTokenBalance: cTokenBalanceBN,
+        exchangeRateMantissa: exchangeRateBN,
+        underlyingPrice: underlyingPriceBN,
+        underlyingBalance: underlyingBalanceBN,
+        supplyValueUsd: underlyingBalanceBN.times(underlyingPriceBN),
+        borrowValueUsd: borrowBalanceBN.times(underlyingPriceBN),
+      })
+    }
+    return marketsTotals
+  }
+
+  async getTotalSupplysAndBorrows(account) {
+    const marketsTotals = await this.getAllMarketsTotals(account)
+    const total = marketsTotals.reduce(
+      (accumulator, currentValue) => ({
+        supplyValue: accumulator.supplyValue.plus(currentValue.supplyValueUsd),
+        supplyValueAsCollateral: currentValue.isInMarket
+          ? accumulator.supplyValueAsCollateral.plus(currentValue.supplyValueUsd)
+          : accumulator.supplyValueAsCollateral,
+        borrowValue: accumulator.borrowValue.plus(currentValue.borrowValueUsd),
       }),
-      { borrowValue: new BigNumber(0), supplyValue: new BigNumber(0) },
+      {
+        supplyValue: new BigNumber(0),
+        supplyValueAsCollateral: new BigNumber(0),
+        borrowValue: new BigNumber(0),
+      },
     )
-    return totalsReduced
+    return total
   }
 
   getMsjErrorCodeComptroller(errorNumber, isErroInfo = false) {
@@ -158,8 +221,7 @@ export default class Middleware {
 
   // calls comptroller to retrieve the liquidationFactor
   async getLiquidationFactor() {
-    const factoryContractInstance = new factoryContract()
-    let contract = factoryContractInstance.getContractByNameAndAbiName(
+    let contract = this.factoryContractInstance.getContractByNameAndAbiName(
       constants.Unitroller,
       constants.Comptroller,
     )
@@ -174,58 +236,28 @@ export default class Middleware {
    * @return 1 - (SUM_market borrowValue / SUM_market(supplyValue * colFact) )
    */
   async getAccountHealth(account) {
-    //TODO: This function shouldn't have so many new BigNumber(), casting to Number and string
-    //      try to unify criteria
-    const markets = await this.getMarkets(account)
-    const marketsPromises = markets.map(
-      (market) =>
-        new Promise((resolve, reject) => {
-          ;(async () => {
-            try {
-              const borrowBalanceCurrentBN = await market.borrowBalanceCurrentFormatted(account)
-              const marketPriceFromOracleBN = await market.getPriceInDecimals()
-              const marketPriceBN = marketPriceFromOracleBN || new BigNumber(0)
-
-              const tokenBalance = await market.getBalanceOfUnderlyingFormatted(account)
-              const tokenBalanceBN = new BigNumber(tokenBalance)
-              const colFact = market.collateralFactorMantissa
-
-              const colFactNum = Number(colFact)
-              const colFactStr = colFactNum / market.factor.toString()
-              const colFactBN = new BigNumber(colFactStr)
-
-              const borrowValue = borrowBalanceCurrentBN.multipliedBy(marketPriceBN)
-              const supplyValue = tokenBalanceBN.multipliedBy(marketPriceBN)
-
-              const supplyByFactor = supplyValue.multipliedBy(colFactBN)
-              resolve({ borrowValue, supplyByFactor })
-            } catch (err) {
-              reject(err)
-            }
-          })()
-        }),
+    const marketsTotals = await this.getAllMarketsTotals(account)
+    const inMarketsTotals = marketsTotals.filter((market) => market.isInMarket)
+    const total = inMarketsTotals.reduce(
+      (accumulator, currentValue) => ({
+        supplyByFactor: accumulator.supplyByFactor.plus(
+          currentValue.supplyValueUsd.times(currentValue.collateralFactorMantissa),
+        ),
+        borrowValue: accumulator.borrowValue.plus(currentValue.borrowValueUsd),
+      }),
+      { supplyByFactor: new BigNumber(0), borrowValue: new BigNumber(0) },
     )
-    const totals = await Promise.all(marketsPromises)
-    let numerator = new BigNumber(0)
-    let denominator = new BigNumber(0)
-
-    for (let i = 0, len = totals.length; i < len; i++) {
-      numerator = numerator.plus(totals[i].borrowValue)
-      denominator = denominator.plus(totals[i].supplyByFactor)
-    }
-
-    if (denominator == 0 || numerator == 0) return 1
-
-    return new BigNumber(1).minus(numerator.div(denominator)).toNumber()
+    return total.supplyByFactor.eq(0) || total.borrowValue.eq(0)
+      ? 1
+      : new BigNumber(1).minus(total.borrowValue.div(total.supplyByFactor)).toNumber()
   }
 
   async getAssetsIn(account) {
-    const factoryContractInstance = new factoryContract()
-    const contract = factoryContractInstance.getContractByNameAndAbiName(
+    const contract = this.factoryContractInstance.getContractByNameAndAbiName(
       constants.Unitroller,
       constants.Comptroller,
     )
-    return await contract.getAssetsIn(account)
+    return contract.getAssetsIn(account)
   }
 
   async getAssetsBalanceIn(account) {
@@ -259,12 +291,11 @@ export default class Middleware {
     const decimal = 18
     let amountBN = ethers.utils.parseUnits(amount.toFixed(decimal), decimal)
     //get contract and signer
-    const factoryContractInstance = new factoryContract()
-    const contract = factoryContractInstance.getContractByNameAndAbiName(
+    const contract = this.factoryContractInstance.getContractByNameAndAbiName(
       constants.Unitroller,
       constants.Comptroller,
     )
-    const signer = contract.connect(factoryContractInstance.getSigner())
+    const signer = contract.connect(this.factoryContractInstance.getSigner())
     //call liquidateBorrowAllowed
     return await signer.callStatic.liquidateBorrowAllowed(
       addressLiquidateMarket,
@@ -280,8 +311,7 @@ export default class Middleware {
    * @return BigNumber value of the rbtc price expressed in usd
    */
   async getRBTCPrice() {
-    const factoryContractInstance = new factoryContract()
-    const contract = factoryContractInstance.getContract('RBTCMocOracle')
+    const contract = this.factoryContractInstance.getContract('RBTCMocOracle')
     const [value] = await contract.callStatic.peek()
     return new BigNumber(value)
   }
@@ -315,9 +345,8 @@ export default class Middleware {
     const addresses = this.getAddresses()
     //set amount
     const amountBN = ethers.utils.parseUnits('1', cTokenDetail.underlying.decimals)
-    const factoryContractInstance = new factoryContract()
     //set contract
-    const contract = factoryContractInstance.getContractToken(symbol)
+    const contract = this.factoryContractInstance.getContractToken(symbol)
     // check allowance
     const allowance = await contract.allowance(account, addresses[cTokenDetail.symbol])
     // validate if enough
@@ -332,11 +361,10 @@ export default class Middleware {
     //validate not crbtc
     if (symbol === constants['RBTC']) return
     const addresses = this.getAddresses()
-    const factoryContractInstance = new factoryContract()
     //set contract
-    const contract = factoryContractInstance.getContractToken(symbol)
+    const contract = this.factoryContractInstance.getContractToken(symbol)
     //set signer
-    const cTokenSigner = contract.connect(factoryContractInstance.getSigner())
+    const cTokenSigner = contract.connect(this.factoryContractInstance.getSigner())
     // approve
     const tx = await cTokenSigner.approve(
       addresses[cTokenDetail.symbol],

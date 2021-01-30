@@ -23,22 +23,17 @@
         </v-col>
         <v-col>
           <v-list-item-subtitle class="itemStatus">
-            {{ apr | formatPercentage }}
-          </v-list-item-subtitle>
-        </v-col>
-        <v-col>
-          <v-list-item-subtitle class="itemStatus">
             {{ loanToValue | formatPercentage }}
           </v-list-item-subtitle>
         </v-col>
         <v-col>
           <v-list-item-subtitle class="itemStatus">
-            {{ supplyApy | formatPercentage }}
+            {{ supplyRate | formatPercentage }}
           </v-list-item-subtitle>
         </v-col>
         <v-col>
           <v-list-item-subtitle class="itemStatus">
-            {{ borrowApy | formatPercentage }}
+            {{ borrowRate | formatPercentage }}
           </v-list-item-subtitle>
         </v-col>
         <v-col>
@@ -114,21 +109,16 @@ export default {
         logo: null,
       },
       price: 0,
+      supplyRate: 0,
       borrowRate: 0,
       loanToValue: 0,
       cash: 0, // current contract liquidity
       totalSupply: 0,
       totalBorrows: 0,
-      borrowApy: 0,
-      supplyApy: 0,
       dialog: false,
     }
   },
   computed: {
-    apr() {
-      // APR represents the annual rate charged for earning or borrowing money
-      return this.borrowRate.toFixed(2)
-    },
     dataObject() {
       return {
         flag: this.dialog,
@@ -143,7 +133,8 @@ export default {
   async created() {
     this.token = this.market.token
     this.price = await this.market.getPriceInDecimals()
-    this.borrowRate = await this.market.getBorrowRate()
+    this.supplyRate = await this.market.getSupplyRate(false)
+    this.borrowRate = await this.market.getBorrowRate(false)
     this.cash = ethers.utils.formatUnits(this.market.totalCash, this.market.token.decimals)
     this.totalSupply = this.market.getTotalSupply()
     this.totalBorrows = ethers.utils.formatUnits(
@@ -154,8 +145,6 @@ export default {
       this.market.loanToValue.mul(100),
       this.market.token.decimals,
     )
-    this.supplyApy = this.market.supplyApy
-    this.borrowApy = this.market.borrowApy
   },
   methods: {
     reset() {
@@ -178,8 +167,6 @@ export default {
             this.market.loanToValue.mul(100),
             this.market.token.decimals,
           )
-          this.supplyApy = this.market.supplyApy
-          this.borrowApy = this.market.borrowApy
         })
       this.$emit('dialogClosed')
     },

@@ -10,16 +10,17 @@
             <v-list-item-subtitle class="listTitle">Price</v-list-item-subtitle>
           </v-col>
           <v-col>
-            <v-list-item-subtitle class="listTitle">APR</v-list-item-subtitle>
-          </v-col>
-          <v-col>
             <v-list-item-subtitle class="listTitle" title="Loan to Value">LTV</v-list-item-subtitle>
           </v-col>
           <v-col>
-            <v-list-item-subtitle class="listTitle">Supply APY</v-list-item-subtitle>
+            <v-list-item-subtitle class="listTitle" title="Supply Annual Percentage Rate"
+              >Supply APR</v-list-item-subtitle
+            >
           </v-col>
           <v-col>
-            <v-list-item-subtitle class="listTitle">Interest debt</v-list-item-subtitle>
+            <v-list-item-subtitle class="listTitle" title="Borrow Annual Percentage Rate"
+              >Borrow APR</v-list-item-subtitle
+            >
           </v-col>
           <v-col>
             <v-list-item-subtitle class="listTitle">Total Supplied</v-list-item-subtitle>

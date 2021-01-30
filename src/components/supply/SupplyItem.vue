@@ -1,5 +1,5 @@
 <template>
-  <div class="dialog">
+  <div class="supply-item dialog">
     <v-list-item>
       <v-row class="my-5 mx-0 d-flex align-center">
         <v-col cols="2">
@@ -22,7 +22,9 @@
           </v-list-item-subtitle>
         </v-col>
         <v-col cols="2">
-          <v-list-item-subtitle class="item"> {{ apr }}% </v-list-item-subtitle>
+          <v-list-item-subtitle class="item">
+            {{ supplyRate | formatPercentage }}
+          </v-list-item-subtitle>
         </v-col>
         <v-col cols="2" class="px-0">
           <v-row class="ma-0">
@@ -86,7 +88,7 @@ export default {
         logo: null,
       },
       price: 0,
-      borrowRate: 0,
+      supplyRate: 0,
       dialog: false,
       tokenBalance: 0,
       currentComponent: 'SupplyList',
@@ -97,13 +99,10 @@ export default {
     ...mapState({
       account: (state) => state.Session.account,
     }),
-    apr() {
-      return this.borrowRate.toFixed(2)
-    },
     dataObject() {
       return {
         flag: this.dialog,
-        borrowRate: this.borrowRate,
+        supplyRate: this.supplyRate,
         price: this.price,
         token: this.token,
         market: this.market,
@@ -125,11 +124,11 @@ export default {
       // set price
       .then((price) => {
         this.price = price
-        return this.market.getBorrowRate()
+        return this.market.getSupplyRate()
       })
       // set borrow rate block
-      .then((borrowRatePerBlock) => {
-        this.borrowRate = borrowRatePerBlock
+      .then((supplyRate) => {
+        this.supplyRate = supplyRate
       })
     // set supply of TODO
     this.supplyOf = this.market.supplyOf
@@ -146,11 +145,11 @@ export default {
         // set price
         .then((price) => {
           this.price = price
-          return this.market.getBorrowRate()
+          return this.market.getSupplyRate()
         })
         // set borrow rate block
-        .then((borrowRatePerBlock) => {
-          this.borrowRate = borrowRatePerBlock
+        .then((supplyRate) => {
+          this.supplyRate = supplyRate
         })
       // set supply of TODO
       this.supplyOf = this.market.supplyOf

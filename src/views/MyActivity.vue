@@ -175,7 +175,9 @@ export default {
       }, 20000)
     },
     async fetchData() {
-      const { borrowValue, supplyValue } = await this.$middleware.getTotals(this.account)
+      const { borrowValue, supplyValue } = await this.$middleware.getTotalSupplysAndBorrows(
+        this.account,
+      )
       this.totalBorrowed = borrowValue
       this.totalSupplied = supplyValue
       this.totalBalance = supplyValue.minus(borrowValue)
