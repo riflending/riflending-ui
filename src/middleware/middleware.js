@@ -4,12 +4,14 @@ import BigNumber from 'bignumber.js'
 import Market from './market'
 import factoryContract from './factoryContract'
 import { constants, address, errorCodes, cTokensDetails } from './constants'
+import { NETWORK_ID } from '../config/constants'
 
 BigNumber.set({ EXPONENTIAL_AT: [-18, 36] })
 
 export default class Middleware {
   getAddresses() {
-    return Vue?.web3Provider?.network?.chainId === 31 ? address.testnet : address.mainnet
+    const chainId = +Vue?.web3Provider?.network?.chainId || NETWORK_ID
+    return address[chainId]
   }
 
   async getMarkets(account) {

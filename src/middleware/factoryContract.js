@@ -1,11 +1,12 @@
 import { ethers } from 'ethers'
 import Vue from 'vue'
 import { constants, address, abi } from './constants'
+import { NETWORK_ID } from '../config/constants'
 
 export default class factoryContract {
   constructor() {
-    this.addressContract =
-      Vue?.web3Provider?.network?.chainId === 31 ? address.testnet : address.mainnet
+    const chainId = +Vue?.web3Provider?.network?.chainId || NETWORK_ID
+    this.addressContract = address[chainId]
   }
 
   getSigner() {

@@ -36,6 +36,7 @@ import * as constants from '@/store/constants'
 import Vue from 'vue'
 import { ethers } from 'ethers'
 import { Fragment } from 'vue-fragment'
+import { NETWORK_ID } from '../../../config/constants'
 
 export default {
   name: 'AppBar',
@@ -81,7 +82,11 @@ export default {
       connectToWeb3: constants.SESSION_CONNECT_WEB3,
     }),
     validateNetwork(chainId) {
-      this.shouldDisplayWarningValidNetwork = ![31].includes(parseInt(chainId))
+      this.shouldDisplayWarningValidNetwork = NETWORK_ID != parseInt(chainId)
+      // Close the alert in 5 seconds
+      setTimeout(() => {
+        this.shouldDisplayWarningValidNetwork = false
+      }, 5000)
     },
     async connect() {
       try {
