@@ -82,7 +82,7 @@ export default {
       connectToWeb3: constants.SESSION_CONNECT_WEB3,
     }),
     validateNetwork(chainId) {
-      this.shouldDisplayWarningValidNetwork = ![NETWORK_ID].includes(parseInt(chainId))
+      this.shouldDisplayWarningValidNetwork = NETWORK_ID != parseInt(chainId)
       // Close the alert in 5 seconds
       setTimeout(() => {
         this.shouldDisplayWarningValidNetwork = false
