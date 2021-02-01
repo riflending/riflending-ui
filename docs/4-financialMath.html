@@ -49,3 +49,12 @@
 <p>Successful execution of one of these functions triggers the contract&#39;s method that accrues interests, which causes interest to be added to the underlying balance of every supplier and borrower in the market. Interest accrues for the current block, as well as each prior block in which the accrueInterest method was not triggered (no user interacted with the cToken contract). This only happens during blocks in which the cToken contract has one of the aforementioned methods invoked.</p>
 <p>Here is an example of supply interest accrual:</p>
 <p>Alice supplies 1 rBTC to the <strong>rLending Protocol</strong>. At the time of supply, the supplyRatePerBlock is <strong>37893605 Wei</strong>, or <strong>0.000000000037893605 rBTC</strong> per block. No one interacts with the cRBTC contract for 3 RBTC blocks. On the subsequent 4th block, Bob borrows some rBTC. Alice’s underlying balance is now <strong>1.000000000151574420 RBTC</strong> (which is 37893605 Wei times 4 blocks, plus the original 1 rBTC). Alice’s underlying rBTC balance in subsequent blocks will have interest accrued based on the new value of <strong>1.000000000151574420 rBTC</strong> instead of the initial <strong>1 rBTC</strong>. Note that the supplyRatePerBlock value may change at any time.</p>
+<p>&nbsp;</p>
+<hr>
+<p><a href="1-introduction.html">Introduction</a>
+<a href="2-keyConcepts.html">Key Concepts</a>
+<a href="3-howTo.html">How To</a>
+<a href="4-financialMath.html">Financial Aspects and Math</a>
+<a href="5-contracts.html">Contracts</a>
+<a href="6-oracles.html">Oracles</a>
+<a href="7-securityAudits.html">Security and Audits</a></p>

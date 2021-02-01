@@ -55,26 +55,28 @@ This will promtp you for confirmation. If you confirm, this will then prompt you
 <p>A user who has negative account liquidity is subject to liquidation by other users of the protocol to return his/her account liquidity back to positive (i.e. above the collateral requirement). When a liquidation occurs, a liquidator may repay some or all of an outstanding borrow on behalf of a borrower and in return receive a discounted amount of collateral held by the borrower; this discount is defined as the liquidation incentive.</p>
 <p>A liquidator may close up to a certain fixed percentage (i.e. close factor) of any individual outstanding borrow of the underwater account. Unlike in v1, liquidators must interact with each cToken contract in which they wish to repay a borrow and seize another asset as collateral. When collateral is seized, the liquidator is transferred cTokens, which they may redeem the same as if they had supplied the asset themselves. Users must approve each cToken contract before calling liquidate (i.e. on the borrowed asset which they are repaying), as they are transferring funds into the contract.</p>
 <hr>
-<h2 id="how-to-interpret-market-data-">How to interpret market data:</h2>
-<p>\textbf{rLending} markets!
-The <strong>rLending</strong> Protocol enables developers to build innovative products on DeFi. So far, we’ve seen crypto wallets equipped with savings APRs, a no-loss lottery system, an interest-earning system for donation income, and more.
-The smart contracts that power the protocol are deployed to the Ethereum blockchain. This means that at the time of this guide’s writing, the only types of assets that <strong>rLending</strong> can support are Ether and ERC-20 tokens.
-The currently supported assets are listed here (rlending market)[www.rlending.com]. Based on the different implementation of Ether (ETH) and ERC-20 tokens, we have to utilize two similar processes:
-The ETH supply method
-The ERC20 token supply method
-Like mentioned earlier, when someone supplies an asset to the protocol, they are given cTokens in exchange. The method for getting cETH is different from the method for getting cDAI, cUNI, or any other cToken for an ERC-20 asset. We’ll run through code examples and explanations for the two different asset supply methods.
-When supplying Ether to the <strong>rLending</strong> protocol, an application can send ETH directly to the payable mint function in the cEther contract. Following that mint, cEther is minted for the wallet or contract that invoked the mint function. Remember that if you are calling this function from another smart contract, that contract needs a payable function in order to receive ETH when you redeem the cTokens later.
-The operation is slightly different for cERC20 tokens. In order to mint cERC20 tokens, the invoking wallet or contract needs to first call the approve function on the underlying token’s contract. All ERC20 token contracts have an approve function.
-The approval needs to indicate that the corresponding cToken contract is permitted to take up to the specified amount from the sender address. Subsequently, when the mint function is invoked, the cToken contract retrieves the indicated amount of underlying tokens from the sender address, based on the prior approve call.</p>
+<h2 id="how-to-view-market-data-">How to view market data:</h2>
+<p>Like mentioned earlier, markets represent each asset listed in the <strong>rLending Protocol</strong>.
+Every market evolves as supply and demand for an asset changes. This impacts several aspects of the protocol (liquidity, price, indexes, etc). If you want to check the current status of a market, you should go to the <a href="www.rlending.com/status">Status tab</a>.
+<img src="pictures/marketList.jpg" alt="Market List">
+Here you will find the market list overview. More detailed information is found by clicking on the right arrow:
+<img src="pictures/marketData.jpg" alt="Market Data"></p>
 <hr>
 <h2 id="how-do-tokens-earn-interests-">How do tokens earn interests?:</h2>
 <p>Each market has its own Supply interest rate (APR).
-Interest isn&#39;t distributed; instead, <strong>simply by holding cTokens, you&#39;ll earn interest!</strong></p>
-<p><strong>cTokens</strong> accumulates interest through their exchange rate — over time, each cToken <strong>becomes convertible into an increasing amount of it&#39;s underlying asset</strong>, even while the number of cTokens in your wallet stays the same.</p>
-<p>Let’s say you supply <strong>1,000 RIF</strong> to the <strong>rLending</strong> protocol, when the exchange rate is <strong>0.020070</strong>; you would receive <strong>49,825.61 cRIF</strong> (1,000/0.020070).</p>
-<p>A few months later, you decide it’s time to withdraw your RIF from the protocol; suppose the exchange rate is now <strong>0.021591</strong>:</p>
-<p>Your <strong>49,825.61 cRIF</strong> is now equal to <strong>1,075.78 RIF</strong> (49,825.61 * 0.021591)</p>
-<p>You could withdraw <strong>1,075.78 RIF</strong>, which would redeem all <strong>49,825.61 cRIF</strong></p>
-<p>You could also withdraw a portion, such as your original <strong>1,000 RIF</strong>, which would redeem <strong>46,315.59 cRIF</strong> (keeping <strong>3,510.01 cRIF</strong> in your wallet)
-or you could transfer your cTokens, effectively transferring your balance of underlying asset.</p>
-<p>If you send your cTokens to a friend, your <strong>rLending</strong> balance will decline and your friend&#39;s will increase. <strong>A cToken transfer will fail if the account has entered that cToken market and the transfer would have put the account into a state of negative liquidity.</strong></p>
+Interest isn&#39;t distributed; instead, <strong>simply by holding cTokens, you&#39;ll earn interest!</strong>
+<strong>cTokens</strong> accumulates interest through their exchange rate — over time, each cToken <strong>becomes convertible into an increasing amount of it&#39;s underlying asset</strong>, even while the number of cTokens in your wallet stays the same.</p>
+<p>Let’s say you supply <strong>1,000 RIF</strong> to the <strong>rLending</strong> protocol, when the exchange rate is <strong>0.020070</strong>; you would receive <strong>49,825.61 cRIF</strong> (1,000/0.020070).
+A few months later, you decide it’s time to withdraw your RIF from the protocol; suppose the exchange rate is now <strong>0.021591</strong>:
+Your <strong>49,825.61 cRIF</strong> is now equal to <strong>1,075.78 RIF</strong> (49,825.61 <em> 0.021591)
+You could withdraw <strong>1,075.78 RIF</strong>, which would redeem all <strong>49,825.61 cRIF</strong>. You could also withdraw a portion, such as your original <strong>1,000 RIF</strong>, which would redeem <strong>46,315.59 cRIF</strong> (keeping <em>*3,510.01 cRIF</em></em> in your wallet) or you could transfer your cTokens, effectively transferring your balance of underlying asset.</p>
+<p>If you send your cTokens to a friend, your <strong>rLending</strong> balance will decline and your  friend&#39;s will increase. <strong>A cToken transfer will fail if the account has entered that cToken market and the transfer would have put the account into a state of negative liquidity.</strong></p>
+<p>&nbsp;</p>
+<hr>
+<p><a href="1-introduction.html">Introduction</a>
+<a href="2-keyConcepts.html">Key Concepts</a>
+<a href="3-howTo.html">How To</a>
+<a href="4-financialMath.html">Financial Aspects and Math</a>
+<a href="5-contracts.html">Contracts</a>
+<a href="6-oracles.html">Oracles</a>
+<a href="7-securityAudits.html">Security and Audits</a></p>
