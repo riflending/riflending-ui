@@ -1,0 +1,70 @@
+<h1 id="key-concepts">Key Concepts</h1>
+<h2 id="account-">Account:</h2>
+<p>In <strong>rLending</strong>, each account is represented by the <strong>rBTC</strong> address that holds the assets and administers the transactions.</p>
+<hr>
+<h2 id="markets-">Markets:</h2>
+<p><strong>Markets</strong> are the method <strong>rLending</strong> uses for representing each asset listed in the protocol. They are essentially <em>a large pool of liquidity</em> that is formed by users providing liquidity and at the same time it is available for other users to borrow. Borrowers pay back their interests to the pool and they share in the interest with suppliers.</p>
+<p><strong>Each underlying market is internally represented with a cToken</strong></p>
+<hr>
+<h2 id="ctokens-">cTokens:</h2>
+<p>Each asset supported by the <a href="https://github.com/riflending/rlending-protocol"><strong>rLending Protocol</strong></a> is integrated through a <strong>cToken Smart Contract subsystem</strong>, which is an <strong>EIP-20</strong> compliant representation of balances supplied to the protocol. By minting cTokens, users may:
+1) Earn interest through the cToken&#39;s exchange rate, which increases in value relative to the underlying asset, and
+2) Gain the ability to use cTokens as collateral for borrowing assets.</p>
+<hr>
+<h2 id="collateral-">Collateral:</h2>
+<p><strong>Collateral</strong> is the guarantee that users provides that allows them to borrow on a given market. In order to supply collateral, users must first activate the <em>Enter Market</em> toggle.
+[ IMAGEN DEL TOGGLE ]</p>
+<p><strong>Note that a user cannot borrow without having supplied collateral first.</strong></p>
+<hr>
+<h2 id="contract-liquidity-">Contract Liquidity:</h2>
+<p>The amount of underlying asset currently stored in the contract.</p>
+<hr>
+<h2 id="supply-balance-">Supply Balance:</h2>
+<p>The account&#39;s supply balance is given by <strong>the amount of cTokens the account has</strong>, converted to underlying by the current exchange rate.
+Remember that when users supply assets, they receive cTokens from <strong>rLending</strong> in exchange. cTokens are ERC20 tokens that can be redeemed for their underlying assets at any time.</p>
+<hr>
+<h2 id="exchange-rate-">Exchange Rate:</h2>
+<p>The rate at which the protocol is currently converting between <strong>cToken</strong> and <strong>Underlying assets</strong>. This rate is ever increasing with each new block passing and this is how suppliers earn they interests.</p>
+<hr>
+<h2 id="borrow-balance-">Borrow Balance:</h2>
+<p><strong>The amount of cTokens the account has borrowed</strong> in a Connectinggiven market, converted to underlying by the current exchange rate.</p>
+<hr>
+<h2 id="debt-">Debt:</h2>
+<p>Debt is calculated to be <strong>the sum of all borrowed balances</strong>, represented in <strong>USD</strong> by converting it through the current cToken-Underlying exchange rate and multiplying by the market price.</p>
+<hr>
+<h2 id="market-price-">Market Price:</h2>
+<p>The current price in <strong>USD</strong> for a given asset, as provided by the Oracles subsystem.</p>
+<hr>
+<h2 id="withdrawals-">Withdrawals:</h2>
+<p>Users that have non-negative health factor are able to withdraw their liquidity at any time. This action performs a transaction that redeems available cTokens for an the equivalent amount of underlying asset according to the current <strong>Exchange Rate</strong>.</p>
+<hr>
+<h2 id="repay-">Repay:</h2>
+<p>Users that have <strong>Borrow Balance</strong> are able to <strong>Repay</strong> their debt in order to partially reduce it or cancel it.</p>
+<hr>
+<h2 id="liquidity-">Liquidity:</h2>
+<p>Account Liquidity <strong>represents the USD value borrowable</strong> by a user, before it reaches liquidation. Users with a shortfall (<em>negative liquidity</em>) are subject to liquidation and can’t withdraw or borrow assets until their Account Liquidity is positive again.</p>
+<p>For each market the user has entered into, their supplied balance is multiplied by the market’s <strong>collateral factor</strong>, and summed; borrow balances are then subtracted, to equal Account Liquidity. In other words: <em>Borrowing an asset reduces Account Liquidity for each USD borrowed</em>.
+At the same time, withdrawing an asset reduces Account Liquidity by the asset’s <strong>collateral factor</strong> times each USD withdrawn.</p>
+<hr>
+<h2 id="collateral-factor-">Collateral Factor:</h2>
+<p>The percentage of supplied assets that is required to be collateralized when a user enters a market for borrowing purposes.</p>
+<hr>
+<h2 id="health-factor-">Health Factor:</h2>
+<p><strong>Health Factor</strong> is the result of a formula that calculates how close an account is to being liquidated. If an account becomes under-collateralized (<em>negative Health Factor</em>) it runs the risk of having it&#39;s shortfall liquidated. This would be bad.</p>
+<hr>
+<h2 id="earning-interests-">Earning Interests:</h2>
+<p>When users and applications supply an asset to the <strong>rLending Protocol</strong>, they begin <strong>earning a variable interest rate instantly</strong>. Interest accrues every block (currently ~30 seconds), and users can withdraw their principal plus interest anytime.
+Under the hood, users are contributing their assets to a large pool of liquidity (a “market”) that is available for other users to borrow, and they share in the interest that borrowers pay back to the pool.
+When users supply assets, they receive cTokens from <strong>rLending</strong> in exchange. cTokens are ERC20 tokens that can be redeemed for their underlying assets at any time. As interest accrues to the assets supplied, cTokens are redeemable at an exchange rate (relative to the underlying asset) that constantly increases over time, based on the rate of interest earned by the underlying asset.</p>
+<hr>
+<h2 id="how-do-tokens-earn-interests-">How do tokens earn interests?:</h2>
+<p>Each market has its own Supply interest rate (APR).
+Interest isn&#39;t distributed; instead, <strong>simply by holding cTokens, you&#39;ll earn interest!</strong></p>
+<p><strong>cTokens</strong> accumulates interest through their exchange rate — over time, each cToken <strong>becomes convertible into an increasing amount of it&#39;s underlying asset</strong>, even while the number of cTokens in your wallet stays the same.</p>
+<p>Let’s say you supply <strong>1,000 RIF</strong> to the <strong>rLending</strong> protocol, when the exchange rate is <strong>0.020070</strong>; you would receive <strong>49,825.61 cRIF</strong> (1,000/0.020070).</p>
+<p>A few months later, you decide it’s time to withdraw your RIF from the protocol; suppose the exchange rate is now <strong>0.021591</strong>:</p>
+<p>Your <strong>49,825.61 cRIF</strong> is now equal to <strong>1,075.78 RIF</strong> (49,825.61 * 0.021591)</p>
+<p>You could withdraw <strong>1,075.78 RIF</strong>, which would redeem all <strong>49,825.61 cRIF</strong></p>
+<p>You could also withdraw a portion, such as your original <strong>1,000 RIF</strong>, which would redeem <strong>46,315.59 cRIF</strong> (keeping <strong>3,510.01 cRIF</strong> in your wallet)
+or you could transfer your cTokens, effectively transferring your balance of underlying asset.</p>
+<p>If you send your cTokens to a friend, your <strong>rLending</strong> balance will decline and your friend&#39;s will increase. <strong>A cToken transfer will fail if the account has entered that cToken market and the transfer would have put the account into a state of negative liquidity.</strong></p>

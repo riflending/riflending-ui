@@ -1,0 +1,68 @@
+<h1 id="how-to">How To</h1>
+<h2 id="how-to-connect-to-the-platform-">How to connect to the platform:</h2>
+<p>In order to use <strong>rLending</strong> you will need your <em>Metamask</em> wallet connected to the <strong>RSK network</strong>
+Direct your browser towards the <a href="www.rlending.com"><strong>rLending</strong> website</a> and click <strong>Connect Wallet</strong>.
+The screen will let you connect your <em>Metamask</em> wallet.
+<img src="pictures/connecting.jpg" alt="Connecting"></p>
+<p>This will prompt you to choose your account within <em>Metamask</em>.
+After you have accepted the connection, you will be redirected to the <em>Home Dashboard</em>.</p>
+<p><img src="pictures/dashboard.jpg" alt="Dashboard"></p>
+<p>In this screen you will have an overview of the status of your account (Totals supplied, borrowed, available liquidity and health factor)</p>
+<hr>
+<h2 id="how-to-make-a-deposit-">How to make a deposit:</h2>
+<p><strong>rLending</strong> deposits are easy! After you have <em>connected your Metamask wallet</em> you will be logged in and ready to supply funds.</p>
+<p>When you are ready to make a deposit, you will have to click on the <strong>Supply / Borrow</strong> tab, where you will be able to see the current status of your supplied assets.
+<img src="pictures/supplyList-0.jpg" alt="Supply List"></p>
+<p>If this is the first time supplying, you might see a notice that lets you know how the toggle button works. We will go over it on the next section, in order to <strong>Borrow assets</strong>.</p>
+<p>For now, click on the asset you wish to supply (in this example, we&#39;re supplying rBTC).</p>
+<p><img src="pictures/supplyInput-2.jpg" alt="Supply Input">
+At the top of this screen you will find the asset&#39;s data, current price and the amount of this token you have supplied <strong>converted to USD</strong>.</p>
+<p>Select the amount you wish to provide, and then click on <strong>Supply Tokens</strong>
+This will promtp your <em>Metamask</em> for validation on the transaction.</p>
+<p>After the transaction has been broadcasted you will recieve confirmation and your funds will be credited to your account.</p>
+<p><img src="pictures/supplySuccess.jpg" alt="Supply Success"></p>
+<p>In this last screen we double check the amount we have supplied in <strong>Supply Balance</strong>. We can also see the current liquidity the contract is holding in <strong>Supplied to contract</strong>. The <strong>Borrow Limit</strong> will not show unless the account has provided collateral. We will do this in the next section.</p>
+<p>When a user supplies balance they immediately start earning interests, so <strong>Congratulations! You are already earning interests!!</strong></p>
+<hr>
+<h2 id="how-to-make-a-borrow-">How to make a borrow:</h2>
+<p>All right, when a user supplies balance they immediately start earning interests... but where do those interests come from? Short answer: <em>Borrowers</em>! Those accounts that borrow crypto assets from the <strong>rLending</strong> protocol pay a varying interest rate every rBTC block. The interest that borrowers pay produces the interest that suppliers earn.</p>
+<p>Before you can borrow you need to collateralize your account!  An asset that is supplied to the protocol is not usable as collateral initially. In order to inform the protocol that you wish to use an asset as collateral, you must “enter the market” for that asset.</p>
+<p><strong>Toggle the Collateral column to enter your supplied funds as collateral</strong>
+<img src="pictures/toggle.jpg" alt="Toggling Market">
+This will promtp you for confirmation. If you confirm, this will then prompt your <em>Metamask</em> for confirmation, since this is a transaction that requires GAS.</p>
+<p>If successful, you will receive confirmation and the borrowing warning will dissapear from the background.</p>
+<p><img src="pictures/enteredMarket.jpg" alt="Entered Market"></p>
+<p>An account can enter multiple markets at one time. You can do this by toggling each one you would like to operate with.
+<strong>It is important to notice that in order to borrow from a market, you also need to enter that market, even if your account hasn&#39;t supplied balance to that market.</strong></p>
+<p>In this example we will be borrowing <strong>RIF</strong></p>
+<hr>
+<h1 id="how-to-make-a-withdrawal-">How to make a withdrawal:</h1>
+<p>If at some point you decide you want to withdraw your funds, you should know you will be reedming your cToken balance in exchange for their respective underlying assets. Withdrawals are accessed through the Supply menu, in the Supply/Borrow page.</p>
+<p>First, log in. Then go to the Supply/Borrow market list.
+<img src="pictures/supplyList.jpg" alt="Supply/Borrow list"></p>
+<p>There you will need to select the market that you wish to withdraw from.
+<img src="pictures/withdrawInput.jpg" alt="Withdraw Input"></p>
+<p>After you&#39;ve chosen the amount you with to withdraw, click <em>Withdraw my tokens</em> and <em>Metamask</em> will prompt you with the transaction.
+<img src="pictures/withdrawMetamask.jpg" alt="Withdraw Aproval"></p>
+<p>After the withdrawal has been broadcasted you will recieve confirmation and your funds will be credited to your account.</p>
+<p><em>Note that big withdrawals may considerably reduce your health factor!!</em></p>
+<hr>
+<h1 id="how-to-repay-debt-">How to repay debt:</h1>
+<p>Borrows can be repaid using a function on the respective cToken contract. Once a borrow has been repaid, the account’s collateral can be entirely redeemed or transferred. There are also functions in the cToken contracts to repay a borrow on behalf of another account.</p>
+<hr>
+<h1 id="how-to-liquidate-underwater-accounts-">How to liquidate underwater accounts:</h1>
+<p>A borrowing account becomes insolvent when the Borrow Balance exceeds the amount allowed by the collateral factor. When an account becomes insolvent, other users can repay a portion of its outstanding borrow in exchange for a portion of its collateral, with a liquidation incentive — currently set at 8\% but subject to change through <strong>rLending</strong>’s governance system. The liquidation incentive means that liquidators receive the borrower’s collateral at a 8\% discount to market price. Having your account liquidated is bad because you lose some of your collateral.</p>
+<p>A user who has negative account liquidity is subject to liquidation by other users of the protocol to return his/her account liquidity back to positive (i.e. above the collateral requirement). When a liquidation occurs, a liquidator may repay some or all of an outstanding borrow on behalf of a borrower and in return receive a discounted amount of collateral held by the borrower; this discount is defined as the liquidation incentive.</p>
+<p>A liquidator may close up to a certain fixed percentage (i.e. close factor) of any individual outstanding borrow of the underwater account. Unlike in v1, liquidators must interact with each cToken contract in which they wish to repay a borrow and seize another asset as collateral. When collateral is seized, the liquidator is transferred cTokens, which they may redeem the same as if they had supplied the asset themselves. Users must approve each cToken contract before calling liquidate (i.e. on the borrowed asset which they are repaying), as they are transferring funds into the contract.</p>
+<hr>
+<h1 id="how-to-interpret-market-data-">How to interpret market data:</h1>
+<p>\textbf{rLending} markets!
+The <strong>rLending</strong> Protocol enables developers to build innovative products on DeFi. So far, we’ve seen crypto wallets equipped with savings APRs, a no-loss lottery system, an interest-earning system for donation income, and more.
+The smart contracts that power the protocol are deployed to the Ethereum blockchain. This means that at the time of this guide’s writing, the only types of assets that <strong>rLending</strong> can support are Ether and ERC-20 tokens.
+The currently supported assets are listed here (rlending market)[www.rlending.com]. Based on the different implementation of Ether (ETH) and ERC-20 tokens, we have to utilize two similar processes:
+The ETH supply method
+The ERC20 token supply method
+Like mentioned earlier, when someone supplies an asset to the protocol, they are given cTokens in exchange. The method for getting cETH is different from the method for getting cDAI, cUNI, or any other cToken for an ERC-20 asset. We’ll run through code examples and explanations for the two different asset supply methods.
+When supplying Ether to the <strong>rLending</strong> protocol, an application can send ETH directly to the payable mint function in the cEther contract. Following that mint, cEther is minted for the wallet or contract that invoked the mint function. Remember that if you are calling this function from another smart contract, that contract needs a payable function in order to receive ETH when you redeem the cTokens later.
+The operation is slightly different for cERC20 tokens. In order to mint cERC20 tokens, the invoking wallet or contract needs to first call the approve function on the underlying token’s contract. All ERC20 token contracts have an approve function.
+The approval needs to indicate that the corresponding cToken contract is permitted to take up to the specified amount from the sender address. Subsequently, when the mint function is invoked, the cToken contract retrieves the indicated amount of underlying tokens from the sender address, based on the prior approve call.</p>
