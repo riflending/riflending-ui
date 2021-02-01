@@ -21,7 +21,7 @@
             text
             color="#008CFF"
             :disabled="!maxBorrowAllowed"
-            @click="maxAmount = true"
+            @click="setMaxAmount"
             >max</v-btn
           >
         </v-col>
@@ -115,6 +115,7 @@
 import { mapState } from 'vuex'
 import Loader from '@/components/common/Loader.vue'
 import Approve from '@/components/common/Approve.vue'
+import BigNumber from 'bignumber.js'
 
 export default {
   name: 'SupplyInput',
@@ -131,14 +132,10 @@ export default {
   data() {
     return {
       waiting: false,
-      maxAmount: false,
-      price: 0,
+      isAmountMax: false,
       amount: '0',
       maxAmountBalanceAllowed: 0,
-      supplyOf: 0,
       supplyRate: 0,
-      liquidity: 0,
-      cash: 0,
       maxBorrowAllowed: 0,
       supplyBalanceInfo: null,
       borrowLimitInfo: null,
@@ -151,10 +148,7 @@ export default {
           this.decimalPositions ||
           `Maximum ${this.data.token.decimals} decimal places for ${this.data.token.symbol}.`,
         minBalance: () =>
-          // TODO see if the tokenBalance is the balance of account or the balance of the account in the protocol
-          // this.tokenBalance >= Number(this.contractAmount) ||
-          // "Not enough funds",
-          this.maxAmountBalanceAllowed >= Number(this.amount) || 'Not enough funds',
+          Number(this.maxAmountBalanceAllowed) >= Number(this.amount) || 'Not enough funds',
       },
     }
   },
@@ -162,12 +156,6 @@ export default {
     ...mapState({
       account: (state) => state.Session.account,
     }),
-    balanceAsDouble() {
-      return this.asDouble(this.tokenBalance)
-    },
-    contractAmount() {
-      return Number(this.amount).toFixed(this.data.token.decimals).replace('.', '')
-    },
     validForm() {
       return (
         typeof this.rules.minBalance() !== 'string' &&
@@ -193,12 +181,8 @@ export default {
   watch: {
     amount() {
       this.getValues()
-      if (this.maxAmount && this.amount !== this.maxAmountBalanceAllowed) this.maxAmount = false
-      if (this.amount === this.maxAmountBalanceAllowed) this.maxAmount = true
-    },
-    maxAmount() {
-      if (this.maxAmount) this.amount = this.maxAmountBalanceAllowed
-      if (!this.maxAmount && this.amount === this.maxAmountBalanceAllowed) this.amount = null
+      if (this.amount === this.getMaxAmount()) this.isAmountMax = true
+      else this.isAmountMax = false
     },
   },
   created() {
@@ -206,39 +190,27 @@ export default {
       .isAllowance(this.account)
       .then((allow) => {
         this.needApproval = !allow
-        return this.$middleware.getAccountLiquidity(this.account)
-      })
-      .then(({ accountLiquidityInExcess }) => {
-        this.liquidity = Number(accountLiquidityInExcess)
-        return this.data.market.getCash()
-      })
-      .then((cash) => {
-        this.cash = cash
         return this.data.market.getSupplyRate()
       })
       .then((supplyRate) => {
         this.supplyRate = supplyRate
-        return this.data.market.getPriceInDecimals()
-      })
-      .then((price) => {
-        this.price = price
         return this.data.market.getUserBalanceOfUnderlying()
       })
       .then((tokenBalance) => {
         this.tokenBalance = tokenBalance
-        this.supplyOf = tokenBalance
-        return this.data.market.getMaxBorrowAllowed(this.account)
+        return this.data.market.maxBorrowAllowedByAccount(this.account)
       })
       .then((maxBorrowAllowed) => {
-        this.maxBorrowAllowed = maxBorrowAllowed
-        const internalAddressOfToken = this.data.market.token?.address
-        return internalAddressOfToken
+        this.maxBorrowAllowed = maxBorrowAllowed.toFixed(
+          this.data.token.decimals,
+          BigNumber.ROUND_DOWN,
+        )
+        return !this.data.market.isCRBTC
           ? this.$middleware.getWalletAccountBalance(this.account, this.data.market.token?.address)
           : this.$middleware.getWalletAccountBalanceForRBTC(this.account)
       })
       .then((balanceOfToken) => {
         this.maxAmountBalanceAllowed = balanceOfToken
-        return this.data.market.getCurrentExchangeRate()
       })
   },
   methods: {
@@ -271,13 +243,11 @@ export default {
           this.waiting = false
           this.$emit('succeed', {
             hash: res.transactionHash,
-            borrowLimitInfo: this.borrowLimitInfo,
-            supplyBalanceInfo: Number(this.amount),
+            supplyBalanceInfo: this.amount,
           })
         })
         .catch((error) => {
           this.waiting = false
-          console.error('ERROR supply()', error)
           const userError = typeof error === 'string' ? error : error.message || ''
           this.$emit('error', { userErrorMessage: userError })
         })
@@ -286,25 +256,32 @@ export default {
       return (Number(value) / 10 ** this.data.token.decimals).toFixed(this.data.token.decimals)
     },
     async getValues() {
-      // TODO check oldLiquidity usage here
-      // eslint-disable-next-line no-unused-vars
-      let oldLiquidity
-      let oldCash
-      await this.$middleware
-        .getAccountLiquidity(this.account)
-        .then(({ accountLiquidityInExcess }) => {
-          oldLiquidity = accountLiquidityInExcess
-          return this.data.market.getUserBalanceOfUnderlying()
-        })
+      //set token balance
+      this.data.market
+        .getUserBalanceOfUnderlying()
         .then((balance) => {
-          this.supplyOf = balance + Number(this.contractAmount)
-          return this.data.market.getCash()
-        })
-        .then((cash) => {
-          oldCash = cash
-          this.cash = oldCash + Number(this.contractAmount)
+          this.tokenBalance = balance
           return this.data.market.getSupplyRate()
         })
+        .then((supplyRate) => {
+          //set apr
+          this.supplyRate = supplyRate
+          return this.data.market.maxBorrowAllowedByAccount(this.account)
+        })
+        .then((maxBorrowAllowed) => {
+          //set borrow limit
+          this.maxBorrowAllowed = maxBorrowAllowed.toFixed(
+            this.data.token.decimals,
+            BigNumber.ROUND_DOWN,
+          )
+        })
+    },
+    getMaxAmount() {
+      return this.maxAmountBalanceAllowed
+    },
+    setMaxAmount() {
+      this.isAmountMax = true
+      this.amount = this.getMaxAmount()
     },
   },
 }

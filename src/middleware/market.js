@@ -306,7 +306,7 @@ export default class Market {
    * @return human number collateralFactorMantisa
    */
   getCollateralFactorMantissa() {
-    return ethers.utils.formatEther(this.collateralFactorMantissa)
+    return new BigNumber(ethers.utils.formatEther(this.collateralFactorMantissa))
   }
 
   /**
@@ -572,8 +572,9 @@ export default class Market {
    */
   async getCurrentExchangeRate() {
     // set balance of account
-    const currentExchangeRate = await this.instance.exchangeRateStored()
-    return Number(currentExchangeRate)
+    return new BigNumber(
+      ethers.utils.formatUnits(await this.instance.exchangeRateStored(), this.token.decimals),
+    )
   }
 
   async getAccountUnderwater() {

@@ -9,7 +9,7 @@
           You have successfully supplied <br />
           this Market with
           <span class="greenish">
-            {{ data.supplyBalanceInfo }}
+            {{ data.supplyBalanceInfo | formatNumber }}
           </span>
           <span class="greenish">{{ data.token.symbol }}</span>
         </div>
@@ -25,7 +25,7 @@
           <v-row class="ma-0 d-flex align-center">
             <v-col cols="7" class="d-flex justify-center">
               <h1>
-                {{ cash | formatToken(data.token.decimals) }}
+                {{ cash | formatNumber }}
               </h1>
             </v-col>
           </v-row>
@@ -43,7 +43,7 @@
         <v-col cols="4">
           <v-row class="ma-0 d-flex align-center">
             <v-col cols="7" class="d-flex justify-center">
-              <h1>{{ supplyOf | formatNumber }}</h1>
+              <h1>{{ tokenBalance | formatNumber }}</h1>
             </v-col>
           </v-row>
         </v-col>
@@ -60,7 +60,7 @@
         <v-col cols="4">
           <v-row class="ma-0 d-flex align-center">
             <v-col cols="7" class="d-flex justify-center">
-              <h1>{{ maxBorrowAllowed | formatToken(data.token.decimals) }}</h1>
+              <h1>{{ maxBorrowAllowed | formatNumber }}</h1>
             </v-col>
           </v-row>
         </v-col>
@@ -82,6 +82,7 @@
 <script>
 import { mapState } from 'vuex'
 import TransactionHash from '@/components/common/TransactionHash.vue'
+import BigNumber from 'bignumber.js'
 
 export default {
   name: 'SupplySuccess',
@@ -97,11 +98,8 @@ export default {
   data() {
     return {
       tokenBalance: 0,
-      liquidity: 0,
       cash: 0,
-      price: 0,
       maxBorrowAllowed: 0,
-      supplyOf: 0,
     }
   },
   computed: {
@@ -114,30 +112,23 @@ export default {
       .getBalanceOfUnderlyingFormatted(this.account)
       .then((balance) => {
         this.tokenBalance = balance
-        this.supplyOf = balance
-        return this.$middleware.getAccountLiquidity(this.account)
-      })
-      .then(({ accountLiquidityInExcess }) => {
-        this.liquidity = accountLiquidityInExcess
-        return this.data.market.getCash()
+        return this.data.market.getMarketCash()
       })
       .then((cash) => {
-        this.cash = cash
-        return this.data.market.getPriceInDecimals()
+        this.cash = cash.toString()
+        return this.data.market.maxBorrowAllowedByAccount(this.account)
       })
-      .then((price) => {
-        this.price = price
-        this.maxBorrowAllowed = this.getMaxAllowed(this.liquidity, this.cash)
-        return this.data.market.getUserBalanceOfUnderlying()
+      .then((maxBorrowAllowed) => {
+        //set borrow limit
+        this.maxBorrowAllowed = maxBorrowAllowed.toFixed(
+          this.data.token.decimals,
+          BigNumber.ROUND_DOWN,
+        )
       })
   },
   methods: {
     closeDialog() {
       this.$emit('closeDialog')
-    },
-    getMaxAllowed(liquidity, cash) {
-      const allowed = this.price > 0 ? Math.floor(liquidity / (this.price * 2)) : 0
-      return allowed >= cash ? cash : allowed
     },
   },
 }
