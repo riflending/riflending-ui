@@ -59,14 +59,12 @@ export default class Middleware {
   }
 
   async getCTokenMetadata(cTokenAddress) {
-    const factoryContractInstance = new FactoryContract()
-    const contract = factoryContractInstance.getContract(constants.RlendingLens)
+    const contract = this.factoryContractInstance.getContract(constants.RlendingLens)
     return contract.callStatic.cTokenMetadata(cTokenAddress)
   }
 
   async cTokenBalancesAll(cTokensList, account) {
-    const factoryContractInstance = new FactoryContract()
-    const contract = factoryContractInstance.getContract(constants.RlendingLens)
+    const contract = this.factoryContractInstance.getContract(constants.RlendingLens)
     return contract.callStatic.cTokenBalancesAll(cTokensList, account)
   }
 
@@ -79,8 +77,7 @@ export default class Middleware {
    *          account shortfall below collateral requirements)
    */
   async getAccountLiquidity(account) {
-    const factoryContractInstance = new FactoryContract()
-    const contract = factoryContractInstance.getContractByNameAndAbiName(
+    const contract = this.factoryContractInstance.getContractByNameAndAbiName(
       constants.Unitroller,
       constants.Comptroller,
     )
