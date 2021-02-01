@@ -14,7 +14,6 @@ nginx.crt
 nginx.key
 .firebase
 .env
-.firebase
 
 # Log files
 npm-debug.log*
