@@ -33,18 +33,15 @@ export default class Market {
     this.account = account
     this.factoryContract = new FactoryContract()
     this.isCRBTC = cTokenSymbol === 'cRBTC'
-    // TODO see delete eventuan web, uses in vue
-    this.eventualWeb3WS = {}
-    this.eventualWeb3Http = {}
     // set data cToken
     this.decimals = cTokenDecimals
     this.instanceAddress = this.factoryContract.addressContract[cTokenSymbol].toLowerCase()
     this.instance = this.factoryContract.getContractCtoken(cTokenSymbol)
     this.symbol = cTokenSymbol
 
-    this.token = Object()
+    this.token = {}
     // validate cRBTC
-    if (cTokenSymbol !== 'cRBTC') {
+    if (!this.isCRBTC) {
       this.token.instance = this.factoryContract.getContractToken(tokenSymbol)
       this.token.address = this.token.instance.address.toLowerCase()
     }
@@ -57,33 +54,32 @@ export default class Market {
     this.factor = 1e18
     this.blocksPerYear = 1051200
 
-    // TODO set supply of
-    // https://github.com/ajlopez/DeFiProt/blob/master/contracts/Market.sol#L246
-    this.supplyOf = 13
-
     // New information added fromt the Lens Helpers
     // Collateral factor can range from 0-90%,
-    this.collateralFactorMantissa = collateralFactorMantissa
+    this.collateralFactorMantissa = new BigNumber(collateralFactorMantissa.toString()).div(
+      this.factor,
+    )
     // In the discord channel, the support team says that LTV is the same as the collateralFactor
-    this.loanToValue = collateralFactorMantissa
-    this.exchangeRateCurrent = exchangeRateCurrent
-    this.reserveFactorMantissa = reserveFactorMantissa
-    this.supplyRatePerBlock = supplyRatePerBlock
-    this.borrowRatePerBlock = borrowRatePerBlock
-    this.totalBorrows = totalBorrows
-    this.totalCash = totalCash
-    this.totalReserves = totalReserves
-    this.totalSupply = totalSupply
+    this.loanToValue = this.collateralFactorMantissa
+    this.exchangeRateCurrent = new BigNumber(exchangeRateCurrent.toString()).div(this.factor)
+    this.reserveFactorMantissa = new BigNumber(reserveFactorMantissa.toString()).div(this.factor)
+    this.supplyRatePerBlock = new BigNumber(supplyRatePerBlock.toString()).div(this.factor)
+    this.borrowRatePerBlock = new BigNumber(borrowRatePerBlock.toString()).div(this.factor)
+    this.totalBorrows = new BigNumber(totalBorrows.toString()).div(10 ** this.token.decimals)
+    this.totalCash = totalCash //new BigNumber(totalCash.toString()).div(10 ** this.token.decimals)
+    this.totalReserves = new BigNumber(totalReserves.toString()).div(10 ** this.token.decimals)
+    this.totalSupply = new BigNumber(totalSupply.toString()).div(10 ** this.token.decimals)
 
     // Calculation based on the compound doc, see https://compound.finance/docs#protocol-math, search for APY
-    const mantissa = ethers.utils.parseUnits('1', underlyingDecimals)
     const blocksPerDay = 4 * 60 * 24
     const daysPerYear = 365
 
-    this.supplyApy =
-      (Math.pow((supplyRatePerBlock / mantissa) * blocksPerDay + 1, daysPerYear - 1) - 1) * 100
-    this.borrowApy =
-      (Math.pow((borrowRatePerBlock / mantissa) * blocksPerDay + 1, daysPerYear - 1) - 1) * 100
+    this.supplyApy = new BigNumber(
+      (Math.pow(this.supplyRatePerBlock.toNumber() * blocksPerDay + 1, daysPerYear - 1) - 1) * 100,
+    )
+    this.borrowApy = new BigNumber(
+      (Math.pow(this.borrowRatePerBlock.toNumber() * blocksPerDay + 1, daysPerYear - 1) - 1) * 100,
+    )
   }
 
   async getValueMoc() {
@@ -101,7 +97,7 @@ export default class Market {
 
   async getPriceInDecimals() {
     const price = await this.getPrice()
-    return new BigNumber(price).div(new BigNumber(this.factor))
+    return new BigNumber(price).div(this.factor)
   }
 
   async getPrice() {
@@ -129,16 +125,11 @@ export default class Market {
     return ethers.utils.formatUnits(balance, this.decimals)
   }
 
-  async getTotalBorrowsCurrent(formatted) {
-    // Total Borrows is the amount of underlying currently loaned out by the market, and the amount upon which interest is accumulated to suppliers of the market.
-    const balance = await this.instance.callStatic.totalBorrowsCurrent()
-    return formatted ? ethers.utils.formatEther(balance) : balance
-  }
-
-  getTotalSupply() {
-    // Mmmm see https://compound.finance/docs/ctokens#total-supply, probably we need to use this method, but depends of the bussines rule, we will use the sum of the total borrow and cash
-    const totalSupply = this.totalCash.add(this.totalBorrows)
-    return ethers.utils.formatEther(totalSupply)
+  async getTotalSupplyInUnderlying(refresh = true) {
+    const totalSupply = refresh
+      ? new BigNumber((await this.instance.totalSupply()).toString()).div(10 ** this.token.decimals)
+      : this.totalSupply
+    return totalSupply.times(this.exchangeRateCurrent)
   }
 
   async getUserBalanceOfUnderlying() {
@@ -164,31 +155,25 @@ export default class Market {
 
   async getMarketCash() {
     // get balance of contract expressed in underlying
-    return new BigNumber(
-      ethers.utils.formatUnits(await this.instance.callStatic.getCash(), this.token.decimals),
+    return new BigNumber((await this.instance.callStatic.getCash()).toString()).div(
+      this.token.decimals,
     )
   }
 
   async getSupplyRate(refresh = true) {
     const supplyRatePerBlock = refresh
-      ? await this.instance.supplyRatePerBlock()
+      ? new BigNumber((await this.instance.supplyRatePerBlock()).toString()).div(this.factor)
       : this.supplyRatePerBlock
     // return borrow rate
-    return new BigNumber(supplyRatePerBlock.toString())
-      .times(new BigNumber(100 * this.blocksPerYear))
-      .div(new BigNumber(this.factor))
-      .toNumber()
+    return supplyRatePerBlock.times(100 * this.blocksPerYear).toNumber()
   }
 
   async getBorrowRate(refresh = true) {
     const borrowRatePerBlock = refresh
-      ? await this.instance.borrowRatePerBlock()
+      ? new BigNumber((await this.instance.borrowRatePerBlock()).toString()).div(this.factor)
       : this.borrowRatePerBlock
     // return borrow rate
-    return new BigNumber(borrowRatePerBlock.toString())
-      .times(new BigNumber(100 * this.blocksPerYear))
-      .div(new BigNumber(this.factor))
-      .toNumber()
+    return borrowRatePerBlock.times(100 * this.blocksPerYear).toNumber()
   }
 
   /**
@@ -298,15 +283,6 @@ export default class Market {
       typeof amount === 'string' ? amount : amount.toFixed(decimalToFix),
       decimalToFix,
     )
-  }
-
-  /**
-   * @dev collateralFactorMantissa, scaled by 1e18, is multiplied by a supply balance to determine how much value can be borrowed
-   * getCollateralFactorMantissa for cToken.
-   * @return human number collateralFactorMantisa
-   */
-  getCollateralFactorMantissa() {
-    return new BigNumber(ethers.utils.formatEther(this.collateralFactorMantissa))
   }
 
   /**
@@ -449,11 +425,11 @@ export default class Market {
     if (!member) return maxWithdrawAllowed
 
     const { accountLiquidityInExcess } = await this.middleware.getAccountLiquidity(account)
-    const liquidityInExcess = new BigNumber(accountLiquidityInExcess.toString()).div(10 ** 18)
+    const liquidityInExcess = new BigNumber(accountLiquidityInExcess.toString()).div(this.factor)
     if (liquidityInExcess.lte(0)) return BigNumber(0)
 
-    const price = new BigNumber(await this.getPrice()).div(10 ** 18) // current market price
-    const collateralFactor = new BigNumber(this.collateralFactorMantissa.toString()).div(10 ** 18)
+    const price = new BigNumber(await this.getPrice()).div(this.factor) // current market price
+    const collateralFactor = this.collateralFactorMantissa
 
     const tokensToDenom = collateralFactor.times(price)
     const maxAmountByLiquidityInExcess = liquidityInExcess.div(tokensToDenom)
@@ -542,28 +518,6 @@ export default class Market {
   async borrowBalanceCurrentFormatted(account) {
     const balance = await this.borrowBalanceCurrent(account)
     return new BigNumber(ethers.utils.formatUnits(balance, this.token.decimals))
-  }
-
-  /**
-   * getAccountSnapshot returns the current status of a given account in this market
-   * @dev to be used in
-   * @param account Address of the account to snapshot
-   * @return (possible error, accrued ctoken balance, borrow balance, current exchange rate mantissa) all in BigNumber
-   */
-  async getAccountSnapshot(account) {
-    // calls cToken contract
-    const [
-      err,
-      cTokenBalance,
-      borrowBalance,
-      exchangeRateMantissa,
-    ] = await this.instance.getAccountSnapshot(account)
-    return {
-      err: err,
-      cTokenBalance: new BigNumber(cTokenBalance.toString()),
-      borrowBalance: new BigNumber(borrowBalance.toString()),
-      exchangeRateMantissa: new BigNumber(exchangeRateMantissa.toString()),
-    }
   }
 
   /**

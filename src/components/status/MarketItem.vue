@@ -136,37 +136,28 @@ export default {
     this.supplyRate = await this.market.getSupplyRate(false)
     this.borrowRate = await this.market.getBorrowRate(false)
     this.cash = ethers.utils.formatUnits(this.market.totalCash, this.market.token.decimals)
-    this.totalSupply = this.market.getTotalSupply()
-    this.totalBorrows = ethers.utils.formatUnits(
-      this.market.totalBorrows,
-      this.market.token.decimals,
-    )
-    this.loanToValue = ethers.utils.formatUnits(
-      this.market.loanToValue.mul(100),
-      this.market.token.decimals,
-    )
+    this.totalSupply = await this.market.getTotalSupplyInUnderlying(false)
+    this.totalBorrows = this.market.totalBorrows
+    this.loanToValue = this.market.loanToValue
   },
   methods: {
     reset() {
       this.dialog = false
       this.market
         .getPriceInDecimals()
-        .then((marketPrice) => {
+        .then(async (marketPrice) => {
           this.price = marketPrice
           return this.market.getBorrowRate()
         })
         .then((borrowRate) => {
           this.borrowRate = borrowRate
           this.cash = ethers.utils.formatUnits(this.market.totalCash, this.market.token.decimals)
-          this.totalSupply = this.market.getTotalSupply()
-          this.totalBorrows = ethers.utils.formatUnits(
-            this.market.totalBorrows,
-            this.market.token.decimals,
-          )
-          this.loanToValue = ethers.utils.formatUnits(
-            this.market.loanToValue.mul(100),
-            this.market.token.decimals,
-          )
+          this.totalBorrows = this.market.totalBorrows
+          this.loanToValue = this.market.loanToValue
+          return this.market.getTotalSupplyInUnderlying()
+        })
+        .then((totalSupply) => {
+          this.totalSupply = totalSupply
         })
       this.$emit('dialogClosed')
     },

@@ -130,8 +130,6 @@ export default {
       .then((supplyRate) => {
         this.supplyRate = supplyRate
       })
-    // set supply of TODO
-    this.supplyOf = this.market.supplyOf
   },
   methods: {
     reset() {
@@ -151,8 +149,6 @@ export default {
         .then((supplyRate) => {
           this.supplyRate = supplyRate
         })
-      // set supply of TODO
-      this.supplyOf = this.market.supplyOf
       this.$emit('dialogClosed')
     },
   },

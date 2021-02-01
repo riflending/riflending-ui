@@ -91,18 +91,6 @@ export default class Middleware {
     }
   }
 
-  // eslint-disable-next-line no-unused-vars
-  getCollateralFactor(account) {
-    return 1
-    // return Rlending.eth
-    //   .read( // TODO: update to query proper collateral factor in contract
-    //     Rlending.util.getAddress(Rlending.Unitroller),
-    //     "function getAccountLiquidity(address) returns (uint)",
-    //     [account],
-    //     { provider: window.ethereum }
-    //   );
-  }
-
   async getWalletAccountBalance(account, tokenAddress) {
     const abi = ['function balanceOf(address) returns (uint)']
     const contract = new ethers.Contract(tokenAddress, abi, Vue.web3Provider)
@@ -158,22 +146,20 @@ export default class Middleware {
         results.returnData[i * 2 + 1],
       )
       const cTokenBalanceBN =
-        Number(err) === 0
-          ? new BigNumber(cTokenBalance.toString()).div(this.factor)
-          : new BigNumber(0)
+        Number(err) === 0 ? new BigNumber(cTokenBalance.toString()) : new BigNumber(0)
       const borrowBalanceBN =
         Number(err) === 0
-          ? new BigNumber(borrowBalance.toString()).div(this.factor)
+          ? new BigNumber(borrowBalance.toString()).div(10 ** markets[i].token.decimals)
           : new BigNumber(0)
       const exchangeRateBN =
         Number(err) === 0
           ? new BigNumber(exchangeRateMantissa.toString()).div(this.factor)
           : new BigNumber(1)
 
-      const underlyingBalanceBN = cTokenBalanceBN.times(exchangeRateBN)
-      const collateralFactorBN = new BigNumber(markets[i].collateralFactorMantissa.toString()).div(
-        this.factor,
-      )
+      const underlyingBalanceBN = cTokenBalanceBN
+        .times(exchangeRateBN)
+        .div(10 ** markets[i].token.decimals)
+      const collateralFactorBN = markets[i].collateralFactorMantissa
 
       marketsTotals.push({
         address: markets[i].instanceAddress,
@@ -181,7 +167,7 @@ export default class Middleware {
         collateralFactorMantissa: collateralFactorBN,
         symbol: markets[i].symbol,
         decimals: markets[i].decimals,
-        cTokenBalance: cTokenBalanceBN,
+        cTokenBalance: cTokenBalanceBN.div(10 ** markets[i].decimals),
         exchangeRateMantissa: exchangeRateBN,
         underlyingPrice: underlyingPriceBN,
         underlyingBalance: underlyingBalanceBN,

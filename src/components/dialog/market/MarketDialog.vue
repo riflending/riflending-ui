@@ -25,36 +25,15 @@
               ><span class="ml-2 itemInfo">usd</span>
             </v-row>
           </v-col>
-          <!-- <v-col cols="2" >
-            <v-row>
-              <h2>APR:</h2>
-            </v-row>
-            <v-row class="item d-flex justify-start"> {{ apr | formatPercentage }} </v-row>
-          </v-col> -->
-          <v-col />
-          <v-col cols="2" class="mr-1">
-            <v-row class="ma-0 pr-1 d-flex justify-start">
-              <h2 class="grayish">APR:</h2>
-            </v-row>
-            <v-row class="item d-flex justify-start"> {{ apr | formatPercentage }} </v-row>
-          </v-col>
-          <!-- <v-col cols="2" class="mr-1">
-            <v-row class="ma-0 pr-1 d-flex justify-end">
-              <h2 class="grayish">Price 24hs:</h2>
-            </v-row>
-            <v-row class="grayish item d-flex justify-end mr-1">
-              {{ priceChange | formatPercentage }}
-            </v-row>
-          </v-col> -->
         </v-row>
       </div>
       <div class="container">
         <v-row class="ma-2 d-flex align-center">
           <v-col cols="3">
-            <h3>Total cash</h3>
+            <h3>Total Reserve</h3>
           </v-col>
           <v-col cols="2" class="item">
-            <span>{{ updatedTotalReserves | formatToken(data.token.decimals) }} </span>
+            <span>{{ updatedTotalReserve | formatNumber }} </span>
           </v-col>
           <v-col cols="0">
             <span class="ml-2 itemInfo">{{ data.token.symbol }}</span>
@@ -66,22 +45,38 @@
             <span>{{ reserveFactor | formatPercentage }} </span>
           </v-col>
         </v-row>
-
         <v-row class="ma-2 d-flex align-center">
           <v-col cols="3">
-            <h3>Total borrow</h3>
+            <h3>Total cash</h3>
           </v-col>
           <v-col cols="2" class="item">
-            <span>{{ updatedTotalBorrow | formatToken(data.token.decimals) }}</span>
+            <span>{{ updatedTotalCash | formatToken(data.token.decimals) }} </span>
           </v-col>
           <v-col cols="0">
             <span class="ml-2 itemInfo">{{ data.token.symbol }}</span>
           </v-col>
           <v-col cols="3" class="d-flex align-center">
-            <h3>Est. Borrow interest (year)</h3>
+            <h3>cToken Exchange Rate</h3>
           </v-col>
           <v-col cols="2" class="item">
-            <span>{{ borrowAPR | formatPercentage }} </span>
+            <span>{{ exchangeRate | formatNumber }} </span>
+          </v-col>
+        </v-row>
+        <v-row class="ma-2 d-flex align-center">
+          <v-col cols="3">
+            <h3>Total borrow</h3>
+          </v-col>
+          <v-col cols="2" class="item">
+            <span>{{ updatedTotalBorrow | formatNumber }}</span>
+          </v-col>
+          <v-col cols="0">
+            <span class="ml-2 itemInfo">{{ data.token.symbol }}</span>
+          </v-col>
+          <v-col cols="3" class="d-flex align-center">
+            <h3>Est. Compound Borrow interest (year)</h3>
+          </v-col>
+          <v-col cols="2" class="item">
+            <span>{{ borrowAPY | formatPercentage }} </span>
           </v-col>
         </v-row>
 
@@ -90,16 +85,16 @@
             <h3>Total Supplied</h3>
           </v-col>
           <v-col cols="2" class="item">
-            <span>{{ updatedTotalSupply | formatToken(data.token.decimals) }}</span>
+            <span>{{ updatedTotalSupply | formatNumber }}</span>
           </v-col>
           <v-col cols="0">
             <span class="ml-2 itemInfo">{{ data.token.symbol }}</span>
           </v-col>
           <v-col cols="3" class="d-flex align-center">
-            <h3>Est. Supply interest (year)</h3>
+            <h3>Est. Compound Supply interest (year)</h3>
           </v-col>
           <v-col cols="2" class="item">
-            <span>{{ supplyAPR | formatPercentage }} </span>
+            <span>{{ supplyAPY | formatPercentage }} </span>
           </v-col>
         </v-row>
 
@@ -145,7 +140,7 @@
 <script>
 import { mapState } from 'vuex'
 import MarketPriceDialog from '@/components/dialog/market/MarketPriceDialog.vue'
-import { ethers } from 'ethers'
+import BigNumber from 'bignumber.js'
 
 export default {
   name: 'MarketDialog',
@@ -161,24 +156,19 @@ export default {
   data() {
     return {
       flag: this.data.flag,
-      borrowRate: 0,
-      baseBorrowRate: 0,
       price: 0,
       updatedTotalSupply: 0, // sum of supply in this market
       updatedTotalBorrow: 0, // sum of borrowed in this market
-      updatedTotalReserves: 0, // sum of reserves in this market
-      supplyAPR: 0, // the supply apr
-      borrowAPR: 0, // the borrow apr
+      updatedTotalCash: 0, // sum of underyling tokens currently held in this market
+      updatedTotalReserve: 0, // sum of reserves in this market
+      supplyAPY: 0, // the supply apr
+      borrowAPY: 0, // the borrow apr
       supBorRatio: 0, // the sup/borr ratio
       collFact: 0, // the collateral factor
-      reserveFactor: 0, //reserveFactorMantissa
-      liqThr: 0, // the liquidation factor
+      reserveFactor: 0, // reserveFactorMantissa
+      exchangeRate: 0, // exchangeRate
       liqPen: 0, // the liquidation penalty
-      priceChange: 0, // the price change in the last 24hs
       mktLiqu: 0, // market liquidity in usd
-      cash: 0,
-      growth: 0,
-      tokenAddress: 0,
       priceFlag: false,
     }
   },
@@ -186,11 +176,8 @@ export default {
     ...mapState({
       account: (state) => state.Session.account,
     }),
-    apr() {
-      return this.borrowRate.toFixed(2)
-    },
     rskExplorerUrl() {
-      return `https://explorer.testnet.rsk.co/address/${this.tokenAddress}`
+      return `https://explorer.testnet.rsk.co/address/${this.data.market.token.address}`
     },
     dataObject() {
       return {
@@ -201,27 +188,28 @@ export default {
     },
   },
   async created() {
-    this.price = await this.data.market.getPriceInDecimals()
-    this.updatedTotalSupply = this.data.market.totalSupply
+    this.reserveFactor = this.data.market.reserveFactorMantissa.times(100)
+    this.collFact = this.data.market.loanToValue.times(100)
+    this.exchangeRate = this.data.market.exchangeRateCurrent
+    this.supplyAPY = this.data.market.supplyApy
+    this.borrowAPY = this.data.market.borrowApy
     this.updatedTotalBorrow = this.data.market.totalBorrows
-    this.updatedTotalReserves = this.data.market.totalCash
+    this.updatedTotalCash = this.data.market.totalCash
+    this.updatedTotalReserve = this.data.market.totalReserves
+    this.updatedTotalSupply = await this.data.market.getTotalSupplyInUnderlying(false)
+    this.borrowRate = await this.data.market.getBorrowRate(false)
+    this.price = await this.data.market.getPriceInDecimals()
+    this.mktLiqu = new BigNumber(this.updatedTotalCash.toString())
+      .div(10 ** this.data.market.token.decimals)
+      .times(this.price)
     this.supBorRatio =
       this.updatedTotalSupply != 0
-        ? Number(this.updatedTotalBorrow) / Number(this.updatedTotalSupply)
+        ? new BigNumber(this.updatedTotalBorrow.toString())
+            .div(this.updatedTotalSupply.toString())
+            .times(100)
+            .toNumber()
         : 0
-    this.reserveFactor = ethers.utils.formatUnits(
-      this.data.market.reserveFactorMantissa.mul(100),
-      this.data.market.token.decimals,
-    )
-    this.supplyAPR = this.data.market.supplyApy
-    this.borrowAPR = this.data.market.borrowApy
-    this.borrowRate = await this.data.market.getBorrowRate()
-    this.collFact = ethers.utils.formatUnits(
-      this.data.market.loanToValue.mul(100),
-      this.data.market.token.decimals,
-    )
     this.liqPen = await this.data.market.getLiquidationIncentiveMantissa()
-    this.mktLiqu = this.price * (this.updatedTotalReserves / 1e18)
 
     this.reset()
   },
@@ -234,32 +222,6 @@ export default {
     },
     reset() {
       this.priceFlag = false
-      // this.data.market
-      //   .getPrice(this.data.market.address)
-      //   .then((marketPrice) => {
-      //     this.price = marketPrice
-      //     return this.data.market.eventualBorrowRate
-      //   })
-      //   .then((borrowRate) => {
-      //     this.borrowRate = borrowRate
-      //     return this.data.market.eventualBaseBorrowRate
-      //   })
-      //   .then((baseBorrowRate) => {
-      //     this.baseBorrowRate = baseBorrowRate
-      //     return this.data.market.eventualUpdatedTotalSupply
-      //   })
-      //   .then((updatedTotalSupply) => {
-      //     this.updatedTotalSupply = updatedTotalSupply
-      //     return this.data.market.eventualUpdatedTotalBorrows
-      //   })
-      //   .then((updatedTotalBorrows) => {
-      //     this.updatedTotalBorrow = updatedTotalBorrows
-      //     return this.data.market.getCash()
-      //   })
-      //   .then((cash) => {
-      //     this.cash = cash
-      //     this.growth = (this.borrowRate - this.baseBorrowRate).toFixed(2)
-      //   })
     },
   },
 }

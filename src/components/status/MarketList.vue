@@ -40,7 +40,7 @@
 </template>
 
 <script>
-import MarketItem from '@/components/admin/MarketItem.vue'
+import MarketItem from '@/components/status/MarketItem.vue'
 
 export default {
   name: 'MarketList',
