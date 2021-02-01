@@ -95,7 +95,6 @@ export default {
         this.validateNetwork(window?.ethereum?.chainId ?? 0)
 
         this.$provider = await this.$rLogin.connect()
-
         this.$provider.on('accountsChanged', () => {
           window.location.reload(false)
         })

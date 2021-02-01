@@ -12,6 +12,7 @@ import { RBTCMocOracle } from '../abis/rBTCMocOracle'
 import { RLEN } from '../abis/rLEN'
 import { RlendingLens } from '../abis/rLendingLens'
 import { WhitePaperInterestRateModel } from '../abis/whitePaperInterestRateModel'
+import { Multicall } from '../abis/multicall'
 
 export const abi = {
   Erc20: Erc20,
@@ -29,6 +30,7 @@ export const abi = {
   RlendingLens: RlendingLens,
   WhitePaperInterestRateModel: WhitePaperInterestRateModel,
   PriceFeed: ['function price(string symbol) returns (uint256)'],
+  Multicall: Multicall,
 }
 
 // Publicly revealed on the parent class
@@ -55,6 +57,7 @@ export const constants = {
   RIF: 'RIF',
   rDAI: 'rDAI',
   RBTC: 'RBTC',
+  Multicall: 'Multicall',
 }
 
 export const address = {
@@ -80,6 +83,7 @@ export const address = {
     'RIF Moc Oracle': '0x9d4b2c05818a0086e641437fcb64ab6098c7bbec',
     RIF: '0x19f64674d8a5b4e652319f5e239efd3bc969a1fe',
     rDAI: '0x0d86fca9be034a363cf12c9834af08d54a10451c',
+    Multicall: '0x4eeebb5580769ba6d26bfd07be636300076d1831', // https://github.com/Think-and-Dev/multicall
   },
   30: {
     /* TODO - uptate this to RSK mainnet addresses */
@@ -101,6 +105,7 @@ export const address = {
     'RIF Moc Oracle': '0x9d4b2c05818a0086e641437fcb64ab6098c7bbec',
     RIF: '0x19f64674d8a5b4e652319f5e239efd3bc969a1fe',
     rDAI: '0x0d86fca9be034a363cf12c9834af08d54a10451c',
+    Multicall: '0x4eeebb5580769ba6d26bfd07be636300076d1831', // https://github.com/Think-and-Dev/multicall
   },
 }
 

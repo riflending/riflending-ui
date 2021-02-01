@@ -1,6 +1,6 @@
 import { ethers } from 'ethers'
 import BigNumber from 'bignumber.js'
-import factoryContract from './factoryContract'
+import FactoryContract from './factoryContract'
 import { constants, decimals, abi } from './constants'
 
 BigNumber.set({ EXPONENTIAL_AT: [-18, 36] })
@@ -31,14 +31,14 @@ export default class Market {
     } = market
     this.middleware = middleware
     this.account = account
-    this.factoryContract = new factoryContract()
+    this.factoryContract = new FactoryContract()
     this.isCRBTC = cTokenSymbol === 'cRBTC'
     // TODO see delete eventuan web, uses in vue
     this.eventualWeb3WS = {}
     this.eventualWeb3Http = {}
     // set data cToken
     this.decimals = cTokenDecimals
-    this.instanceAddress = this.factoryContract.addressContract[cTokenSymbol]
+    this.instanceAddress = this.factoryContract.addressContract[cTokenSymbol].toLowerCase()
     this.instance = this.factoryContract.getContractCtoken(cTokenSymbol)
     this.symbol = cTokenSymbol
 
@@ -101,7 +101,7 @@ export default class Market {
 
   async getPriceInDecimals() {
     const price = await this.getPrice()
-    return new BigNumber(price).div(new BigNumber(1e18))
+    return new BigNumber(price).div(new BigNumber(this.factor))
   }
 
   async getPrice() {
@@ -169,8 +169,21 @@ export default class Market {
     )
   }
 
-  async getBorrowRate() {
-    const borrowRatePerBlock = await this.instance.borrowRatePerBlock()
+  async getSupplyRate(refresh = true) {
+    const supplyRatePerBlock = refresh
+      ? await this.instance.supplyRatePerBlock()
+      : this.supplyRatePerBlock
+    // return borrow rate
+    return new BigNumber(supplyRatePerBlock.toString())
+      .times(new BigNumber(100 * this.blocksPerYear))
+      .div(new BigNumber(this.factor))
+      .toNumber()
+  }
+
+  async getBorrowRate(refresh = true) {
+    const borrowRatePerBlock = refresh
+      ? await this.instance.borrowRatePerBlock()
+      : this.borrowRatePerBlock
     // return borrow rate
     return new BigNumber(borrowRatePerBlock.toString())
       .times(new BigNumber(100 * this.blocksPerYear))

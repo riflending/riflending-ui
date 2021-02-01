@@ -3,7 +3,7 @@ import Vue from 'vue'
 import { constants, address, abi } from './constants'
 import { NETWORK_ID } from '../config/constants'
 
-export default class factoryContract {
+export default class FactoryContract {
   constructor() {
     const chainId = +Vue?.web3Provider?.network?.chainId || NETWORK_ID
     this.addressContract = address[chainId]
@@ -27,6 +27,11 @@ export default class factoryContract {
       return false
     }
     return true
+  }
+  getContractAddress(name) {
+    if (this.validateContractName(name)) {
+      return this.addressContract[name]
+    }
   }
 
   getContract(name) {

@@ -2,7 +2,7 @@
   <div class="supply-borrow-graph">
     <div>
       <v-row class="ma-0">
-        <h1>My Supply-Borrow Factor:</h1>
+        <h1>Supply-Borrow Factor:</h1>
       </v-row>
       <v-row class="ma-0 pt-1">
         <v-col cols="5" class="pa-0">
@@ -14,7 +14,16 @@
     <v-row class="ma-0 d-flex align-center">
       <v-col cols="3">
         <v-row class="d-flex justify-end">
-          <h2 class="text-center">Supplied</h2>
+          <h3 class="collateral text-right">
+            Supplied as<br />
+            Collateral
+          </h3>
+        </v-row>
+        <v-row class="d-flex justify-end">
+          <p class="blackish">{{ totalSuppliedAsCollateral | formatPrice }}</p>
+        </v-row>
+        <v-row class="d-flex justify-end">
+          <h3 class="supplied text-right">Supplied</h3>
         </v-row>
         <v-row class="d-flex justify-end">
           <p class="blackish">{{ totalSupplied | formatPrice }}</p>
@@ -38,10 +47,10 @@
       </v-col>
       <v-col cols="3">
         <v-row class="d-flex justify-start">
-          <h3 class="text-center">Borrowed</h3>
+          <h3 class="borrowed text-left">Borrowed</h3>
         </v-row>
         <v-row class="d-flex justify-start">
-          <p class="blackish text-center">
+          <p class="blackish">
             {{ totalBorrowed | formatPrice }}
           </p>
         </v-row>
@@ -55,14 +64,8 @@
               <v-icon small class="mx-5" v-bind="attrs" v-on="on">info</v-icon>
             </template>
             <div class="tooltip">
-              This is your <span class="boldie">Borrow Limit</span> <br />
-              <span class="boldie">
-                For more information<br />
-                regarding this value<br />
-                check the official documentation<br /><br />
-              </span>
-              <span class="boldie"> <span class="redish"> Don't let it become negative </span></span
-              ><br />
+              This is your maximum <span class="boldie">Borrow Limit</span> in USD<br />
+              <span class="boldie"> <span class="redish"> Don't let it become 0 </span></span><br />
               or your collateral might be liquidated!
             </div>
           </v-tooltip>
@@ -89,6 +92,7 @@ export default {
     return {
       totalBorrowed: 0,
       totalSupplied: 0,
+      totalSuppliedAsCollateral: 0,
       totalBorrowLimit: 0,
       emptyChart: [
         ['Type', 'Value'],
@@ -97,6 +101,7 @@ export default {
       chartData: [
         ['Type', 'Value'],
         ['Supplied', 0],
+        ['Supplied as Collateral', 0],
         ['Borrowed', 0],
       ],
       chartOptions: {
@@ -105,7 +110,7 @@ export default {
         legend: 'none',
         pieSliceText: 'none',
         fontName: 'Rubik',
-        colors: ['#008CFF', '#828282'],
+        colors: ['#25BD6B', '#008CFF', '#828282'],
         pieHole: 0.7,
         chartArea: {
           width: '100%',
@@ -127,30 +132,36 @@ export default {
     this.getData()
   },
   methods: {
-    getData() {
-      this.$middleware.getTotals(this.account).then(({ supplyValue, borrowValue }) => {
-        this.totalSupplied = supplyValue
-        this.totalBorrowed = borrowValue
-        this.getBorrowLimit()
-        this.updateDiagramData()
-      })
+    async getData() {
+      const {
+        supplyValue,
+        supplyValueAsCollateral,
+        borrowValue,
+      } = await this.$middleware.getTotalSupplysAndBorrows(this.account)
+      this.totalSupplied = supplyValue
+      this.totalBorrowed = borrowValue
+      this.totalSuppliedAsCollateral = supplyValueAsCollateral
+      this.getBorrowLimit()
+      this.updateDiagramData()
     },
-    getBorrowLimit() {
-      this.$middleware
-        .getAccountLiquidity(this.account)
-        .then(({ err, accountLiquidityInExcess, accountShortfall }) => {
-          if (err != 0) console.log('ERROR IN ACCOUNT LIQUIDITY. Code:', err)
-          if (accountLiquidityInExcess != 0) {
-            this.totalBorrowLimit = ethers.utils.formatEther(accountLiquidityInExcess)
-          } else {
-            this.totalBorrowLimit = ethers.utils.formatEther(accountShortfall) * -1
-          }
-        })
+    async getBorrowLimit() {
+      const {
+        err,
+        accountLiquidityInExcess,
+        accountShortfall,
+      } = await this.$middleware.getAccountLiquidity(this.account)
+      if (err != 0) console.log('ERROR IN ACCOUNT LIQUIDITY. Code:', err)
+      if (accountLiquidityInExcess != 0) {
+        this.totalBorrowLimit = ethers.utils.formatEther(accountLiquidityInExcess)
+      } else {
+        this.totalBorrowLimit = ethers.utils.formatEther(accountShortfall) * -1
+      }
     },
     updateDiagramData() {
       this.chartData = [
         ['Type', 'Value'],
-        ['Supplied', +this.totalSupplied],
+        ['Supplied', +this.totalSupplied - this.totalSuppliedAsCollateral],
+        ['Supplied as Collateral', +this.totalSuppliedAsCollateral],
         ['Borrowed', +this.totalBorrowed],
       ]
     },
