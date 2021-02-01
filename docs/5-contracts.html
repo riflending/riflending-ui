@@ -1,20 +1,23 @@
 <h1 id="smart-contracts">Smart Contracts</h1>
 <h2 id="architecture-">Architecture:</h2>
 <p><img src="pictures/rLendingGraph.jpg" alt="Architecture Graph"></p>
+<p>&nbsp;</p>
 <hr>
 <h2 id="ctokens-">cTokens:</h2>
 <p>cTokens are the primary means of interacting with the <strong>rLending</strong> Protocol; when a user mints, redeems, borrows, repays a borrow, liquidates a borrow, or transfers cTokens, she will do so using the cToken contract.</p>
-<p>There are currently two types of cTokens: CErc20 and CEther. Though both types expose the EIP-20 interface, CErc20 wraps an underlying ERC-20 asset, while CEther simply wraps Ether itself. As such, the core functions which involve transferring an asset into the protocol have slightly different interfaces depending on the type, each of which is shown below.</p>
-<p>Remember that the amount of ETH that can be exchanged for cETH increases every Ethereum block, which is about every 30 seconds. This means that the exchange rate of underlying to cToken increases over time. There is no minimum or maximum amount of time that suppliers need to keep their asset in the protocol. See the varying exchange rate for each cToken by clicking on one at (rlending)[rlending.com]markets.
-For more information on cToken concepts see the cToken documentation.</p>
+<p>There are currently two types of cTokens: CErc20 and CRBTC. Though both types expose the EIP-20 interface, CErc20 wraps an underlying ERC-20 asset, while CRBTC simply wraps rBTC itself. As such, the core functions which involve transferring an asset into the protocol have slightly different interfaces depending on the type, each of which is shown below.</p>
+<p>Remember that the amount of rBTC that can be exchanged for cRBTC increases every rBTC block, which is about every 30 seconds. This means that the exchange rate of underlying to cToken increases over time. There is no minimum or maximum amount of time that suppliers need to keep their asset in the protocol. See the varying exchange rate for each cToken by clicking on one at (rlending)[rlending.com] markets.</p>
+<p>&nbsp;</p>
 <hr>
 <h2 id="risk-management-">Risk Management:</h2>
-<p>the risk management layer of the <strong>rLending</strong> protocol is comprised of <strong>Comptroller</strong>, <strong>Unitroller</strong> and the interest rate models. <strong>Comptroller</strong> being the main contract, that determines how much collateral a user is required to maintain, and whether (and by how much) a user can be liquidated. Each time a user interacts with a cToken, the <strong>Comptroller</strong> is asked to approve or deny the transaction.</p>
-<p>The <strong>Comptroller</strong> maps user balances to prices (via the Price Oracle) to risk weights (called Collateral Factors) to make its determinations. Users explicitly list which assets they would like included in their risk scoring, by calling Enter Markets and Exit Market.</p>
-<p>The <strong>Comptroller</strong> is implemented as an upgradeable proxy. The <strong>Unitroller</strong> proxies all logic to the <strong>Comptroller</strong> implementation, but storage values are set on the <strong>Unitroller</strong>.</p>
+<p>The risk management layer of the <strong>rLending</strong> protocol is comprised of <strong>Comptroller</strong>, <strong>Unitroller</strong> and the interest rate models. <strong>Comptroller</strong> is the main contract that determines how much collateral a user is required to maintain and whether (and by how much) a user can be liquidated. Each time a user interacts with a cToken, the <strong>Comptroller</strong> is asked to approve or deny the transaction.</p>
+<p>The <strong>Comptroller</strong> maps user balances to prices (via the Price Oracle) to risk weights (called Collateral Factors) to make its determinations. Users explicitly list which assets they would like included in their risk scoring, by calling Enter Markets and Exit Market (toggling each market in the Supply / Borrow tab).</p>
+<p>The <strong>Comptroller</strong> is implemented as an upgradeable proxy. This means the <strong>Unitroller</strong> proxies all logic to the <strong>Comptroller</strong> implementation, but storage values are actually set on the <strong>Unitroller</strong>.</p>
+<p>&nbsp;</p>
 <hr>
 <h2 id="oracles-">Oracles:</h2>
 <p>An oracle is a way for a blockchain or smart contract to interact with external data. Since <em>DEFI</em> usually requires the interaction with real life information (<em>i.e. the current rBTC price</em>), Oracles are a critical component in every serious project. In the next section, the <strong>rLending</strong> Oracle subsystem is explained in detail.</p>
+<p>&nbsp;</p>
 <hr>
 <h2 id="testnet-">Testnet:</h2>
 <ul>
