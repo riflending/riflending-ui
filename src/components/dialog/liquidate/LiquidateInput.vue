@@ -69,20 +69,16 @@
                 {{ selectCollateralAmount }}
               </v-col>
               <v-col cols="2" class="d-flex justify-end">
-                <select v-model="marketSelected">
-                  <option disabled value="">
-                    Select collateral market
-                    <!-- Please select your Collateral market -->
-                  </option>
-                  <option
-                    v-for="option in getAvailableMarketBorrower"
-                    :key="option.text"
-                    class="justify-end"
-                    :value="option.value"
+                <div>
+                  <v-select
+                    v-model="marketSelected"
+                    :items="getAvailableMarketBorrower"
+                    item-text="text"
+                    item-value="value"
+                    attach="attach"
                   >
-                    {{ option.text.toUpperCase() }}
-                  </option>
-                </select>
+                  </v-select>
+                </div>
               </v-col>
             </v-row>
             <v-row class="mx-0 px-1 pt-1 d-flex align-center">
@@ -191,6 +187,7 @@ export default {
         maxAvailable: () =>
           this.amount <= this.maxToLiquidate() || 'There is not enough collateral to liquidate',
       },
+      selected: { text: 'Choose...', disabled: true },
     }
   },
   computed: {
@@ -246,7 +243,14 @@ export default {
       return this.amount
     },
     getAvailableMarketBorrower() {
-      return this.data.availableMarketBorrower
+      var defaultOpt = {}
+      defaultOpt.text = 'Choose...'
+      defaultOpt.value = ''
+      defaultOpt.disabled = true
+      var newAvailableMarketBorrower = Array.from(this.data.availableMarketBorrower)
+      newAvailableMarketBorrower.unshift(defaultOpt)
+
+      return newAvailableMarketBorrower
     },
   },
   watch: {
@@ -476,3 +480,19 @@ export default {
   },
 }
 </script>
+
+<style>
+.v-select__selections {
+  flex-wrap: inherit;
+  display: contents;
+}
+.v-select.v-text-field input {
+  display: none;
+}
+.v-select > .v-input__control > .v-input__slot {
+  width: 100px;
+}
+.v-text-field__details {
+  display: none;
+}
+</style>
