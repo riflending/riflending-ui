@@ -1,5 +1,7 @@
 <h1 id="oracles">Oracles</h1>
 <p>An oracle is a way for a blockchain or smart contract to interact with external data. Since <em>DEFI</em> usually requires the interaction with real life information (<em>i.e. the current rBTC price</em>), Oracles are a critical component in every serious project. In this section, the <strong>rLending</strong> Oracle subsystem is explained in detail.</p>
+<p>A Price Oracle maintains the current exchange rate of each supported asset. These exchange rates are used to determine borrowing capacity and collateral requirements, and for all functions which require calculating the value equivalent of an account.</p>
 <hr>
 <h2 id="architecture-">Architecture:</h2>
+<p><strong>rLending</strong>&#39;s Oracle subsystem is comprised by a set of <a href="https://github.com/riflending/rlending-protocol/tree/master/contracts">smart contracts</a> that delegate the ability to set the value of assets to a committee which pools prices from the top exchanges. Each asset listed has an Adapter contract that proxies the proper calls to the oracles providing the price information.</p>
 <p>[LALALALALA.IMAGEN.LALALALA]</p>
