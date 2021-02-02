@@ -33,7 +33,7 @@
             <h3>Total cash</h3>
           </v-col>
           <v-col cols="2" class="item">
-            <span>{{ updatedTotalCash | formatToken(data.token.decimals) }} </span>
+            <span>{{ updatedTotalCash | formatNumber }} </span>
           </v-col>
           <v-col cols="0">
             <span class="ml-2 itemInfo">{{ data.token.symbol }}</span>
@@ -199,10 +199,7 @@ export default {
     this.updatedTotalSupply = await this.data.market.getTotalSupplyInUnderlying(false)
     this.borrowRate = await this.data.market.getBorrowRate(false)
     this.price = await this.data.market.getPriceInDecimals()
-    this.mktLiqu = this.updatedTotalCash
-      .toString()
-      .div(10 ** this.data.market.token.decimals)
-      .times(this.price)
+    this.mktLiqu = this.updatedTotalCash.times(this.price)
     this.supBorRatio =
       this.updatedTotalSupply != 0
         ? new BigNumber(this.updatedTotalBorrow.toString())
