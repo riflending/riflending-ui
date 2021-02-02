@@ -30,7 +30,7 @@
       <div class="container">
         <v-row class="ma-2 d-flex align-center">
           <v-col cols="3">
-            <h3>Total cash</h3>
+            <h3>Contract Liquidity</h3>
           </v-col>
           <v-col cols="2" class="item">
             <span>{{ updatedTotalCash | formatNumber }} </span>
