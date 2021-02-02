@@ -144,7 +144,7 @@ export default {
       this.dialog = false
       this.market
         .getPriceInDecimals()
-        .then(async (marketPrice) => {
+        .then((marketPrice) => {
           this.price = marketPrice
           return this.market.getBorrowRate()
         })
