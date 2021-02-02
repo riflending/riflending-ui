@@ -29,7 +29,7 @@
             <v-list-item-subtitle class="listTitle">Total Borrowed</v-list-item-subtitle>
           </v-col>
           <v-col>
-            <v-list-item-subtitle class="listTitle">Current Cash</v-list-item-subtitle>
+            <v-list-item-subtitle class="listTitle">Contract Liquidity</v-list-item-subtitle>
           </v-col>
         </v-row>
       </v-list-item>
