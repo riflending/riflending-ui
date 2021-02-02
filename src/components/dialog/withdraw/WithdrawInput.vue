@@ -37,7 +37,7 @@
         <v-row class="d-flex align-center">
           <v-col cols="2" />
           <v-col align="end" cols="3" class="d-flex justify-end">
-            <h3>Total supply in contract:</h3>
+            <h3>Contract Liquidity:</h3>
           </v-col>
           <v-col cols="4">
             <v-row class="ma-0 d-flex align-center">
@@ -62,7 +62,7 @@
         <v-row class="d-flex align-center">
           <v-col cols="2" />
           <v-col cols="3" class="d-flex justify-end">
-            <h3>supply balance:</h3>
+            <h3>Supply Balance:</h3>
           </v-col>
           <v-col cols="4">
             <v-row class="ma-0 d-flex align-center">
@@ -196,46 +196,45 @@ export default {
     },
   },
   created() {
+    this.data.market.getUserBalanceOfUnderlying().then((balance) => {
+      this.tokenBalance = balance
+    })
+
+    this.data.market.maxBorrowAllowedByAccount(this.account).then((maxBorrowAllowed) => {
+      this.maxBorrowAllowed = maxBorrowAllowed.toFixed(
+        this.data.token.decimals,
+        BigNumber.ROUND_DOWN,
+      )
+    })
+
+    this.data.market.getMaxWithdrawAllowed(this.account).then((maxRedeemAllowed) => {
+      this.maxWithdrawAllowed = maxRedeemAllowed.toFixed(this.data.market.token.decimals)
+    })
+
+    this.data.market.getMarketCash().then((cash) => {
+      this.cash = cash.toString()
+    })
+
     this.data.market
-      .getMarketCash()
-      .then((cash) => {
-        this.cash = cash.toString()
-        return this.data.market.borrowBalanceCurrent(this.account)
-      })
+      .borrowBalanceCurrent(this.account)
       .then((borrowValue) => {
         // TODO format
         this.borrowValue = new BigNumber(ethers.utils.formatEther(borrowValue))
-        return this.data.market.getUserBalanceOfUnderlying()
-      })
-      .then((balance) => {
-        this.tokenBalance = balance
         return this.data.market.getCurrentExchangeRate()
       })
       // sets mantissa
       .then((mantissa) => {
         this.mantissa = mantissa
-        return this.data.market.getCollateralFactorMantissa()
-      })
-      .then((collateralFactor) => {
         // set collateralFactor
-        this.collateralFactor = collateralFactor.multipliedBy(this.mantissa)
+        this.collateralFactor = this.data.market.collateralFactorMantissa.multipliedBy(
+          this.mantissa,
+        )
         // sets debt
         this.debt = this.borrowValue
           .multipliedBy(this.mantissa.plus(this.collateralFactor))
           .div(this.mantissa)
           .toString()
         return this.data.market.getMaxWithdrawAllowed(this.account)
-      })
-      .then((maxRedeemAllowed) => {
-        // sets maxWithdrawAllowed
-        this.maxWithdrawAllowed = maxRedeemAllowed.toFixed(this.data.market.token.decimals)
-        return this.data.market.maxBorrowAllowedByAccount(this.account)
-      })
-      .then((maxBorrowAllowed) => {
-        this.maxBorrowAllowed = maxBorrowAllowed.toFixed(
-          this.data.token.decimals,
-          BigNumber.ROUND_DOWN,
-        )
       })
   },
   methods: {

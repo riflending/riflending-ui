@@ -66,7 +66,7 @@ export default class Market {
     this.supplyRatePerBlock = new BigNumber(supplyRatePerBlock.toString()).div(this.factor)
     this.borrowRatePerBlock = new BigNumber(borrowRatePerBlock.toString()).div(this.factor)
     this.totalBorrows = new BigNumber(totalBorrows.toString()).div(10 ** this.token.decimals)
-    this.totalCash = totalCash //new BigNumber(totalCash.toString()).div(10 ** this.token.decimals)
+    this.totalCash = new BigNumber(totalCash.toString()).div(10 ** this.token.decimals)
     this.totalReserves = new BigNumber(totalReserves.toString()).div(10 ** this.token.decimals)
     this.totalSupply = new BigNumber(totalSupply.toString()).div(10 ** this.token.decimals)
 
@@ -153,11 +153,12 @@ export default class Market {
     return Number(cash)
   }
 
-  async getMarketCash() {
+  async getMarketCash(refresh = true) {
     // get balance of contract expressed in underlying
-    return new BigNumber((await this.instance.callStatic.getCash()).toString()).div(
-      this.token.decimals,
-    )
+    const cash = refresh
+      ? new BigNumber((await this.instance.getCash()).toString()).div(10 ** this.token.decimals)
+      : this.totalCash
+    return cash
   }
 
   async getSupplyRate(refresh = true) {
@@ -464,33 +465,26 @@ export default class Market {
   }
 
   /**
-   * getMaxBorrowAllowed Calculates max borrow allowance for this account in this market
+   * maxBorrowAllowedByAccount Calculates max borrow allowance for this account in this market
    * @notice this function will may only be used when entered market, otherwise liquidity will be 0
    * @dev to be used in supply, borrow and repay modals
    * @param {address} account the address of the account
-   * @return {Number} res the max borrowable amount
+   * @return {BigNumber} res the max borrowable amount
    */
-  async getMaxBorrowAllowed(account) {
-    //set price
-    const price = await this.getPrice() // current market price
-    const { accountLiquidityInExcess } = await this.middleware.getAccountLiquidity(account)
-    return price > 0 ? accountLiquidityInExcess / price : 0 // return max(0,borrowLimit)
-  }
-
   async maxBorrowAllowedByAccount(account) {
+    const price = await this.getUnderlyingPrice()
     //set price
-    const price = new BigNumber(
-      ethers.utils.formatUnits(await this.getUnderlyingPrice(), this.token.decimals),
+    const priceBN = new BigNumber(price.toString()).div(this.factor)
+    const { accountLiquidityInExcess } = await this.middleware.getAccountLiquidity(account)
+    const accountLiquidityInExcessBN = new BigNumber(accountLiquidityInExcess.toString()).div(
+      10 ** this.token.decimals,
     )
-    const accountLiquidityInExcess = new BigNumber(
-      ethers.utils.formatUnits(
-        (await this.middleware.getAccountLiquidity(account)).accountLiquidityInExcess,
-      ),
-      this.token.decimals,
-    )
-
+    const marketCash = await this.getMarketCash()
     const zero = new BigNumber(0)
-    return price.gt(zero) ? accountLiquidityInExcess.div(price) : zero
+    const accountLiquidityInUnderlying = priceBN.gt(zero)
+      ? accountLiquidityInExcessBN.div(priceBN)
+      : zero
+    return accountLiquidityInUnderlying.gt(marketCash) ? marketCash : accountLiquidityInUnderlying
   }
 
   /** TODO
@@ -539,7 +533,6 @@ export default class Market {
     for (let index = 0; index < borrowAcconts.length; index++) {
       await this.middleware.getAccountLiquidity(borrowAcconts[index]).then((liquidity) => {
         if (new BigNumber(liquidity.accountShortfall._hex).isGreaterThan(0)) {
-          // console.log("liquidity", borrowAcconts[index], liquidity)
           underWaters.push(borrowAcconts[index])
         }
       })

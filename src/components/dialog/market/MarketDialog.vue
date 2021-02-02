@@ -30,23 +30,6 @@
       <div class="container">
         <v-row class="ma-2 d-flex align-center">
           <v-col cols="3">
-            <h3>Total Reserve</h3>
-          </v-col>
-          <v-col cols="2" class="item">
-            <span>{{ updatedTotalReserve | formatNumber }} </span>
-          </v-col>
-          <v-col cols="0">
-            <span class="ml-2 itemInfo">{{ data.token.symbol }}</span>
-          </v-col>
-          <v-col cols="3" class="d-flex align-center">
-            <h3>Reserve Factor</h3>
-          </v-col>
-          <v-col cols="2" class="item">
-            <span>{{ reserveFactor | formatPercentage }} </span>
-          </v-col>
-        </v-row>
-        <v-row class="ma-2 d-flex align-center">
-          <v-col cols="3">
             <h3>Total cash</h3>
           </v-col>
           <v-col cols="2" class="item">
@@ -129,6 +112,23 @@
             <span>{{ liqPen | formatPercentage }} </span>
           </v-col>
         </v-row>
+        <v-row class="ma-2 d-flex align-center">
+          <v-col cols="3">
+            <h3>Total Reserves</h3>
+          </v-col>
+          <v-col cols="2" class="item">
+            <span>{{ updatedTotalReserve | formatNumber }} </span>
+          </v-col>
+          <v-col cols="0">
+            <span class="ml-2 itemInfo">{{ data.token.symbol }}</span>
+          </v-col>
+          <v-col cols="3" class="d-flex align-center">
+            <h3>Reserve Factor</h3>
+          </v-col>
+          <v-col cols="2" class="item">
+            <span>{{ reserveFactor | formatPercentage }} </span>
+          </v-col>
+        </v-row>
       </div>
     </v-card>
     <template v-if="priceFlag">
@@ -199,7 +199,8 @@ export default {
     this.updatedTotalSupply = await this.data.market.getTotalSupplyInUnderlying(false)
     this.borrowRate = await this.data.market.getBorrowRate(false)
     this.price = await this.data.market.getPriceInDecimals()
-    this.mktLiqu = new BigNumber(this.updatedTotalCash.toString())
+    this.mktLiqu = this.updatedTotalCash
+      .toString()
       .div(10 ** this.data.market.token.decimals)
       .times(this.price)
     this.supBorRatio =

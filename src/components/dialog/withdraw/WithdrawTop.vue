@@ -26,7 +26,7 @@
       <v-row>
         <h2>apr:</h2>
       </v-row>
-      <v-row class="item d-flex justify-start"> {{ apr }}% </v-row>
+      <v-row class="item d-flex justify-start"> {{ supplyRate | formatPercentage }} </v-row>
     </v-col>
   </v-row>
 </template>
@@ -43,16 +43,13 @@ export default {
   data() {
     return {
       price: 0,
-      borrowRate: 0,
+      supplyRate: 0,
       tokenDecimals: 0,
       tokenAddress: '',
       isCRBTC: false,
     }
   },
   computed: {
-    apr() {
-      return this.borrowRate.toFixed(2)
-    },
     rskExplorerUrl() {
       return `https://explorer.testnet.rsk.co/address/${this.tokenAddress}`
     },
@@ -61,15 +58,12 @@ export default {
     this.isCRBTC = this.data.market.isCRBTC
     this.tokenAddress = this.isCRBTC ? '' : this.data.market.token.address
     this.tokenDecimals = this.data.market.token.decimals
-    this.data.market
-      .getPriceInDecimals()
-      .then((price) => {
-        this.price = price
-        return this.data.market.getBorrowRate()
-      })
-      .then((borrowRate) => {
-        this.borrowRate = borrowRate
-      })
+    this.data.market.getSupplyRate().then((supplyRate) => {
+      this.supplyRate = supplyRate
+    })
+    this.data.market.getPriceInDecimals().then((price) => {
+      this.price = price
+    })
   },
 }
 </script>

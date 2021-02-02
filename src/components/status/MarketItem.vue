@@ -87,7 +87,6 @@
 
 <script>
 import MarketDialog from '@/components/dialog/market/MarketDialog.vue'
-import { ethers } from 'ethers'
 
 export default {
   name: 'MarketItem',
@@ -135,7 +134,7 @@ export default {
     this.price = await this.market.getPriceInDecimals()
     this.supplyRate = await this.market.getSupplyRate(false)
     this.borrowRate = await this.market.getBorrowRate(false)
-    this.cash = ethers.utils.formatUnits(this.market.totalCash, this.market.token.decimals)
+    this.cash = this.market.totalCash
     this.totalSupply = await this.market.getTotalSupplyInUnderlying(false)
     this.totalBorrows = this.market.totalBorrows
     this.loanToValue = this.market.loanToValue
@@ -151,7 +150,7 @@ export default {
         })
         .then((borrowRate) => {
           this.borrowRate = borrowRate
-          this.cash = ethers.utils.formatUnits(this.market.totalCash, this.market.token.decimals)
+          this.cash = this.market.totalCash
           this.totalBorrows = this.market.totalBorrows
           this.loanToValue = this.market.loanToValue
           return this.market.getTotalSupplyInUnderlying()
