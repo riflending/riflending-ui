@@ -99,7 +99,7 @@ export default {
       .borrowBalanceCurrent(this.account)
       .then((borrow) => {
         this.totalBorrow = ethers.utils.formatUnits(borrow, this.data.market.token.decimals)
-        return this.data.market.getMaxBorrowAllowed(this.account)
+        return this.data.market.maxBorrowAllowedByAccount(this.account)
       })
       .then((maxBorrowAllowed) => {
         this.maxBorrowAllowed = maxBorrowAllowed

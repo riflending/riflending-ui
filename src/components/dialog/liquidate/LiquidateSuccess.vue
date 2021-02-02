@@ -95,7 +95,6 @@ export default {
     }),
   },
   created() {
-    console.log('this.data.market', this.data)
     this.data.market
       .getUserBalanceOfUnderlying()
       .then((tokenBalance) => {
@@ -113,7 +112,7 @@ export default {
       })
       .then((price) => {
         this.price = price
-        return this.data.market.getMaxBorrowAllowed(this.account)
+        return this.data.market.maxBorrowAllowedByAccount(this.account)
       })
       .then((maxBorrow) => {
         this.maxBorrowAllowed = maxBorrow

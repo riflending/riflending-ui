@@ -191,23 +191,18 @@ export default {
     },
   },
   created() {
-    this.data.market
-      .borrowBalanceCurrentFormatted(this.account)
-      .then((borrowBalance) => {
-        this.userTotalBorrow = borrowBalance.toString()
-        return this.data.market.getMarketCash()
-      })
-      .then((cash) => {
-        this.cash = cash.toString()
-        return this.data.market.maxBorrowAllowedByAccount(this.account)
-      })
-      .then((maxBorrowAllowed) => {
-        this.maxBorrowAllowed = maxBorrowAllowed.toFixed(
-          this.data.token.decimals,
-          BigNumber.ROUND_DOWN,
-        )
-        this.oldMaxBorrowAllowed = this.maxBorrowAllowed
-      })
+    this.cash = this.data.market.totalCash.toString()
+    this.data.market.maxBorrowAllowedByAccount(this.account).then((maxBorrowAllowed) => {
+      this.maxBorrowAllowed = maxBorrowAllowed.toFixed(
+        this.data.token.decimals,
+        BigNumber.ROUND_DOWN,
+      )
+      this.oldMaxBorrowAllowed = this.maxBorrowAllowed
+    })
+
+    this.data.market.borrowBalanceCurrentFormatted(this.account).then((borrowBalance) => {
+      this.userTotalBorrow = borrowBalance.toString()
+    })
   },
   methods: {
     async borrowAllowed() {

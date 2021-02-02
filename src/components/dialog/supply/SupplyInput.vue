@@ -190,7 +190,7 @@ export default {
       .isAllowance(this.account)
       .then((allow) => {
         this.needApproval = !allow
-        return this.data.market.getSupplyRate()
+        return this.data.market.getSupplyRate(false)
       })
       .then((supplyRate) => {
         this.supplyRate = supplyRate
@@ -256,25 +256,22 @@ export default {
       return (Number(value) / 10 ** this.data.token.decimals).toFixed(this.data.token.decimals)
     },
     async getValues() {
+      this.data.market.getSupplyRate().then((supplyRate) => {
+        //set apr
+        this.supplyRate = supplyRate
+      })
+
+      this.data.market.maxBorrowAllowedByAccount(this.account).then((maxBorrowAllowed) => {
+        //set borrow limit
+        this.maxBorrowAllowed = maxBorrowAllowed.toFixed(
+          this.data.token.decimals,
+          BigNumber.ROUND_DOWN,
+        )
+      })
       //set token balance
-      this.data.market
-        .getUserBalanceOfUnderlying()
-        .then((balance) => {
-          this.tokenBalance = balance
-          return this.data.market.getSupplyRate()
-        })
-        .then((supplyRate) => {
-          //set apr
-          this.supplyRate = supplyRate
-          return this.data.market.maxBorrowAllowedByAccount(this.account)
-        })
-        .then((maxBorrowAllowed) => {
-          //set borrow limit
-          this.maxBorrowAllowed = maxBorrowAllowed.toFixed(
-            this.data.token.decimals,
-            BigNumber.ROUND_DOWN,
-          )
-        })
+      this.data.market.getUserBalanceOfUnderlying().then((balance) => {
+        this.tokenBalance = balance
+      })
     },
     getMaxAmount() {
       return this.maxAmountBalanceAllowed

@@ -1,5 +1,5 @@
 <template>
-  <div class="admin">
+  <div class="status">
     <v-row class="d-flex justify-center">
       <h1>Market Status</h1>
     </v-row>
@@ -12,10 +12,10 @@
 </template>
 
 <script>
-import MarketList from '@/components/admin/MarketList.vue'
+import MarketList from '@/components/status/MarketList.vue'
 
 export default {
-  name: 'Admin',
+  name: 'Status',
   components: {
     MarketList,
   },

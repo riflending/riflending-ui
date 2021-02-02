@@ -199,35 +199,27 @@ export default {
     },
   },
   created() {
+    this.$middleware.getAccountHealth(this.account).then((health) => {
+      this.accountHealth = health
+    })
+
     //set is market allow
-    this.data.market
-      .isAllowance(this.account)
-      .then((allow) => {
-        this.needApproval = !allow
-        return this.data.market.getMaxBorrowAllowed(this.account)
-      })
-      .then((maxBorrowAllowed) => {
-        this.maxBorrowAllowed = maxBorrowAllowed
-        return this.$middleware.getAccountHealth(this.account)
-      })
-      // sets health
-      .then((health) => {
-        this.accountHealth = health
-        return this.data.market.borrowBalanceCurrent(this.account)
-      })
-      .then((borrowBalance) => {
-        this.maxRepayAllowed = ethers.utils.formatUnits(
-          borrowBalance,
-          this.data.market.token.decimals,
-        )
-        this.userTotalBorrow = Number(this.maxRepayAllowed)
-        return !this.data.market.isCRBTC
-          ? this.$middleware.getWalletAccountBalance(this.account, this.data.market.token?.address)
-          : this.$middleware.getWalletAccountBalanceForRBTC(this.account)
-      })
-      .then((balanceOfToken) => {
-        this.maxAmountBalanceAllowed = balanceOfToken
-      })
+    this.data.market.isAllowance(this.account).then((allow) => {
+      this.needApproval = !allow
+    })
+
+    this.data.market.maxBorrowAllowedByAccount(this.account).then((maxBorrowAllowed) => {
+      this.maxBorrowAllowed = maxBorrowAllowed
+    })
+    this.data.market.borrowBalanceCurrentFormatted(this.account).then((borrowBalance) => {
+      this.userTotalBorrow = borrowBalance.toString()
+    })
+    const walletBalancePromise = !this.data.market.isCRBTC
+      ? this.$middleware.getWalletAccountBalance(this.account, this.data.market.token?.address)
+      : this.$middleware.getWalletAccountBalanceForRBTC(this.account)
+    walletBalancePromise.then((balanceOfToken) => {
+      this.maxAmountBalanceAllowed = balanceOfToken
+    })
   },
   methods: {
     closeTemplateApprove() {
