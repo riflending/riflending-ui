@@ -56,9 +56,10 @@ This will promtp your <em>Metamask</em> for validation on the transaction.</p>
 <p>&nbsp;</p>
 <hr>
 <h2 id="how-to-liquidate-underwater-accounts-">How to liquidate underwater accounts:</h2>
-<p>A borrowing account becomes insolvent when the Borrow Balance exceeds the amount allowed by the collateral factor. When an account becomes insolvent, other users can repay a portion of its outstanding borrow in exchange for a portion of its collateral, with a liquidation incentive — currently set at 8\% but subject to change through <strong>rLending</strong>’s governance system. The liquidation incentive means that liquidators receive the borrower’s collateral at a 8\% discount to market price. Having your account liquidated is bad because you lose some of your collateral.</p>
-<p>A user who has negative account liquidity is subject to liquidation by other users of the protocol to return his/her account liquidity back to positive (i.e. above the collateral requirement). When a liquidation occurs, a liquidator may repay some or all of an outstanding borrow on behalf of a borrower and in return receive a discounted amount of collateral held by the borrower; this discount is defined as the liquidation incentive.</p>
-<p>A liquidator may close up to a certain fixed percentage (i.e. close factor) of any individual outstanding borrow of the underwater account. Unlike in v1, liquidators must interact with each cToken contract in which they wish to repay a borrow and seize another asset as collateral. When collateral is seized, the liquidator is transferred cTokens, which they may redeem the same as if they had supplied the asset themselves. Users must approve each cToken contract before calling liquidate (i.e. on the borrowed asset which they are repaying), as they are transferring funds into the contract.</p>
+<p>In order to check the accounts that are prone to liquidation, go to the Supply dialog and then open up the Liquidation tab.</p>
+<p><img src="pictures/liquidateInput.jpg" alt="Liquidation list"></p>
+<p>It might take a while for the accounts to appear. When they do, you should be able to select one and select the asset in which you wish to cover the debt.</p>
+<p><img src="pictures/liquidateInput2.jpg" alt="Liquidation list"></p>
 <p>&nbsp;</p>
 <hr>
 <h2 id="how-to-view-market-data-">How to view market data:</h2>

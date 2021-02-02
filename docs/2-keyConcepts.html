@@ -61,6 +61,12 @@
 <p>Debt is calculated to be <strong>the sum of all borrowed balances</strong>, represented in <strong>USD</strong> by converting it through the current cToken-Underlying <a href="#exchange-rate">exchange rate</a> and multiplying by the <a href="#market-Price">market price</a>.</p>
 <p>&nbsp;</p>
 <hr>
+<h2 id="liquidation-">Liquidation:</h2>
+<p>A borrowing account becomes insolvent when the Borrow Balance exceeds the amount allowed by the collateral factor. When an account becomes insolvent, other users can repay a portion of its outstanding borrow in exchange for a portion of its collateral, with a liquidation incentive — currently set at 8\% but subject to change through <strong>rLending</strong>’s governance system. The liquidation incentive means that liquidators receive the borrower’s collateral at a 8\% discount to market price. Having your account liquidated is bad because you lose some of your collateral.</p>
+<p>A user who has negative account liquidity is subject to liquidation by other users of the protocol to return his/her account liquidity back to positive (i.e. above the collateral requirement). When a liquidation occurs, a liquidator may repay some or all of an outstanding borrow on behalf of a borrower and in return receive a discounted amount of collateral held by the borrower; this discount is defined as the liquidation incentive.</p>
+<p>A liquidator may close up to a certain fixed percentage (i.e. close factor) of any individual outstanding borrow of the underwater account. Unlike in v1, liquidators must interact with each cToken contract in which they wish to repay a borrow and seize another asset as collateral. When collateral is seized, the liquidator is transferred cTokens, which they may redeem the same as if they had supplied the asset themselves. Users must approve each cToken contract before calling liquidate (i.e. on the borrowed asset which they are repaying), as they are transferring funds into the contract.</p>
+<p>&nbsp;</p>
+<hr>
 <h2 id="close-factor-">Close Factor:</h2>
 <p>The percent, ranging from 0% to 100%, of <a href="#debt">debt</a> eligible to be closed in a single liquidate transaction, after an account has gone underwater. Accounts go underwater when they run out of <a href="#liquidity">liquidity</a> or their <a href="#health-factor">Health Factor</a> becomes negative.
 If a user has multiple borrowed assets, the Close Factor applies to any single borrowed asset, not the aggregated value of a user’s outstanding borrowing.</p>
