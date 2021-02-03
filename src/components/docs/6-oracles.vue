@@ -40,7 +40,7 @@
       <a href="7-securityAudits.html">Security and Audits</a>.
     </p>
     <p>Here is a diagram on the current state of the Oracle subsystem:</p>
-    <p><img src="pictures/rLendingGraph.jpg" alt="Architecture Graph" /></p>
+    <p><img src="@/components/docs/pictures/rLendingGraph.jpg" alt="Architecture Graph" /></p>
     <p>&nbsp;</p>
     <hr />
   </div>
