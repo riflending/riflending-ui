@@ -263,7 +263,8 @@ export default class Market {
   /**
    * Borrows the specified amount from this market.
    * @param {number} amount of this market's token to be borrowed.
-   * @return {Promise<TXResult>} the wait mined transaction
+   * @param {boolean} isCallStatic about the call to contract.
+   * @return {Promise<TXResult>} the wait mined transaction | the code of call static
    */
   async borrow(amount, isCallStatic = false) {
     // TODO: add validation. Account has to have entered market prior to borrowing.
