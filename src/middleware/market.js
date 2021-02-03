@@ -265,14 +265,14 @@ export default class Market {
    * @param {number} amount of this market's token to be borrowed.
    * @return {Promise<TXResult>} the wait mined transaction
    */
-  async borrow(amount, isStatic = false) {
+  async borrow(amount, isCallStatic = false) {
     // TODO: add validation. Account has to have entered market prior to borrowing.
     // add decimals token
     const amountBN = this.getAmountDecimals(amount)
     // connect to cerc20
     const signer = this.instance.connect(this.factoryContract.getSigner())
     //validate if call is static
-    if (isStatic) {
+    if (isCallStatic) {
       return await signer.callStatic.borrow(amountBN.toString())
     }
     // perform borrow()
