@@ -31,15 +31,6 @@
     </p>
     <p>&nbsp;</p>
     <hr />
-    <p>
-      <a href="1-introduction.html">Introduction</a>
-      <a href="2-keyConcepts.html">Key Concepts</a>
-      <a href="3-howTo.html">How To</a>
-      <a href="4-financialMath.html">Financial Aspects and Math</a>
-      <a href="5-contracts.html">Contracts</a>
-      <a href="6-oracles.html">Oracles</a>
-      <a href="7-securityAudits.html">Security and Audits</a>
-    </p>
   </div>
 </template>
 

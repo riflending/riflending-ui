@@ -32,6 +32,10 @@
       <Introduction />
       <KeyConcepts />
       <HowTo />
+      <Financial />
+      <Contracts />
+      <Oracles />
+      <Audits />
     </v-list>
   </div>
 </template>
@@ -40,6 +44,10 @@
 import Introduction from '@/components/docs/1-introduction.vue'
 import KeyConcepts from '@/components/docs/2-keyConcepts.vue'
 import HowTo from '@/components/docs/3-howTo.vue'
+import Financial from '@/components/docs/4-financialMath.vue'
+import Contracts from '@/components/docs/5-contracts.vue'
+import Oracles from '@/components/docs/6-oracles.vue'
+import Audits from '@/components/docs/7-securityAudits.vue'
 
 export default {
   name: 'Docs',
@@ -47,6 +55,10 @@ export default {
     Introduction,
     KeyConcepts,
     HowTo,
+    Financial,
+    Contracts,
+    Oracles,
+    Audits,
   },
 }
 </script>
