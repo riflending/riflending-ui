@@ -206,10 +206,10 @@ export default {
   },
   methods: {
     async borrowAllowed() {
-      return this.data.market.borrowAllowed(this.amount, this.account).then((allowed) => {
-        if (!allowed.allowed) {
+      return this.data.market.borrow(this.amount, this.amount).then((allowed) => {
+        if (Number(allowed) !== 0) {
           this.isBorrowAllowed = false // if not allowed, sets internal variable to false
-          return this.$middleware.getMsjErrorCodeComptroller(allowed.errorCode._hex)
+          return this.$middleware.getMsjErrorCodeComptroller(allowed.toHexString())
         }
         return ''
       })
