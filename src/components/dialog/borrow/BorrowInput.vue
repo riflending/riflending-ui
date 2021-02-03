@@ -141,7 +141,7 @@ export default {
       maxBorrowAllowed: 0,
       rules: {
         required: () => !!Number(this.amount) || 'Required.',
-        allowed: () => this.isBorrowAllowed || "Borrow won't be allowed by the protocol", // TODO: currently not being used
+        allowed: () => this.isBorrowAllowed || "Borrow won't be allowed by the protocol",
         decimals: () =>
           this.decimalPositions ||
           `Maximum ${this.data.token.decimals} decimal places for ${this.data.token.symbol}.`,
@@ -151,7 +151,6 @@ export default {
         liquidity: () =>
           Number(this.amount) <= Number(this.maxBorrowAllowed) ||
           "You don't have enough liquidity, supply more collateral to raise your Borrow Limit.",
-        enteredMarket: () => true || '', // TODO: currently not being used
       },
     }
   },
@@ -161,11 +160,10 @@ export default {
     }),
     validForm() {
       return (
-        typeof this.rules.enteredMarket() !== 'string' &&
+        typeof this.rules.required() !== 'string' &&
         typeof this.rules.allowed() !== 'string' &&
         typeof this.rules.liquidity() !== 'string' &&
         typeof this.rules.decimals() !== 'string' &&
-        typeof this.rules.required() !== 'string' &&
         typeof this.rules.marketCash() !== 'string'
       )
     },
@@ -243,9 +241,9 @@ export default {
         })
     },
     getMaxAmount() {
-      return new BigNumber(this.maxBorrowAllowed).gt(new BigNumber(this.cash))
-        ? this.cash
-        : this.maxBorrowAllowed
+      return new BigNumber(this.maxBorrowAllowed).gt(this.cash)
+        ? Number(this.cash)
+        : Number(this.maxBorrowAllowed)
     },
     setMaxAmount() {
       this.isAmountMax = true
