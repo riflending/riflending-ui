@@ -481,8 +481,7 @@ export default class Market {
     let accountLiquidity = !liquidityDecimalBN
       ? await this.middleware.getAccountLiquidity(this.account).accountLiquidityInExcess
       : liquidityDecimalBN
-    const healthguard = new BigNumber(percentageOfHealthToBorrow).div(100)
-    return accountLiquidity.multipliedBy(healthguard)
+    return accountLiquidity.multipliedBy(percentageOfHealthToBorrow)
   }
 
   /** TODO
