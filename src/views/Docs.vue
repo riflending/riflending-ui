@@ -1,5 +1,5 @@
 <template>
-  <div class="docs">
+  <div id="top" class="docs">
     <v-list>
       <v-list-item>
         <v-row>
