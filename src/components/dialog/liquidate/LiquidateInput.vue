@@ -482,17 +482,14 @@ export default {
 </script>
 
 <style>
-.v-select__selections {
+.liquidate-input .v-select__selections {
   flex-wrap: inherit;
   display: contents;
 }
-.v-select.v-text-field input {
+.liquidate-input .v-select.v-text-field input {
   display: none;
 }
-.v-select > .v-input__control > .v-input__slot {
+.liquidate-input .v-select > .v-input__control > .v-input__slot {
   width: 100px;
-}
-.v-text-field__details {
-  display: none;
 }
 </style>
