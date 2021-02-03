@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1 id="security-and-audits">Security and Audits</h1>
+    <h1 id="security">Security and Audits</h1>
     <p>
       <strong>rLending</strong> is a decentralized investment and finance (<em>DEFI</em>) platform
       that takes advantage on <strong>Bitcoin</strong>&#39;s stability and the

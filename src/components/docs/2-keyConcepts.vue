@@ -1,14 +1,14 @@
 <template>
   <div>
-    <h1 id="key-concepts">Key Concepts</h1>
-    <h2 id="account-">Account:</h2>
+    <h1 id="keyConcepts">Key Concepts</h1>
+    <h2 id="account">Account:</h2>
     <p>
       In <strong>rLending</strong>, each account is represented by the <strong>rBTC</strong> address
       that holds the assets and administers the transactions.
     </p>
     <p>&nbsp;</p>
     <hr />
-    <h2 id="markets-">Markets:</h2>
+    <h2 id="markets">Markets:</h2>
     <p>
       The smart contracts that power the <strong>rLending Protocol</strong> are deployed to the RSK
       blockchain. This means that at the time of this guide’s writing, the only types of assets that
@@ -24,7 +24,7 @@
     <p><strong>Each underlying market is internally represented with a cToken</strong></p>
     <p>&nbsp;</p>
     <hr />
-    <h2 id="supplying-assets-">Supplying Assets:</h2>
+    <h2 id="supplyingAssets">Supplying Assets:</h2>
     <p>
       Unlike an exchange or peer-to-peer platform, where a user’s assets are matched and lent to
       another user, the <strong>rLending Protocol</strong> aggregates the supply of each account,
@@ -32,11 +32,11 @@
       <strong>when a user supplies an asset, it becomes a fungible resource</strong>. This approach
       offers <em>significantly</em> more liquidity than direct lending; unless every asset in a
       market is borrowed (see below: <a href="#liquidity">liquidity</a>), users can
-      <a href="Withdrawals">withdraw</a> their assets at any time, without waiting for a specific
+      <a href="#withdrawal">withdraw</a> their assets at any time, without waiting for a specific
       loan to mature.
     </p>
     <p>
-      Assets supplied to a market are represented by an ERC-20 token balance (<a href="#cTokens"
+      Assets supplied to a market are represented by an ERC-20 token balance (<a href="#ctokens"
         >cToken</a
       >), which entitles the owner to an increasing quantity of the underlying asset. As the money
       market accrues interest, which is a function of borrowing demand, cTokens become convertible
@@ -45,7 +45,7 @@
     </p>
     <p>&nbsp;</p>
     <hr />
-    <h2 id="borrowing-assets-">Borrowing Assets:</h2>
+    <h2 id="borrowingAssets">Borrowing Assets:</h2>
     <p>
       <strong>rLending</strong> allows users to frictionlessly borrow from the protocol, using
       cTokens as collateral, <em>for use anywhere in the RSK ecosystem</em>. Unlike peer-to-peer
@@ -57,7 +57,7 @@
     </p>
     <p>&nbsp;</p>
     <hr />
-    <h2 id="ctokens-">cTokens:</h2>
+    <h2 id="ctokens">cTokens:</h2>
     <p>
       Each asset supported by the
       <a href="https://github.com/riflending/rlending-protocol"
@@ -71,13 +71,13 @@
     </p>
     <p>&nbsp;</p>
     <hr />
-    <h2 id="earning-interests-">Earning Interests:</h2>
+    <h2 id="earningInterests">Earning Interests:</h2>
     <p>
       When users and applications supply an asset to the <strong>rLending Protocol</strong>, they
       begin <strong>earning a variable interest rate instantly</strong>. Interest accrues every
       block (currently ~30 seconds) and users can <a href="#withdrawal">withdraw</a> their principal
       plus interest anytime. Under the hood, users are contributing their assets to a large pool of
-      liquidity (a “<a href="#Markets">market”</a>) that is available for other users to borrow, and
+      liquidity (a “<a href="#markets">market”</a>) that is available for other users to borrow, and
       they share in the interest that borrowers pay back to the pool.
     </p>
     <p>
@@ -89,10 +89,10 @@
     </p>
     <p>&nbsp;</p>
     <hr />
-    <h2 id="collateral-">Collateral:</h2>
+    <h2 id="collateral">Collateral:</h2>
     <p>
-      Assets held by the protocol (represented by ownership of a <a href="#cTokens">cToken</a>) are
-      used as collateral to borrow from the protocol. Each <a href="#Markets">market</a> has a
+      Assets held by the protocol (represented by ownership of a <a href="#ctokens">cToken</a>) are
+      used as collateral to borrow from the protocol. Each <a href="#markets">market</a> has a
       collateral factor, ranging from 0 to 1, that represents the portion of the underlying asset
       value that can be borrowed.
       <strong
@@ -104,7 +104,7 @@
       Users are able to borrow up to, <em>but not exceeding</em>, their borrowing capacity, and an
       account can take no action (e.g. borrow, transfer cToken collateral, or redeem cToken
       collateral) that would raise the total value of borrowed assets above their borrowing capacity
-      (<a href="#Borrow-Limit">borrow limit</a>); this protects the protocol from default risk.
+      (<a href="#borrowlimit">borrow limit</a>); this protects the protocol from default risk.
     </p>
     <p>
       <strong>Collateral</strong> is the guarantee that users provide that allows them to borrow on
@@ -114,35 +114,35 @@
     <p><strong>Note that a user cannot borrow without having supplied collateral first.</strong></p>
     <p>&nbsp;</p>
     <hr />
-    <h2 id="borrow-limit-">Borrow Limit:</h2>
+    <h2 id="borrowLimit">Borrow Limit:</h2>
     <p>
       The max borrowable amount an account has on a given market. This is calculated to be the
       account&#39;s <a href="#liquidity">liquidity</a> divided by the
-      <a href="#Market-Price">market price</a> of the asset.
+      <a href="#marketPrice">market price</a> of the asset.
     </p>
     <p>&nbsp;</p>
     <hr />
-    <h2 id="contract-liquidity-">Contract Liquidity:</h2>
+    <h2 id="contractLiquidity">Contract Liquidity:</h2>
     <p>
       The amount of underlying asset currently stored in the <a href="#cTokens">cToken</a> contract
       representing the market.
     </p>
     <p>&nbsp;</p>
     <hr />
-    <h2 id="supply-balance-">Supply Balance:</h2>
+    <h2 id="supplyBalance">Supply Balance:</h2>
     <p>
       The account&#39;s supply balance is given by
       <strong>the amount of cTokens the account has</strong>, converted to underlying by the current
-      <a href="#Exchange-Rate">exchange rate</a>.
+      <a href="#exchangeRate">exchange rate</a>.
     </p>
     <p>
       Remember that when users supply assets, they receive cTokens from <strong>rLending</strong> in
-      exchange. cTokens are ERC20 tokens that can be redeemed (<a href="#withdrawals">withdrawed</a
-      >) for their underlying assets at any time.
+      exchange. cTokens are ERC20 tokens that can be redeemed (<a href="#withdrawal">withdrawed</a>)
+      for their underlying assets at any time.
     </p>
     <p>&nbsp;</p>
     <hr />
-    <h2 id="exchange-rate-">Exchange Rate:</h2>
+    <h2 id="exchangeRate">Exchange Rate:</h2>
     <p>
       The rate at which the protocol is currently converting between <strong>cToken</strong> and
       <strong>Underlying assets</strong>. This rate is ever increasing with each new block passing
@@ -150,23 +150,23 @@
     </p>
     <p>&nbsp;</p>
     <hr />
-    <h2 id="borrow-balance-">Borrow Balance:</h2>
+    <h2 id="borrowBalance">Borrow Balance:</h2>
     <p>
       <strong>The amount of cTokens the account has borrowed</strong> on a given market, converted
-      to underlying by the current <a href="#exchange-rate">exchange rate</a>.
+      to underlying by the current <a href="#exchangeRate">exchange rate</a>.
     </p>
     <p>&nbsp;</p>
     <hr />
-    <h2 id="debt-">Debt:</h2>
+    <h2 id="debt">Debt:</h2>
     <p>
       Debt is calculated to be <strong>the sum of all borrowed balances</strong>, represented in
       <strong>USD</strong> by converting it through the current cToken-Underlying
-      <a href="#exchange-rate">exchange rate</a> and multiplying by the
-      <a href="#market-Price">market price</a>.
+      <a href="#exchangeRate">exchange rate</a> and multiplying by the
+      <a href="#marketPrice">market price</a>.
     </p>
     <p>&nbsp;</p>
     <hr />
-    <h2 id="liquidation-">Liquidation:</h2>
+    <h2 id="liquidation">Liquidation:</h2>
     <p>
       A borrowing account becomes insolvent when the Borrow Balance exceeds the amount allowed by
       the collateral factor. When an account becomes insolvent, other users can repay a portion of
@@ -194,18 +194,18 @@
     </p>
     <p>&nbsp;</p>
     <hr />
-    <h2 id="close-factor-">Close Factor:</h2>
+    <h2 id="closeFactor">Close Factor:</h2>
     <p>
       The percent, ranging from 0% to 100%, of <a href="#debt">debt</a> eligible to be closed in a
       single liquidate transaction, after an account has gone underwater. Accounts go underwater
       when they run out of <a href="#liquidity">liquidity</a> or their
-      <a href="#health-factor">Health Factor</a> becomes negative. If a user has multiple borrowed
+      <a href="#healthFactor">Health Factor</a> becomes negative. If a user has multiple borrowed
       assets, the Close Factor applies to any single borrowed asset, not the aggregated value of a
       user’s outstanding borrowing.
     </p>
     <p>&nbsp;</p>
     <hr />
-    <h2 id="liquidation-incentive-">Liquidation Incentive:</h2>
+    <h2 id="liquidationIncentive">Liquidation Incentive:</h2>
     <p>
       The additional collateral given to liquidators as an incentive to perform liquidation of
       underwater accounts. For example, if the liquidation incentive is 1.1, liquidators receive an
@@ -213,14 +213,14 @@
     </p>
     <p>&nbsp;</p>
     <hr />
-    <h2 id="market-price-">Market Price:</h2>
+    <h2 id="marketPrice">Market Price:</h2>
     <p>
       The current price in <strong>USD</strong> for a given asset, as provided by the Oracles
       subsystem.
     </p>
     <p>&nbsp;</p>
     <hr />
-    <h2 id="withdrawals-">Withdrawals:</h2>
+    <h2 id="withdrawal">Withdrawals:</h2>
     <p>
       Users that have non-negative health factor are able to withdraw their liquidity at any time.
       This action performs a transaction that redeems available cTokens for an the equivalent amount
@@ -228,14 +228,14 @@
     </p>
     <p>&nbsp;</p>
     <hr />
-    <h2 id="repay-">Repay:</h2>
+    <h2 id="repay">Repay:</h2>
     <p>
       Users that have <strong>Borrow Balance</strong> are able to <strong>Repay</strong> their debt
       in order to partially reduce it or cancel it.
     </p>
     <p>&nbsp;</p>
     <hr />
-    <h2 id="liquidity-">Liquidity:</h2>
+    <h2 id="liquidity">Liquidity:</h2>
     <p>
       Account Liquidity <strong>represents the USD value borrowable</strong> by a user, before it
       reaches liquidation. Users with a shortfall (<em>negative liquidity</em>) are subject to
@@ -252,14 +252,14 @@
     </p>
     <p>&nbsp;</p>
     <hr />
-    <h2 id="collateral-factor-">Collateral Factor:</h2>
+    <h2 id="collateralFactor">Collateral Factor:</h2>
     <p>
       The percentage of supplied assets that is required to be collateralized when a user enters a
       market for borrowing purposes.
     </p>
     <p>&nbsp;</p>
     <hr />
-    <h2 id="health-factor-">Health Factor:</h2>
+    <h2 id="healthFactor">Health Factor:</h2>
     <p>
       <strong>Health Factor</strong> is the result of a formula that calculates how close an account
       is to being liquidated. If an account becomes under-collateralized (<em
@@ -268,7 +268,7 @@
     </p>
     <p>&nbsp;</p>
     <hr />
-    <h2 id="governance-and-administrators-">Governance and Administrators:</h2>
+    <h2 id="governance">Governance and Administrators:</h2>
     <p>
       The <strong>rLending protocol</strong> does not support specific tokens by default; instead,
       markets must be whitelisted. This is accomplished with an admin function,

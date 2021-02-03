@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1 id="smart-contracts">Smart Contracts</h1>
+    <h1 id="smartContracts">Smart Contracts</h1>
     <h2 id="architecture-">Architecture:</h2>
     <p><img src="@/components/docs/pictures/rLendingGraph.jpg" alt="Architecture Graph" /></p>
     <p>&nbsp;</p>

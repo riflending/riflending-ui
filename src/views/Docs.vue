@@ -4,27 +4,41 @@
       <v-list-item>
         <v-row>
           <v-col>
-            <v-list-item-subtitle class="listTitle">Introduction</v-list-item-subtitle>
+            <a href="#introduction">
+              <v-list-item-subtitle class="listTitle">Introduction</v-list-item-subtitle>
+            </a>
           </v-col>
           <v-col>
-            <v-list-item-subtitle class="listTitle">Key Concepts</v-list-item-subtitle>
+            <a href="#keyConcepts">
+              <v-list-item-subtitle class="listTitle">Key Concepts</v-list-item-subtitle>
+            </a>
           </v-col>
           <v-col>
-            <v-list-item-subtitle class="listTitle">How To</v-list-item-subtitle>
+            <a href="#howTo">
+              <v-list-item-subtitle class="listTitle">How To</v-list-item-subtitle>
+            </a>
           </v-col>
           <v-col>
-            <v-list-item-subtitle class="listTitle" title="Loan to Value"
-              >Financial and Maths</v-list-item-subtitle
-            >
+            <a href="#financial">
+              <v-list-item-subtitle class="listTitle" title="Loan to Value"
+                >Financial and Maths</v-list-item-subtitle
+              >
+            </a>
           </v-col>
           <v-col>
-            <v-list-item-subtitle class="listTitle">Smart Contracts</v-list-item-subtitle>
+            <a href="#smartContracts">
+              <v-list-item-subtitle class="listTitle">Smart Contracts</v-list-item-subtitle>
+            </a>
           </v-col>
           <v-col>
-            <v-list-item-subtitle class="listTitle">Oracles</v-list-item-subtitle>
+            <a href="#oracles">
+              <v-list-item-subtitle class="listTitle">Oracles</v-list-item-subtitle>
+            </a>
           </v-col>
           <v-col>
-            <v-list-item-subtitle class="listTitle">Security and Audits</v-list-item-subtitle>
+            <a href="#security">
+              <v-list-item-subtitle class="listTitle">Security and Audits</v-list-item-subtitle>
+            </a>
           </v-col>
         </v-row>
       </v-list-item>

@@ -1,7 +1,7 @@
 <template>
   <div>
-    <h1 id="financial-aspects-and-math">Financial aspects and Math</h1>
-    <h2 id="market-dynamics-">Market Dynamics:</h2>
+    <h1 id="financial">Financial aspects and Math</h1>
+    <h2 id="marketDynamics">Market Dynamics:</h2>
     <p>
       <strong>rLending</strong> markets are defined by an interest rate equation, applied to all
       borrowers uniformly, which adjust over time as the relationship between supply and demand
