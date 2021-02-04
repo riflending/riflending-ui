@@ -21,7 +21,8 @@
           representing each asset listed in the protocol. They are essentially
           <em>a large pool of liquidity</em> that is formed by users providing liquidity and at the
           same time it is available for other users to borrow. Borrowers pay back their interests to
-          the pool as they share in the interest with suppliers.
+          the pool as they share in the interest with suppliers. In other words: Every supply earns
+          interests and in order to borrow an asset, users must first supply collateral to a market.
         </p>
         <p><strong>Each underlying market is internally represented with a cToken</strong></p>
         <p></p>

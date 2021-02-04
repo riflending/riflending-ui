@@ -28,9 +28,9 @@
           index divided by the index when the user&#39;s balance was last accrued.
         </p>
         <p>
-          The balance for each borrower address is in the cToken, stored as an account checkpoint. A
-          checkpoint is a Solidity tuple &lt; uint balance, uint interestIndex&gt; . This structure
-          describes the balance at the time the interest was last applied to the account.
+          The balance for each borrower address is stored in the cToken as an account checkpoint. A
+          checkpoint is a Solidity structure that describes the balance at the time the interest was
+          last accrued.
         </p>
         <p>&nbsp;</p>
         <hr />

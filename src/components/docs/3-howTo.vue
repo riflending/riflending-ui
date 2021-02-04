@@ -8,7 +8,7 @@
           connected to the <strong>RSK network</strong> Direct your browser towards the
           <a href="www.rlending.com"><strong>rLending</strong> website</a> and click
           <strong>Connect Wallet</strong>. The screen will let you connect your
-          <em>Metamask</em> wallet.
+          <em>Metamask/Nifty</em> wallet.
           <v-img
             contain
             max-height="650"
@@ -18,7 +18,7 @@
           />
         </p>
         <p>
-          This will prompt you to choose your account within <em>Metamask</em>. After you have
+          This will prompt you to choose your account within <em>Metamask/Nifty</em>. After you have
           accepted the connection, you will be redirected to the <em>Home Dashboard</em>.
         </p>
         <p>
@@ -39,7 +39,8 @@
         <h1 id="howDeposit">How to make a deposit:</h1>
         <p>
           <strong>rLending</strong> deposits are easy! After you have
-          <em>connected your Metamask wallet</em> you will be logged in and ready to supply funds.
+          <em>connected your Metamask or Nifty wallet</em> you will be logged in and ready to supply
+          funds.
         </p>
         <p>
           When you are ready to make a deposit, you will have to click on the
@@ -78,8 +79,8 @@
         </p>
         <p>
           Select the amount you wish to provide, and then click on
-          <strong>Supply Tokens</strong> This will promtp your <em>Metamask</em> for validation on
-          the transaction.
+          <strong>Supply Tokens</strong> This will promtp your <em>Metamask/Nifty</em> for
+          validation on the transaction.
         </p>
         <p>
           After the transaction has been broadcasted you will recieve confirmation and your funds
@@ -133,7 +134,7 @@
         </p>
         <p>
           This will promtp you for confirmation. If you confirm, this will then prompt your
-          <em>Metamask</em> for confirmation, since this is a transaction that requires GAS.
+          <em>Metamask/Nifty</em> for confirmation, since this is a transaction that requires GAS.
         </p>
         <p>
           If successful, you will receive confirmation and the borrowing warning will dissapear from
@@ -187,7 +188,8 @@
         </p>
         <p>
           After you&#39;ve chosen the amount you with to withdraw, click
-          <em>Withdraw my tokens</em> and <em>Metamask</em> will prompt you with the transaction.
+          <em>Withdraw my tokens</em> and <em>Metamask/Nifty</em> will prompt you with the
+          transaction.
         </p>
         <p>
           <v-img
@@ -307,6 +309,16 @@
             >A cToken transfer will fail if the account has entered that cToken market and the
             transfer would have put the account into a state of negative liquidity.</strong
           >
+        </p>
+        <h1 id="integration">How does <strong>rLending</strong> play along with the ecosystem?</h1>
+        <p>
+          Each market has its own Supply interest rate (APR). Interest isn&#39;t distributed;
+          instead,
+          <strong>simply by holding cTokens, you&#39;ll earn interest!</strong>
+          <strong>cTokens</strong> accumulates interest through their exchange rate — over time,
+          each cToken
+          <strong>becomes convertible into an increasing amount of it&#39;s underlying asset</strong
+          >, even while the number of cTokens in your wallet stays the same.
         </p>
         <p>&nbsp;</p>
         <hr />
