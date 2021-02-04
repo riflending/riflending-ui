@@ -2,8 +2,7 @@
   <div>
     <v-container>
       <v-row class="d-flex align-center justify-left">
-        <h1 id="howTo">How To</h1>
-        <h2 id="howPlatform-">How to connect to the platform:</h2>
+        <h1 id="howPlatform-">How to connect to the platform:</h1>
         <p>
           In order to use <strong>rLending</strong> you will need your <em>Metamask</em> wallet
           connected to the <strong>RSK network</strong> Direct your browser towards the
@@ -37,7 +36,7 @@
         </p>
         <p>&nbsp;</p>
         <hr />
-        <h2 id="howDeposit">How to make a deposit:</h2>
+        <h1 id="howDeposit">How to make a deposit:</h1>
         <p>
           <strong>rLending</strong> deposits are easy! After you have
           <em>connected your Metamask wallet</em> you will be logged in and ready to supply funds.
@@ -107,7 +106,7 @@
         </p>
         <p>&nbsp;</p>
         <hr />
-        <h2 id="howBorrow">How to make a borrow:</h2>
+        <h1 id="howBorrow">How to make a borrow:</h1>
         <p>
           All right, when a user supplies balance they immediately start earning interests... but
           where do those interests come from? Short answer: <em>Borrowers</em>! Those accounts that
@@ -160,7 +159,7 @@
         <p>In this example we will be borrowing <strong>RIF</strong></p>
         <p>&nbsp;</p>
         <hr />
-        <h2 id="howWithdraw">How to make a withdrawal:</h2>
+        <h1 id="howWithdraw">How to make a withdrawal:</h1>
         <p>
           If at some point you decide you want to withdraw your funds, you should know you will be
           reedming your cToken balance in exchange for their respective underlying assets.
@@ -206,7 +205,7 @@
         <p><em>Note that big withdrawals may considerably reduce your health factor!!</em></p>
         <p>&nbsp;</p>
         <hr />
-        <h2 id="howRepay">How to repay debt:</h2>
+        <h1 id="howRepay">How to repay debt:</h1>
         <p>
           Borrows can be repaid using a function on the respective cToken contract. Once a borrow
           has been repaid, the account’s collateral can be entirely redeemed or transferred. There
@@ -214,7 +213,7 @@
         </p>
         <p>&nbsp;</p>
         <hr />
-        <h2 id="howLiquidate">How to liquidate underwater accounts:</h2>
+        <h1 id="howLiquidate">How to liquidate underwater accounts:</h1>
         <p>
           In order to check the accounts that are prone to liquidation, go to the Supply dialog and
           then open up the Liquidation tab.
@@ -243,7 +242,7 @@
         </p>
         <p>&nbsp;</p>
         <hr />
-        <h2 id="howData">How to view market data:</h2>
+        <h1 id="howData">How to view market data:</h1>
         <p>
           Like mentioned earlier, markets represent each asset listed in the
           <strong>rLending Protocol</strong>. Every market evolves as supply and demand for an asset
@@ -275,7 +274,7 @@
         </p>
         <p>&nbsp;</p>
         <hr />
-        <h2 id="howInterest">How do tokens earn interests?:</h2>
+        <h1 id="howInterest">How do tokens earn interests?:</h1>
         <p>
           Each market has its own Supply interest rate (APR). Interest isn&#39;t distributed;
           instead,

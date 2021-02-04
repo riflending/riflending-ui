@@ -44,7 +44,7 @@
       </v-list-item>
       <v-divider />
       <v-container>
-        <v-expansion-panels focusable>
+        <v-expansion-panels focusable inset>
           <v-expansion-panel>
             <v-expansion-panel-header> Introduction</v-expansion-panel-header>
             <v-expansion-panel-content><Introduction /> </v-expansion-panel-content>

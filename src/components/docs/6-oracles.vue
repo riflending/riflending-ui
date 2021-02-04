@@ -2,7 +2,6 @@
   <div>
     <v-container>
       <v-row class="d-flex align-center justify-left">
-        <h1 id="oracles">Oracles</h1>
         <p>
           A Price Oracle maintains the current exchange rate of each supported asset. These values
           are used to determine borrowing capacity, collateral requirements and for all functions

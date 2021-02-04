@@ -2,8 +2,8 @@
   <div>
     <v-container>
       <v-row class="d-flex align-center justify-left">
-        <h1 id="financial">Financial aspects and Math</h1>
-        <h2 id="marketDynamics">Market Dynamics:</h2>
+        <h1 id="marketDynamics">Market Dynamics:</h1>
+
         <p>
           <strong>rLending</strong> markets are defined by an interest rate equation, applied to all
           borrowers uniformly, which adjust over time as the relationship between supply and demand
@@ -22,7 +22,7 @@
         </p>
         <p>&nbsp;</p>
         <hr />
-        <h2 id="borrowerDynamics">Borrower Dynamics</h2>
+        <h1 id="borrowerDynamics">Borrower Dynamics</h1>
         <p>
           A borrower&#39;s balance, including accrued interest, is simply the ratio of the current
           index divided by the index when the user&#39;s balance was last accrued.
@@ -34,7 +34,7 @@
         </p>
         <p>&nbsp;</p>
         <hr />
-        <h2 id="exchangeRates">Exchange Rates:</h2>
+        <h1 id="exchangeRates">Exchange Rates:</h1>
         <p>
           Each cToken is convertible into an ever increasing quantity of the underlying asset, as
           interest accrues in the market. The exchange rate between a cToken and the underlying
@@ -59,7 +59,7 @@
         </ul>
         <p>&nbsp;</p>
         <hr />
-        <h2 id="reserveFactor">Reserve Factor:</h2>
+        <h1 id="reserveFactor">Reserve Factor:</h1>
         <p>
           The reserve factor defines the portion of borrower interest that is converted into
           reserves. It is a value between 0 and 1, representing a percentage of borrower interest
@@ -67,7 +67,7 @@
         </p>
         <p>&nbsp;</p>
         <hr />
-        <h2 id="apy">APY / APR:</h2>
+        <h1 id="apy">APY / APR:</h1>
         <p>
           The <em>annual percentage yield</em> (<strong>APY</strong>) or
           <em>annual percentage rate</em> (<strong>APR</strong>) is the real rate of return earned
@@ -82,7 +82,7 @@
         </p>
         <p>&nbsp;</p>
         <hr />
-        <h2 id="riskManagement">Risk management and Liquidations:</h2>
+        <h1 id="riskManagement">Risk management and Liquidations:</h1>
         <p>
           If the value of an account’s borrowing balance exceeds their borrowing capacity, a portion
           of the outstanding borrowing may be repaid in exchange for the user’s cToken collateral,
@@ -104,7 +104,7 @@
         </p>
         <p>&nbsp;</p>
         <hr />
-        <h2 id="collateral">Collateral and Collateral Factor:</h2>
+        <h1 id="collateral">Collateral and Collateral Factor:</h1>
         <p>
           Collateral — In order to borrow assets from the <strong>rLending</strong> protocol, users
           need to first supply them as collateral. This is provided using the same mint function
@@ -135,7 +135,7 @@
         </p>
         <p>&nbsp;</p>
         <hr />
-        <h2 id="accruingInterests">Accruing Interests:</h2>
+        <h1 id="accruingInterests">Accruing Interests:</h1>
         <p>
           Interest rates for each market update on any block in which the ratio of borrowed assets
           to supplied assets in the market has changed. The amount interest rates are changed

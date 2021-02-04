@@ -2,22 +2,23 @@
   <div>
     <v-container>
       <v-row class="d-flex align-center justify-left">
-        <h1 id="security">Security and Audits</h1>
         <p>
-          <strong>rLending</strong> is a decentralized investment and finance (<em>DEFI</em>)
+          <strong>rLending</strong> is a decentralized investment and finance (<em>DEFI </em>)
           platform that takes advantage on <strong>Bitcoin</strong>&#39;s stability and the
           <strong>RSK ecosystem</strong> to allow users to invest in a safe way.
-          <strong>rLenbding</strong> is bases upon our own core
+          <strong>rLenbding</strong> is based upon our own core of
           <a href="https://github.com/riflending/rlending-protocol"><em>Smart Contracts</em></a>
-          which originated forked from (Compound)[<a href="https://compound.finance"
-            >https://compound.finance</a
-          >] and built up on key features that were later audited.
+          which originally forked from the <a href="https://compound.finance">Compound</a> project
+          and built up on key features we designed and were later audited by third party independant
+          companies.
         </p>
         <p>
           <strong
             >Security is our top priority and we are constantly auditing and improving the
             <em>rLending Protocol</em>. Funds are stored on a non-custodial smart contract on the
-            RSK blockchain. You control your wallet and you decide when and how to interact with the
+            RSK blockchain.
+            <br />
+            You control your wallet and you decide when and how to interact with the
             protocol.</strong
           >
         </p>

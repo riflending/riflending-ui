@@ -2,8 +2,7 @@
   <div>
     <v-container>
       <v-row class="d-flex align-center justify-left">
-        <h1 id="smartContracts">Smart Contracts</h1>
-        <h2 id="architecture">Architecture:</h2>
+        <h1 id="architecture">Architecture:</h1>
         <p>
           <v-img
             contain
@@ -15,7 +14,7 @@
         </p>
         <p>&nbsp;</p>
         <hr />
-        <h2 id="ctokensContracts">cTokens:</h2>
+        <h1 id="ctokensContracts">cTokens:</h1>
         <p>
           cTokens are the primary means of interacting with the <strong>rLending</strong> Protocol;
           when a user mints, redeems, borrows, repays a borrow, liquidates a borrow, or transfers
@@ -36,7 +35,7 @@
         </p>
         <p>&nbsp;</p>
         <hr />
-        <h2 id="riskManagement">Risk Management:</h2>
+        <h1 id="riskManagement">Risk Management:</h1>
         <p>
           The risk management layer of the <strong>rLending</strong> protocol is comprised of
           <strong>Comptroller</strong>, <strong>Unitroller</strong> and the interest rate models.
@@ -59,7 +58,7 @@
         </p>
         <p>&nbsp;</p>
         <hr />
-        <h2 id="oracleExplain">Oracles:</h2>
+        <h1 id="oracleExplain">Oracles:</h1>
         <p>
           An oracle is a way for a blockchain or smart contract to interact with external data.
           Since
@@ -70,7 +69,7 @@
         </p>
         <p>&nbsp;</p>
         <hr />
-        <h2 id="testnet">Testnet:</h2>
+        <h1 id="testnet">Testnet:</h1>
         <ul>
           <li>
             Dai Oracle:
