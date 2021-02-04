@@ -41,7 +41,7 @@
           </v-row>
         </v-col>
         <v-col cols="1">
-          <v-btn class="pa-0" icon :disabled="!hasEnteredTheMarket" @click="dialog = !dialog">
+          <v-btn class="pa-0" icon @click="dialog = !dialog">
             <svg
               width="11"
               height="32"

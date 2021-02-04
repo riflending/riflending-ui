@@ -1,7 +1,7 @@
 import { ethers } from 'ethers'
 import BigNumber from 'bignumber.js'
 import FactoryContract from './factoryContract'
-import { constants, decimals, abi } from './constants'
+import { constants, decimals, abi, percentageOfHealthToBorrow } from './constants'
 
 BigNumber.set({ EXPONENTIAL_AT: [-18, 36] })
 
@@ -263,14 +263,19 @@ export default class Market {
   /**
    * Borrows the specified amount from this market.
    * @param {number} amount of this market's token to be borrowed.
-   * @return {Promise<TXResult>} the wait mined transaction
+   * @param {boolean} isCallStatic about the call to contract.
+   * @return {Promise<TXResult>} the wait mined transaction | the code of call static
    */
-  async borrow(amount) {
+  async borrow(amount, isCallStatic = false) {
     // TODO: add validation. Account has to have entered market prior to borrowing.
     // add decimals token
     const amountBN = this.getAmountDecimals(amount)
     // connect to cerc20
     const signer = this.instance.connect(this.factoryContract.getSigner())
+    //validate if call is static
+    if (isCallStatic) {
+      return await signer.callStatic.borrow(amountBN.toString())
+    }
     // perform borrow()
     const tx = await signer.borrow(amountBN.toString())
     // wait for mined transaction
@@ -443,28 +448,6 @@ export default class Market {
   }
 
   /**
-   * borrowAllowed Calls Comptroller to check if borrow is
-   *   allowed for this user in this market with this amount
-   * @dev to be used in borrow modal
-   * @param amount of underlying to be borrowed
-   * @param {address} account the address of the account
-   * @return {response, code} response: (bool) if allowed or not, code: numerical error otherwise
-   */
-  async borrowAllowed(amount, account) {
-    const amountBN = this.getAmountDecimals(amount)
-    const contract = this.factoryContract.getContractByNameAndAbiName(
-      constants.Unitroller,
-      constants.Comptroller,
-    )
-    const response = await contract.callStatic.borrowAllowed(
-      this.instanceAddress,
-      account,
-      amountBN.toString(),
-    )
-    return { allowed: response.toNumber() === 0, errorCode: response }
-  }
-
-  /**
    * maxBorrowAllowedByAccount Calculates max borrow allowance for this account in this market
    * @notice this function will may only be used when entered market, otherwise liquidity will be 0
    * @dev to be used in supply, borrow and repay modals
@@ -472,19 +455,33 @@ export default class Market {
    * @return {BigNumber} res the max borrowable amount
    */
   async maxBorrowAllowedByAccount(account) {
+    //get price of market
     const price = await this.getUnderlyingPrice()
     //set price
     const priceBN = new BigNumber(price.toString()).div(this.factor)
+    //get account liquidity
     const { accountLiquidityInExcess } = await this.middleware.getAccountLiquidity(account)
+    //parse to decimal BN
     const accountLiquidityInExcessBN = new BigNumber(accountLiquidityInExcess.toString()).div(
       10 ** this.token.decimals,
     )
+    //get cash of market
     const marketCash = await this.getMarketCash()
     const zero = new BigNumber(0)
-    const accountLiquidityInUnderlying = priceBN.gt(zero)
-      ? accountLiquidityInExcessBN.div(priceBN)
-      : zero
+    //get percentage of lifeguard to apply in liquidity account
+    const healthguard = await this.getPorcentageOfHealtBN(accountLiquidityInExcessBN)
+    //set liquidity - healthguard
+    const liquidityCakculateBN = accountLiquidityInExcessBN.minus(healthguard)
+    //validate price
+    const accountLiquidityInUnderlying = priceBN.gt(zero) ? liquidityCakculateBN.div(priceBN) : zero
     return accountLiquidityInUnderlying.gt(marketCash) ? marketCash : accountLiquidityInUnderlying
+  }
+
+  async getPorcentageOfHealtBN(liquidityDecimalBN = 0) {
+    let accountLiquidity = !liquidityDecimalBN
+      ? await this.middleware.getAccountLiquidity(this.account).accountLiquidityInExcess
+      : liquidityDecimalBN
+    return accountLiquidity.multipliedBy(percentageOfHealthToBorrow)
   }
 
   /** TODO

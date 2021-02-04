@@ -124,6 +124,7 @@ export const decimals = {
   cRIF: 8,
   RLEN: 18,
 }
+export const percentageOfHealthToBorrow = 0.01
 
 export const cTokensDetails = [
   {

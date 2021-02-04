@@ -26,7 +26,7 @@
             class="mb-12"
             text
             color="#008CFF"
-            :disabled="!maxRepayAllowed"
+            :disabled="!userTotalBorrow"
             @click="setMaxAmount"
             >max</v-btn
           >
@@ -133,7 +133,6 @@ export default {
       isAmountMax: false,
       amount: '0',
       userTotalBorrow: 0,
-      maxRepayAllowed: 0,
       maxBorrowAllowed: 0,
       borrowBalanceInfo: null,
       borrowLimitInfo: null,
@@ -270,7 +269,7 @@ export default {
       //validate if max
       if (!this.isAmountMax) return this.amount
       //validate if amount !== maxBorrow
-      if (this.maxRepayAllowed !== this.amount) return this.amount
+      if (this.userTotalBorrow !== this.amount) return this.amount
       //get the max borrow again
       return this.data.market.borrowBalanceCurrent(this.account).then((borrowBalance) => {
         return ethers.utils.formatUnits(borrowBalance, this.data.market.token.decimals)
@@ -278,9 +277,9 @@ export default {
     },
     getMaxAmount() {
       return ethers.utils
-        .parseUnits(this.maxRepayAllowed, this.data.market.token.decimals)
+        .parseUnits(this.userTotalBorrow, this.data.market.token.decimals)
         .lte(ethers.utils.parseUnits(this.maxAmountBalanceAllowed, this.data.market.token.decimals))
-        ? this.maxRepayAllowed
+        ? this.userTotalBorrow
         : this.maxAmountBalanceAllowed
     },
     setMaxAmount() {

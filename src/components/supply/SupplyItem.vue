@@ -35,7 +35,7 @@
         </v-col>
         <v-col cols="2" class="px-0">
           <v-row class="ma-0">
-            <v-list-item-subtitle class="item">
+            <v-list-item-subtitle class="item" :class="{ 'v-btn--disabled': !getFunds }">
               <ToggleMarketButton :market="market" />
             </v-list-item-subtitle>
           </v-row>
@@ -93,6 +93,7 @@ export default {
       tokenBalance: 0,
       currentComponent: 'SupplyList',
       supplyValue: 0,
+      getFunds: false,
     }
   },
   computed: {
@@ -119,6 +120,7 @@ export default {
       .getUserBalanceOfUnderlying()
       .then((balance) => {
         this.tokenBalance = balance
+        this.getFunds = Number(this.tokenBalance) > 0
         return this.market.getPriceInDecimals()
       })
       // set price
@@ -138,6 +140,7 @@ export default {
         .getUserBalanceOfUnderlying()
         .then((balance) => {
           this.tokenBalance = balance
+          this.getFunds = Number(this.tokenBalance) > 0
           return this.market.getPriceInDecimals()
         })
         // set price
