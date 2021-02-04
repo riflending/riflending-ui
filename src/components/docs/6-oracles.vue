@@ -43,7 +43,14 @@
           section <a href="#security">Security and Audits</a>.
         </p>
         <p>Here is a diagram on the current state of the Oracle subsystem:</p>
-        <p><img src="@/components/docs/pictures/rLendingGraph.jpg" alt="Architecture Graph" /></p>
+        <p>
+          <v-img
+            max-height="650"
+            max-width="850"
+            src="@/components/docs/pictures/oracles.png"
+            alt="Oracles Subsystem Graph"
+          />
+        </p>
         <p>&nbsp;</p>
         <hr />
         <a href="#top">Back to top</a>

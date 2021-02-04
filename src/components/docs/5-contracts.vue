@@ -4,7 +4,14 @@
       <v-row class="d-flex align-center justify-left">
         <h1 id="smartContracts">Smart Contracts</h1>
         <h2 id="architecture">Architecture:</h2>
-        <p><img src="@/components/docs/pictures/rLendingGraph.jpg" alt="Architecture Graph" /></p>
+        <p>
+          <v-img
+            max-height="650"
+            max-width="850"
+            src="@/components/docs/pictures/contractGraph.png"
+            alt="Architecture Graph"
+          />
+        </p>
         <p>&nbsp;</p>
         <hr />
         <h2 id="ctokensContracts">cTokens:</h2>
