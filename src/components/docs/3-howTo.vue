@@ -10,13 +10,27 @@
           <a href="www.rlending.com"><strong>rLending</strong> website</a> and click
           <strong>Connect Wallet</strong>. The screen will let you connect your
           <em>Metamask</em> wallet.
-          <img src="@/components/docs/pictures/connecting.jpg" alt="Connecting" />
+          <v-img
+            contain
+            max-height="650"
+            max-width="850"
+            src="@/components/docs/pictures/connecting.jpg"
+            alt="Connecting"
+          />
         </p>
         <p>
           This will prompt you to choose your account within <em>Metamask</em>. After you have
           accepted the connection, you will be redirected to the <em>Home Dashboard</em>.
         </p>
-        <p><img src="@/components/docs/pictures/dashboard.jpg" alt="Dashboard" /></p>
+        <p>
+          <v-img
+            contain
+            max-height="650"
+            max-width="850"
+            src="@/components/docs/pictures/dashboard.jpg"
+            alt="Dashboard"
+          />
+        </p>
         <p>
           In this screen you will have an overview of the status of your account (Totals supplied,
           borrowed, available liquidity and health factor)
@@ -32,7 +46,15 @@
           When you are ready to make a deposit, you will have to click on the
           <strong>Supply / Borrow</strong> tab, where you will be able to see the current status of
           your supplied assets.
-          <img src="@/components/docs/pictures/supplyList-0.jpg" alt="Supply List" />
+        </p>
+        <p>
+          <v-img
+            contain
+            max-height="650"
+            max-width="850"
+            src="@/components/docs/pictures/supplyList-0.jpg"
+            alt="Supply List"
+          />
         </p>
         <p>
           If this is the first time supplying, you might see a notice that lets you know how the
@@ -40,10 +62,17 @@
           <strong>Borrow assets</strong>.
         </p>
         <p>
-          For now, click on the asset you wish to supply (in this example, we&#39;re supplying
-          rBTC).
+          For now, click on the asset you wish to supply (in this example, we are supplying rBTC).
         </p>
-        <p><img src="@/components/docs/pictures/supplyInput-2.jpg" alt="Supply Input" /></p>
+        <p>
+          <v-img
+            contain
+            max-height="650"
+            max-width="850"
+            src="@/components/docs/pictures/supplyInput-2.jpg"
+            alt="Supply Input"
+          />
+        </p>
         <p>
           At the top of this screen you will find the asset&#39;s data, current price and the amount
           of this token you have supplied <strong>converted to USD</strong>.
@@ -57,7 +86,15 @@
           After the transaction has been broadcasted you will recieve confirmation and your funds
           will be credited to your account.
         </p>
-        <p><img src="@/components/docs/pictures/supplySuccess.jpg" alt="Supply Success" /></p>
+        <p>
+          <v-img
+            contain
+            max-height="650"
+            max-width="850"
+            src="@/components/docs/pictures/supplySuccess.jpg"
+            alt="Supply Success"
+          />
+        </p>
         <p>
           In this last screen we double check the amount we have supplied in
           <strong>Supply Balance</strong>. We can also see the current liquidity the contract is
@@ -86,7 +123,15 @@
         <p>
           <strong>Toggle the Collateral column to enter your supplied funds as collateral</strong>
         </p>
-        <p><img src="@/components/docs/pictures/toggle.jpg" alt="Toggling Market" /></p>
+        <p>
+          <v-img
+            contain
+            max-height="650"
+            max-width="850"
+            src="@/components/docs/pictures/toggle.jpg"
+            alt="Toggling Market"
+          />
+        </p>
         <p>
           This will promtp you for confirmation. If you confirm, this will then prompt your
           <em>Metamask</em> for confirmation, since this is a transaction that requires GAS.
@@ -95,7 +140,15 @@
           If successful, you will receive confirmation and the borrowing warning will dissapear from
           the background.
         </p>
-        <p><img src="@/components/docs/pictures/enteredMarket.jpg" alt="Entered Market" /></p>
+        <p>
+          <v-img
+            contain
+            max-height="650"
+            max-width="850"
+            src="@/components/docs/pictures/enteredMarket.jpg"
+            alt="Entered Market"
+          />
+        </p>
         <p>
           An account can enter multiple markets at one time. You can do this by toggling each one
           you would like to operate with.
@@ -114,14 +167,38 @@
           Withdrawals are accessed through the Supply menu, in the Supply/Borrow page.
         </p>
         <p>First, log in. Then go to the Supply/Borrow market list.</p>
-        <p><img src="@/components/docs/pictures/supplyList.jpg" alt="Supply/Borrow list" /></p>
+        <p>
+          <v-img
+            contain
+            max-height="650"
+            max-width="850"
+            src="@/components/docs/pictures/supplyList.jpg"
+            alt="Supply/Borrow list"
+          />
+        </p>
         <p>There you will need to select the market that you wish to withdraw from.</p>
-        <p><img src="@/components/docs/pictures/withdrawInput.jpg" alt="Withdraw Input" /></p>
+        <p>
+          <v-img
+            contain
+            max-height="650"
+            max-width="850"
+            src="@/components/docs/pictures/withdrawInput.jpg"
+            alt="Withdraw Input"
+          />
+        </p>
         <p>
           After you&#39;ve chosen the amount you with to withdraw, click
           <em>Withdraw my tokens</em> and <em>Metamask</em> will prompt you with the transaction.
         </p>
-        <p><img src="@/components/docs/pictures/withdrawMetamask.jpg" alt="Withdraw Aproval" /></p>
+        <p>
+          <v-img
+            contain
+            max-height="650"
+            max-width="850"
+            src="@/components/docs/pictures/withdrawMetamask.jpg"
+            alt="Withdraw Aproval"
+          />
+        </p>
         <p>
           After the withdrawal has been broadcasted you will recieve confirmation and your funds
           will be credited to your account.
@@ -142,12 +219,28 @@
           In order to check the accounts that are prone to liquidation, go to the Supply dialog and
           then open up the Liquidation tab.
         </p>
-        <p><img src="@/components/docs/pictures/liquidateInput.jpg" alt="Liquidation list" /></p>
+        <p>
+          <v-img
+            contain
+            max-height="650"
+            max-width="850"
+            src="@/components/docs/pictures/liquidateInput.jpg"
+            alt="Liquidation list"
+          />
+        </p>
         <p>
           It might take a while for the accounts to appear. When they do, you should be able to
           select one and select the asset in which you wish to cover the debt.
         </p>
-        <p><img src="@/components/docs/pictures/liquidateInput2.jpg" alt="Liquidation list" /></p>
+        <p>
+          <v-img
+            contain
+            max-height="650"
+            max-width="850"
+            src="@/components/docs/pictures/liquidateInput2.jpg"
+            alt="Liquidation list"
+          />
+        </p>
         <p>&nbsp;</p>
         <hr />
         <h2 id="howData">How to view market data:</h2>
@@ -158,12 +251,28 @@
           you want to check the current status of a market, you should go to the
           <a href="www.rlending.com/status">Status tab</a>.
         </p>
-        <p><img src="@/components/docs/pictures/marketList.jpg" alt="Market List" /></p>
+        <p>
+          <v-img
+            contain
+            max-height="650"
+            max-width="850"
+            src="@/components/docs/pictures/marketList.jpg"
+            alt="Market List"
+          />
+        </p>
         <p>
           Here you will find the market list overview. More detailed information is found by
           clicking on the right arrow:
         </p>
-        <p><img src="@/components/docs/pictures/marketData.jpg" alt="Market Data" /></p>
+        <p>
+          <v-img
+            contain
+            max-height="650"
+            max-width="850"
+            src="@/components/docs/pictures/marketData.jpg"
+            alt="Market Data"
+          />
+        </p>
         <p>&nbsp;</p>
         <hr />
         <h2 id="howInterest">How do tokens earn interests?:</h2>

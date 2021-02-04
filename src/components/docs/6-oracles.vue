@@ -45,6 +45,7 @@
         <p>Here is a diagram on the current state of the Oracle subsystem:</p>
         <p>
           <v-img
+            contain
             max-height="650"
             max-width="850"
             src="@/components/docs/pictures/oracles.png"

@@ -6,6 +6,7 @@
         <h2 id="architecture">Architecture:</h2>
         <p>
           <v-img
+            contain
             max-height="650"
             max-width="850"
             src="@/components/docs/pictures/contractGraph.png"

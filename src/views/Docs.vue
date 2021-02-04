@@ -43,13 +43,48 @@
         </v-row>
       </v-list-item>
       <v-divider />
-      <Introduction />
-      <KeyConcepts />
-      <HowTo />
-      <Financial />
-      <Contracts />
-      <Oracles />
-      <Audits />
+      <v-expansion-panels focusable>
+        <v-expansion-panel>
+          <v-expansion-panel-header> Introduction</v-expansion-panel-header>
+          <v-expansion-panel-content><Introduction /> </v-expansion-panel-content>
+        </v-expansion-panel>
+      </v-expansion-panels>
+      <v-expansion-panels focusable>
+        <v-expansion-panel>
+          <v-expansion-panel-header> Key Concepts</v-expansion-panel-header>
+          <v-expansion-panel-content><KeyConcepts /> </v-expansion-panel-content>
+        </v-expansion-panel>
+      </v-expansion-panels>
+      <v-expansion-panels focusable>
+        <v-expansion-panel>
+          <v-expansion-panel-header> How to</v-expansion-panel-header>
+          <v-expansion-panel-content><HowTo /> </v-expansion-panel-content>
+        </v-expansion-panel>
+      </v-expansion-panels>
+      <v-expansion-panels focusable>
+        <v-expansion-panel>
+          <v-expansion-panel-header> Financial aspects and Math</v-expansion-panel-header>
+          <v-expansion-panel-content><Financial /> </v-expansion-panel-content>
+        </v-expansion-panel>
+      </v-expansion-panels>
+      <v-expansion-panels focusable>
+        <v-expansion-panel>
+          <v-expansion-panel-header> Contracts</v-expansion-panel-header>
+          <v-expansion-panel-content><Contracts /> </v-expansion-panel-content>
+        </v-expansion-panel>
+      </v-expansion-panels>
+      <v-expansion-panels focusable>
+        <v-expansion-panel>
+          <v-expansion-panel-header> Oracles</v-expansion-panel-header>
+          <v-expansion-panel-content><Oracles /> </v-expansion-panel-content>
+        </v-expansion-panel>
+      </v-expansion-panels>
+      <v-expansion-panels focusable>
+        <v-expansion-panel>
+          <v-expansion-panel-header> Security and Audits</v-expansion-panel-header>
+          <v-expansion-panel-content><Audits /> </v-expansion-panel-content>
+        </v-expansion-panel>
+      </v-expansion-panels>
     </v-list>
   </div>
 </template>
