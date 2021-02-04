@@ -38,6 +38,15 @@
           specific loan to mature.
         </p>
         <p>
+          <v-img
+            contain
+            max-height="650"
+            max-width="850"
+            src="@/components/docs/pictures/supplyCycle.png"
+            alt="supplyCycle"
+          />
+        </p>
+        <p>
           Assets supplied to a market are represented by an ERC-20 token balance (<a href="#ctokens"
             >cToken</a
           >), which entitles the owner to an increasing quantity of the underlying asset. As the
@@ -53,9 +62,20 @@
           cTokens as collateral, <em>for use anywhere in the RSK ecosystem</em>. Unlike peer-to-peer
           protocols, borrowing from <strong>rLending</strong> simply requires a user to specify a
           desired asset; there are no terms to negotiate, maturity dates, or funding periods;
-          <strong>borrowing is instant and predictable</strong>. Similar to supplying an asset, each
-          listed market has a floating interest rate, set by market forces, which determines the
-          borrowing cost for each asset.
+          <strong>borrowing is instant and predictable</strong>.
+        </p>
+        <p>
+          <v-img
+            contain
+            max-height="650"
+            max-width="850"
+            src="@/components/docs/pictures/borrowCycle.png"
+            alt="borrowCycle"
+          />
+        </p>
+        <p>
+          to supplying an asset, each listed market has a floating interest rate, set by market
+          forces, which determines the borrowing cost for each asset.
         </p>
         <p></p>
         <hr />
