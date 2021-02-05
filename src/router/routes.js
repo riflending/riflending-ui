@@ -34,6 +34,11 @@ export default [
     beforeEnter: requireAuth,
   },
   {
+    path: '/docs',
+    name: 'Docs',
+    component: () => import(/* webpackChunkName: "docs" */ '@/views/Docs.vue'),
+  },
+  {
     path: '*',
     redirect: { name: 'Landing' },
   },
