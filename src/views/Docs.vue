@@ -1,60 +1,61 @@
 <template>
   <div id="top" class="docs">
+    <v-app-bar class="items">
+      <v-row>
+        <v-col>
+          <v-btn
+            :class="[currentComponent === 'Introduction' ? 'selected' : 'notSelected']"
+            @click="currentComponent = 'Introduction'"
+            >Introduction
+          </v-btn>
+        </v-col>
+        <v-col>
+          <v-btn
+            :class="[currentComponent === 'KeyConcepts' ? 'selected' : 'notSelected']"
+            @click="currentComponent = 'KeyConcepts'"
+            >KeyConcepts
+          </v-btn>
+        </v-col>
+        <v-col>
+          <v-btn
+            :class="[currentComponent === 'HowTo' ? 'selected' : 'notSelected']"
+            @click="currentComponent = 'HowTo'"
+            >How To
+          </v-btn>
+        </v-col>
+        <v-col>
+          <v-btn
+            title="Loan to Value"
+            :class="[currentComponent === 'Financial' ? 'selected' : 'notSelected']"
+            @click="currentComponent = 'Financial'"
+            >Financial
+          </v-btn>
+        </v-col>
+        <v-col>
+          <v-btn
+            :class="[currentComponent === 'Contracts' ? 'selected' : 'notSelected']"
+            @click="currentComponent = 'Contracts'"
+            >Smart Contracts
+          </v-btn>
+        </v-col>
+        <v-col>
+          <v-btn
+            :class="[currentComponent === 'Oracles' ? 'selected' : 'notSelected']"
+            @click="currentComponent = 'Oracles'"
+            >Oracles
+          </v-btn>
+        </v-col>
+        <v-col>
+          <v-btn
+            :class="[currentComponent === 'Audits' ? 'selected' : 'notSelected']"
+            @click="currentComponent = 'Audits'"
+            >Security and Audits
+          </v-btn>
+        </v-col>
+      </v-row>
+    </v-app-bar>
+
     <v-list>
-      <v-list-item>
-        <v-row>
-          <v-col>
-            <v-btn
-              :class="[currentComponent === 'Introduction' ? 'selected' : 'notSelected']"
-              @click="currentComponent = 'Introduction'"
-              >Introduction
-            </v-btn>
-          </v-col>
-          <v-col>
-            <v-btn
-              :class="[currentComponent === 'KeyConcepts' ? 'selected' : 'notSelected']"
-              @click="currentComponent = 'KeyConcepts'"
-              >KeyConcepts
-            </v-btn>
-          </v-col>
-          <v-col>
-            <v-btn
-              :class="[currentComponent === 'HowTo' ? 'selected' : 'notSelected']"
-              @click="currentComponent = 'HowTo'"
-              >How To
-            </v-btn>
-          </v-col>
-          <v-col>
-            <v-btn
-              title="Loan to Value"
-              :class="[currentComponent === 'Financial' ? 'selected' : 'notSelected']"
-              @click="currentComponent = 'Financial'"
-              >Financial
-            </v-btn>
-          </v-col>
-          <v-col>
-            <v-btn
-              :class="[currentComponent === 'Contracts' ? 'selected' : 'notSelected']"
-              @click="currentComponent = 'Contracts'"
-              >Smart Contracts
-            </v-btn>
-          </v-col>
-          <v-col>
-            <v-btn
-              :class="[currentComponent === 'Oracles' ? 'selected' : 'notSelected']"
-              @click="currentComponent = 'Oracles'"
-              >Oracles
-            </v-btn>
-          </v-col>
-          <v-col>
-            <v-btn
-              :class="[currentComponent === 'Audits' ? 'selected' : 'notSelected']"
-              @click="currentComponent = 'Audits'"
-              >Security and Audits
-            </v-btn>
-          </v-col>
-        </v-row>
-      </v-list-item>
       <v-divider />
       <v-container>
         <component :is="currentComponent" />
@@ -92,11 +93,21 @@ export default {
 </script>
 
 <style>
+.items {
+  display: inline-table !important;
+  padding: 0 60px;
+  left: 45px !important;
+  width: 95%;
+  text-align: center;
+}
 .selected {
   border-radius: 35px;
   background-color: #008cff !important;
 }
 .notSelected {
   background-color: #ffffff !important;
+}
+.v-app-bar {
+  flex: unset;
 }
 </style>
