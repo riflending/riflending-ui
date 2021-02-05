@@ -19,7 +19,7 @@
 
 <script>
 import { mapState } from 'vuex'
-import rifImage from '@/assets/rif.png'
+import rifImage from '@/assets/tokens/rif.png'
 
 export default {
   name: 'MarketBalanceItem',

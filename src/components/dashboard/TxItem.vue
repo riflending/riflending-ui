@@ -3,7 +3,7 @@
     <v-row class="my-3 tx-item">
       <v-col class="d-flex align-center">
         <v-list-item-avatar tile size="40">
-          <v-img src="../../assets/rif.png" />
+          <v-img src="../../assets/tokens/rif.png" />
         </v-list-item-avatar>
         <span>{{ marketName }}</span>
       </v-col>
