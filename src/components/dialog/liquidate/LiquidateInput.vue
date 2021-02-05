@@ -238,6 +238,7 @@ export default {
             .multipliedBy(this.amount)
             .div(this.getCollateralMarketPriceAssetSelected())
             .toNumber()
+            .toFixed(18)
     },
     liquidationAmount() {
       return this.amount

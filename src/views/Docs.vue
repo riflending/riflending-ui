@@ -4,88 +4,60 @@
       <v-list-item>
         <v-row>
           <v-col>
-            <a href="#introduction">
-              <v-list-item-subtitle class="listTitle">Introduction</v-list-item-subtitle>
-            </a>
+            <v-btn
+              :class="[currentComponent === 'Introduction' ? 'selected' : 'notSelected']"
+              @click="currentComponent = 'Introduction'"
+              >Introduction
+            </v-btn>
           </v-col>
           <v-col>
-            <a href="#keyConcepts">
-              <v-list-item-subtitle class="listTitle">Key Concepts</v-list-item-subtitle>
-            </a>
+            <v-btn
+              :class="[currentComponent === 'KeyConcepts' ? 'selected' : 'notSelected']"
+              @click="currentComponent = 'KeyConcepts'"
+              >KeyConcepts
+            </v-btn>
           </v-col>
           <v-col>
-            <a href="#howTo">
-              <v-list-item-subtitle class="listTitle">How To</v-list-item-subtitle>
-            </a>
+            <v-btn
+              :class="[currentComponent === 'HowTo' ? 'selected' : 'notSelected']"
+              @click="currentComponent = 'HowTo'"
+              >How To
+            </v-btn>
           </v-col>
           <v-col>
-            <a href="#financial">
-              <v-list-item-subtitle class="listTitle" title="Loan to Value"
-                >Financial and Maths</v-list-item-subtitle
-              >
-            </a>
+            <v-btn
+              title="Loan to Value"
+              :class="[currentComponent === 'Financial' ? 'selected' : 'notSelected']"
+              @click="currentComponent = 'Financial'"
+              >Financial
+            </v-btn>
           </v-col>
           <v-col>
-            <a href="#smartContracts">
-              <v-list-item-subtitle class="listTitle">Smart Contracts</v-list-item-subtitle>
-            </a>
+            <v-btn
+              :class="[currentComponent === 'Contracts' ? 'selected' : 'notSelected']"
+              @click="currentComponent = 'Contracts'"
+              >Smart Contracts
+            </v-btn>
           </v-col>
           <v-col>
-            <a href="#oracles">
-              <v-list-item-subtitle class="listTitle">Oracles</v-list-item-subtitle>
-            </a>
+            <v-btn
+              :class="[currentComponent === 'Oracles' ? 'selected' : 'notSelected']"
+              @click="currentComponent = 'Oracles'"
+              >Oracles
+            </v-btn>
           </v-col>
           <v-col>
-            <a href="#security">
-              <v-list-item-subtitle class="listTitle">Security and Audits</v-list-item-subtitle>
-            </a>
+            <v-btn
+              :class="[currentComponent === 'Audits' ? 'selected' : 'notSelected']"
+              @click="currentComponent = 'Audits'"
+              >Security and Audits
+            </v-btn>
           </v-col>
         </v-row>
       </v-list-item>
       <v-divider />
       <v-container>
-        <v-expansion-panels focusable inset>
-          <v-expansion-panel>
-            <v-expansion-panel-header> Introduction</v-expansion-panel-header>
-            <v-expansion-panel-content><Introduction /> </v-expansion-panel-content>
-          </v-expansion-panel>
-        </v-expansion-panels>
-        <v-expansion-panels focusable>
-          <v-expansion-panel>
-            <v-expansion-panel-header> Key Concepts</v-expansion-panel-header>
-            <v-expansion-panel-content><KeyConcepts /> </v-expansion-panel-content>
-          </v-expansion-panel>
-        </v-expansion-panels>
-        <v-expansion-panels focusable>
-          <v-expansion-panel>
-            <v-expansion-panel-header> How to</v-expansion-panel-header>
-            <v-expansion-panel-content><HowTo /> </v-expansion-panel-content>
-          </v-expansion-panel>
-        </v-expansion-panels>
-        <v-expansion-panels focusable>
-          <v-expansion-panel>
-            <v-expansion-panel-header> Financial aspects and Math</v-expansion-panel-header>
-            <v-expansion-panel-content><Financial /> </v-expansion-panel-content>
-          </v-expansion-panel>
-        </v-expansion-panels>
-        <v-expansion-panels focusable>
-          <v-expansion-panel>
-            <v-expansion-panel-header> Contracts</v-expansion-panel-header>
-            <v-expansion-panel-content><Contracts /> </v-expansion-panel-content>
-          </v-expansion-panel>
-        </v-expansion-panels>
-        <v-expansion-panels focusable>
-          <v-expansion-panel>
-            <v-expansion-panel-header> Oracles</v-expansion-panel-header>
-            <v-expansion-panel-content><Oracles /> </v-expansion-panel-content>
-          </v-expansion-panel>
-        </v-expansion-panels>
-        <v-expansion-panels focusable>
-          <v-expansion-panel>
-            <v-expansion-panel-header> Security and Audits</v-expansion-panel-header>
-            <v-expansion-panel-content><Audits /> </v-expansion-panel-content>
-          </v-expansion-panel>
-        </v-expansion-panels>
+        <component :is="currentComponent" />
       </v-container>
     </v-list>
   </div>
@@ -111,5 +83,20 @@ export default {
     Oracles,
     Audits,
   },
+  data() {
+    return {
+      currentComponent: 'Introduction',
+    }
+  },
 }
 </script>
+
+<style>
+.selected {
+  border-radius: 35px;
+  background-color: #008cff !important;
+}
+.notSelected {
+  background-color: #ffffff !important;
+}
+</style>
