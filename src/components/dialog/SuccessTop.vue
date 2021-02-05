@@ -1,7 +1,7 @@
-<template>
+<template class="success-top">
   <v-row class="mx-5 d-flex align-center justify-center">
     <v-col cols="2" class="d-flex justify-center">
-      <v-img class="ml-5" src="../../assets/rif.png" width="60" />
+      <v-img class="ml-5" :src="require(`@/assets/tokens/${data.token.logo}.png`)" width="60" />
     </v-col>
     <v-col cols="3" class="item">
       <h1 class="ma-0">{{ data.token.symbol }}</h1>
@@ -26,7 +26,7 @@
 
 <script>
 export default {
-  name: "SuccessTop",
+  name: 'SuccessTop',
   props: {
     data: {
       type: Object,
@@ -37,22 +37,23 @@ export default {
     return {
       borrowRate: 0,
       price: 0,
-    };
+    }
   },
   computed: {
     apr() {
-      return this.borrowRate.toFixed(2);
+      return this.borrowRate.toFixed(2)
     },
   },
   created() {
-    this.data.market.price
+    this.data.market
+      .getPriceInDecimals()
       .then((marketPrice) => {
-        this.price = marketPrice;
-        return this.data.market.borrowRate;
+        this.price = marketPrice
+        return this.data.market.getBorrowRate()
       })
       .then((borrowRate) => {
-        this.borrowRate = borrowRate;
-      });
+        this.borrowRate = borrowRate
+      })
   },
-};
+}
 </script>

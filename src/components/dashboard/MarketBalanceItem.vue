@@ -8,20 +8,18 @@
         <v-list-item-subtitle>
           {{ marketSupplyOf }}
         </v-list-item-subtitle>
-        <v-list-item-title>
-          $ {{ updatedSupplyCash }}
-        </v-list-item-title>
+        <v-list-item-title> $ {{ updatedSupplyCash }} </v-list-item-title>
       </v-list-item-content>
       <v-list-item-avatar tile size="80">
-        <v-img :src="rif"/>
+        <v-img :src="rif" />
       </v-list-item-avatar>
     </v-list-item>
   </v-card>
 </template>
 
 <script>
-import { mapState } from 'vuex';
-import rifImage from '@/assets/rif.png';
+import { mapState } from 'vuex'
+import rifImage from '@/assets/rif.png'
 
 export default {
   name: 'MarketBalanceItem',
@@ -42,39 +40,21 @@ export default {
       price: 0,
       supplyOf: null,
       rif: rifImage,
-    };
+    }
   },
   computed: {
     ...mapState({
       account: (state) => state.Session.account,
     }),
     updatedSupplyCash() {
-      return ((this.price * this.supplyOf) / 10 ** this.token.decimals)
-        .toFixed(this.token.decimals);
+      return ((this.price * this.supplyOf) / 10 ** this.token.decimals).toFixed(this.token.decimals)
     },
     marketSupplyOf() {
-      return (this.supplyOf / (10 ** this.token.decimals))
-        .toFixed(this.token.decimals);
+      return (this.supplyOf / 10 ** this.token.decimals).toFixed(this.token.decimals)
     },
   },
   created() {
-    this.market = new this.$rbank.Market(this.marketAddress);
-    this.market.token
-      .then((tok) => [tok.eventualName, tok.eventualSymbol, tok.eventualDecimals])
-      .then((results) => Promise.all(results))
-      .then(([name, symbol, decimals]) => {
-        this.token.name = name;
-        this.token.symbol = symbol;
-        this.token.decimals = decimals;
-        return this.$rbank.controller.eventualMarketPrice(this.marketAddress);
-      })
-      .then((marketPrice) => {
-        this.price = marketPrice;
-        return this.market.updatedSupplyOf(this.account);
-      })
-      .then((supplyOf) => {
-        this.supplyOf = supplyOf;
-      });
+    //removed - not being used - 2020-12-28
   },
-};
+}
 </script>

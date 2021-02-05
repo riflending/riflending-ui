@@ -1,20 +1,40 @@
 <template>
-  <div>
+  <div class="repay-input">
     <template v-if="!waiting">
       <v-row class="inputBox">
         <v-col cols="10">
-          <v-text-field class="inputText" full-width single-line solo flat
-                        type="number" v-model="amount" required
-                        :rules="[rules.required, rules.decimals, rules.debtExists,
-                        rules.notBiggerThanDebt, rules.hasEnoughTokens]"/>
+          <v-text-field
+            v-model="amount"
+            class="inputText"
+            full-width
+            single-line
+            solo
+            flat
+            type="number"
+            required
+            :rules="[
+              rules.required,
+              rules.decimals,
+              rules.debtExists,
+              rules.notBiggerThanDebt,
+              rules.hasEnoughTokens,
+            ]"
+          />
         </v-col>
         <v-col cols="2">
-          <v-btn @click="maxAmount = true" class="mb-12" text color="#008CFF" :disabled="!maxRepayAllowed">max</v-btn>
+          <v-btn
+            class="mb-12"
+            text
+            color="#008CFF"
+            :disabled="!userTotalBorrow"
+            @click="setMaxAmount"
+            >max</v-btn
+          >
         </v-col>
       </v-row>
       <div class="my-5 py-5">
         <v-row class="d-flex align-center">
-          <v-col cols="2"/>
+          <v-col cols="2" />
           <v-col cols="3" class="d-flex justify-end">
             <h3>health factor:</h3>
           </v-col>
@@ -23,76 +43,84 @@
               <v-col cols="7" class="d-flex justify-center">
                 <h1>{{ healthFactor }}%</h1>
               </v-col>
-              <v-col cols="5"/>
+              <v-col cols="5" />
             </v-row>
           </v-col>
-          <v-col cols="1"/>
-          <v-col cols="2"/>
+          <v-col cols="1" />
+          <v-col cols="2" />
         </v-row>
         <v-row class="d-flex align-center">
-          <v-col cols="2"/>
+          <v-col cols="2" />
           <v-col cols="3" class="d-flex justify-end">
             <h3>borrow balance:</h3>
           </v-col>
           <v-col cols="4">
             <v-row class="ma-0 d-flex align-center">
               <v-col cols="7" class="d-flex justify-center">
-                <h1>{{ borrowBy | formatToken(data.token.decimals) }}</h1>
-              </v-col>
-              <v-col cols="5" class="itemInfo">
-                <!--<span class="text-center" v-if="borrowBalanceInfo">-->
-                  <!--(-{{ borrowBalanceInfo | formatToken(data.token.decimals)  }})-->
-                <!--</span>-->
+                <h1>{{ userTotalBorrow | formatNumber }}</h1>
               </v-col>
             </v-row>
           </v-col>
           <v-col cols="1">
             <span class="itemInfo">{{ data.token.symbol }}</span>
           </v-col>
-          <v-col cols="2"/>
+          <v-col cols="2" />
         </v-row>
         <v-row class="d-flex align-center">
-          <v-col cols="2"/>
+          <v-col cols="2" />
           <v-col cols="3" class="d-flex align-end justify-end">
             <h3>borrow limit:</h3>
           </v-col>
           <v-col cols="4">
             <v-row class="ma-0 d-flex align-center">
               <v-col cols="7" class="d-flex justify-center">
-                <h1>{{ maxBorrowAllowed | formatToken(data.token.decimals) }}</h1>
-              </v-col>
-              <v-col cols="5" class="itemInfo">
-                <!--<span class="text-center" v-if="borrowLimitInfo">-->
-                  <!--(+{{ borrowLimitInfo | formatToken(data.token.decimals) }})-->
-                <!--</span>-->
+                <h1>{{ maxBorrowAllowed | formatNumber }}</h1>
               </v-col>
             </v-row>
           </v-col>
           <v-col cols="1">
             <span class="itemInfo">{{ data.token.symbol }}</span>
           </v-col>
-          <v-col cols="2"/>
+          <v-col cols="2" />
         </v-row>
       </div>
       <v-row class="my-5 d-flex justify-center">
-        <v-btn class="button" rounded color="#008CFF" @click="repay" :disabled="!validForm">
+        <v-btn
+          v-if="needApproval"
+          class="button"
+          rounded
+          color="#00A24D"
+          :disabled="!validForm"
+          @click="approve"
+        >
+          Approve
+        </v-btn>
+        <v-btn v-else class="button" rounded color="#008CFF" :disabled="!validForm" @click="repay">
           Repay tokens
         </v-btn>
       </v-row>
     </template>
+    <template v-else-if="!approveDialog">
+      <Loader />
+    </template>
     <template v-else>
-      <loader class="my-15"/>
+      <Approve dialog-father-name="Repay" @backToMainDialog="closeTemplateApprove" />
     </template>
   </div>
 </template>
 
 <script>
-import { mapState } from 'vuex';
-import Loader from '@/components/common/Loader.vue';
-import { ethers } from "ethers";
+import { mapState } from 'vuex'
+import Loader from '@/components/common/Loader.vue'
+import Approve from '@/components/common/Approve.vue'
+import { ethers } from 'ethers'
 
 export default {
   name: 'RepayInput',
+  components: {
+    Loader,
+    Approve,
+  },
   props: {
     data: {
       type: Object,
@@ -102,291 +130,162 @@ export default {
   data() {
     return {
       waiting: false,
-      maxAmount: false,
-      price: 0,
+      isAmountMax: false,
       amount: '0',
-      oldBorrowBy: 0,
-      borrowBy: 0,
-      borrowRate: 0,
-      liquidity: 0,
-      cash: 0,
-      maxRepayAllowed: 0,
+      userTotalBorrow: 0,
       maxBorrowAllowed: 0,
       borrowBalanceInfo: null,
       borrowLimitInfo: null,
       tokenBalance: 0,
       accountHealth: 0,
-      collateralFactor: 0,
-      mantissa: 0,
       maxAmountBalanceAllowed: 0,
+      needApproval: true,
+      approveDialog: false,
       rules: {
         required: () => !!Number(this.amount) || 'Required.',
-        decimals: () => this.decimalPositions || `Maximum ${this
-          .data.token.decimals} decimal places for ${this.data.token.symbol}.`,
-        debtExists: () => (this.maxRepayAllowed > 0 && !!this.contractAmount)
-          || 'You do not have a debt on this market.',
-        hasEnoughTokens: () => this.maxAmountBalanceAllowed >= Number(this.amount)
-          || `You do not have enough ${this.data.token.symbol}`,
-        notBiggerThanDebt: () => this.maxRepayAllowed >= Number(this.amount) || 'You do not owe that much.',
+        decimals: () =>
+          this.decimalPositions ||
+          `Maximum ${this.data.token.decimals} decimal places for ${this.data.token.symbol}.`,
+        debtExists: () =>
+          (this.userTotalBorrow > 0 && !!this.contractAmount) ||
+          'You do not have a debt on this market.',
+        hasEnoughTokens: () =>
+          Number(this.maxAmountBalanceAllowed) >= Number(this.amount) ||
+          `You do not have enough ${this.data.token.symbol}`,
+        notBiggerThanDebt: () =>
+          this.userTotalBorrow >= Number(this.amount) || 'You do not owe that much.',
       },
-    };
+    }
   },
   computed: {
     ...mapState({
       account: (state) => state.Session.account,
     }),
     healthFactor() {
-      return this.accountHealth >= 1 ? 100 : (this.accountHealth * 100).toFixed(2);
-    },
-    borrowed() {
-      return this.asDouble(this.borrowBy);
-    },
-    balanceAsDouble() {
-      return this.asDouble(this.tokenBalance);
-    },
-    maxBorrowAllowedAsDouble() {
-      return this.asDouble(this.maxBorrowAllowed);
+      return this.accountHealth >= 1 ? 100 : (this.accountHealth * 100).toFixed(2)
     },
     contractAmount() {
-      return Number(this.amount).toFixed(this.data.token.decimals).replace('.', '');
+      return Number(this.amount).toFixed(this.data.token.decimals).replace('.', '')
     },
     validForm() {
-      return typeof this.rules.required() !== 'string'
-        && typeof this.rules.decimals() !== 'string'
-        && typeof this.rules.debtExists() !== 'string'
-        && typeof this.rules.hasEnoughTokens() !== 'string'
-        && typeof this.rules.notBiggerThanDebt() !== 'string';
+      return (
+        typeof this.rules.required() !== 'string' &&
+        typeof this.rules.decimals() !== 'string' &&
+        typeof this.rules.debtExists() !== 'string' &&
+        typeof this.rules.hasEnoughTokens() !== 'string' &&
+        typeof this.rules.notBiggerThanDebt() !== 'string'
+      )
     },
     hasDecimals() {
-      return !!Number(this.data.token.decimals);
+      return !!Number(this.data.token.decimals)
     },
     numberOfDecimals() {
-      const amount = this.amount.toString();
-      return amount.includes('.') ? (amount.substring(amount.indexOf('.') + 1, amount.length)
-        .length <= this.data.token.decimals) : true;
+      const amount = this.amount.toString()
+      return amount.includes('.')
+        ? amount.substring(amount.indexOf('.') + 1, amount.length).length <=
+            this.data.token.decimals
+        : true
     },
     decimalPositions() {
-      const amount = this.amount.toString();
-      return this.hasDecimals ? this.numberOfDecimals : !amount.includes('.');
-    },
-  },
-  methods: {
-    repay() {
-      this.waiting = true;
-      this.$emit('wait');
-      this.data.market.payBorrow(this.amount)
-        .then((res) => {
-          this.waiting = false;
-          this.$emit('succeed', {
-            hash: res.transactionHash,
-            borrowLimitInfo: this.borrowLimitInfo,
-            borrowBalanceInfo: this.borrowBalanceInfo,
-          });
-        })
-        .catch((error) => {
-          console.log("ERROR repayBorrow()", error);
-          //validate user error message
-          let userError =
-            typeof error === "string" ? error : error.message || "";
-          this.$emit("error", {
-            userErrorMessage: userError,
-          });
-          this.waiting = false;
-        });
-    },
-
-    getAccountHealth(){ // TODO: SEND TO MIDDLEWARE
-      if(this.supplyValue== 0 || this.borrowed == 0) return 0;
-      let borrowValue= this.borrowed*this.mantissa;
-      return this.supplyValue * this.mantissa / borrowValue;
-    },
-
-    asDouble(value) {
-      return (value / (10 ** this.data.token.decimals))
-        .toFixed(this.data.token.decimals);
-    },
-    getValues() {
-      console.log("RepayBorrow: getValues");
-      let oldLiquidity;
-      let oldCash;
-      this.data.market.borrowBalanceCurrent(this.account)
-      .then((borrowBy) => {
-        if(Number(borrowBy) - Number(this.contractAmount) > 0 ) {
-          this.borrowBy = Number(borrowBy) - Number(this.contractAmount);
-        }
-      })
-      .then(() => this.$middleware.getAccountLiquidity(this.account))
-      .then(({ accountLiquidityInExcess }) => {
-        oldLiquidity = accountLiquidityInExcess;
-        return this.data.market.getCash();
-      })
-      .then((cash) => {
-        oldCash = cash;
-        this.cash = oldCash + Number(this.contractAmount);
-        return this.data.market.borrowRate;
-      });
-
-      this.supplyBalanceInfo = Number(this.amount);
-      this.borrowBalanceInfo = Number(this.contractAmount);
-
-      console.log("RepayBorrow: this.supplyBalanceInfo", this.supplyBalanceInfo);
-
-      // const newSupplyValue =
-      //   supplyValue + Number(this.contractAmount) * this.price;
-      // let oldLiquidity;
-      // let oldCash;
-      // await this.data.market.updatedBorrowBy(this.account)
-      //   .then((borrowBy) => {
-      //     this.oldBorrowBy = borrowBy;
-      //     this.borrowBy = borrowBy - Number(this.contractAmount);
-      //     return this.$rbank.controller.getAccountLiquidity(this.account);
-      //   })
-      //   .then((accountLiquidity) => {
-      //     oldLiquidity = accountLiquidity;
-      //     return this.data.market.eventualCash;
-      //   })
-      //   .then((cash) => {
-      //     oldCash = cash;
-      //     this.cash = cash + Number(this.contractAmount);
-      //     return this.$rbank.controller.getAccountValues(this.account);
-      //   })
-      //   .then(({ supplyValue, borrowValue }) => {
-      //     const newBorrowValue = ((borrowValue - (Number(this.contractAmount) * this.price)) * (this
-      //       .collateralFactor + this.mantissa)) / this.mantissa;
-      //     const newSupplyValue = supplyValue;
-      //     this.liquidity = newBorrowValue < newSupplyValue ? newSupplyValue - newBorrowValue : 0;
-      //     this.maxRepayAllowed = this.getMaxRepayAllowed(this.oldBorrowBy, this.tokenBalance);
-      //     this.maxBorrowAllowed = this.getMaxBorrowAllowed(this.liquidity, this.cash);
-      //     this.borrowBalanceInfo = Number(this.contractAmount);
-      //     this.borrowLimitInfo = Number(this.maxBorrowAllowed - this
-      //       .getMaxBorrowAllowed(oldLiquidity, oldCash));
-      //   });
+      const amount = this.amount.toString()
+      return this.hasDecimals ? this.numberOfDecimals : !amount.includes('.')
     },
   },
   watch: {
     amount() {
-      this.getValues();
-      if (this.maxAmount && this.amount !== this.maxRepayAllowed) this.maxAmount = false;
-      if (this.amount === this.maxRepayAllowed) this.maxAmount = true;
+      if (this.amount === this.getMaxAmount()) this.isAmountMax = true
+      else this.isAmountMax = false
     },
-    maxAmount() {
-      if (this.maxAmount) this.amount = this.maxRepayAllowed;
-      if (!this.maxAmount && this.amount === this.maxRepayAllowed) this.amount = null;
-    },
-  },
-  components: {
-    Loader,
   },
   created() {
-    this.mantissa = Number(1e6);
-    this.collateralFactor = Number(0.5e18);
+    this.$middleware.getAccountHealth(this.account).then((health) => {
+      this.accountHealth = health
+    })
 
-    // TODO: updateBorrowBy pending !!!!
-    // gets liquidity
-    this.$middleware.getAccountLiquidity(this.account)
-      .then(({ accountLiquidityInExcess }) => {
-        this.liquidity = accountLiquidityInExcess;
-        console.log("Repay: this.liquidity",this.liquidity);
-        return this.data.market.getCash();
-      })
-      // gets borrowRate
-      .then((cash) => {
-        this.cash = cash;
-        console.log("Repay: this.cash",this.cash);
-        return this.data.market.borrowRate;
-      })
-      //gets marketPrice
-      .then((borrowRate) => {
-        this.borrowRate = borrowRate;
-        console.log("Repay: this.borrowRate",this.borrowRate);
-        return this.data.market.price;
-      })
-      //gets token balance
-      .then((price) => {
-        this.price = price;
-        console.log("Repay: this.price",this.price);
-        return this.data.market.tokenBalance;
-      })
-      //sets account balance and health
-      .then((tokenBalance) => {
-        this.tokenBalance = tokenBalance;
-        this.supplyValue = tokenBalance;
-        return this.data.market.getMaxBorrowAllowed(this.account);
-      })
-      .then((maxBorrowAllowed) =>{
-        this.maxBorrowAllowed = maxBorrowAllowed;
-        console.log("Repay: this.tokenBalance", this.tokenBalance);
-        console.log("Repay: this.maxBorrowAllowed", this.maxBorrowAllowed);
-        return this.getAccountHealth(this.account);
-      })
-      //sets health & gets collateralFactor
-      .then((health) => {
-        this.accountHealth=health;
-        console.log("Repay: this.health",this.accountHealth);
-        return this.$middleware.getCollateralFactor();
-      })
-      // sets
-      .then((collateralFactor) => {
-        this.collateralFactor = collateralFactor * this.mantissa;
-        return this.data.market.borrowBalanceCurrent(this.account);
-      })
-      .then((borrowBy) => {
-        this.maxRepayAllowed =  ethers.utils.formatEther(borrowBy);
-        this.borrowBy = Number(borrowBy);
-        this.oldBorrowBy = Number(borrowBy
-      );
-        const internalAddressOfToken = this.data.market.token?.internalAddress
-        return internalAddressOfToken ?
-          this.$middleware.getWalletAccountBalance(this.account, this.data.market.token?.internalAddress) :
-          this.$middleware.getWalletAccountBalanceForRBTC(this.account)
-      }).then((balanceOfToken) => {
-        console.log(`Wallet balance: ${balanceOfToken}`)
-        this.maxAmountBalanceAllowed = balanceOfToken
-        return this.data.market.getMaxBorrowAllowed(this.account)
-      }).then((maxBorrowAllowed) => {
-        this.maxBorrowAllowed = maxBorrowAllowed
-      })
+    //set is market allow
+    this.data.market.isAllowance(this.account).then((allow) => {
+      this.needApproval = !allow
+    })
 
-    // this.data.market.updatedBorrowBy(this.account)
-    //   .then((borrowBy) => {
-    //     this.oldBorrowBy = borrowBy;
-    //     this.borrowBy = borrowBy;
-    //     return this.$rbank.controller.getAccountLiquidity(this.account);
-    //   })
-    //   .then((accountLiquidity) => {
-    //     this.liquidity = accountLiquidity;
-    //     return this.data.market.eventualCash;
-    //   })
-    //   .then((cash) => {
-    //     this.cash = cash;
-    //     return this.data.market.eventualBorrowRate;
-    //   })
-    //   .then((borrowRate) => {
-    //     this.borrowRate = borrowRate;
-    //     return this.$rbank.controller.eventualMarketPrice(this.data.market.address);
-    //   })
-    //   .then((marketPrice) => {
-    //     this.price = marketPrice;
-    //     return this.data.market.eventualToken;
-    //   })
-    //   .then((tok) => tok.eventualBalanceOf(this.account))
-    //   .then((tokenBalance) => {
-    //     this.tokenBalance = tokenBalance;
-    //     return this.$rbank.controller.getAccountHealth(this.account);
-    //   })
-    //   .then((accountHealth) => {
-    //     this.accountHealth = accountHealth;
-    //     return this.$rbank.controller.eventualMantissa;
-    //   })
-    //   .then((mantissa) => {
-    //     this.mantissa = mantissa;
-    //     return this.$rbank.controller.eventualCollateralFactor;
-    //   })
-    //   .then((collateralFactor) => {
-    //     this.collateralFactor = collateralFactor * this.mantissa;
-    //     this.maxRepayAllowed = this.getMaxRepayAllowed(this.borrowBy, this.tokenBalance);
-    //     this.maxBorrowAllowed = this.getMaxBorrowAllowed(this.liquidity, this.cash);
-    //   });
+    this.data.market.maxBorrowAllowedByAccount(this.account).then((maxBorrowAllowed) => {
+      this.maxBorrowAllowed = maxBorrowAllowed
+    })
+    this.data.market.borrowBalanceCurrentFormatted(this.account).then((borrowBalance) => {
+      this.userTotalBorrow = borrowBalance.toString()
+    })
+    const walletBalancePromise = !this.data.market.isCRBTC
+      ? this.$middleware.getWalletAccountBalance(this.account, this.data.market.token?.address)
+      : this.$middleware.getWalletAccountBalanceForRBTC(this.account)
+    walletBalancePromise.then((balanceOfToken) => {
+      this.maxAmountBalanceAllowed = balanceOfToken
+    })
   },
-};
+  methods: {
+    closeTemplateApprove() {
+      this.waiting = false
+      this.approveDialog = false
+      this.$emit('approve')
+    },
+    approve() {
+      this.waiting = true
+      this.$emit('wait')
+      this.data.market
+        .approveWithMaxUint()
+        .then(() => {
+          this.approveDialog = true
+          this.needApproval = false
+        })
+        .catch((error) => {
+          this.waiting = false
+          const userError = typeof error === 'string' ? error : error.message || ''
+          this.$emit('error', { userErrorMessage: userError })
+        })
+    },
+    repay() {
+      //get amount
+      this.validateMaxToRepay().then((amount) => {
+        this.waiting = true
+        this.$emit('wait')
+        this.data.market
+          .payBorrow(amount)
+          .then((res) => {
+            this.waiting = false
+            this.$emit('succeed', {
+              hash: res.transactionHash,
+              pay: amount,
+            })
+          })
+          .catch((error) => {
+            // validate user error message
+            const userError = typeof error === 'string' ? error : error.message || ''
+            this.$emit('error', {
+              userErrorMessage: userError,
+            })
+            this.waiting = false
+          })
+      })
+    },
+    async validateMaxToRepay() {
+      //validate if max
+      if (!this.isAmountMax) return this.amount
+      //validate if amount !== maxBorrow
+      if (this.userTotalBorrow !== this.amount) return this.amount
+      //get the max borrow again
+      return this.data.market.borrowBalanceCurrent(this.account).then((borrowBalance) => {
+        return ethers.utils.formatUnits(borrowBalance, this.data.market.token.decimals)
+      })
+    },
+    getMaxAmount() {
+      return ethers.utils
+        .parseUnits(this.userTotalBorrow, this.data.market.token.decimals)
+        .lte(ethers.utils.parseUnits(this.maxAmountBalanceAllowed, this.data.market.token.decimals))
+        ? this.userTotalBorrow
+        : this.maxAmountBalanceAllowed
+    },
+    setMaxAmount() {
+      this.isAmountMax = true
+      this.amount = this.getMaxAmount()
+    },
+  },
+}
 </script>

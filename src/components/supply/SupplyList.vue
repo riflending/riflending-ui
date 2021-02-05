@@ -1,12 +1,10 @@
 <template>
-  <v-card width="50%" flat>
+  <v-card class="supply-list" width="50%" flat>
     <v-list>
       <v-list-item>
         <v-row>
-          <v-col cols="3">
-            <v-list-item-subtitle class="listTitle"
-              >Market</v-list-item-subtitle
-            >
+          <v-col cols="2">
+            <v-list-item-subtitle class="listTitle">Market</v-list-item-subtitle>
           </v-col>
           <v-col cols="3">
             <v-list-item-subtitle class="listTitle">Price</v-list-item-subtitle>
@@ -14,76 +12,85 @@
           <v-col cols="2">
             <v-list-item-subtitle class="listTitle">APR</v-list-item-subtitle>
           </v-col>
-          <v-col cols="4">
-            <v-list-item-subtitle class="listTitle"
-              >Supplied</v-list-item-subtitle
-            >
+          <v-col cols="2">
+            <v-list-item-subtitle class="listTitle">Supplied</v-list-item-subtitle>
           </v-col>
+          <v-col cols="2">
+            <v-list-item-subtitle class="listTitle">Collateral</v-list-item-subtitle>
+          </v-col>
+          <v-col cols="1"> </v-col>
         </v-row>
       </v-list-item>
       <v-divider />
-      <supply-item
+      <SupplyItem
         v-for="(market, idx) in markets"
         :key="`market-${idx}`"
         :market="market"
         @dialogClosed="reset"
       />
     </v-list>
+    <template v-if="toggleMarketTransactionStatus === 'success'">
+      <SuccessDialog
+        :message="toggleMarketTransactionMessage"
+        :is-open="toggleMarketTransactionStatus === 'success'"
+      />
+    </template>
+    <template v-if="toggleMarketTransactionStatus === 'waiting'">
+      <WaitingDialog :is-open="toggleMarketTransactionStatus === 'waiting'" />
+    </template>
+    <template v-if="toggleMarketTransactionStatus === 'error'">
+      <ErrorDisplayDialog
+        :message="toggleMarketTransactionMessage"
+        :is-open="toggleMarketTransactionStatus === 'error'"
+      />
+    </template>
   </v-card>
 </template>
 
 <script>
-import { mapState } from "vuex";
-import SupplyItem from "@/components/supply/SupplyItem.vue";
+import { mapState } from 'vuex'
+import SupplyItem from '@/components/supply/SupplyItem.vue'
+import SuccessDialog from '@/components/dialog/SuccessDialog.vue'
+import WaitingDialog from '@/components/dialog/WaitingDialog.vue'
+import ErrorDisplayDialog from '@/components/dialog/ErrorDisplayDialog.vue'
 
 export default {
-  name: "SupplyList",
+  name: 'SupplyList',
+  components: {
+    SupplyItem,
+    SuccessDialog,
+    WaitingDialog,
+    ErrorDisplayDialog,
+  },
   data() {
     return {
       markets: [],
-    };
+      toggleMarketTransactionStatus: null,
+      toggleMarketTransactionMessage: '',
+    }
   },
-  methods: {
-    reset() {
-      this.$emit("listChange");
-    },
-    reloadItems() {
-      this.$emit("reload");
-    },
-  },
-    computed: {
+  computed: {
     ...mapState({
       account: (state) => state.Session.account,
     }),
+  },
+  mounted() {
+    this.$root.$on('toggleMarketStatusTransaction', ({ status, message }) => {
+      this.toggleMarketTransactionStatus = status
+      this.toggleMarketTransactionMessage = message
+    })
+  },
+  async created() {
+    // get all markets
+    this.markets = await this.$middleware.getMarkets(this.account)
+  },
+  methods: {
+    reset() {
+      this.$emit('listChange')
     },
-  components: {
-    SupplyItem,
+    reloadItems() {
+      this.$emit('reload')
+    },
   },
-  created() {
-    //get all markets
-    this.markets = this.$middleware.getMarkets(this.account);
-    
-    this.markets.forEach((market) =>
-      market.eventualEvents.then((events) =>
-        events.liquidateBorrow().on("data", this.reloadItems)
-      )
-    );
-
-    // this.$rbank.eventualMarkets.then((mkts) => {
-    //   this.markets = mkts;
-    //   // console.log("this.markets",  marketHelper.getMarkets);
-    //   console.log("eventualMarket HELPER", middlewareHelper.getMarkets[0].eventualEvents);
-    //   // console.log("eventualMarket HELPER out", marketHelper.eventualEvents);
-    //   // console.log("mkts", mkts);
-    //   // console.log("eventualMarket", mkts[0].eventualEvents);
-
-    //   // this.markets.forEach((market) =>
-    //   mkts.forEach((market) =>
-    //     market.eventualEvents.then((events) =>
-    //       events.liquidateBorrow().on("data", this.reloadItems)
-    //     )
-    //   );
-    // });
-  },
-};
+}
 </script>

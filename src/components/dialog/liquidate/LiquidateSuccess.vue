@@ -1,14 +1,15 @@
 <template>
-  <div>
+  <div class="liquidate-success">
     <div class="successBox">
       <v-row class="my-5 d-flex justify-center">
         <h1 class="blueish">Success!</h1>
       </v-row>
       <v-row class="my-5 d-flex justify-center">
         <div class="text-center">
-          You have successfully Liquidated <br> this Market with
+          You have successfully Liquidated <br />
+          this Market with
           <span class="greenish">
-            {{ data.liquidateValue | formatToken(data.token.decimals) }}
+            {{ data.liquidateValue }}
           </span>
           <span class="greenish">{{ data.token.symbol }}</span>
         </div>
@@ -16,45 +17,45 @@
     </div>
     <div class="my-5 py-5">
       <v-row class="d-flex align-center">
-        <v-col cols="2"/>
+        <v-col cols="2" />
         <v-col cols="3" class="d-flex justify-end">
           <h3>supplied to contract:</h3>
         </v-col>
         <v-col cols="4">
           <v-row class="ma-0 d-flex align-center">
             <v-col cols="7" class="d-flex justify-center">
-              <h1>{{ tokenBalance | formatToken(data.token.decimals) }}</h1>
+              <h1>{{ data.collateral.amount | formatNumber }}</h1>
             </v-col>
-            <v-col cols="5" class="itemInfo">
-            </v-col>
+            <v-col cols="5" class="itemInfo"> </v-col>
           </v-row>
         </v-col>
         <v-col cols="1">
-          <span class="itemInfo">{{ data.token.symbol }}</span>
+          <span class="itemInfo">{{ data.collateral.symbol }}</span>
         </v-col>
-        <v-col cols="2"/>
+        <v-col cols="2" />
       </v-row>
       <v-row class="d-flex align-center">
-        <v-col cols="2"/>
+        <v-col cols="2" />
         <v-col cols="3" class="d-flex align-end justify-end">
           <h3>Cost:</h3>
         </v-col>
         <v-col cols="4">
           <v-row class="ma-0 d-flex align-center">
             <v-col cols="7" class="d-flex justify-center">
-              <h1>{{ data.costValue | formatToken(data.collateral.decimals) }}</h1>
+              <h1>
+                {{ data.liquidateValue | formatNumber }}
+              </h1>
             </v-col>
-            <v-col cols="5" class="itemInfo">
-            </v-col>
+            <v-col cols="5" class="itemInfo"> </v-col>
           </v-row>
         </v-col>
         <v-col cols="1">
-          <span class="itemInfo">{{ data.collateral.symbol }}</span>
+          <span class="itemInfo">{{ data.token.symbol }}</span>
         </v-col>
-        <v-col cols="2"/>
+        <v-col cols="2" />
       </v-row>
     </div>
-    <transaction-hash :hash="data.hash"/>
+    <TransactionHash :hash="data.hash" />
     <v-row class="my-5 d-flex justify-center">
       <v-btn class="button" rounded color="#008CFF" @click="closeDialog">
         Back to Supply / Borrow
@@ -64,11 +65,14 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
-import TransactionHash from '@/components/common/TransactionHash.vue';
+import { mapState } from 'vuex'
+import TransactionHash from '@/components/common/TransactionHash.vue'
 
 export default {
   name: 'LiquidateSuccess',
+  components: {
+    TransactionHash,
+  },
   props: {
     data: {
       type: Object,
@@ -83,48 +87,45 @@ export default {
       price: 0,
       maxBorrowAllowed: 0,
       supplyOf: 0,
-    };
+    }
   },
   computed: {
     ...mapState({
       account: (state) => state.Session.account,
     }),
   },
-  methods: {
-    closeDialog() {
-      this.$emit('closeDialog');
-    },
-    getMaxAllowed(liquidity, cash) {
-      const allowed = this.price > 0 ? Math.floor(liquidity / (this.price * 2)) : 0;
-      return allowed >= cash ? cash : allowed;
-    },
-  },
-  components: {
-    TransactionHash,
-  },
   created() {
-    this.data.market.eventualToken
-      .then((tok) => tok.eventualBalanceOf(this.account))
+    this.data.market
+      .getUserBalanceOfUnderlying()
       .then((tokenBalance) => {
-        this.tokenBalance = tokenBalance;
-        return this.$rbank.controller.getAccountLiquidity(this.account);
+        this.tokenBalance = tokenBalance
+        this.supplyOf = tokenBalance
+        return this.$middleware.getAccountLiquidity(this.account)
       })
       .then((accountLiquidity) => {
-        this.liquidity = accountLiquidity;
-        return this.data.market.eventualCash;
+        this.liquidity = accountLiquidity
+        return this.data.market.getCash()
       })
       .then((cash) => {
-        this.cash = cash;
-        return this.$rbank.controller.eventualMarketPrice(this.data.market.address);
+        this.cash = cash
+        return this.data.market.getPrice()
       })
-      .then((marketPrice) => {
-        this.price = marketPrice;
-        return this.data.market.updatedSupplyOf(this.account);
+      .then((price) => {
+        this.price = price
+        return this.data.market.maxBorrowAllowedByAccount(this.account)
       })
-      .then((supplyOf) => {
-        this.supplyOf = supplyOf;
-        this.maxBorrowAllowed = this.getMaxAllowed(this.liquidity, this.cash);
-      });
+      .then((maxBorrow) => {
+        this.maxBorrowAllowed = maxBorrow
+      })
   },
-};
+  methods: {
+    closeDialog() {
+      this.$emit('closeDialog')
+    },
+    getMaxAllowed(liquidity, cash) {
+      const allowed = this.price > 0 ? Math.floor(liquidity / (this.price * 2)) : 0
+      return allowed >= cash ? cash : allowed
+    },
+  },
+}
 </script>

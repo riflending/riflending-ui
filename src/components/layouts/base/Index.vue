@@ -1,35 +1,32 @@
-<template>
+<template class="index">
   <v-app light>
-    <app-bar/>
-    <v-content>
+    <AppBar />
+    <v-main>
       <v-container fluid>
         <slot></slot>
       </v-container>
-    </v-content>
-    <footing></footing>
+    </v-main>
   </v-app>
 </template>
 
 <script>
-import AppBar from '@/components/layouts/base/AppBar.vue';
-import Footing from '@/components/layouts/base/Footing.vue';
+import AppBar from '@/components/layouts/base/AppBar.vue'
 
-import { mapGetters } from 'vuex';
-import * as constants from '@/store/constants';
+import { mapGetters } from 'vuex'
+import * as constants from '@/store/constants'
 
 export default {
   name: 'BaseLayout',
+  components: {
+    AppBar,
+  },
   data() {
-    return {};
+    return {}
   },
   computed: {
     ...mapGetters({
       isLogged: constants.SESSION_IS_LOGGED,
     }),
   },
-  components: {
-    AppBar,
-    Footing,
-  },
-};
+}
 </script>

@@ -1,13 +1,13 @@
 <template>
-  <v-footer class="pa-0 footering d-flex justify-center" color="transparent">
+  <v-footer class="footing pa-0 footering d-flex justify-center" color="transparent">
     <div class="arc">
       <v-row class="ma-0 d-flex justify-center">
         <v-col class="my-5">
           <v-row class="mx-0 d-flex justify-center">
-            <v-img src="../../../assets/iovlabs.png" height="12" contain/>
+            <v-img src="../../../assets/iovlabs.png" height="12" contain />
           </v-row>
           <v-row class="mx-0 my-3 d-flex justify-center">
-            <v-img src="../../../assets/rsk.png" height="35" contain/>
+            <v-img src="../../../assets/rsk.png" height="35" contain />
           </v-row>
           <v-row class="mx-0 d-flex justify-center">
             <p class="text-center">Copyright &copy; 2020 Rif. All rights reserved.</p>
@@ -21,5 +21,5 @@
 <script>
 export default {
   name: 'Footing',
-};
+}
 </script>

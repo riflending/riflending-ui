@@ -8,7 +8,7 @@
         <div class="text-center">
           You have successfully withdrawn <br />
           <span class="greenish">
-            {{ data.supplyBalanceInfo }}
+            {{ data.supplyBalanceInfo | formatNumber }}
           </span>
           <span class="greenish">{{ data.token.symbol }}</span>
           from this Market
@@ -19,26 +19,11 @@
       <v-row class="d-flex align-center">
         <v-col cols="2" />
         <v-col cols="3" class="d-flex justify-end">
-          <h3 class="greenish">earnings:</h3>
-        </v-col>
-        <v-col cols="3">
-          <h1 class="greenish text-center">
-            {{ earnings | formatToken(data.token.decimals) }}
-          </h1>
-        </v-col>
-        <v-col cols="2">
-          <span class="itemInfo">{{ data.token.symbol }}</span>
-        </v-col>
-        <v-col cols="2" />
-      </v-row>
-      <v-row class="d-flex align-center">
-        <v-col cols="2" />
-        <v-col cols="3" class="d-flex justify-end">
           <h3>supply balance:</h3>
         </v-col>
         <v-col cols="3">
           <h1 class="text-center">
-            {{ supplyOf | formatNumber }}
+            {{ tokenBalance | formatNumber }}
           </h1>
         </v-col>
         <v-col cols="2">
@@ -53,10 +38,7 @@
         </v-col>
         <v-col cols="3">
           <h1 class="text-center">
-            {{
-              maxBorrowAllowed
-                | formatToken(data.token.decimals)
-            }}
+            {{ maxBorrowAllowed | formatNumber }}
           </h1>
         </v-col>
         <v-col cols="2">
@@ -65,7 +47,7 @@
         <v-col cols="2" />
       </v-row>
     </div>
-    <transaction-hash :hash="data.hash" />
+    <TransactionHash :hash="data.hash" />
     <v-row class="my-5 d-flex justify-center">
       <v-btn class="button" rounded color="#008CFF" @click="closeDialog">
         Back to Supply / Borrow
@@ -75,11 +57,15 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
-import TransactionHash from "@/components/common/TransactionHash.vue";
+import { mapState } from 'vuex'
+import TransactionHash from '@/components/common/TransactionHash.vue'
+import BigNumber from 'bignumber.js'
 
 export default {
-  name: "SupplySuccess",
+  name: 'SupplySuccess',
+  components: {
+    TransactionHash,
+  },
   props: {
     data: {
       type: Object,
@@ -88,52 +74,33 @@ export default {
   },
   data() {
     return {
-      earnings: 0,
-      liquidity: 0,
-      cash: 0,
-      price: 0,
       maxBorrowAllowed: 0,
-      supplyOf: 0,
-    };
+      tokenBalance: 0,
+    }
   },
   computed: {
     ...mapState({
       account: (state) => state.Session.account,
     }),
   },
-  methods: {
-    closeDialog() {
-      this.$emit("closeDialog");
-    },
-    getMaxAllowed(liquidity, cash) {
-      const allowed =
-        this.price > 0 ? Math.floor(liquidity / (this.price * 2)) : 0;
-      return allowed >= cash ? cash : allowed;
-    },
-  },
-  components: {
-    TransactionHash,
-  },
   created() {
-    //TODO this.earnings = accountEarnings;
-    this.$middleware
-      .getAccountLiquidity(this.account)
-      .then(({ accountLiquidityInExcess }) => {
-        this.liquidity = Number(accountLiquidityInExcess);
-        return this.data.market.getCash();
-      })
-      .then((cash) => {
-        this.cash = cash;
-        return this.data.market.price;
-      })
-      .then((price) => {
-        this.price = price;
-        this.maxBorrowAllowed = this.getMaxAllowed(this.liquidity, this.cash);
-        return this.data.market.getBalanceOfUnderlying(this.account);
+    this.data.market
+      .maxBorrowAllowedByAccount(this.account)
+      .then((maxBorrowAllowed) => {
+        this.maxBorrowAllowed = maxBorrowAllowed.toFixed(
+          this.data.token.decimals,
+          BigNumber.ROUND_DOWN,
+        )
+        return this.data.market.getBalanceOfUnderlyingFormatted(this.account)
       })
       .then((balance) => {
-        this.supplyOf = balance;
-      });
+        this.tokenBalance = balance
+      })
   },
-};
+  methods: {
+    closeDialog() {
+      this.$emit('closeDialog')
+    },
+  },
+}
 </script>

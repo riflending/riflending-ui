@@ -1,13 +1,13 @@
-import Landing from '@/views/Landing.vue';
-import store from '@/store';
+import Landing from '@/views/Landing.vue'
+import store from '@/store'
 
 const requireAuth = (to, from, next) => {
   if (!store.getters.SESSION_IS_LOGGED) {
-    next({ name: 'Landing' });
+    next({ name: 'Landing' })
   } else {
-    next();
+    next()
   }
-};
+}
 
 export default [
   {
@@ -28,13 +28,13 @@ export default [
     beforeEnter: requireAuth,
   },
   {
-    path: '/admin',
-    name: 'Admin',
-    component: () => import(/* webpackChunkName: "admin" */ '@/views/Admin.vue'),
+    path: '/status',
+    name: 'Status',
+    component: () => import(/* webpackChunkName: "status" */ '@/views/Status.vue'),
     beforeEnter: requireAuth,
   },
   {
     path: '*',
     redirect: { name: 'Landing' },
   },
-];
+]

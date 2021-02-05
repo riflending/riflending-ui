@@ -1,60 +1,64 @@
-import { ethers } from "ethers";
-import { constants, address, abi } from "./constants";
+import { ethers } from 'ethers'
+import Vue from 'vue'
+import { constants, address, abi } from './constants'
+import { NETWORK_ID } from '../config/constants'
 
-export default class factoryContract {
+export default class FactoryContract {
+  constructor() {
+    const chainId = +Vue?.web3Provider?.network?.chainId || NETWORK_ID
+    this.addressContract = address[chainId]
+  }
 
-    constructor() {
-        this.provider = new ethers.providers.Web3Provider(window.ethereum);
-        //add this format to support RSK
-        //validate formatt  provider
-        const format = this.provider.formatter.formats
-        if (format) format.receipt['root'] = format.receipt['logsBloom']
-        Object.assign(this.provider.formatter, { format: format });
-        this.signer = this.provider.getSigner();
-        //asign format to signer
-        Object.assign(this.signer.provider.formatter, { format: format });
+  getSigner() {
+    const format = Vue.web3Provider.formatter.formats
+    const signer = Vue.web3Provider.getSigner()
+    // asign format to signer
+    Object.assign(signer.provider.formatter, { format })
+    return signer
+  }
 
-        this.addressContract = address.testnet;
+  createContract(address, abi, provider) {
+    return new ethers.Contract(address, abi, provider)
+  }
+
+  validateContractName(name) {
+    if (!Object.prototype.hasOwnProperty.call(constants, name)) {
+      console.error(`contract name (${name}) not exist in constants`)
+      return false
     }
+    return true
+  }
+  getContractAddress(name) {
+    if (this.validateContractName(name)) {
+      return this.addressContract[name]
+    }
+  }
 
-    createContract(address, abi, provider) {
-        return new ethers.Contract(address, abi, provider);
+  getContract(name) {
+    if (this.validateContractName(name)) {
+      return this.createContract(this.addressContract[name], abi[name], Vue.web3Provider)
     }
+  }
 
-    validateContractName(name) {
-        if (!constants.hasOwnProperty(name)) {
-            console.error(`contract name (${name}) not exist in constants`);
-            return false;
-        }
-        return true;
+  getContractToken(name) {
+    if (this.validateContractName(name)) {
+      return this.createContract(this.addressContract[name], abi.Erc20, Vue.web3Provider)
     }
+  }
 
-    getContract(name) {
-        if (this.validateContractName(name)) {
-            return this.createContract(this.addressContract[name], abi[name], this.provider);
-        }
-        return;
+  getContractCtoken(name) {
+    if (this.validateContractName(name)) {
+      const abiCtoken = name == 'cRBTC' ? abi.cRBTC : abi.cErc20
+      return this.createContract(this.addressContract[name], abiCtoken, Vue.web3Provider)
     }
-    
-    getContractToken(name) {
-        if (this.validateContractName(name)) {
-            return this.createContract(this.addressContract[name], abi["Erc20"], this.provider);
-        }
-        return;
-    }
+  }
 
-    getContractCtoken(name) {
-        if (this.validateContractName(name)) {
-            let abiCtoken = ((name) == 'cRBTC') ? abi["cRBTC"] : abi["cErc20"];
-            return this.createContract(this.addressContract[name], abiCtoken, this.provider);
-        }
-        return;
+  getContractByNameAndAbiName(nameContract, nameAbi) {
+    if (
+      this.validateContractName(nameContract) &&
+      Object.prototype.hasOwnProperty.call(abi, nameAbi)
+    ) {
+      return this.createContract(this.addressContract[nameContract], abi[nameAbi], Vue.web3Provider)
     }
-
-    getContractByNameAndAbiName(nameContract, nameAbi) {
-        if ((this.validateContractName(nameContract)) && (abi.hasOwnProperty(nameAbi))) {
-            return this.createContract(this.addressContract[nameContract], abi[nameAbi], this.provider);
-        }
-        return;
-    }
+  }
 }

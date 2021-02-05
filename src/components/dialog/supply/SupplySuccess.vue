@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="supply-success">
     <div class="successBox">
       <v-row class="my-5 d-flex justify-center">
         <h1 class="blueish">Success!</h1>
@@ -9,7 +9,7 @@
           You have successfully supplied <br />
           this Market with
           <span class="greenish">
-            {{ data.supplyBalanceInfo }}
+            {{ data.supplyBalanceInfo | formatNumber }}
           </span>
           <span class="greenish">{{ data.token.symbol }}</span>
         </div>
@@ -25,13 +25,8 @@
           <v-row class="ma-0 d-flex align-center">
             <v-col cols="7" class="d-flex justify-center">
               <h1>
-                {{ cash | formatToken(data.token.decimals) }}
+                {{ cash | formatNumber }}
               </h1>
-            </v-col>
-            <v-col cols="5" class="itemInfo">
-              <!-- <span v-if="data.supplyBalanceInfo">
-                (-{{ data.supplyBalanceInfo }})
-              </span> -->
             </v-col>
           </v-row>
         </v-col>
@@ -48,12 +43,7 @@
         <v-col cols="4">
           <v-row class="ma-0 d-flex align-center">
             <v-col cols="7" class="d-flex justify-center">
-              <h1>{{ supplyOf | formatNumber }}</h1>
-            </v-col>
-            <v-col cols="5" class="itemInfo">
-              <!-- <span v-if="data.supplyBalanceInfo">
-                (+{{ data.supplyBalanceInfo }})
-              </span> -->
+              <h1>{{ tokenBalance | formatNumber }}</h1>
             </v-col>
           </v-row>
         </v-col>
@@ -70,12 +60,7 @@
         <v-col cols="4">
           <v-row class="ma-0 d-flex align-center">
             <v-col cols="7" class="d-flex justify-center">
-              <h1>{{ maxBorrowAllowed | formatToken(data.token.decimals) }}</h1>
-            </v-col>
-            <v-col cols="5" class="itemInfo">
-              <span v-if="data.borrowLimitInfo">
-                (+{{ data.borrowLimitInfo | formatToken(data.token.decimals) }})
-              </span>
+              <h1>{{ maxBorrowAllowed | formatNumber }}</h1>
             </v-col>
           </v-row>
         </v-col>
@@ -85,7 +70,7 @@
         <v-col cols="2" />
       </v-row>
     </div>
-    <transaction-hash :hash="data.hash" />
+    <TransactionHash :hash="data.hash" />
     <v-row class="my-5 d-flex justify-center">
       <v-btn class="button" rounded color="#008CFF" @click="closeDialog">
         Back to Supply / Borrow
@@ -95,11 +80,15 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
-import TransactionHash from "@/components/common/TransactionHash.vue";
+import { mapState } from 'vuex'
+import TransactionHash from '@/components/common/TransactionHash.vue'
+import BigNumber from 'bignumber.js'
 
 export default {
-  name: "SupplySuccess",
+  name: 'SupplySuccess',
+  components: {
+    TransactionHash,
+  },
   props: {
     data: {
       type: Object,
@@ -109,52 +98,38 @@ export default {
   data() {
     return {
       tokenBalance: 0,
-      liquidity: 0,
       cash: 0,
-      price: 0,
       maxBorrowAllowed: 0,
-      supplyOf: 0,
-    };
+    }
   },
   computed: {
     ...mapState({
       account: (state) => state.Session.account,
     }),
   },
-  methods: {
-    closeDialog() {
-      this.$emit("closeDialog");
-    },
-    getMaxAllowed(liquidity, cash) {
-      const allowed =
-        this.price > 0 ? Math.floor(liquidity / (this.price * 2)) : 0;
-      return allowed >= cash ? cash : allowed;
-    },
-  },
-  components: {
-    TransactionHash,
-  },
   created() {
     this.data.market
-      .getBalanceOfUnderlying(this.account)
+      .getBalanceOfUnderlyingFormatted(this.account)
       .then((balance) => {
-        this.tokenBalance = balance;
-        this.supplyOf = balance;
-        return this.$middleware.getAccountLiquidity(this.account);
-      })
-      .then(({ accountLiquidityInExcess }) => {
-        this.liquidity = accountLiquidityInExcess;
-        return this.data.market.getCash();
+        this.tokenBalance = balance
+        return this.data.market.getMarketCash()
       })
       .then((cash) => {
-        this.cash = cash;
-        return this.data.market.price;
+        this.cash = cash.toString()
+        return this.data.market.maxBorrowAllowedByAccount(this.account)
       })
-      .then((price) => {
-        this.price = price;
-        this.maxBorrowAllowed = this.getMaxAllowed(this.liquidity, this.cash);
-        return this.data.market.tokenBalance;
-      });
+      .then((maxBorrowAllowed) => {
+        //set borrow limit
+        this.maxBorrowAllowed = maxBorrowAllowed.toFixed(
+          this.data.token.decimals,
+          BigNumber.ROUND_DOWN,
+        )
+      })
   },
-};
+  methods: {
+    closeDialog() {
+      this.$emit('closeDialog')
+    },
+  },
+}
 </script>
