@@ -310,17 +310,36 @@
             transfer would have put the account into a state of negative liquidity.</strong
           >
         </p>
-        <h1 id="integration">How does <strong>rLending</strong> play along with the ecosystem?</h1>
+        <h1 id="integration">rLending and the RSK ecosystem</h1>
         <p>
-          Each market has its own Supply interest rate (APR). Interest isn&#39;t distributed;
-          instead,
-          <strong>simply by holding cTokens, you&#39;ll earn interest!</strong>
-          <strong>cTokens</strong> accumulates interest through their exchange rate — over time,
-          each cToken
-          <strong>becomes convertible into an increasing amount of it&#39;s underlying asset</strong
-          >, even while the number of cTokens in your wallet stays the same.
+          <strong>rLenbding</strong> runs on the <a href="https://www.rsk.co/">RSK Network</a> but
+          it it is not an isolated application. The network has a
+          <a href="https://tokenbridge.rsk.co/">Token Bridge</a> that allows bidirectional transfers
+          betweenth RSK and the Ethereum Network. With this resource, users of the
+          <strong>rLenbding Protocol</strong> are able to interact with assets from the Ethereum
+          network.
         </p>
-        <p>&nbsp;</p>
+        <p>
+          <v-img
+            contain
+            max-height="650"
+            max-width="850"
+            src="@/components/docs/pictures/integration.png"
+            alt="Market Data"
+          />
+        </p>
+        <p>
+          For example, let's say a user holding rBTC wants to buy USDT. This is possible, by
+          supplying rBTC as collateral and borrowing rKovUSDT(the pegged token in the RSK network)
+          from the <strong>rLending Protocol</strong> Then it would be possible to use the
+          <a href="https://tokenbridge.rsk.co/">Token Bridge</a>
+          to exchange rKovUSDT for USDT.
+        </p>
+        <p>
+          It would also be possible to interact with tokens though the
+          <a href="https://rskswap.com/">RSK Swap</a> Dapp which allows for instant exchange between
+          assets in the network.
+        </p>
         <hr />
         <a href="#top">Back to top</a>
       </v-row>

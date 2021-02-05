@@ -22,7 +22,7 @@
             protocol.</strong
           >
         </p>
-        <h2 id="audits-">Audits:</h2>
+        <h2 id="audits">Audits:</h2>
         <p>
           As Compound is recognized to be one of the most audited and secure DEFI platforms deployed
           to the Ethereum Network, we decided to build up on it&#39;s basis and improve on the key
@@ -37,7 +37,7 @@
           <a href="">here</a>
         </p>
         <hr />
-        <h2 id="eventualities-">Eventualities:</h2>
+        <h2 id="eventualities">Eventualities:</h2>
         <p>
           In the eventual case that any of the smart contracts malfunction, the protocol has a
           fail-safe: a multi-signature smart contract (that requires several accounts to verify a
@@ -59,39 +59,6 @@
           <li>The ability to withdraw the reserve of a cToken</li>
           <li>The ability to update the Comptroller contract</li>
           <li>The ability to choose a new admin</li>
-        </ul>
-        <p>
-          Here is a list of the current addresses listed in the
-          <a
-            href="https://explorer.testnet.rsk.co/address/0x9760d4a155058f6bec8d9fd8d50222073e57083e"
-            >Multi Signature Smart Contract</a
-          >
-        </p>
-        <ul>
-          <li>
-            <a
-              href="https://explorer.testnet.rsk.co/address/0x9760d4a155058f6bec8d9fd8d50222073e57083e"
-              >0x9760d4A155058F6BeC8d9fD8D50222073e57083e</a
-            >
-          </li>
-          <li>
-            <a
-              href="https://explorer.testnet.rsk.co/address/0x9760d4a155058f6bec8d9fd8d50222073e57083e"
-              >0x9760d4A155058F6BeC8d9fD8D50222073e57083e</a
-            >
-          </li>
-          <li>
-            <a
-              href="https://explorer.testnet.rsk.co/address/0x9760d4a155058f6bec8d9fd8d50222073e57083e"
-              >0x9760d4A155058F6BeC8d9fD8D50222073e57083e</a
-            >
-          </li>
-          <li>
-            <a
-              href="https://explorer.testnet.rsk.co/address/0x9760d4a155058f6bec8d9fd8d50222073e57083e"
-              >0x9760d4A155058F6BeC8d9fD8D50222073e57083e</a
-            >
-          </li>
         </ul>
         <p>&nbsp;</p>
         <hr />
