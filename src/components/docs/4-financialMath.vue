@@ -166,12 +166,29 @@
           Alice supplies 1 rBTC to the <strong>rLending Protocol</strong>. At the time of supply,
           the supplyRatePerBlock is <strong>37893605 Wei</strong>, or
           <strong>0.000000000037893605 rBTC</strong> per block. No one interacts with the cRBTC
-          contract for 3 RBTC blocks. On the subsequent 4th block, Bob borrows some rBTC. Alice’s
+          contract for 3 rBTC blocks. On the subsequent 4th block, Bob borrows some rBTC. Alice’s
           underlying balance is now <strong>1.000000000151574420 RBTC</strong> (which is 37893605
-          Wei times 4 blocks, plus the original 1 rBTC). Alice’s underlying rBTC balance in
-          subsequent blocks will have interest accrued based on the new value of
+          Wei times 4 blocks, plus the original 1 rBTC).
+        </p>
+        <p>
+          <v-img
+            contain
+            max-height="650"
+            max-width="850"
+            src="@/components/docs/pictures/accrue.png"
+            alt="Market Data"
+          />
+        </p>
+        <p>
+          Alice’s underlying rBTC balance in subsequent blocks - as long as the contract isn't
+          called - will have interest accrued based on the new value
           <strong>1.000000000151574420 rBTC</strong> instead of the initial <strong>1 rBTC</strong>.
-          Note that the supplyRatePerBlock value may change at any time.
+        </p>
+        <p>
+          <strong>
+            Keep in mind that this is a simplified example and in reality the supplyRatePerBlock may
+            change at any time.
+          </strong>
         </p>
         <p>&nbsp;</p>
         <hr />
