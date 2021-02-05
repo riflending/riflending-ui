@@ -34,7 +34,8 @@
             block, which is about every 30 seconds. This means that the exchange rate of underlying
             to cToken increases over time. There is no minimum or maximum amount of time that
             suppliers need to keep their asset in the protocol. See the varying exchange rate for
-            each cToken by clicking on one at (rlending)[rlending.com] markets.
+            each cToken by clicking selecting one from the list at
+            <a href="www.rlending.app/status"><strong>rLending</strong> market status</a>.
           </p>
           <p>&nbsp;</p>
           <hr />
@@ -72,7 +73,7 @@
           </p>
           <p>&nbsp;</p>
           <hr />
-          <h1 id="testnet">Testnet:</h1>
+          <h1 id="testnet">Testnet Deploy:</h1>
           <ul>
             <li>
               Dai Oracle:
@@ -181,6 +182,9 @@
               >
             </li>
           </ul>
+          <hr />
+          <h1 id="testnet">Main Net:</h1>
+          <p>Coming soon...</p>
         </v-col>
       </v-row>
     </v-container>

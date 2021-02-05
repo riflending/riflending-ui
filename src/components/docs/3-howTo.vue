@@ -7,7 +7,7 @@
           <p>
             In order to use <strong>rLending</strong> you will need your <em>Metamask</em> wallet
             connected to the <strong>RSK network</strong> Direct your browser towards the
-            <a href="www.rlending.com"><strong>rLending</strong> website</a> and click
+            <a href="www.rlending.app"><strong>rLending</strong> website</a> and click
             <strong>Connect Wallet</strong>. The screen will let you connect your
             <em>Metamask/Nifty</em> wallet.
             <v-img
@@ -254,7 +254,7 @@
             <strong>rLending Protocol</strong>. Every market evolves as supply and demand for an
             asset changes. This impacts several aspects of the protocol (liquidity, price, indexes,
             etc). If you want to check the current status of a market, you should go to the
-            <a href="www.rlending.com/status">Status tab</a>.
+            <a href="www.rlending.app/status">Status tab</a>.
           </p>
           <p>
             <v-img

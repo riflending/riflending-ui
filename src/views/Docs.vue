@@ -60,6 +60,9 @@
       <v-container>
         <component :is="currentComponent" />
       </v-container>
+      <v-divider />
+      <hr />
+      <div class="text-center"><a href="#top">Back to top</a></div>
     </v-list>
   </div>
 </template>

@@ -59,7 +59,6 @@
           </p>
           <p>&nbsp;</p>
           <hr />
-          <a href="#top">Back to top</a>
         </v-col>
       </v-row>
     </v-container>
