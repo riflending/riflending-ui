@@ -289,10 +289,19 @@
         <p>
           Let’s say you supply <strong>1,000 RIF</strong> to the <strong>rLending</strong> protocol,
           when the exchange rate is <strong>0.020070</strong>; you would receive
-          <strong>49,825.61 cRIF</strong> (1,000/0.020070). A few months later, you decide it’s time
-          to withdraw your RIF from the protocol; suppose the exchange rate is now
-          <strong>0.021591</strong>: Your <strong>49,825.61 cRIF</strong> is now equal to
-          <strong>1,075.78 RIF</strong> (49,825.61
+          <strong>49,825.61 cRIF</strong> (1,000/0.020070).
+        </p>
+        <v-img
+          contain
+          max-height="650"
+          max-width="850"
+          src="@/components/docs/pictures/aliceSupply.png"
+          alt="Supply"
+        />
+        <p>
+          A few months later, you decide it’s time to withdraw your RIF from the protocol; suppose
+          the exchange rate is now <strong>0.021591</strong>: Your
+          <strong>49,825.61 cRIF</strong> is now equal to <strong>1,075.78 RIF</strong> (49,825.61
           <em>
             0.021591) You could withdraw <strong>1,075.78 RIF</strong>, which would redeem all
             <strong>49,825.61 cRIF</strong>. You could also withdraw a portion, such as your
@@ -301,6 +310,15 @@
           >
           in your wallet) or you could transfer your cTokens, effectively transferring your balance
           of underlying asset.
+        </p>
+        <p>
+          <v-img
+            contain
+            max-height="650"
+            max-width="850"
+            src="@/components/docs/pictures/aliceWithdraw.png"
+            alt="Withdraw"
+          />
         </p>
         <p>
           If you send your cTokens to a friend, your <strong>rLending</strong> balance will decline
@@ -313,7 +331,7 @@
         <h1 id="integration">rLending and the RSK ecosystem</h1>
         <p>
           <strong>rLenbding</strong> runs on the <a href="https://www.rsk.co/">RSK Network</a> but
-          it it is not an isolated application. The network has a
+          it is not an isolated application. The network has a
           <a href="https://tokenbridge.rsk.co/">Token Bridge</a> that allows bidirectional transfers
           betweenth RSK and the Ethereum Network. With this resource, users of the
           <strong>rLenbding Protocol</strong> are able to interact with assets from the Ethereum
