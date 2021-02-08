@@ -13,7 +13,7 @@
             <a href="https://github.com/riflending/rlending-protocol"><em>Smart Contracts</em></a>
             which originally forked from the
             <a href="https://compound.finance">Compound</a> project and built up on key features we
-            designed and were later audited by third party independant companies.
+            designed and were later audited by third party independent companies.
           </p>
           <p>
             <strong

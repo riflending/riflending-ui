@@ -11,7 +11,7 @@
             <strong>RSK ecosystem</strong> to allow users to invest in a safe way.
           </p>
           <p>
-            <strong>rLenbding-protocol</strong> is based upon our own core of
+            <strong>rLending-protocol</strong> is based upon our own core of
             <a href="https://github.com/riflending/rlending-protocol"><em>Smart Contracts</em></a>
             which form an algorithmic distributed protocol deployed on the RSK network. This
             protocol defines pools of assets with algorithmically derived interest rates, based on
