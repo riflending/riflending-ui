@@ -222,12 +222,12 @@
           </p>
           <p>
             A liquidator may close up to a certain fixed percentage (i.e. close factor) of any
-            individual outstanding borrow of the underwater account. Unlike in v1, liquidators must
-            interact with each cToken contract in which they wish to repay a borrow and seize
-            another asset as collateral. When collateral is seized, the liquidator is transferred
-            cTokens, which they may redeem the same as if they had supplied the asset themselves.
-            Users must approve each cToken contract before calling liquidate (i.e. on the borrowed
-            asset which they are repaying), as they are transferring funds into the contract.
+            individual outstanding borrow of the underwater account. Liquidators must interact with
+            each cToken contract in which they wish to repay a borrow and seize another asset as
+            collateral. When collateral is seized, the liquidator is transferred cTokens, which they
+            may redeem the same as if they had supplied the asset themselves. Users must approve
+            each cToken contract before calling liquidate (i.e. on the borrowed asset which they are
+            repaying), as they are transferring funds into the contract.
           </p>
           <p></p>
           <hr />

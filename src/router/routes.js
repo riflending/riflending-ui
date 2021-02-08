@@ -39,6 +39,11 @@ export default [
     component: () => import(/* webpackChunkName: "docs" */ '@/views/Docs.vue'),
   },
   {
+    path: '/faq',
+    name: 'FAQ',
+    component: () => import(/* webpackChunkName: "docs" */ '@/views/FAQ.vue'),
+  },
+  {
     path: '*',
     redirect: { name: 'Landing' },
   },
