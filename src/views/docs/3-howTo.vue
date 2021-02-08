@@ -15,7 +15,7 @@
               contain
               max-height="650"
               max-width="850"
-              src="@/components/docs/pictures/connecting.jpg"
+              src="@/views/docs/pictures/connecting.jpg"
               alt="Connecting"
             />
           </p>
@@ -28,7 +28,7 @@
               contain
               max-height="650"
               max-width="850"
-              src="@/components/docs/pictures/dashboard.jpg"
+              src="@/views/docs/pictures/dashboard.jpg"
               alt="Dashboard"
             />
           </p>
@@ -54,7 +54,7 @@
               contain
               max-height="650"
               max-width="850"
-              src="@/components/docs/pictures/supplyList-0.jpg"
+              src="@/views/docs/pictures/supplyList-0.jpg"
               alt="Supply List"
             />
           </p>
@@ -71,7 +71,7 @@
               contain
               max-height="650"
               max-width="850"
-              src="@/components/docs/pictures/supplyInput-2.jpg"
+              src="@/views/docs/pictures/supplyInput-2.jpg"
               alt="Supply Input"
             />
           </p>
@@ -93,7 +93,7 @@
               contain
               max-height="650"
               max-width="850"
-              src="@/components/docs/pictures/supplySuccess.jpg"
+              src="@/views/docs/pictures/supplySuccess.jpg"
               alt="Supply Success"
             />
           </p>
@@ -131,7 +131,7 @@
               contain
               max-height="650"
               max-width="850"
-              src="@/components/docs/pictures/toggle.jpg"
+              src="@/views/docs/pictures/toggle.jpg"
               alt="Toggling Market"
             />
           </p>
@@ -148,7 +148,7 @@
               contain
               max-height="650"
               max-width="850"
-              src="@/components/docs/pictures/enteredMarket.jpg"
+              src="@/views/docs/pictures/enteredMarket.jpg"
               alt="Entered Market"
             />
           </p>
@@ -176,7 +176,7 @@
               contain
               max-height="650"
               max-width="850"
-              src="@/components/docs/pictures/supplyList.jpg"
+              src="@/views/docs/pictures/supplyList.jpg"
               alt="Supply/Borrow list"
             />
           </p>
@@ -186,7 +186,7 @@
               contain
               max-height="650"
               max-width="850"
-              src="@/components/docs/pictures/withdrawInput.jpg"
+              src="@/views/docs/pictures/withdrawInput.jpg"
               alt="Withdraw Input"
             />
           </p>
@@ -200,7 +200,7 @@
               contain
               max-height="650"
               max-width="850"
-              src="@/components/docs/pictures/withdrawMetamask.jpg"
+              src="@/views/docs/pictures/withdrawMetamask.jpg"
               alt="Withdraw Aproval"
             />
           </p>
@@ -230,7 +230,7 @@
               contain
               max-height="650"
               max-width="850"
-              src="@/components/docs/pictures/liquidateInput.jpg"
+              src="@/views/docs/pictures/liquidateInput.jpg"
               alt="Liquidation list"
             />
           </p>
@@ -243,7 +243,7 @@
               contain
               max-height="650"
               max-width="850"
-              src="@/components/docs/pictures/liquidateInput2.jpg"
+              src="@/views/docs/pictures/liquidateInput2.jpg"
               alt="Liquidation list"
             />
           </p>
@@ -262,7 +262,7 @@
               contain
               max-height="650"
               max-width="850"
-              src="@/components/docs/pictures/marketList.jpg"
+              src="@/views/docs/pictures/marketList.jpg"
               alt="Market List"
             />
           </p>
@@ -275,7 +275,7 @@
               contain
               max-height="650"
               max-width="850"
-              src="@/components/docs/pictures/marketData.jpg"
+              src="@/views/docs/pictures/marketData.jpg"
               alt="Market Data"
             />
           </p>
@@ -301,7 +301,7 @@
             contain
             max-height="650"
             max-width="850"
-            src="@/components/docs/pictures/aliceSupply.png"
+            src="@/views/docs/pictures/aliceSupply.png"
             alt="Supply"
           />
           <p>
@@ -322,7 +322,7 @@
               contain
               max-height="650"
               max-width="850"
-              src="@/components/docs/pictures/aliceWithdraw.png"
+              src="@/views/docs/pictures/aliceWithdraw.png"
               alt="Withdraw"
             />
           </p>
@@ -348,7 +348,7 @@
               contain
               max-height="650"
               max-width="850"
-              src="@/components/docs/pictures/integration.png"
+              src="@/views/docs/pictures/integration.png"
               alt="Market Data"
             />
           </p>
@@ -371,7 +371,7 @@
 </template>
 
 <script>
-import Docs from '@/views/Docs.vue'
+import Docs from '@/components/layouts/base/DocsNav.vue'
 
 export default {
   name: 'HowTo',

@@ -42,7 +42,7 @@
 </template>
 
 <script>
-import Docs from '@/views/Docs.vue'
+import Docs from '@/components/layouts/base/DocsNav.vue'
 
 export default {
   name: 'Introduction',

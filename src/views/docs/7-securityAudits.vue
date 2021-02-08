@@ -9,7 +9,7 @@
             <strong>rLending</strong> is a decentralized investment and finance (<em>DEFI </em>)
             platform that takes advantage on <strong>Bitcoin</strong>&#39;s stability and the
             <strong>RSK ecosystem</strong> to allow users to invest in a safe way.
-            <strong>rLenbding</strong> is based upon our own core of
+            <strong>rLending</strong> is based upon our own core of
             <a href="https://github.com/riflending/rlending-protocol"><em>Smart Contracts</em></a>
             which originally forked from the
             <a href="https://compound.finance">Compound</a> project and built up on key features we
@@ -73,7 +73,7 @@
 </template>
 
 <script>
-import Docs from '@/views/Docs.vue'
+import Docs from '@/components/layouts/base/DocsNav.vue'
 
 export default {
   name: 'Audits',

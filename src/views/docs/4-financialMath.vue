@@ -181,7 +181,7 @@
               contain
               max-height="650"
               max-width="850"
-              src="@/components/docs/pictures/accrue.png"
+              src="@/views/docs/pictures/accrue.png"
               alt="Market Data"
             />
           </p>
@@ -204,7 +204,7 @@
 </template>
 
 <script>
-import Docs from '@/views/Docs.vue'
+import Docs from '@/components/layouts/base/DocsNav.vue'
 
 export default {
   name: 'Financial',

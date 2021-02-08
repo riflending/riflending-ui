@@ -46,7 +46,7 @@
               contain
               max-height="650"
               max-width="850"
-              src="@/components/docs/pictures/supplyCycle.png"
+              src="@/views/docs/pictures/supplyCycle.png"
               alt="supplyCycle"
             />
           </p>
@@ -74,7 +74,7 @@
               contain
               max-height="650"
               max-width="850"
-              src="@/components/docs/pictures/borrowCycle.png"
+              src="@/views/docs/pictures/borrowCycle.png"
               alt="borrowCycle"
             />
           </p>
@@ -342,7 +342,7 @@
 </template>
 
 <script>
-import Docs from '@/views/Docs.vue'
+import Docs from '@/components/layouts/base/DocsNav.vue'
 
 export default {
   name: 'KeyConcepts',

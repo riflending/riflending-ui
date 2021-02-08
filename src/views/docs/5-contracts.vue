@@ -10,7 +10,7 @@
               contain
               max-height="650"
               max-width="850"
-              src="@/components/docs/pictures/contractGraph.png"
+              src="@/views/docs/pictures/contractGraph.png"
               alt="Architecture Graph"
             />
           </p>
@@ -193,7 +193,7 @@
 </template>
 
 <script>
-import Docs from '@/views/Docs.vue'
+import Docs from '@/components/layouts/base/DocsNav.vue'
 
 export default {
   name: 'Contracts',
