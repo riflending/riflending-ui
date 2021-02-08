@@ -1,5 +1,6 @@
 <template>
   <div>
+    <Docs />
     <v-container>
       <v-row class="d-flex align-center justify-left">
         <v-col cols="12">
@@ -72,7 +73,12 @@
 </template>
 
 <script>
+import Docs from '@/views/Docs.vue'
+
 export default {
   name: 'Audits',
+  components: {
+    Docs,
+  },
 }
 </script>
