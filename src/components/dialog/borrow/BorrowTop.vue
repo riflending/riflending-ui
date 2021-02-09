@@ -73,7 +73,9 @@ export default {
       return this.borrowRate.toFixed(2)
     },
     rskExplorerUrl() {
-      return `https://explorer.testnet.rsk.co/address/${this.tokenAddress}`
+      return !process.env.VUE_APP_HTTP_EXPLORER
+        ? '#'
+        : `${process.env.VUE_APP_HTTP_EXPLORER}address/${this.tokenAddress}`
     },
   },
   created() {

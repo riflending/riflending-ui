@@ -177,7 +177,9 @@ export default {
       account: (state) => state.Session.account,
     }),
     rskExplorerUrl() {
-      return `https://explorer.testnet.rsk.co/address/${this.data.market.token.address}`
+      return !process.env.VUE_APP_HTTP_EXPLORER
+        ? '#'
+        : `${process.env.VUE_APP_HTTP_EXPLORER}address/${this.data.market.token.address}`
     },
     dataObject() {
       return {
