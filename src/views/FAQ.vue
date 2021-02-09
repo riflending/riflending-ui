@@ -221,7 +221,21 @@
           <p></p>
           <h2 id="whatFees">What are the fees for borrowing?</h2>
           <p></p>
+          <h2 id="howColFact">How does Collateral Factor work?</h2>
+          <p></p>
           <h2 id="crossBorrow">Can I borrow from a market I have not supplied to?</h2>
+          <p></p>
+          <h2 id="whatDebt">What happens if someone doesn't pay their debt?</h2>
+          <p></p>
+          <h2 id="reserves">
+            What's preventing someone from withdrawing all of the balance in the contracts?
+          </h2>
+          <p></p>
+          <h2 id="priceVariation">How can I have more debt than before?</h2>
+          <p></p>
+          <h2 id="healthFactor">What is a Health Factor?</h2>
+          <p></p>
+          <h2 id="liquidation">What happens if my Health Factor becomes negative?</h2>
           <p></p>
           <hr />
           <center><h1 id="dev">I am a developer</h1></center>
