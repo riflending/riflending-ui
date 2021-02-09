@@ -58,6 +58,13 @@
             <em>Smart Contracts</em> are self-regulating.
           </p>
           <p>
+            <strong
+              >Users supply their cryptoassets, which can either earn interest or act as collateral
+              for loans. This creates a shared pool of liquidity. Traders can take short positions
+              in tokens (Markets) supported by rLending.
+            </strong>
+          </p>
+          <p>
             If you wish to know more about how the
             <a href="https://www.rsk.co">RSK Network</a> works, we recommend you take a closer look
             at
@@ -145,7 +152,7 @@
           <p>
             Once connected, you will see the
             <a href="http://test.rlending.app/myActivity">Main Screen</a> showing your account's
-            <strong>Investment Dashboard</strong>
+            <strong>Investment Dashboard</strong>. You are now connected to rLending in Testnet.
           </p>
           <p align="center">
             <v-img
@@ -156,8 +163,54 @@
               alt="new account dashboard"
             />
           </p>
+          <p>
+            <em>
+              In case you need help configuring your wallet. For Nifty, click
+              <a href="https://developers.rsk.co/wallet/use/nifty/">here</a>. For Metamask, click
+              <a href="https://developers.rsk.co/wallet/use/metamask/">here</a>
+            </em>
+          </p>
           <h2 id="mainnet">How do I connect to rLending in main net?</h2>
-          <p></p>
+          <p>
+            Asuming you have your wallet extension installed (in this example we are using
+            <em>Metamask</em>, but Nifty is also supported), you will have to make certain you have
+            it switched to <strong>RSK Network</strong>
+          </p>
+          <p align="center">
+            <v-img
+              contain
+              max-height="650"
+              max-width="850"
+              src="@/assets/faq/metamaskrsk.png"
+              alt="metamask wallet connect"
+            />
+          </p>
+          <p>
+            head over to <a href="https://rlending.app">https://rlending.app</a>. Click on the blue
+            boton at the top right corner. From here, users are prompted to connect with their
+            <a href="#wallet">web3 wallet of choice.</a>
+          </p>
+          <p>
+            Once connected, you will see the
+            <a href="http://rlending.app/myActivity">Main Screen</a> showing your account's
+            <strong>Investment Dashboard</strong>. You are now connected to rLending in Mainnet.
+          </p>
+          <p align="center">
+            <v-img
+              contain
+              max-height="650"
+              max-width="850"
+              src="@/assets/faq/dashboard1.png"
+              alt="new account dashboard"
+            />
+          </p>
+          <p>
+            <em>
+              In case you need help configuring your wallet. For Nifty, click
+              <a href="https://developers.rsk.co/wallet/use/nifty/">here</a>. For Metamask, click
+              <a href="https://developers.rsk.co/wallet/use/metamask/">here</a>
+            </em>
+          </p>
           <h2 id="gasPrice">Why is gas price so high?</h2>
           <p></p>
           <h2 id="earnings">How do users earn money with rLending?</h2>
