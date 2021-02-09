@@ -1,10 +1,13 @@
 import Vue from 'vue'
 import { Decimal } from 'decimal.js-light'
 
-Vue.filter('formatPrice', (value) => {
+Vue.filter('formatPrice', (value, decimals = 2) => {
   const castedValue = value.isBigNumber ? value : Number(value)
-  const val = castedValue.toFixed(2).replace(',', '.')
-  return `$ ${val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}`
+  const val = castedValue.toFixed(decimals).replace(',', '.')
+  decimals++
+  const regexString = '\\B(?=(\\d{' + decimals + '})+(?!\\d))'
+  const regex = new RegExp(regexString)
+  return `$ ${val.toString().replace(regex, ',')}`
 })
 
 function toSD(value, digits = 6) {
@@ -24,3 +27,8 @@ Vue.filter('formatPercentage', (value) => {
   const castedValue = value.isBigNumber ? value : Number(value)
   return `${castedValue.toFixed(2)} %`
 })
+
+function hashCutOff(hash) {
+  return `${hash.substring(0, 4)}...${hash.substring(hash.length - 4, hash.length)}`
+}
+Vue.filter('formatHash', hashCutOff)

@@ -53,6 +53,7 @@ import BorrowInput from '@/components/dialog/borrow/BorrowInput.vue'
 import RepayInput from '@/components/dialog/repay/RepayInput.vue'
 import RepaySuccess from '@/components/dialog/repay/RepaySuccess.vue'
 import ErrorDialog from '@/components/dialog/ErrorDialog.vue'
+import { mapState } from 'vuex'
 
 export default {
   name: 'BorrowDialog',
@@ -86,6 +87,9 @@ export default {
     }
   },
   computed: {
+    ...mapState({
+      account: (state) => state.Session.account,
+    }),
     marketTokenObject() {
       return {
         token: this.data.token,
@@ -132,6 +136,13 @@ export default {
       this.waiting = false
       this.errorDialog = true
       this.userErrorMessage = errorObject.userErrorMessage || ''
+      this.persistEventLocalStorage(
+        this.currentComponent.replace('Input', ''),
+        !this.borrowed ? this.pay : this.borrowed,
+        this.hash,
+        Date.now(),
+        true,
+      )
     },
     actionSucceed(succeedObject) {
       this.hash = succeedObject.hash
@@ -141,6 +152,13 @@ export default {
       this.succeed = true
       this.waiting = false
       this.errorDialog = false
+      this.persistEventLocalStorage(
+        this.currentComponent.replace('Input', ''),
+        !this.borrowed ? this.pay : this.borrowed,
+        this.hash,
+        Date.now(),
+        false,
+      )
     },
     backToDialog() {
       this.succeed = false
@@ -156,6 +174,10 @@ export default {
     close() {
       this.reset()
       this.$emit('closed')
+    },
+    persistEventLocalStorage(event, price, hash, date, fail) {
+      const txLS = this.$user.createTx(hash, event, price, date, fail)
+      this.$user.addTxToAccountList(txLS, this.account)
     },
   },
 }

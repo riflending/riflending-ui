@@ -42,6 +42,7 @@ export const constants = {
   PriceOracleAdapterRif: 'PriceOracleAdapterRif',
   PriceOracleAdapterDai: 'PriceOracleAdapterDai',
   PriceOracleAdapterRBTC: 'PriceOracleAdapterRBTC',
+  PriceOracleAdapterUSDT: 'PriceOracleAdapterUSDT',
   Comptroller: 'Comptroller',
   JumpRateModelV2: 'JumpRateModelV2',
   WhitePaperInterestRateModel: 'WhitePaperInterestRateModel',
@@ -60,6 +61,7 @@ export const constants = {
   RBTC: 'RBTC',
   rUSDT: 'rUSDT',
   Multicall: 'Multicall',
+  PriceOracleAdapterMoc: 'PriceOracleAdapterMoc',
 }
 
 export const address = {
@@ -142,6 +144,7 @@ export const cTokensDetails = [
     decimals: decimals.cRBTC,
     underlying: { symbol: 'RBTC', name: 'RSK Smart Bitcoin', decimals: decimals.RBTC },
     logo: 'rbtc',
+    adapter: 'PriceOracleAdapterRBTC',
     //this is use to substract the calculate liquidated amount (closed Factor * borrow borrower), because this calculate have a insignificant (but precius) % of  lost
     liquidate: {
       sub: 0.000001,
@@ -154,6 +157,7 @@ export const cTokensDetails = [
     decimals: decimals.cRIF,
     underlying: { symbol: 'RIF', name: 'RSK Infrastructure Token', decimals: decimals.RIF },
     logo: 'rif',
+    adapter: 'PriceOracleAdapterRif',
     //this is use to substract the calculate liquidated amount (closed Factor * borrow borrower), because this calculate have a insignificant (but precius) % of  lost
     liquidate: {
       sub: 0.001,
@@ -166,6 +170,7 @@ export const cTokensDetails = [
     decimals: decimals.crDAI,
     underlying: { symbol: 'rDAI', name: 'DAI Stablecoin', decimals: decimals.rDAI },
     logo: 'dai',
+    adapter: 'PriceOracleAdapterDai',
     //this is use to substract the calculate liquidated amount (closed Factor * borrow borrower), because this calculate have a insignificant (but precius) % of  lost
     liquidate: {
       sub: 0.0001,
@@ -178,6 +183,7 @@ export const cTokensDetails = [
     decimals: decimals.crDAI,
     underlying: { symbol: 'rUSDT', name: 'Tether USD', decimals: decimals.rUSDT },
     logo: 'usdt',
+    adapter: 'PriceOracleAdapterUSDT',
     //this is use to substract the calculate liquidated amount (closed Factor * borrow borrower), because this calculate have a insignificant (but precius) % of  lost
     liquidate: {
       sub: 0.0001,

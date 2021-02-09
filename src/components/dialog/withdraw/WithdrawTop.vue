@@ -26,7 +26,9 @@
       <v-row>
         <h2>apr:</h2>
       </v-row>
-      <v-row class="item d-flex justify-start"> {{ supplyRate | formatPercentage }} </v-row>
+      <v-row class="item d-flex justify-start">
+        {{ supplyRate | formatPercentage }}
+      </v-row>
     </v-col>
   </v-row>
 </template>
@@ -51,7 +53,9 @@ export default {
   },
   computed: {
     rskExplorerUrl() {
-      return `https://explorer.testnet.rsk.co/address/${this.tokenAddress}`
+      return !process.env.VUE_APP_HTTP_EXPLORER
+        ? '#'
+        : `${process.env.VUE_APP_HTTP_EXPLORER}address/${this.tokenAddress}`
     },
   },
   created() {
