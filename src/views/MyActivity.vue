@@ -272,7 +272,6 @@ export default {
   async created() {
     for (const market of cTokensDetails) {
       this.$middleware.getAdapterPrice(market.adapter).then((price) => {
-        // const m={"symbol":market.symbol, "logo":market.logo, "price":price}
         this.markets.push({
           symbol: market.underlying.symbol,
           logo: market.logo,
@@ -281,7 +280,6 @@ export default {
           oldPrice: price.toNumber(),
           priceUp: 0,
         })
-        // this.markets.push(m)
       })
     }
     await this.fetchData()

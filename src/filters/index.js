@@ -29,9 +29,6 @@ Vue.filter('formatPercentage', (value) => {
 })
 
 function hashCutOff(hash) {
-  console.log(hash)
-  console.log(`${hash.substring(0, 4)}...${hash.substring(hash.length - 4, hash.length)}`)
-
   return `${hash.substring(0, 4)}...${hash.substring(hash.length - 4, hash.length)}`
 }
 Vue.filter('formatHash', hashCutOff)

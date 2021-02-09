@@ -212,7 +212,6 @@ export default {
       this.$emit('closed')
     },
     persistEventLocalStorage(event, price, hash, date, fail) {
-      // hash, type, price, date = Date.now(), fail = false)
       const txLS = this.$user.createTx(hash, event, price, date, fail)
       this.$user.addTxToAccountList(txLS, this.account)
     },
