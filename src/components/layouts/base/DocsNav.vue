@@ -30,6 +30,6 @@
 
 <script>
 export default {
-  name: 'Docs',
+  name: 'DocsNav',
 }
 </script>

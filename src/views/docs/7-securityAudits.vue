@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Docs />
+    <DocsNav />
     <v-container>
       <v-row class="d-flex align-center justify-left">
         <v-col cols="12">
@@ -80,12 +80,12 @@
 </template>
 
 <script>
-import Docs from '@/components/layouts/base/DocsNav.vue'
+import DocsNav from '@/components/layouts/base/DocsNav.vue'
 
 export default {
   name: 'Audits',
   components: {
-    Docs,
+    DocsNav,
   },
 }
 </script>
