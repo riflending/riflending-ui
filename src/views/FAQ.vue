@@ -212,9 +212,75 @@
             </em>
           </p>
           <h2 id="gasPrice">Why is gas price so high?</h2>
-          <p></p>
+          <p>
+            The gas usage of the protocol functions may fluctuate by market and user. External
+            calls, such as to underlying ERC-20 tokens, may use an arbitrary amount of gas. Any
+            calculations that involve checking account liquidity, have gas costs that increase with
+            the number of entered markets. Thus, while it can be difficult to provide any guarantees
+            about costs, we provide the table below for guidance:
+          </p>
+
+          <ul>
+            <li>Function Typical Gas Cost Mint &lt; 150K</li>
+            <li>cUSDT &lt; 300k</li>
+            <li>Redeem, Transfer &lt; 250K if borrowing, otherwise &lt; 90K</li>
+            <li>Borrow &lt; 300K</li>
+            <li>Repay Borrow &lt; 90K</li>
+            <li>Liquidate Borrow &lt; 400K</li>
+          </ul>
+          <p>
+            <em
+              >If you wish to know more about what GAS is and how it works, you might find
+              <a href="https://www.investopedia.com/terms/g/gas-ethereum.asp">
+                this link educational</a
+              >
+            </em>
+          </p>
           <h2 id="earnings">How do users earn money with rLending?</h2>
-          <p></p>
+          <p>
+            Each market has its own Supply interest rate (APR). Interest isn&#39;t distributed;
+            instead,
+            <strong>simply by holding cTokens, you&#39;ll earn interest!</strong>
+            <strong>cTokens</strong> accumulates interest through their exchange rate — over time,
+            each cToken
+            <strong
+              >becomes convertible into an increasing amount of it&#39;s underlying asset</strong
+            >, even while the number of cTokens in your wallet stays the same.
+          </p>
+          <p>
+            Let’s say you supply <strong>1,000 RIF</strong> to the
+            <strong>rLending</strong> protocol, when the exchange rate is <strong>0.020070</strong>;
+            you would receive <strong>49,825.61 cRIF</strong> (1,000/0.020070).
+          </p>
+          <v-img
+            contain
+            max-height="650"
+            max-width="850"
+            src="@/components/docs/pictures/aliceSupply.png"
+            alt="Supply"
+          />
+          <p>
+            A few months later, you decide it’s time to withdraw your RIF from the protocol; suppose
+            the exchange rate is now <strong>0.021591</strong>: Your
+            <strong>49,825.61 cRIF</strong> is now equal to <strong>1,075.78 RIF</strong> (49,825.61
+            <em>
+              0.021591) You could withdraw <strong>1,075.78 RIF</strong>, which would redeem all
+              <strong>49,825.61 cRIF</strong>. You could also withdraw a portion, such as your
+              original <strong>1,000 RIF</strong>, which would redeem
+              <strong>46,315.59 cRIF</strong> (keeping <em>*3,510.01 cRIF</em></em
+            >
+            in your wallet) or you could transfer your cTokens, effectively transferring your
+            balance of underlying asset.
+          </p>
+          <p>
+            <v-img
+              contain
+              max-height="650"
+              max-width="850"
+              src="@/components/docs/pictures/aliceWithdraw.png"
+              alt="Withdraw"
+            />
+          </p>
           <h2 id="howMuchEarnings">How much earnings can I expect?</h2>
           <p></p>
           <h2 id="howBorrow">How does borrowing work?</h2>
