@@ -297,13 +297,15 @@
             <strong>rLending</strong> protocol, when the exchange rate is <strong>0.020070</strong>;
             you would receive <strong>49,825.61 cRIF</strong> (1,000/0.020070).
           </p>
-          <v-img
-            contain
-            max-height="650"
-            max-width="850"
-            src="@/views/docs/pictures/aliceSupply.png"
-            alt="Supply"
-          />
+          <p>
+            <v-img
+              contain
+              max-height="650"
+              max-width="850"
+              src="@/views/docs/pictures/aliceSupply.png"
+              alt="Supply"
+            />
+          </p>
           <p>
             A few months later, you decide it’s time to withdraw your RIF from the protocol; suppose
             the exchange rate is now <strong>0.021591</strong>: Your
@@ -364,6 +366,13 @@
             <a href="https://rskswap.com/">RSK Swap</a> Dapp which allows for instant exchange
             between assets in the network.
           </p>
+          <hr />
+          <div class="pan-container">
+            <a href="/docs/keyConcepts">&laquo; Key concepts</a>
+            <a href="#">Back to top</a>
+            <a href="/docs/financialMath">Financial Math &raquo;</a>
+          </div>
+          <hr />
         </v-col>
       </v-row>
     </v-container>

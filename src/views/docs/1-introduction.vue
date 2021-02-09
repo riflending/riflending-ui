@@ -35,6 +35,13 @@
             In this pages we&#39;ll guide you through some of the basic features you will most
             likely be interested in using.
           </p>
+          <hr />
+          <div class="pan-container">
+            <a>&laquo; -</a>
+            <a href="#">Back to top</a>
+            <a href="/docs/keyConcepts">Key concepts &raquo;</a>
+          </div>
+          <hr />
         </v-col>
       </v-row>
     </v-container>

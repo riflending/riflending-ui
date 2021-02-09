@@ -333,7 +333,12 @@
             <li>The ability to update the Comptroller contract</li>
             <li>The ability to choose a new admin</li>
           </ul>
-          <p></p>
+          <hr />
+          <div class="pan-container">
+            <a href="/docs/introduction">&laquo; Introduction</a>
+            <a href="#">Back to top</a>
+            <a href="/docs/howTo">How To &raquo;</a>
+          </div>
           <hr />
         </v-col>
       </v-row>

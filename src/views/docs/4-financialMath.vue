@@ -197,6 +197,13 @@
               may change at any time.
             </strong>
           </p>
+          <hr />
+          <div class="pan-container">
+            <a href="/docs/howTo">&laquo; How To</a>
+            <a href="#">Back to top</a>
+            <a href="/docs/contracts">Contracts &raquo;</a>
+          </div>
+          <hr />
         </v-col>
       </v-row>
     </v-container>

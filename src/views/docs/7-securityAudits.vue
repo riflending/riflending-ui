@@ -66,6 +66,13 @@
             <li>The ability to update the Comptroller contract</li>
             <li>The ability to choose a new admin</li>
           </ul>
+          <hr />
+          <div class="pan-container">
+            <a href="/docs/oracles">&laquo; Oracles</a>
+            <a href="#">Back to top</a>
+            <a>- &raquo;</a>
+          </div>
+          <hr />
         </v-col>
       </v-row>
     </v-container>

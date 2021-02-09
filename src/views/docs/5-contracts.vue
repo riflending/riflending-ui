@@ -186,6 +186,13 @@
           <hr />
           <h1 id="testnet">Main Net:</h1>
           <p>Coming soon...</p>
+          <hr />
+          <div class="pan-container">
+            <a href="/docs/financialMath">&laquo; Financial Math</a>
+            <a href="#">Back to top</a>
+            <a href="/docs/oracles">Oracles &raquo;</a>
+          </div>
+          <hr />
         </v-col>
       </v-row>
     </v-container>
