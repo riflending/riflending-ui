@@ -33,13 +33,3 @@ export default {
   name: 'Docs',
 }
 </script>
-
-<style>
-.items {
-  display: inline-table !important;
-  padding: 0 60px;
-  left: 45px !important;
-  width: 95%;
-  text-align: center;
-}
-</style>
