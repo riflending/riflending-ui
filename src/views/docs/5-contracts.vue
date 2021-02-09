@@ -1,5 +1,6 @@
 <template>
   <div>
+    <DocsNav />
     <v-container>
       <v-row class="d-flex align-center justify-left">
         <v-col cols="12">
@@ -9,7 +10,7 @@
               contain
               max-height="650"
               max-width="850"
-              src="@/components/docs/pictures/contractGraph.png"
+              src="@/assets/docs/contractGraph.png"
               alt="Architecture Graph"
             />
           </p>
@@ -185,6 +186,13 @@
           <hr />
           <h1 id="testnet">Main Net:</h1>
           <p>Coming soon...</p>
+          <hr />
+          <div class="pan-container">
+            <a href="/docs/financialMath">&laquo; Financial Math</a>
+            <a href="#">Back to top</a>
+            <a href="/docs/oracles">Oracles &raquo;</a>
+          </div>
+          <hr />
         </v-col>
       </v-row>
     </v-container>
@@ -192,7 +200,12 @@
 </template>
 
 <script>
+import DocsNav from '@/components/layouts/base/DocsNav.vue'
+
 export default {
   name: 'Contracts',
+  components: {
+    DocsNav,
+  },
 }
 </script>

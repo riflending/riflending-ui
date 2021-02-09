@@ -1,5 +1,6 @@
 <template>
   <div>
+    <DocsNav />
     <v-container>
       <v-row class="d-flex align-center justify-left">
         <v-col cols="12">
@@ -180,7 +181,7 @@
               contain
               max-height="650"
               max-width="850"
-              src="@/components/docs/pictures/accrue.png"
+              src="@/assets/docs/accrue.png"
               alt="Market Data"
             />
           </p>
@@ -196,6 +197,13 @@
               may change at any time.
             </strong>
           </p>
+          <hr />
+          <div class="pan-container">
+            <a href="/docs/howTo">&laquo; How To</a>
+            <a href="#">Back to top</a>
+            <a href="/docs/contracts">Contracts &raquo;</a>
+          </div>
+          <hr />
         </v-col>
       </v-row>
     </v-container>
@@ -203,7 +211,12 @@
 </template>
 
 <script>
+import DocsNav from '@/components/layouts/base/DocsNav.vue'
+
 export default {
   name: 'Financial',
+  components: {
+    DocsNav,
+  },
 }
 </script>

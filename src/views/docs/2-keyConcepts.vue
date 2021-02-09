@@ -1,5 +1,6 @@
 <template>
   <div>
+    <DocsNav />
     <v-container>
       <v-row class="d-flex align-center justify-left">
         <v-col cols="12">
@@ -45,7 +46,7 @@
               contain
               max-height="650"
               max-width="850"
-              src="@/components/docs/pictures/supplyCycle.png"
+              src="@/assets/docs/supplyCycle.png"
               alt="supplyCycle"
             />
           </p>
@@ -73,7 +74,7 @@
               contain
               max-height="650"
               max-width="850"
-              src="@/components/docs/pictures/borrowCycle.png"
+              src="@/assets/docs/borrowCycle.png"
               alt="borrowCycle"
             />
           </p>
@@ -332,7 +333,12 @@
             <li>The ability to update the Comptroller contract</li>
             <li>The ability to choose a new admin</li>
           </ul>
-          <p></p>
+          <hr />
+          <div class="pan-container">
+            <a href="/docs/introduction">&laquo; Introduction</a>
+            <a href="#">Back to top</a>
+            <a href="/docs/howTo">How To &raquo;</a>
+          </div>
           <hr />
         </v-col>
       </v-row>
@@ -341,7 +347,12 @@
 </template>
 
 <script>
+import DocsNav from '@/components/layouts/base/DocsNav.vue'
+
 export default {
   name: 'KeyConcepts',
+  components: {
+    DocsNav,
+  },
 }
 </script>

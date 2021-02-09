@@ -11,13 +11,13 @@
         <!-- <template v-if="isOwner"> -->
         <router-link class="mx-5" :to="{ name: 'Status' }"> Status </router-link>
         <!-- </template> -->
-        <router-link class="mx-5" :to="{ name: 'Docs' }"> Docs</router-link>
+        <router-link class="mx-5" :to="{ name: 'Introduction' }"> Docs</router-link>
         <v-btn class="mx-5" rounded outlined color="#008CFF">
           {{ accountCutOff }}
         </v-btn>
       </div>
       <div v-else>
-        <router-link class="mx-5" :to="{ name: 'Docs' }"> Docs</router-link>
+        <router-link class="mx-5" :to="{ name: 'Introduction' }"> Docs</router-link>
         <v-btn id="connectButton" class="ml-5 button" rounded color="#008CFF" @click="connect">
           <span class="mx-5">Connect wallet</span>
         </v-btn>

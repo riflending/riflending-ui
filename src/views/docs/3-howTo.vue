@@ -1,5 +1,6 @@
 <template>
   <div>
+    <DocsNav />
     <v-container>
       <v-row class="d-flex align-center justify-left">
         <v-col cols="12">
@@ -14,7 +15,7 @@
               contain
               max-height="650"
               max-width="850"
-              src="@/components/docs/pictures/connecting.jpg"
+              src="@/assets/docs/connecting.jpg"
               alt="Connecting"
             />
           </p>
@@ -27,7 +28,7 @@
               contain
               max-height="650"
               max-width="850"
-              src="@/components/docs/pictures/dashboard.jpg"
+              src="@/assets/docs/dashboard.jpg"
               alt="Dashboard"
             />
           </p>
@@ -53,7 +54,7 @@
               contain
               max-height="650"
               max-width="850"
-              src="@/components/docs/pictures/supplyList-0.jpg"
+              src="@/assets/docs/supplyList-0.jpg"
               alt="Supply List"
             />
           </p>
@@ -70,7 +71,7 @@
               contain
               max-height="650"
               max-width="850"
-              src="@/components/docs/pictures/supplyInput-2.jpg"
+              src="@/assets/docs/supplyInput-2.jpg"
               alt="Supply Input"
             />
           </p>
@@ -92,7 +93,7 @@
               contain
               max-height="650"
               max-width="850"
-              src="@/components/docs/pictures/supplySuccess.jpg"
+              src="@/assets/docs/supplySuccess.jpg"
               alt="Supply Success"
             />
           </p>
@@ -130,7 +131,7 @@
               contain
               max-height="650"
               max-width="850"
-              src="@/components/docs/pictures/toggle.jpg"
+              src="@/assets/docs/toggle.jpg"
               alt="Toggling Market"
             />
           </p>
@@ -147,7 +148,7 @@
               contain
               max-height="650"
               max-width="850"
-              src="@/components/docs/pictures/enteredMarket.jpg"
+              src="@/assets/docs/enteredMarket.jpg"
               alt="Entered Market"
             />
           </p>
@@ -175,7 +176,7 @@
               contain
               max-height="650"
               max-width="850"
-              src="@/components/docs/pictures/supplyList.jpg"
+              src="@/assets/docs/supplyList.jpg"
               alt="Supply/Borrow list"
             />
           </p>
@@ -185,7 +186,7 @@
               contain
               max-height="650"
               max-width="850"
-              src="@/components/docs/pictures/withdrawInput.jpg"
+              src="@/assets/docs/withdrawInput.jpg"
               alt="Withdraw Input"
             />
           </p>
@@ -199,7 +200,7 @@
               contain
               max-height="650"
               max-width="850"
-              src="@/components/docs/pictures/withdrawMetamask.jpg"
+              src="@/assets/docs/withdrawMetamask.jpg"
               alt="Withdraw Aproval"
             />
           </p>
@@ -229,7 +230,7 @@
               contain
               max-height="650"
               max-width="850"
-              src="@/components/docs/pictures/liquidateInput.jpg"
+              src="@/assets/docs/liquidateInput.jpg"
               alt="Liquidation list"
             />
           </p>
@@ -242,7 +243,7 @@
               contain
               max-height="650"
               max-width="850"
-              src="@/components/docs/pictures/liquidateInput2.jpg"
+              src="@/assets/docs/liquidateInput2.jpg"
               alt="Liquidation list"
             />
           </p>
@@ -261,7 +262,7 @@
               contain
               max-height="650"
               max-width="850"
-              src="@/components/docs/pictures/marketList.jpg"
+              src="@/assets/docs/marketList.jpg"
               alt="Market List"
             />
           </p>
@@ -274,7 +275,7 @@
               contain
               max-height="650"
               max-width="850"
-              src="@/components/docs/pictures/marketData.jpg"
+              src="@/assets/docs/marketData.jpg"
               alt="Market Data"
             />
           </p>
@@ -296,13 +297,15 @@
             <strong>rLending</strong> protocol, when the exchange rate is <strong>0.020070</strong>;
             you would receive <strong>49,825.61 cRIF</strong> (1,000/0.020070).
           </p>
-          <v-img
-            contain
-            max-height="650"
-            max-width="850"
-            src="@/components/docs/pictures/aliceSupply.png"
-            alt="Supply"
-          />
+          <p>
+            <v-img
+              contain
+              max-height="650"
+              max-width="850"
+              src="@/assets/docs/aliceSupply.png"
+              alt="Supply"
+            />
+          </p>
           <p>
             A few months later, you decide it’s time to withdraw your RIF from the protocol; suppose
             the exchange rate is now <strong>0.021591</strong>: Your
@@ -321,7 +324,7 @@
               contain
               max-height="650"
               max-width="850"
-              src="@/components/docs/pictures/aliceWithdraw.png"
+              src="@/assets/docs/aliceWithdraw.png"
               alt="Withdraw"
             />
           </p>
@@ -347,7 +350,7 @@
               contain
               max-height="650"
               max-width="850"
-              src="@/components/docs/pictures/integration.png"
+              src="@/assets/docs/integration.png"
               alt="Market Data"
             />
           </p>
@@ -363,6 +366,13 @@
             <a href="https://rskswap.com/">RSK Swap</a> Dapp which allows for instant exchange
             between assets in the network.
           </p>
+          <hr />
+          <div class="pan-container">
+            <a href="/docs/keyConcepts">&laquo; Key concepts</a>
+            <a href="#">Back to top</a>
+            <a href="/docs/financialMath">Financial Math &raquo;</a>
+          </div>
+          <hr />
         </v-col>
       </v-row>
     </v-container>
@@ -370,7 +380,12 @@
 </template>
 
 <script>
+import DocsNav from '@/components/layouts/base/DocsNav.vue'
+
 export default {
   name: 'HowTo',
+  components: {
+    DocsNav,
+  },
 }
 </script>

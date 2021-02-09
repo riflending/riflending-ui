@@ -34,9 +34,42 @@ export default [
     beforeEnter: requireAuth,
   },
   {
-    path: '/docs',
-    name: 'Docs',
-    component: () => import(/* webpackChunkName: "docs" */ '@/views/Docs.vue'),
+    path: '/docs/introduction',
+    name: 'Introduction',
+    component: () =>
+      import(/* webpackChunkName: "introduction" */ '@/views/docs/1-introduction.vue'),
+  },
+  {
+    path: '/docs/keyConcepts',
+    name: 'KeyConcepts',
+    component: () => import(/* webpackChunkName: "keyConcepts" */ '@/views/docs/2-keyConcepts.vue'),
+  },
+  {
+    path: '/docs/howTo',
+    name: 'HowTo',
+    component: () => import(/* webpackChunkName: "howTo" */ '@/views/docs/3-howTo.vue'),
+  },
+  {
+    path: '/docs/financialMath',
+    name: 'FinancialMath',
+    component: () =>
+      import(/* webpackChunkName: "financialMath" */ '@/views/docs/4-financialMath.vue'),
+  },
+  {
+    path: '/docs/contracts',
+    name: 'Contracts',
+    component: () => import(/* webpackChunkName: "contracts" */ '@/views/docs/5-contracts.vue'),
+  },
+  {
+    path: '/docs/oracles',
+    name: 'Oracles',
+    component: () => import(/* webpackChunkName: "oracles" */ '@/views/docs/6-oracles.vue'),
+  },
+  {
+    path: '/docs/securityAudits',
+    name: 'SecurityAudits',
+    component: () =>
+      import(/* webpackChunkName: "securityAudits" */ '@/views/docs/7-securityAudits.vue'),
   },
   {
     path: '*',
