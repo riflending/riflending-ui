@@ -1,5 +1,6 @@
 <template>
   <div>
+    <DocsNav />
     <v-container>
       <v-row class="d-flex align-center justify-Left">
         <v-col cols="12">
@@ -34,6 +35,13 @@
             In this pages we&#39;ll guide you through some of the basic features you will most
             likely be interested in using.
           </p>
+          <hr />
+          <div class="pan-container">
+            <a>&laquo; -</a>
+            <a href="#">Back to top</a>
+            <a href="/docs/keyConcepts">Key concepts &raquo;</a>
+          </div>
+          <hr />
         </v-col>
       </v-row>
     </v-container>
@@ -41,7 +49,12 @@
 </template>
 
 <script>
+import DocsNav from '@/components/layouts/base/DocsNav.vue'
+
 export default {
   name: 'Introduction',
+  components: {
+    DocsNav,
+  },
 }
 </script>

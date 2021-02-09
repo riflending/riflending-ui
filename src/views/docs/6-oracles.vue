@@ -1,5 +1,6 @@
 <template>
   <div>
+    <DocsNav />
     <v-container>
       <v-row class="d-flex align-center justify-left">
         <v-col cols="12">
@@ -53,11 +54,16 @@
               contain
               max-height="650"
               max-width="850"
-              src="@/components/docs/pictures/oracles.png"
+              src="@/assets/docs/oracles.png"
               alt="Oracles Subsystem Graph"
             />
           </p>
-          <p>&nbsp;</p>
+          <hr />
+          <div class="pan-container">
+            <a href="/docs/contracts">&laquo; Contracts</a>
+            <a href="#">Back to top</a>
+            <a href="/docs/securityAudits">Security and audits &raquo;</a>
+          </div>
           <hr />
         </v-col>
       </v-row>
@@ -66,7 +72,12 @@
 </template>
 
 <script>
+import DocsNav from '@/components/layouts/base/DocsNav.vue'
+
 export default {
   name: 'Oracles',
+  components: {
+    DocsNav,
+  },
 }
 </script>

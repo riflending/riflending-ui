@@ -1,5 +1,6 @@
 <template>
   <div>
+    <DocsNav />
     <v-container>
       <v-row class="d-flex align-center justify-left">
         <v-col cols="12">
@@ -8,7 +9,7 @@
             <strong>rLending</strong> is a decentralized investment and finance (<em>DEFI </em>)
             platform that takes advantage on <strong>Bitcoin</strong>&#39;s stability and the
             <strong>RSK ecosystem</strong> to allow users to invest in a safe way.
-            <strong>rLenbding</strong> is based upon our own core of
+            <strong>rLending</strong> is based upon our own core of
             <a href="https://github.com/riflending/rlending-protocol"><em>Smart Contracts</em></a>
             which originally forked from the
             <a href="https://compound.finance">Compound</a> project and built up on key features we
@@ -65,6 +66,13 @@
             <li>The ability to update the Comptroller contract</li>
             <li>The ability to choose a new admin</li>
           </ul>
+          <hr />
+          <div class="pan-container">
+            <a href="/docs/oracles">&laquo; Oracles</a>
+            <a href="#">Back to top</a>
+            <a>- &raquo;</a>
+          </div>
+          <hr />
         </v-col>
       </v-row>
     </v-container>
@@ -72,7 +80,12 @@
 </template>
 
 <script>
+import DocsNav from '@/components/layouts/base/DocsNav.vue'
+
 export default {
   name: 'Audits',
+  components: {
+    DocsNav,
+  },
 }
 </script>
