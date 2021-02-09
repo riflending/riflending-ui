@@ -31,11 +31,6 @@
 <script>
 export default {
   name: 'Docs',
-  data() {
-    return {
-      currentComponent: 'Introduction',
-    }
-  },
 }
 </script>
 
@@ -46,15 +41,5 @@ export default {
   left: 45px !important;
   width: 95%;
   text-align: center;
-}
-.selected {
-  border-radius: 35px;
-  background-color: #008cff !important;
-}
-.notSelected {
-  background-color: #ffffff !important;
-}
-.v-app-bar {
-  flex: unset;
 }
 </style>
