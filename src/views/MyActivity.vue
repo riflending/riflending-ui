@@ -25,6 +25,7 @@
       <v-row class="d-flex justify-center">
         <h1 class="my-5">Investment Dashboard</h1>
       </v-row>
+      <!-- account balance -->
       <v-row class="ma-0 py-6">
         <v-col class="pa-0 d-flex justify-center">
           <v-card class="graphics-card container" width="94%">
@@ -33,7 +34,9 @@
                 <v-row class="d-flex align-center">
                   <v-col cols="6" class="px-0 text-left"><h2>Account balance:</h2></v-col>
                   <v-col cols="5" class="px-0">
-                    <h2 class="text-center">{{ totalBalance | formatPrice }}</h2>
+                    <h2 class="text-center">
+                      {{ totalBalance | formatPrice }}
+                    </h2>
                   </v-col>
                   <v-col cols="1" class="pa-0"><span class="text-left">USD</span></v-col>
                 </v-row>
@@ -43,14 +46,36 @@
                 <v-row>
                   <v-col cols="6" class="px-0"><h4>Total Supplied:</h4></v-col>
                   <v-col cols="5" class="px-0">
-                    <h4 class="text-center">{{ totalSupplied | formatPrice }}</h4>
+                    <h4 class="text-center">
+                      $
+                      <number
+                        ref="tweenedTotalSupply"
+                        class="tweened-number"
+                        :to="!totalSupplied ? 0 : totalSupplied.toNumber()"
+                        :format="tweenedFormat"
+                        :duration="5"
+                        :delay="1"
+                        easing="Power0.easeIn"
+                      />
+                    </h4>
                   </v-col>
                   <v-col cols="1" class="pa-0"><span class="text-left">USD</span></v-col>
                 </v-row>
                 <v-row>
                   <v-col cols="6" class="px-0"><h4>Total Borrowed:</h4></v-col>
                   <v-col cols="5" class="px-0">
-                    <h4 class="text-center">{{ totalBorrowed | formatPrice }}</h4>
+                    <h4 class="text-center">
+                      $
+                      <number
+                        ref="tweenedTotalBorrow"
+                        class="tweened-number"
+                        :to="!totalBorrowed ? 0 : totalBorrowed.toNumber()"
+                        :format="tweenedFormat"
+                        :duration="5"
+                        :delay="1"
+                        easing="Power0.easeIn"
+                      />
+                    </h4>
                   </v-col>
                   <v-col cols="1" class="pa-0"><span class="text-left">USD</span></v-col>
                 </v-row>
@@ -58,6 +83,68 @@
             </v-row>
           </v-card>
         </v-col>
+        <!-- markets prices -->
+        <v-col class="pa-0 d-flex justify-center">
+          <v-card class="graphics-card container" width="94%">
+            <v-row class="ma-0 d-flex align-center">
+              <v-col cols="12" class="py-0">
+                <v-row class="d-flex align-center">
+                  <v-col cols="9" class="px-0 text-left"><h2>Markets Prices:</h2></v-col>
+                </v-row>
+                <v-row>
+                  <v-divider />
+                </v-row>
+                <v-virtual-scroll :items="markets" height="100" item-height="50">
+                  <template v-slot:default="{ item }">
+                    <v-list-item :key="item.symbol">
+                      <v-row>
+                        <v-col cols="3" class="px-0 text-center market-price-icon">
+                          <v-list-item-avatar tile size="30">
+                            <v-img
+                              :src="require(`@/assets/tokens/${item.logo}.png`)"
+                            /> </v-list-item-avatar
+                        ></v-col>
+                        <v-col cols="3" class="px-0 text-center market-price-icon">
+                          <v-list-item-avatar tile size="30">
+                            <v-img
+                              v-if="item.priceUp == 1"
+                              :src="require(`@/assets/myActivity/arrow_circle_up.svg`)"
+                            />
+                            <v-img
+                              v-else-if="item.price == -1"
+                              :src="require(`@/assets/myActivity/arrow_circle_down.svg`)"
+                            />
+                            <v-img
+                              v-else
+                              :src="require(`@/assets/myActivity/equal_circle.svg`)"
+                            /> </v-list-item-avatar
+                        ></v-col>
+                        <v-col cols="5" class="px-0 text-left market-price">
+                          <h4 class="text-left">
+                            $
+                            <number
+                              ref="number1"
+                              class="tweened-number"
+                              :to="item.price"
+                              :format="tweenedFormat"
+                              :duration="5"
+                              :delay="1"
+                              easing="Power0.easeIn"
+                            />
+                          </h4>
+                        </v-col>
+                        <v-col cols="1" class="pa-0 money-price-detail"
+                          ><span class="text-left">USD</span></v-col
+                        >
+                      </v-row>
+                    </v-list-item>
+                  </template>
+                </v-virtual-scroll>
+              </v-col>
+            </v-row>
+          </v-card>
+        </v-col>
+        <!-- halth factor -->
         <v-col class="pa-0 d-flex justify-center">
           <v-card class="graphics-card d-flex align-center" width="94%">
             <v-row class="ma-0">
@@ -104,39 +191,52 @@
           </v-card>
         </v-col>
       </v-row>
-      <v-row class="ma-0">
+      <!-- supply borrow graph -->
+      <v-row class="ma-0 py-6">
         <v-col class="pa-0">
-          <v-card class="graphics-card container" width="54%">
+          <v-card class="graphics-card container" width="94%">
             <SupplyBorrowGraph />
           </v-card>
         </v-col>
+        <!-- history tx  -->
+        <v-col class="pa-0">
+          <v-card class="graphics-card container" width="94%">
+            <TransactionList />
+          </v-card>
+        </v-col>
       </v-row>
+
+      <v-row class="ma-0"> </v-row>
     </div>
-    <v-row class="mx-6 d-flex justify-center">
-      <TxList />
-    </v-row>
   </div>
 </template>
 
 <script>
 import SupplyBorrowGraph from '@/components/dashboard/SupplyBorrowGraph.vue'
-import TxList from '@/components/dashboard/TxList.vue'
+import TransactionList from '@/components/dashboard/TransactionList.vue'
 import { mapState } from 'vuex'
+import { cTokensDetails } from '../middleware/constants'
+import Vue from 'vue'
+import VueNumber from 'vue-number-animation'
+Vue.use(VueNumber)
 
 export default {
   name: 'MyActivity',
   components: {
     SupplyBorrowGraph,
-    TxList,
+    TransactionList,
   },
   data() {
     return {
       healthFactor: 0,
       totalBalance: 0,
       totalSupplied: 0,
+      oldTotalSupplied: 0,
       totalBorrowed: 0,
       showHealthWarning: null,
       polling: null,
+      markets: [],
+      accountStorage: '',
     }
   },
   computed: {
@@ -164,7 +264,26 @@ export default {
   beforeDestroy() {
     clearInterval(this.polling)
   },
+  mounted() {
+    if (localStorage.account) {
+      this.accountStorage = localStorage.account
+    }
+  },
   async created() {
+    for (const market of cTokensDetails) {
+      this.$middleware.getAdapterPrice(market.adapter).then((price) => {
+        // const m={"symbol":market.symbol, "logo":market.logo, "price":price}
+        this.markets.push({
+          symbol: market.underlying.symbol,
+          logo: market.logo,
+          adapter: market.adapter,
+          price: price.toNumber(),
+          oldPrice: price.toNumber(),
+          priceUp: 0,
+        })
+        // this.markets.push(m)
+      })
+    }
     await this.fetchData()
     this.pollData()
   },
@@ -184,6 +303,26 @@ export default {
       const health = await this.$middleware.getAccountHealth(this.account)
       this.healthFactor = health > 1 ? 100 : health * 100
       this.showHealthWarning = Number(this.healthFactor) === 0
+      this.getMarketsPrices()
+    },
+    async getMarketsPrices() {
+      if (this.markets.length < 1) return
+      console.log('updateMaarkets')
+      for (const indice in this.markets) {
+        this.$middleware.getAdapterPrice(this.markets[indice].adapter).then((price) => {
+          this.markets[indice].price = price.toNumber()
+          this.markets[indice].priceUp =
+            this.markets[indice].price > this.markets[indice].oldPrice
+              ? 1
+              : this.markets[indice].price < this.markets[indice].oldPrice
+              ? -1
+              : 0
+          this.markets[indice].oldPrice = price.toNumber()
+        })
+      }
+    },
+    tweenedFormat(number) {
+      return number.toFixed(4)
     },
   },
 }
