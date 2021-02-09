@@ -6,16 +6,36 @@
           <center><h1 id="faq">FAQs</h1></center>
           <h2 id="whatIs">What exactly is rLending?</h2>
           <p>
-            <strong>rLending</strong> is a decentralized investment and finance (<em>DEFI</em>)
-            platform. This means there is no central bank or government authority imposing rules on
-            how to operate. Instead, the platform was designed to be completely open and
-            self-regulating. This was achieved by programming the protocol with distributed
+            <strong>rLending</strong> is a decentralized investment and finance (better known as
+            <em>DEFI</em>) platform. rLending is predicated on the tenants of non-custodial,
+            trustless and secure systems with 100% uptime.
+          </p>
+          <p>This means:</p>
+
+          <ul>
+            <li>No single entity stores funds on behalf of the users.</li>
+            <li>
+              Users are not required to wait long times for someone to process their transactions.
+            </li>
+            <li>
+              Transactions are highly secure (thanks to open protocols and independent auditors).
+            </li>
+            <li>24/7 accessibility from anywhere in the world.</li>
+          </ul>
+          <p>
+            In other words, there is no central bank or government authority imposing rules on how
+            to operate. Instead, the platform was designed to be completely self-regulating. This
+            was achieved by programming the protocol using distributed
             <a href="https://en.wikipedia.org/wiki/Smart_contract">Smart Contracts</a> deployed on
-            the <a href="">RSK Network</a>.
+            the <a href="">RSK Network</a>. Smart contracts handle the majority of logic that has
+            historically been handled by human inputs, vastly optimizing transaction time and cost.
           </p>
           <p>
-            Our main motivation is to allow users to lend crypto assets as collateral and to borrow
-            them based on interest rates set by real-time supply and demand.
+            <strong
+              >With all this in mind, our main motivation is to allow users to lend crypto assets as
+              collateral and to borrow them based on interest rates set by real-time supply and
+              demand.</strong
+            >
           </p>
           <h2 id="canTrade">Is rLending a Distributed Exchange (DEX)?</h2>
           <p>
@@ -28,7 +48,7 @@
           </p>
           <h2 id="howWorks">How does it work?</h2>
           <p>
-            rLending leverages <a href="audit"> audited</a>
+            rLending leverages audited
             <a href="https://en.wikipedia.org/wiki/Smart_contract">Smart Contracts</a> which are
             responsible for the storage, management and facilitation of all funds. This means that
             users do not have a rLending login, but rather connect to the
@@ -46,7 +66,10 @@
             >.
           </p>
           <h2 id="howCost">How much does it cost? Can I try it for free?</h2>
-          <p></p>
+          <p>
+            All of the <a href="https://github.com/riflending/">rLending platform</a> is open
+            sourced.
+          </p>
           <h2 id="wallet">How do I get a wallet?</h2>
           <p>
             rLending supports both
