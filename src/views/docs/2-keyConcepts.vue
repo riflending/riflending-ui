@@ -46,7 +46,7 @@
               contain
               max-height="650"
               max-width="850"
-              src="@/views/docs/pictures/supplyCycle.png"
+              src="@/assets/docs/supplyCycle.png"
               alt="supplyCycle"
             />
           </p>
@@ -74,7 +74,7 @@
               contain
               max-height="650"
               max-width="850"
-              src="@/views/docs/pictures/borrowCycle.png"
+              src="@/assets/docs/borrowCycle.png"
               alt="borrowCycle"
             />
           </p>

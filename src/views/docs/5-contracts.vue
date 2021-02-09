@@ -10,7 +10,7 @@
               contain
               max-height="650"
               max-width="850"
-              src="@/views/docs/pictures/contractGraph.png"
+              src="@/assets/docs/contractGraph.png"
               alt="Architecture Graph"
             />
           </p>

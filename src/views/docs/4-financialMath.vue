@@ -181,7 +181,7 @@
               contain
               max-height="650"
               max-width="850"
-              src="@/views/docs/pictures/accrue.png"
+              src="@/assets/docs/accrue.png"
               alt="Market Data"
             />
           </p>

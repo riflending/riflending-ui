@@ -54,7 +54,7 @@
               contain
               max-height="650"
               max-width="850"
-              src="@/views/docs/pictures/oracles.png"
+              src="@/assets/docs/oracles.png"
               alt="Oracles Subsystem Graph"
             />
           </p>
