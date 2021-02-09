@@ -299,6 +299,16 @@ export default class Middleware {
     return new BigNumber(value)
   }
 
+  async getAdapterPrice(adapterName) {
+    const contract = this.factoryContractInstance.getContractByNameAndAbiName(
+      adapterName,
+      constants.PriceOracleAdapterMoc,
+    )
+    if (!contract) return
+    const value = await contract.callStatic.assetPrices(this.getAddresses()[adapterName])
+    return new BigNumber(value.toString()).div(10 ** 18)
+  }
+
   /**
    * Check if some market was entered
    * @param account
