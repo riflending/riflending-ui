@@ -1,5 +1,23 @@
 <template>
   <div id="top" class="faq">
+    <v-navigation-drawer right light>
+      <p>FAQs</p>
+      <p><a href="#whatIs">What exactly is rLending?</a></p>
+      <p><a href="#canTrade">is rLending a DEX?</a></p>
+      <p><a href="#howWorks">How does rLending work?</a></p>
+      <p><a href="#howCost">Can I try it for free?</a></p>
+      <p><a href="#wallet">How do I get a wallet?</a></p>
+      <p><a href="#howProfit">How does rLending profit?</a></p>
+      <p><a href="#testnet">Connecting to Testnet</a></p>
+      <p><a href="#mainnet">Connecting to Mainnet</a></p>
+      <p><a href="#whatIs">What</a></p>
+      <p><a href="#whatIs">What </a></p>
+      <p><a href="#whatIs">What </a></p>
+      <p><a href="#whatIs">What </a></p>
+      <p><a href="#whatIs">What </a></p>
+      <p><a href="#whatIs">What </a></p>
+      <p><a href="#whatIs">What </a></p>
+    </v-navigation-drawer>
     <v-container>
       <v-row class="d-flex align-center justify-left">
         <v-col cols="12">
@@ -219,6 +237,7 @@
             the number of entered markets. Thus, while it can be difficult to provide any guarantees
             about costs, we provide the table below for guidance:
           </p>
+          How Much Earnings Can I Expect?
 
           <ul>
             <li>Function Typical Gas Cost Mint &lt; 150K</li>
@@ -263,11 +282,12 @@
             A few months later, you decide it’s time to withdraw your RIF from the protocol; suppose
             the exchange rate is now <strong>0.021591</strong>: Your
             <strong>49,825.61 cRIF</strong> is now equal to <strong>1,075.78 RIF</strong> (49,825.61
-            <em>
-              0.021591) You could withdraw <strong>1,075.78 RIF</strong>, which would redeem all
-              <strong>49,825.61 cRIF</strong>. You could also withdraw a portion, such as your
-              original <strong>1,000 RIF</strong>, which would redeem
-              <strong>46,315.59 cRIF</strong> (keeping <em>*3,510.01 cRIF</em></em
+            <em
+              >How Much Earnings Can I Expect? 0.021591) You could withdraw
+              <strong>1,075.78 RIF</strong>, which would redeem all <strong>49,825.61 cRIF</strong>.
+              You could also withdraw a portion, such as your original <strong>1,000 RIF</strong>,
+              which would redeem <strong>46,315.59 cRIF</strong> (keeping
+              <em>*3,510.01 cRIF</em></em
             >
             in your wallet) or you could transfer your cTokens, effectively transferring your
             balance of underlying asset.
@@ -282,9 +302,10 @@
             />
           </p>
           <h2 id="howMuchEarnings">How much earnings can I expect?</h2>
-          <p></p>
+          <p>Earnings are</p>
           <h2 id="howBorrow">How does borrowing work?</h2>
-          <p></p>
+          How Much Earnings Can I Expect?
+
           <h2 id="whatFees">What are the fees for borrowing?</h2>
           <p></p>
           <h2 id="howColFact">How does Collateral Factor work?</h2>
