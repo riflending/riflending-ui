@@ -1,27 +1,43 @@
 <template>
   <div id="top" class="faq">
-    <v-navigation-drawer right light>
-      <p>FAQs</p>
-      <p><a href="#whatIs">What exactly is rLending?</a></p>
-      <p><a href="#canTrade">is rLending a DEX?</a></p>
-      <p><a href="#howWorks">How does rLending work?</a></p>
-      <p><a href="#howCost">Can I try it for free?</a></p>
-      <p><a href="#wallet">How do I get a wallet?</a></p>
-      <p><a href="#howProfit">How does rLending profit?</a></p>
-      <p><a href="#testnet">Connecting to Testnet</a></p>
-      <p><a href="#mainnet">Connecting to Mainnet</a></p>
-      <p><a href="#whatIs">What</a></p>
-      <p><a href="#whatIs">What </a></p>
-      <p><a href="#whatIs">What </a></p>
-      <p><a href="#whatIs">What </a></p>
-      <p><a href="#whatIs">What </a></p>
-      <p><a href="#whatIs">What </a></p>
-      <p><a href="#whatIs">What </a></p>
-      <p><a href="#support">How do I contact Support?</a></p>
-    </v-navigation-drawer>
+    <v-container>
+      <v-navigation-drawer absolute permanent>
+        <p>FAQs</p>
+        <p><a href="#whatIs">What exactly is rLending?</a></p>
+        <p><a href="#canTrade">is rLending a DEX?</a></p>
+        <p><a href="#howWorks">How does rLending work?</a></p>
+        <p><a href="#howCost">Can I try it for free?</a></p>
+        <p><a href="#wallet">How do I get a wallet?</a></p>
+        <p><a href="#howProfit">How does rLending profit?</a></p>
+        <p><a href="#wallet">How to install a wallet</a></p>
+        <p><a href="#testnet">Connecting to Testnet</a></p>
+        <p><a href="#mainnet">Connecting to Mainnet</a></p>
+        <p><a href="#whyGas">Why Is Gas Price So High?</a></p>
+        <p><a href="#howInterest">How do accounts earn interests?</a></p>
+        <p><a href="#whatIs">How much earnings can I expect?</a></p>
+        <p><a href="#canBorrow">Can I borrow without a deposit? </a></p>
+        <p><a href="#howBorrow">How does Borrowing work? </a></p>
+        <p><a href="#borrowFee">What fees are involved in Borrowing?</a></p>
+        <p><a href="#collFact">How Does Collateral Factor Work? </a></p>
+        <p><a href="#whatIs">Can I Borrow From A Market I Have Not Supplied To?</a></p>
+        <p><a href="#liquidation">What Happens If Someone Doesn't Pay Their Debt? </a></p>
+        <p>
+          <a href="#whatIs"
+            >What's Preventing Someone From Withdrawing All Of The Balance In The Contracts?
+          </a>
+        </p>
+        <p><a href="#whatIs">How Can I Have More Debt Than Before? </a></p>
+        <p><a href="#whatIs">What Is A Health Factor? </a></p>
+        <p><a href="#whatIs">What Happens If My Health Factor Becomes Negative?</a></p>
+        <p><a href="#whatIs">How Secure Is RLending? </a></p>
+        <p><a href="#whatIs">I am a Developer </a></p>
+        <p><a href="#whatIs">General Troubleshooting </a></p>
+        <p><a href="#support">How do I contact Support?</a></p>
+      </v-navigation-drawer>
+    </v-container>
     <v-container>
       <v-row class="d-flex align-center justify-left">
-        <v-col cols="12">
+        <v-col cols="10" class="flex-grow-0 flex-shrink-0">
           <center><h1 id="faq">FAQs</h1></center>
           <h2 id="whatIs">What exactly is rLending?</h2>
           <p>
