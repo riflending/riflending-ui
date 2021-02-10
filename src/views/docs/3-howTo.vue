@@ -85,7 +85,7 @@
             validation on the transaction.
           </p>
           <p>
-            After the transaction has been broadcasted you will recieve confirmation and your funds
+            After the transaction has been broadcasted you will receive confirmation and your funds
             will be credited to your account.
           </p>
           <p>
@@ -191,7 +191,7 @@
             />
           </p>
           <p>
-            After you&#39;ve chosen the amount you with to withdraw, click
+            After you&#39;ve chosen the amount you wish to withdraw, click
             <em>Withdraw my tokens</em> and <em>Metamask/Nifty</em> will prompt you with the
             transaction.
           </p>
@@ -205,7 +205,7 @@
             />
           </p>
           <p>
-            After the withdrawal has been broadcasted you will recieve confirmation and your funds
+            After the withdrawal has been broadcasted you will receive confirmation and your funds
             will be credited to your account.
           </p>
           <p><em>Note that big withdrawals may considerably reduce your health factor!!</em></p>
@@ -222,8 +222,8 @@
           <hr />
           <h1 id="howLiquidate">How to liquidate underwater accounts:</h1>
           <p>
-            In order to check the accounts that are prone to liquidation, go to the Supply dialog
-            and then open up the Liquidation tab.
+            In order to check the accounts that are prone to liquidation, go to the
+            <a href="#howDeposit">Supply dialog</a> and then open up the Liquidation tab.
           </p>
           <p>
             <v-img
@@ -336,13 +336,18 @@
               transfer would have put the account into a state of negative liquidity.</strong
             >
           </p>
+          <p>
+            Meaning, the protocol will not let you perform a transfer of cTokens if your account has
+            has entered a market and the resulting transaction would drive the account into
+            shortfall
+          </p>
           <h1 id="integration">rLending and the RSK ecosystem</h1>
           <p>
-            <strong>rLenbding</strong> runs on the <a href="https://www.rsk.co/">RSK Network</a> but
+            <strong>rLending</strong> runs on the <a href="https://www.rsk.co/">RSK Network</a> but
             it is not an isolated application. The network has a
             <a href="https://tokenbridge.rsk.co/">Token Bridge</a> that allows bidirectional
             transfers betweenth RSK and the Ethereum Network. With this resource, users of the
-            <strong>rLenbding Protocol</strong> are able to interact with assets from the Ethereum
+            <strong>rLending Protocol</strong> are able to interact with assets from the Ethereum
             network.
           </p>
           <p>

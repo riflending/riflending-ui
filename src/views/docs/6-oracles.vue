@@ -36,7 +36,7 @@
           </p>
           <p>
             Since there is no standard on how Oracles report their values and each market listed in
-            the protocol requires an independant interaction with an oracle that provides its
+            the protocol requires an independent interaction with an oracle that provides its
             current exchange rate, we included an &quot;Adapter&quot; layer that acts as a
             middle-man between the
             <em>PriceProxyOracle</em> and the actual Oracle Contracts providing rates for each

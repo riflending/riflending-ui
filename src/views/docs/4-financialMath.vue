@@ -31,8 +31,8 @@
           </p>
           <p>
             The balance for each borrower address is stored in the cToken as an account checkpoint.
-            A checkpoint is a Solidity structure that describes the balance at the time the interest
-            was last accrued.
+            A checkpoint is an internal structure that describes the balance at the time the
+            interest was last accrued.
           </p>
           <p>&nbsp;</p>
           <hr />
@@ -65,7 +65,8 @@
           <p>
             The reserve factor defines the portion of borrower interest that is converted into
             reserves. It is a value between 0 and 1, representing a percentage of borrower interest
-            that is to be reserved as liquidity.
+            that is to be reserved as liquidity. This value was set for each market at deploy and is
+            subject to change through the Multi-Signature system.
           </p>
           <p>&nbsp;</p>
           <hr />
