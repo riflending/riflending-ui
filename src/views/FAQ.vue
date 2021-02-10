@@ -381,29 +381,87 @@
             If this happens, your account is prone to liquidation. You should deposit more
             collateral and repay your borrows before another account liquidates your underlying.
           </p>
+          <h2 id="security">How secure is rLending?</h2>
+          <p>
+            <strong>The r-Lending Protocol is compliant with modern security practices. </strong>
+            This means the <a href="docs#contract">smart contracts</a> have been
+            <a href="docs#audits">audited</a> both by internal and external third party
+            professionals.
+          </p>
+          <p>
+            <strong>
+              The rLending app (<em> front end</em>) does not store any user information.</strong
+            >
+            It just provides the web services and functionalities to easily interact with the
+            <a href="docs#contract">smart contracts</a> running in the back-end.
+          </p>
+          <p>
+            rLending also has a <a href="docs#bugBounty">Bug Bounty program</a> with several open
+            challenges to ethical hackers who wish to audit the source-code and find any
+            vulnerability.
+          </p>
           <hr />
           <center><h1 id="dev">I am a developer</h1></center>
           <h2 id="contracts">How do I interact with the smart contracts?</h2>
-          <p></p>
+          <p>
+            All of the smart contracts are listed and verified. You may find a list in
+            <a href="docs#contracts">the documentation</a>, both for testnet and mainnet.
+          </p>
           <h2 id="docs">Where can I find more info on...</h2>
-          <p></p>
+          <p>
+            We are currently working on building the social media communities, to create a hub
+            connecting users. For now, you will find most technical information by reading
+            <a href="docs">the documentation</a>.
+          </p>
           <h2 id="howToDev">How can I contribute?</h2>
-          <p></p>
+          <p>
+            The <a href="https://github.com/riflending/rlending-protocol">rLending Protocol</a> is
+            open source and publicly available, hosted on GitHub. We encourage developers and
+            independent auditors to contribute by cloning the repository and creating Pull Requests.
+          </p>
+          <p>
+            rLending also has a <a href="docs#bugBounty">Bug Bounty program</a> with several open
+            challenges to ethical hackers who wish to audit the source-code and find any
+            vulnerability.
+          </p>
           <hr />
           <center><h1 id="help">Troubleshooting</h1></center>
           <h2>The website looks weird on my mobile phone:</h2>
-          <p></p>
+          <p>
+            Yes, while in Beta, the rLending platform is not designed to be used on mobile phones or
+            tablets. A PC with a web browser is recomended.
+          </p>
           <h2>I can't connect:</h2>
-          <p></p>
+          <p>
+            This is most likely due to a missconfiguration of the web3 wallet. We recomend you
+            follow <a href="mainnet">these steps</a>. If you are still unable to connect, feel free
+            to <a href="">contact us</a> or <a href="">join the Discord community</a>.
+          </p>
           <h2>Transaction Reverted:</h2>
-          <p></p>
+          <p>
+            This means the blockchain has not been able to process your transaction. Whether you
+            were trying to supply, withdraw, borrow or enter market, this is a common error that is
+            most likely not going to repeat if you retry the action you were attempting to make. If
+            the error persists, feel free to <a href="">contact us</a> or
+            <a href="">join the Discord community</a>.
+          </p>
           <h2>Why my health factor low?:</h2>
-          <p></p>
-          <h2>Can't see accounts when liquidate:</h2>
-          <p></p>
+          <p>
+            See <a href="#healthFactor"> Health Factor</a> and
+            <a href="#priceVariation"> How can I have more debt than before?</a>
+          </p>
+          <h2>Can't see accounts when trying to liquidate:</h2>
+          <p>
+            The liquidation tab is not yet optimized and it will take a couple of minutes to load
+            the proper data. Keep in mind that we are still in Beta, and there is a chance no
+            account is prone to liquidation yet. Liquidations are very rare.
+          </p>
           <hr />
           <h1 id="support">How do I contact Support?</h1>
-          <p></p>
+          <p>
+            You can reach out to us on any of our social media. You can join
+            <a href="">join the Discord community hub</a> or <a href="">join us in telegram</a>.
+          </p>
         </v-col>
       </v-row>
     </v-container>
