@@ -23,12 +23,12 @@
               >What fees are involved inexpand-on-hoverll Of The Balance In The Contracts?
             </a>
           </p>
-          <p><a href="#whatIs">How Can I Have More Debt Than Before? </a></p>
-          <p><a href="#whatIs">What Is A Health Factor? </a></p>
-          <p><a href="#whatIs">What Happens If My Health Factor Becomes Negative?</a></p>
-          <p><a href="#whatIs">How Secure Is RLending? </a></p>
-          <p><a href="#whatIs">I am a Developer </a></p>
-          <p><a href="#whatIs">General Troubleshooting </a></p>
+          <p><a href="#priceVariation">How Can I Have More Debt Than Before? </a></p>
+          <p><a href="#healthFactor">What Is A Health Factor? </a></p>
+          <p><a href="#liquidation">What Happens If My Health Factor Becomes Negative?</a></p>
+          <p><a href="#security">How Secure Is RLending? </a></p>
+          <p><a href="#dev">I am a Developer </a></p>
+          <p><a href="#help">General Troubleshooting </a></p>
           <p><a href="#support">How do I contact Support?</a></p>
         </v-navigation-drawer>
       </v-container>
@@ -252,7 +252,6 @@
             the number of entered markets. Thus, while it can be difficult to provide any guarantees
             about costs, we provide the table below for guidance:
           </p>
-          How Much Earnings Can I Expect?
 
           <ul>
             <li>Function Typical Gas Cost Mint &lt; 150K</li>
