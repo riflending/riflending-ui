@@ -17,6 +17,7 @@
       <p><a href="#whatIs">What </a></p>
       <p><a href="#whatIs">What </a></p>
       <p><a href="#whatIs">What </a></p>
+      <p><a href="#support">How do I contact Support?</a></p>
     </v-navigation-drawer>
     <v-container>
       <v-row class="d-flex align-center justify-left">
@@ -267,63 +268,119 @@
             >, even while the number of cTokens in your wallet stays the same.
           </p>
           <p>
-            Let’s say you supply <strong>1,000 RIF</strong> to the
-            <strong>rLending</strong> protocol, when the exchange rate is <strong>0.020070</strong>;
-            you would receive <strong>49,825.61 cRIF</strong> (1,000/0.020070).
-          </p>
-          <v-img
-            contain
-            max-height="650"
-            max-width="850"
-            src="@/components/docs/pictures/aliceSupply.png"
-            alt="Supply"
-          />
-          <p>
-            A few months later, you decide it’s time to withdraw your RIF from the protocol; suppose
-            the exchange rate is now <strong>0.021591</strong>: Your
-            <strong>49,825.61 cRIF</strong> is now equal to <strong>1,075.78 RIF</strong> (49,825.61
-            <em
-              >How Much Earnings Can I Expect? 0.021591) You could withdraw
-              <strong>1,075.78 RIF</strong>, which would redeem all <strong>49,825.61 cRIF</strong>.
-              You could also withdraw a portion, such as your original <strong>1,000 RIF</strong>,
-              which would redeem <strong>46,315.59 cRIF</strong> (keeping
-              <em>*3,510.01 cRIF</em></em
-            >
-            in your wallet) or you could transfer your cTokens, effectively transferring your
-            balance of underlying asset.
-          </p>
-          <p>
-            <v-img
-              contain
-              max-height="650"
-              max-width="850"
-              src="@/components/docs/pictures/aliceWithdraw.png"
-              alt="Withdraw"
-            />
+            We encourage you to read through <a href="docs">the documentation</a> where you will
+            find <a href="docs#howInterests">a good example</a> on how this works.
           </p>
           <h2 id="howMuchEarnings">How much earnings can I expect?</h2>
-          <p>Earnings are</p>
+          <p>
+            Earnings depend upon many factors and it is always impossible to predict the future, but
+            a good starting point is to run your own predictions based upon the
+            <a href="docs#howInterest">APR</a> and <a href="docs#howData">Market Data</a> before
+            performing any transaction
+          </p>
+          <h2 id="whyDeposit">Can I borrow without a deposit?</h2>
+          <p>
+            <strong> No.</strong> In order to manage the risk factor, the platform does not allow
+            for users to borrow funds without providing collateral. This is a common practice among
+            <em>DEFI</em> implementations. We encourage you to read more about this topic in
+            <a href="docs">the documentation</a>.
+          </p>
           <h2 id="howBorrow">How does borrowing work?</h2>
-          How Much Earnings Can I Expect?
+          <p>
+            In order to borrow you will be required to <a href="#whyDeposit">provide liquidity</a>.
+            The percentage of liquidity of an asset required to borrow another is given by the
+            market’s<a href="docs#collateralFactor"> Collateral Factor</a>. If you borrow, your
+            <a href="docs#ctoken">CTokens</a> will act as collateral for your account, and your
+            wallet will receive the <a href="docs#underlying"> underlying asset</a>.
+          </p>
 
           <h2 id="whatFees">What are the fees for borrowing?</h2>
-          <p></p>
+          <p>
+            You can check the current borrowing fees in the
+            <a href="https://rlending.app/status">Market Data</a>. If you wish to know more about
+            these values, we encourage you to check <a href="docs#howData">the documentation</a>.
+          </p>
           <h2 id="howColFact">How does Collateral Factor work?</h2>
-          <p></p>
+          <p>
+            <strong>Collateral Factor</strong> is the percentage of supplied assets in a market that
+            is locked as collateral for borrowing. If you wish to know more about these values, we
+            encourage you to check <a href="docs#howData">the documentation</a>.
+          </p>
           <h2 id="crossBorrow">Can I borrow from a market I have not supplied to?</h2>
-          <p></p>
+          <p><strong>Yes!</strong>This is one of the most used transactions.</p>
           <h2 id="whatDebt">What happens if someone doesn't pay their debt?</h2>
-          <p></p>
+          <p>
+            Users incur in debt by borrowing assets. In order to borrow they have to
+            <a href="#howBorrow">provide collateral</a> first. In the event that user's liquidity
+            runs out, the account incurs in shortfall and becomes prone to liquidation.
+          </p>
+          <p>
+            When an account is liquidated by another account, the liquidator buys a portion of the
+            liquidated's underlying at a discount given by the
+            <a href="docs#liquidation">Close Factor</a> (currently set to 8%).
+          </p>
+          <p>
+            Getting liquidated is very bad, because the liquidated user looses a part of their
+            underlying collateral provided.
+          </p>
           <h2 id="reserves">
             What's preventing someone from withdrawing all of the balance in the contracts?
           </h2>
-          <p></p>
+          <p>
+            Even though rLending is self-regulating and it has mechanisms in place to prevent
+            abuses. Self-regulating means there is an automated balance that runs the interest
+            ratios for each market: if there is too much supply and not enough borrows to pay for
+            them, the borrowing fees will automatically drop, becoming a more attractive investment
+            opportunity. If on the other hand, demand is heavy on the borrows but supply is short,
+            then the Supply Rate will rise to attract suppliers.
+          </p>
+          <p>
+            In short: <em>supply and demand</em> automatically dictate the balance of each market.
+          </p>
+          <p>
+            As for security measures, we encourage you to read up on them in
+            <a href="docs#security">the documentation</a>. For example: the
+            <a href="docs#reserveFactor">Reserve Factor</a> and the
+            <a href="docs#multiSig">Multi-Sig system</a>.
+          </p>
           <h2 id="priceVariation">How can I have more debt than before?</h2>
-          <p></p>
+          <p>
+            <a href="docs#debt">Debt and liquidity</a>are calculated in USD. This means that if a
+            user supplies collateral on an asset with a volatile
+            <a href="docs#marketPrice">market price </a>, the user's collateral provided becomes
+            volatile as well.
+          </p>
+          <p>
+            To mitigate this, the protocol tends to have higher
+            <a href="#howColFact">collateral factor</a> for markets that are more volatile and lower
+            for those with more stability.
+          </p>
           <h2 id="healthFactor">What is a Health Factor?</h2>
-          <p></p>
+          <p>
+            <em>Health Factor</em> is the result of a formula that is used to predict how close to
+            liquidation an account is.
+          </p>
+          <ul>
+            Generally speaking:
+            <li>HealthFactor &gt; 50% means your account is safe</li>
+            <li>
+              HealthFactor &gt; 15% and &lt; 50% means you should keep an eye on your collaterals
+            </li>
+            <li>HealthFactor &lt; 15% means you should probably provide more collateral</li>
+            <li>
+              HealthFactor &lt; 0% means you are prone to liquidation, because you have incured in
+              more debt than collateral provided.
+            </li>
+          </ul>
           <h2 id="liquidation">What happens if my Health Factor becomes negative?</h2>
-          <p></p>
+          <p>
+            <strong
+              >This is serious, but nothing happens immediately. You are still able to correct the
+              situation.
+            </strong>
+            If this happens, your account is prone to liquidation. You should deposit more
+            collateral and repay your borrows before another account liquidates your underlying.
+          </p>
           <hr />
           <center><h1 id="dev">I am a developer</h1></center>
           <h2 id="contracts">How do I interact with the smart contracts?</h2>
