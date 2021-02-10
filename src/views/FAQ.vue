@@ -15,7 +15,7 @@
           <p><a href="#mainnet">Connecting to Mainnet</a></p>
           <p><a href="#whyGas">Why Is Gas Price So High?</a></p>
           <p><a href="#howInterest">How do accounts earn interests?</a></p>
-          <p><a href="#whatIs">How much earnings can I expect?</a></p>
+          <p><a href="#howMuchEarnings">How much earnings can I expect?</a></p>
           <p><a href="#canBorrow">Can I borrow without a deposit? </a></p>
           <p><a href="#howBorrow">How does Borrowing work? </a></p>
           <p>
