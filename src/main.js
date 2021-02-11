@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import RLogin from '@rsksmart/rlogin'
 import WalletConnectProvider from '@walletconnect/web3-provider'
-import { Middleware } from './middleware/index'
+import { Middleware, User } from './middleware/index'
 import App from './App.vue'
 import './registerServiceWorker'
 import router from './router'
@@ -21,6 +21,8 @@ Vue.config.productionTip = false
 
 // eslint-disable-next-line no-multi-assign
 Vue.prototype.$middleware = Vue.middleware = new Middleware()
+// eslint-disable-next-line no-multi-assign
+Vue.prototype.$user = Vue.user = new User()
 // eslint-disable-next-line no-multi-assign
 Vue.prototype.$rLogin = Vue.rLogin = new RLogin({
   cacheProvider: true,

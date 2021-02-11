@@ -66,7 +66,9 @@ export default {
       )}`
     },
     rskExplorerUrl() {
-      return `https://explorer.testnet.rsk.co/address/${this.marketAddress}`
+      return !process.env.VUE_APP_HTTP_EXPLORER
+        ? '#'
+        : `${process.env.VUE_APP_HTTP_EXPLORER}address/${this.marketAddress}`
     },
   },
   created() {

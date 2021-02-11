@@ -26,7 +26,7 @@
           <h3 class="supplied text-right">Supplied</h3>
         </v-row>
         <v-row class="d-flex justify-end">
-          <p class="blackish">{{ totalSupplied | formatPrice }}</p>
+          <p class="blackish">{{ totalSuppliedWithoutCollateral | formatPrice }}</p>
         </v-row>
       </v-col>
       <v-col cols="6" class="d-flex justify-center">
@@ -91,7 +91,7 @@ export default {
   data() {
     return {
       totalBorrowed: 0,
-      totalSupplied: 0,
+      totalSuppliedWithoutCollateral: 0,
       totalSuppliedAsCollateral: 0,
       totalBorrowLimit: 0,
       emptyChart: [
@@ -138,7 +138,7 @@ export default {
         supplyValueAsCollateral,
         borrowValue,
       } = await this.$middleware.getTotalSupplysAndBorrows(this.account)
-      this.totalSupplied = supplyValue
+      this.totalSuppliedWithoutCollateral = supplyValue.minus(supplyValueAsCollateral)
       this.totalBorrowed = borrowValue
       this.totalSuppliedAsCollateral = supplyValueAsCollateral
       this.getBorrowLimit()
@@ -160,7 +160,7 @@ export default {
     updateDiagramData() {
       this.chartData = [
         ['Type', 'Value'],
-        ['Supplied', +this.totalSupplied - this.totalSuppliedAsCollateral],
+        ['Supplied', +this.totalSuppliedWithoutCollateral],
         ['Supplied as Collateral', +this.totalSuppliedAsCollateral],
         ['Borrowed', +this.totalBorrowed],
       ]

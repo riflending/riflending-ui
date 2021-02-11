@@ -4,19 +4,27 @@
       <h1 class="mx-5">rLending</h1>
       <h2>{{ title }}</h2>
       <v-spacer />
+
       <div v-if="isLogged">
-        <router-link class="mx-5" :to="{ name: 'MyActivity' }"> Home </router-link>
+        <router-link class="mx-5" :to="{ name: 'MyActivity' }"> Dashboard </router-link>
         <router-link class="mx-5" :to="{ name: 'SupplyBorrow' }"> Supply/Borrow </router-link>
         <!-- <template v-if="isOwner"> -->
-        <router-link class="mx-5" :to="{ name: 'Status' }"> Status </router-link>
+        <router-link class="mx-5" :to="{ name: 'Status' }"> Market Status </router-link>
         <!-- </template> -->
+        <router-link class="mx-5" :to="{ name: 'Docs' }"> Docs </router-link>
+        <router-link class="mx-5" :to="{ name: 'FAQ' }"> FAQs</router-link>
         <v-btn class="mx-5" rounded outlined color="#008CFF">
           {{ accountCutOff }}
         </v-btn>
       </div>
-      <v-btn v-else id="connectButton" class="ml-5 button" rounded color="#008CFF" @click="connect">
-        <span class="mx-5">Connect wallet</span>
-      </v-btn>
+      <div v-else>
+        <router-link class="mx-5" :to="{ name: 'Landing' }"> Home </router-link>
+        <router-link class="mx-5" :to="{ name: 'Docs' }"> Docs </router-link>
+        <router-link class="mx-5" :to="{ name: 'FAQ' }"> FAQs </router-link>
+        <v-btn id="connectButton" class="ml-5 button" rounded color="#008CFF" @click="connect">
+          <span class="mx-5">Connect wallet</span>
+        </v-btn>
+      </div>
     </v-app-bar>
     <v-alert
       border="right"

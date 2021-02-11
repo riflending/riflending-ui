@@ -38,26 +38,30 @@ export const constants = {
   Unitroller: 'Unitroller',
   MultiSigWallet: 'MultiSigWallet',
   PriceOracleProxy: 'PriceOracleProxy',
-  'MockPriceProviderMoc Dai': 'MockPriceProviderMoc Dai',
-  'PriceOracleAdapter Rif': 'PriceOracleAdapter Rif',
-  'PriceOracleAdapter Dai': 'PriceOracleAdapter Dai',
-  'PriceOracleAdapter RBTC': 'PriceOracleAdapter RBTC',
+  MockPriceProviderMocDai: 'MockPriceProviderMocDai',
+  PriceOracleAdapterRif: 'PriceOracleAdapterRif',
+  PriceOracleAdapterDai: 'PriceOracleAdapterDai',
+  PriceOracleAdapterRBTC: 'PriceOracleAdapterRBTC',
+  PriceOracleAdapterUSDT: 'PriceOracleAdapterUSDT',
   Comptroller: 'Comptroller',
   JumpRateModelV2: 'JumpRateModelV2',
   WhitePaperInterestRateModel: 'WhitePaperInterestRateModel',
   RlendingLens: 'RlendingLens',
   crDAI: 'crDAI',
+  crUSDT: 'crUSDT',
   cRIF: 'cRIF',
   cRBTC: 'cRBTC',
   RLEN: 'RLEN',
   MaximillionAddress: 'MaximillionAddress',
   RBTCMocOracle: 'RBTCMocOracle',
-  'RIF Moc Oracle': 'RIF Moc Oracle',
-  'DAI Oracle': 'DAI Oracle',
+  RIFMocOracle: 'RIFMocOracle',
+  USDTOracle: 'USDTOracle',
   RIF: 'RIF',
   rDAI: 'rDAI',
   RBTC: 'RBTC',
+  rUSDT: 'rUSDT',
   Multicall: 'Multicall',
+  PriceOracleAdapterMoc: 'PriceOracleAdapterMoc',
 }
 
 export const address = {
@@ -66,23 +70,27 @@ export const address = {
     Unitroller: '0x3a983c7597b3ac4fbc3e0cf484d7631d70d04c05',
     MultiSigWallet: '0x9760d4a155058f6bec8d9fd8d50222073e57083e',
     PriceOracleProxy: '0xbe898c9fc63c0185bc6e403e7b9c12e341a60aa7',
-    'MockPriceProviderMoc Dai': '0xee1e9bc499242d2de09d10a1affe3a6eb687d98f',
-    'PriceOracleAdapter Rif': '0x5a9003e5f443607b7e0491dc27cad6796d309055',
-    'PriceOracleAdapter Dai': '0x238b2703A389D72098C0d1e76a326a2247bb5f26',
-    'PriceOracleAdapter RBTC': '0xc02c09c578ae2680796e33f6662b779580cd84b6',
+    MockPriceProviderMocDai: '0xee1e9bc499242d2de09d10a1affe3a6eb687d98f',
+    PriceOracleAdapterRif: '0x5a9003e5f443607b7e0491dc27cad6796d309055',
+    PriceOracleAdapterDai: '0x238b2703A389D72098C0d1e76a326a2247bb5f26',
+    PriceOracleAdapterUSDT: '0x08c2feb0352ed646ea48e7e1874c6f2e4a934dad',
+    PriceOracleAdapterRBTC: '0xc02c09c578ae2680796e33f6662b779580cd84b6',
     Comptroller: '0x2e64b3acd75d86a8ff17b98e02dae4dcf2852a94',
     JumpRateModelV2: '0xf8b35564e85800d60043ccdde0af47ba3463b6ce',
     WhitePaperInterestRateModel: '0xa9a4da01daea36da9000f83f34691ba6132e5e87',
     RlendingLens: '0xef9a1856f3cd3b5da7104524065a3d6cc9b7a4b3',
     crDAI: '0xfe281bdfef9ecd8dad7194b13ce3896c2e0b6ae1',
+    crUSDT: '0xfd09f3349fdab173d162cd0e4669b591ed5a78fb',
     cRIF: '0x4664d4cbd5104a0e974354724cbc8e0d9bd1aca3',
     cRBTC: '0xc19f0882bf318c9f8767c7d520018888e878417b',
     RLEN: '0xcd87f7a5b353ff167a8543908649518a0c3454c1',
     MaximillionAddress: '0x0b33fa12e3363a8cb22dc8c53a1cccb6267bea6a',
     RBTCMocOracle: '0x26a00af444928d689ddec7b4d17c0e4a8c9d407d',
-    'RIF Moc Oracle': '0x9d4b2c05818a0086e641437fcb64ab6098c7bbec',
+    RIFMocOracle: '0x9d4b2c05818a0086e641437fcb64ab6098c7bbec',
+    USDTOracle: '0xc52c19df35a3e7cae0871ee15e4e3fb58ffbfee4',
     RIF: '0x19f64674d8a5b4e652319f5e239efd3bc969a1fe',
     rDAI: '0x0d86fca9be034a363cf12c9834af08d54a10451c',
+    rUSDT: '0x4cfe225ce54c6609a525768b13f7d87432358c57',
     Multicall: '0x4eeebb5580769ba6d26bfd07be636300076d1831', // https://github.com/Think-and-Dev/multicall
   },
   30: {
@@ -90,30 +98,31 @@ export const address = {
     Unitroller: '0x51401d51f7cfc1a91f88a973edd0762d2021bb5b',
     MultiSigWallet: '0x0fce7d2e8e0a92ba6068a54ed2a7e628ea022e72',
     PriceOracleProxy: '0x0d0006f3f700a468b6467615f2fb9efdec4e4e33',
-    'MockPriceProviderMoc Dai': '0x51461e07dfb997e5fd15c1febe7a19fd931ad500',
-    'PriceOracleAdapter Rif': '0x20e3996603e6c9415e56181ee55d2b8e1c423acf',
-    'PriceOracleAdapter Dai': '0xa60c1a0ca1e95962cc1a77dec306545dc8475b74',
+    PriceOracleAdapterRif: '0x20e3996603e6c9415e56181ee55d2b8e1c423acf',
+    PriceOracleAdapterUSDT: '0x08c2feb0352ed646ea48e7e1874c6f2e4a934dad',
+    PriceOracleAdapterRBTC: '0xc02c09c578ae2680796e33f6662b779580cd84b6',
     Comptroller: '0xca8744cfaeb8ef4bc1fe5350f24058768fb78a5e',
     JumpRateModelV2: '0x5f3fd1f2f5d8f6ac902d4653e517f1731732a0b6',
     WhitePaperInterestRateModel: '0x8ac501b80a8932cfac4f0c55213b372c02631c5e',
-    crDAI: '0xb386c06b1240e51f98e70e4b7d216b270b12425e',
+    crUSDT: '0xfd09f3349fdab173d162cd0e4669b591ed5a78fb',
     cRIF: '0x2b47f1b810faf99d911228a87c9c6d0d61514b9d',
     cRBTC: '0xa04bb527be81bb92b59059a45206101b2d11200d',
     RLEN: '0xcbf15821e5ecb15d46af5d98bf25b7ce49e4ebd2',
     MaximillionAddress: '0x5edd33c93086bef90692a3db1cbc51104734b851',
-    'RBTC Moc Oracle': '0x26a00af444928d689ddec7b4d17c0e4a8c9d407d',
-    'RIF Moc Oracle': '0x9d4b2c05818a0086e641437fcb64ab6098c7bbec',
+    RBTCMocOracle: '0x26a00af444928d689ddec7b4d17c0e4a8c9d407d',
+    RIFMocOracle: '0x9d4b2c05818a0086e641437fcb64ab6098c7bbec',
+    USDTOracle: '0xc52c19df35a3e7cae0871ee15e4e3fb58ffbfee4',
     RIF: '0x19f64674d8a5b4e652319f5e239efd3bc969a1fe',
-    rDAI: '0x0d86fca9be034a363cf12c9834af08d54a10451c',
+    rUSDT: '0x4cfe225ce54c6609a525768b13f7d87432358c57',
     Multicall: '0x4eeebb5580769ba6d26bfd07be636300076d1831', // https://github.com/Think-and-Dev/multicall
   },
 }
 
-export const cTokens = ['cRBTC', 'cRIF', 'crDAI']
-export const underlyings = ['RBTC', 'RIF', 'rDAI']
+export const cTokens = ['cRBTC', 'cRIF', 'crDAI', 'crUSDT']
+export const underlyings = ['RBTC', 'RIF', 'rDAI', 'rUSDT']
 
 // additional assets supported by the open price feed
-export const opfAssets = ['RBTC', 'RIF', 'rDAI']
+export const opfAssets = ['RBTC', 'RIF', 'rDAI', 'rUSDT']
 
 export const decimals = {
   rDAI: 18,
@@ -123,6 +132,8 @@ export const decimals = {
   RIF: 18,
   cRIF: 8,
   RLEN: 18,
+  crUSDT: 8,
+  rUSDT: 18,
 }
 export const percentageOfHealthToBorrow = 0.01
 
@@ -133,6 +144,7 @@ export const cTokensDetails = [
     decimals: decimals.cRBTC,
     underlying: { symbol: 'RBTC', name: 'RSK Smart Bitcoin', decimals: decimals.RBTC },
     logo: 'rbtc',
+    adapter: 'PriceOracleAdapterRBTC',
     //this is use to substract the calculate liquidated amount (closed Factor * borrow borrower), because this calculate have a insignificant (but precius) % of  lost
     liquidate: {
       sub: 0.000001,
@@ -141,10 +153,11 @@ export const cTokensDetails = [
   },
   {
     symbol: 'cRIF',
-    name: 'ctoken rLending Rif',
+    name: 'cToken rLending Rif',
     decimals: decimals.cRIF,
-    underlying: { symbol: 'RIF', name: 'rLending Rif', decimals: decimals.RIF },
+    underlying: { symbol: 'RIF', name: 'RSK Infrastructure Token', decimals: decimals.RIF },
     logo: 'rif',
+    adapter: 'PriceOracleAdapterRif',
     //this is use to substract the calculate liquidated amount (closed Factor * borrow borrower), because this calculate have a insignificant (but precius) % of  lost
     liquidate: {
       sub: 0.001,
@@ -153,10 +166,24 @@ export const cTokensDetails = [
   },
   {
     symbol: 'crDAI',
-    name: 'ctoken rLending Dai',
+    name: 'cToken rLending Dai',
     decimals: decimals.crDAI,
-    underlying: { symbol: 'rDAI', name: 'rLending Dai', decimals: decimals.rDAI },
+    underlying: { symbol: 'rDAI', name: 'DAI Stablecoin', decimals: decimals.rDAI },
     logo: 'dai',
+    adapter: 'PriceOracleAdapterDai',
+    //this is use to substract the calculate liquidated amount (closed Factor * borrow borrower), because this calculate have a insignificant (but precius) % of  lost
+    liquidate: {
+      sub: 0.0001,
+      decimalToFix: 6,
+    },
+  },
+  {
+    symbol: 'crUSDT',
+    name: 'cToken rLending USDT',
+    decimals: decimals.crDAI,
+    underlying: { symbol: 'rUSDT', name: 'Tether USD', decimals: decimals.rUSDT },
+    logo: 'usdt',
+    adapter: 'PriceOracleAdapterUSDT',
     //this is use to substract the calculate liquidated amount (closed Factor * borrow borrower), because this calculate have a insignificant (but precius) % of  lost
     liquidate: {
       sub: 0.0001,
