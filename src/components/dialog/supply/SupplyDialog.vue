@@ -170,18 +170,19 @@ export default {
       this.waiting = false
       this.errorDialog = true
       this.userErrorMessage = errorObject.userErrorMessage || ''
+      this.supplyBalanceInfo = errorObject.supplyBalanceInfo ?? errorObject.amount
       this.persistEventLocalStorage(
         this.currentComponent.replace('Input', ''),
         this.supplyBalanceInfo,
         this.hash,
         Date.now(),
-        true,
+        false,
       )
     },
     actionSucceed(succeedObject) {
       this.hash = succeedObject.hash
       this.borrowLimitInfo = succeedObject.borrowLimitInfo
-      this.supplyBalanceInfo = succeedObject.supplyBalanceInfo
+      this.supplyBalanceInfo = succeedObject.supplyBalanceInfo ?? succeedObject.amount
       this.succeed = true
       this.waiting = false
       this.errorDialog = false
@@ -193,7 +194,7 @@ export default {
         this.supplyBalanceInfo,
         this.hash,
         Date.now(),
-        false,
+        true,
       )
     },
     backToDialog() {
@@ -208,11 +209,12 @@ export default {
       }
     },
     close() {
+      this.$emit('closed')
       this.reset()
       this.$emit('closed')
     },
-    persistEventLocalStorage(event, price, hash, date, fail) {
-      const txLS = this.$user.createTx(hash, event, price, date, fail)
+    persistEventLocalStorage(event, price, hash, date, status) {
+      const txLS = this.$user.createTx(hash, event, price, date, status)
       this.$user.addTxToAccountList(txLS, this.account)
     },
   },

@@ -141,7 +141,7 @@ export default {
         !this.borrowed ? this.pay : this.borrowed,
         this.hash,
         Date.now(),
-        true,
+        false,
       )
     },
     actionSucceed(succeedObject) {
@@ -157,7 +157,7 @@ export default {
         !this.borrowed ? this.pay : this.borrowed,
         this.hash,
         Date.now(),
-        false,
+        true,
       )
     },
     backToDialog() {
@@ -175,8 +175,8 @@ export default {
       this.reset()
       this.$emit('closed')
     },
-    persistEventLocalStorage(event, price, hash, date, fail) {
-      const txLS = this.$user.createTx(hash, event, price, date, fail)
+    persistEventLocalStorage(event, price, hash, date, status) {
+      const txLS = this.$user.createTx(hash, event, price, date, status)
       this.$user.addTxToAccountList(txLS, this.account)
     },
   },
