@@ -197,7 +197,6 @@
             </v-row>
           </v-card>
         </v-col>
-
         <!-- history tx  -->
         <v-col class="pa-0">
           <v-card class="graphics-card container" width="94%">
