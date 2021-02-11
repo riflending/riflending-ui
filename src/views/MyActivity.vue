@@ -309,15 +309,6 @@ export default {
         this.$middleware.getAdapterPrice(this.markets[indice].adapter).then((price) => {
           this.markets[indice].price = price.toNumber()
           this.markets[indice].priceUp = this.markets[indice].price - this.markets[indice].oldPrice
-          // this.markets[indice].price > this.markets[indice].oldPrice
-          //   ? 1
-          //   : this.markets[indice].price < this.markets[indice].oldPrice
-          //   ? -1
-          //   : 0
-          // const aux =
-          //   this.markets[indice].price - this.markets[indice].oldPrice
-          // this.markets[indice].priceUp = aux > 1 ? 1 : aux < 0 ? -1 : 0
-
           this.markets[indice].oldPrice = price.toNumber()
         })
       }
