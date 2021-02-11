@@ -72,9 +72,14 @@ export default [
       import(/* webpackChunkName: "securityAudits" */ '@/views/docs/7-securityAudits.vue'),
   },
   {
+    path: '/doc',
+    name: 'Docs',
+    component: () => import(/* webpackChunkName: "docs" */ '@/views/docs/1-introduction.vue'),
+  },
+  {
     path: '/faq',
     name: 'FAQ',
-    component: () => import(/* webpackChunkName: "docs" */ '@/views/FAQ.vue'),
+    component: () => import(/* webpackChunkName: "faq" */ '@/views/FAQ.vue'),
   },
   {
     path: '*',
