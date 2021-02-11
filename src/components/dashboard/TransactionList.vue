@@ -1,17 +1,23 @@
 <template>
   <div class="transaction-list">
-    <h2 class="d-flex align-center">History Tx:</h2>
+    <h2 class="d-flex align-center">Transaction History:</h2>
     <v-divider class="divider-search" />
     <v-data-table
+      dense
       :headers="headers"
       :items="getLocalStorageData"
       item-key="name"
       class="elevation-1"
-      :search="toSearch"
       :custom-filter="filterOnlyCapsText"
       :item-class="itemRowBackground"
-      :items-per-page="5"
+      :search="toSearch"
+      :footer-props="{
+        'items-per-page-options': [3, 5, 10, 20],
+      }"
+      :items-per-page="3"
     >
+      <template slot="no-data">No history around here </template>
+
       <template v-slot:top>
         <v-text-field
           v-model="search"
@@ -22,13 +28,18 @@
       </template>
 
       <template v-slot:[`item.hash`]="{ item }">
-        <a target="_blank" :href="rskExplorerUrl(item.hash)">{{ item.hash | formatHash }}</a>
+        <a target="_blank" :href="rskExplorerUrl(item.hash)">{{
+          (!item.hash ? '0x0' : item.hash) | formatHash
+        }}</a>
       </template>
       <template v-slot:[`item.date`]="{ item }">
         {{ new Date(item.date).toISOString().split('T')[0] }}
       </template>
       <template v-slot:[`item.price`]="{ item }">
         {{ item.price | formatNumber }}
+      </template>
+      <template v-slot:[`item.status`]="{ item }">
+        {{ !item.status ? 'FAIL' : 'SUCCESS' }}
       </template>
     </v-data-table>
   </div>
@@ -68,6 +79,7 @@ export default {
         },
         { text: 'Tokens', value: 'price' },
         { text: 'Tx Event', value: 'type' },
+        { text: 'Status', value: 'status' },
       ]
     },
   },
@@ -83,7 +95,7 @@ export default {
         : `${process.env.VUE_APP_HTTP_EXPLORER}tx/${hash}`
     },
     itemRowBackground: function (item) {
-      return item.fail ? 'tx-fail-row item-row-center' : 'item-row-center'
+      return !item.status ? 'tx-fail-row item-row-center' : 'item-row-center'
     },
     filterOnlyCapsText(value, search, item) {
       item

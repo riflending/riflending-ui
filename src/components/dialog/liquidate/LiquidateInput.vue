@@ -65,10 +65,10 @@
               <v-col cols="2">
                 <h4>You get:</h4>
               </v-col>
-              <v-col v-show="!marketSelected" cols="8" class="summary-num d-flex justify-center">
+              <v-col v-show="!marketSelected" cols="7" class="summary-num d-flex justify-center">
                 {{ selectCollateralAmount }}
               </v-col>
-              <v-col cols="2" class="d-flex justify-end">
+              <v-col cols="3" class="d-flex justify-end">
                 <div>
                   <v-select
                     v-model="marketSelected"
@@ -362,9 +362,8 @@ export default {
         })
         .catch((error) => {
           this.waiting = false
-          console.error('ERROR liquidate()', error)
           const userError = typeof error === 'string' ? error : error.message || ''
-          this.$emit('error', { userErrorMessage: userError })
+          this.$emit('error', { userErrorMessage: userError, amount: this.selectCollateralAmount })
         })
     },
     setLiquidationAccount(accountObject) {

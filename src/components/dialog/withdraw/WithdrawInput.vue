@@ -36,22 +36,16 @@
       <div class="my-5 py-5">
         <v-row class="d-flex align-center">
           <v-col cols="2" />
-          <v-col align="end" cols="3" class="d-flex justify-end">
+          <v-col cols="3" class="d-flex justify-end">
             <h3>Contract Liquidity:</h3>
           </v-col>
           <v-col cols="4">
             <v-row class="ma-0 d-flex align-center">
               <v-col cols="7" class="d-flex justify-center">
-                <v-tooltip top>
-                  <template v-slot:activator="{ on, attrs }">
-                    <h1 v-bind="attrs" v-on="on">
-                      {{ cash | formatNumber }}
-                    </h1>
-                  </template>
-                  <!-- <span>{{ cash | formatToken(data.token.decimals) }}</span> -->
-                </v-tooltip>
+                <h1 :title="[`Balance: ${cash} ${data.token.symbol}`]">
+                  {{ cash | formatNumber }}
+                </h1>
               </v-col>
-              <v-col cols="5" />
             </v-row>
           </v-col>
           <v-col cols="1">
@@ -86,8 +80,27 @@
           <v-col cols="4">
             <v-row class="ma-0 d-flex align-center">
               <v-col cols="7" class="d-flex justify-center">
-                <h1>
+                <h1 :title="[`Borrow limit: ${maxBorrowAllowed} ${data.token.symbol}`]">
                   {{ maxBorrowAllowed | formatNumber }}
+                </h1>
+              </v-col>
+            </v-row>
+          </v-col>
+          <v-col cols="1">
+            <span class="itemInfo">{{ data.token.symbol }}</span>
+          </v-col>
+          <v-col cols="2" />
+        </v-row>
+        <v-row class="d-flex align-center">
+          <v-col cols="2" />
+          <v-col cols="3" class="d-flex justify-end">
+            <h3>max withdraw:</h3>
+          </v-col>
+          <v-col cols="4">
+            <v-row class="ma-0 d-flex align-center">
+              <v-col cols="7" class="d-flex justify-center">
+                <h1 :title="[`Max to withdraw: ${getMaxAmount()} ${data.token.symbol}`]">
+                  {{ getMaxAmount() | formatNumber }}
                 </h1>
               </v-col>
             </v-row>
@@ -256,6 +269,7 @@ export default {
           const userError = typeof error === 'string' ? error : error.message || ''
           this.$emit('error', {
             userErrorMessage: userError,
+            supplyBalanceInfo: this.amount,
           })
         })
     },
