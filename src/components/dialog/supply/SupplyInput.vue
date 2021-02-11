@@ -74,8 +74,27 @@
           <v-col cols="4">
             <v-row class="ma-0 d-flex align-center">
               <v-col cols="7" class="d-flex justify-center">
-                <h1>
+                <h1 :title="[`Borrow limit: ${maxBorrowAllowed} ${data.token.symbol}`]">
                   {{ maxBorrowAllowed | formatNumber }}
+                </h1>
+              </v-col>
+            </v-row>
+          </v-col>
+          <v-col cols="1">
+            <span class="itemInfo">{{ data.token.symbol }}</span>
+          </v-col>
+          <v-col cols="2" />
+        </v-row>
+        <v-row class="d-flex align-center">
+          <v-col cols="2" />
+          <v-col cols="3" class="d-flex justify-end">
+            <h3>max supply:</h3>
+          </v-col>
+          <v-col cols="4">
+            <v-row class="ma-0 d-flex align-center">
+              <v-col cols="7" class="d-flex justify-center">
+                <h1 :title="[`Max to supply: ${maxAmountBalanceAllowed} ${data.token.symbol}`]">
+                  {{ maxAmountBalanceAllowed | formatNumber }}
                 </h1>
               </v-col>
             </v-row>
@@ -240,6 +259,7 @@ export default {
       this.data.market
         .supply(this.amount)
         .then((res) => {
+          console.log('EMIT SUCCED')
           this.waiting = false
           this.$emit('succeed', {
             hash: res.transactionHash,
@@ -249,7 +269,7 @@ export default {
         .catch((error) => {
           this.waiting = false
           const userError = typeof error === 'string' ? error : error.message || ''
-          this.$emit('error', { userErrorMessage: userError })
+          this.$emit('error', { userErrorMessage: userError, supplyBalanceInfo: this.amount })
         })
     },
     asDouble(value) {
