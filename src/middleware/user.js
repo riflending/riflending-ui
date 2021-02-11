@@ -1,10 +1,13 @@
+import { NETWORK_ID } from '../config/constants'
+import Vue from 'vue'
 export default class User {
   constructor() {
-    this.prefixKey = 'rLendingA'
+    const chainId = +Vue?.web3Provider?.network?.chainId || NETWORK_ID
+    this.prefixKey = chainId.toString().concat('rLendingA')
   }
 
-  createTx(hash, type, price, date = Date.now(), fail = false) {
-    return { hash: hash, type: type, date: date, price: price, status: fail }
+  createTx(hash, type, price, date = Date.now(), status) {
+    return { hash: hash, type: type, date: date, price: price, status: status }
   }
 
   getKeyLocalStorage(account) {
@@ -28,16 +31,12 @@ export default class User {
 
   _persistLocalStorage(account, data) {
     const keyLS = this.getKeyLocalStorage(account)
-    console.log(keyLS)
-    console.log(account)
     const parsed = JSON.stringify(data)
     // localStorage.account = this.accountStorage
     localStorage.setItem(keyLS, parsed)
   }
 
   addTxToAccountList(tx, account) {
-    console.log(tx)
-    console.log(account)
     let txList = this.getDataLocalStorage(account) ?? []
     if (!tx) {
       return false
