@@ -86,58 +86,6 @@
               </v-card>
             </v-col>
           </v-row>
-          <!-- <v-row class="ma-0 py-6">
-            <v-col class="pa-0 d-flex justify-center">
-              <v-card class="graphics-card container" width="94%">
-                <v-row class="ma-0 d-flex align-center">
-                  <v-col cols="12" class="py-0">
-                    <v-row class="d-flex align-center">
-                      <v-col cols="7" class="px-0 text-left"
-                        ><h2>Health Factor:</h2></v-col
-                      >
-                      <v-tooltip top color="#E5E5E5">
-                        <template v-slot:activator="{ on, attrs }">
-                          <v-icon small class="mx-5" v-bind="attrs" v-on="on"
-                            >info</v-icon
-                          >
-                        </template>
-                        <div class="tooltip">
-                          Your Health Factor represents <br />
-                          the state of your loans.
-                          <span class="boldie">
-                            Don't <br />
-                            let it drop to
-                            <span class="redish"> 0% </span></span
-                          >
-                          or your <br />
-                          collateral might be liquidated!
-                        </div>
-                      </v-tooltip>
-                    </v-row>
-                    <v-row>
-                      <v-divider />
-                    </v-row>
-                    <v-row class="ma-0 pt-3">
-                      <p>
-                        Your Account has a <b>{{ risk }}</b> risk of liquidation
-                      </p>
-                    </v-row>
-                  </v-col>
-                  <v-col cols="5" class="d-flex justify-center align-center">
-                    <v-progress-circular
-                      :rotate="270"
-                      :size="150"
-                      :width="25"
-                      :value="healthFactor"
-                      :color="healthColor"
-                    >
-                      {{ accountHealth }}%
-                    </v-progress-circular>
-                  </v-col>
-                </v-row>
-              </v-card>
-            </v-col>
-          </v-row> -->
           <v-row class="ma-0 py-2">
             <!-- halth factor -->
             <v-col class="pa-0 d-flex justify-center">
