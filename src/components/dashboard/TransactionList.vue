@@ -39,7 +39,7 @@
         {{ item.price | formatNumber }}
       </template>
       <template v-slot:[`item.status`]="{ item }">
-        {{ !item.status ? 'FAIL' : 'SUCCESSFUL' }}
+        {{ !item.status ? 'FAIL' : 'SUCCESS' }}
       </template>
     </v-data-table>
   </div>

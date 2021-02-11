@@ -209,7 +209,6 @@ export default {
       }
     },
     close() {
-      this.$emit('closed')
       this.reset()
       this.$emit('closed')
     },
