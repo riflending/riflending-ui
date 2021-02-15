@@ -59,6 +59,18 @@
     <v-row class="d-flex justify-center">
       <component :is="currentComponent" @listChange="reset" />
     </v-row>
+    <v-row class="d-flex justify-center">
+      <v-banner elevation="0"
+        ><v-avatar>
+          <v-img :src="require(`@/assets/rskSwap.svg`)" />
+        </v-avatar>
+        <a target="_blank" class="rsw-swap-launch" href="https://app.rskswap.com/">{{
+          currentComponent == 'SupplyList'
+            ? 'Bring your ethereum tokens'
+            : 'Cross your tokens to ethereum'
+        }}</a>
+      </v-banner>
+    </v-row>
   </div>
 </template>
 
