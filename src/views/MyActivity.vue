@@ -1,6 +1,6 @@
 <template>
   <div class="my-activity">
-    <div class="upper-banner">
+    <div v-if="dataLaoded" class="upper-banner">
       <v-dialog v-model="showHealthWarning" width="450">
         <v-card class="container">
           <v-row class="ma-0 py-2 d-flex justify-center">
@@ -33,11 +33,25 @@
               <v-card class="graphics-card container" width="94%">
                 <v-row class="ma-0 d-flex align-center">
                   <v-col cols="12" class="py-0">
-                    <v-row class="d-flex align-center">
+                    <v-row
+                      v-for="item in totalBalance"
+                      :key="item.toString().concat('balance')"
+                      class="d-flex align-center"
+                    >
                       <v-col cols="6" class="px-0 text-left"><h2>Account balance:</h2></v-col>
                       <v-col cols="5" class="px-0">
                         <h2 class="text-center">
-                          {{ totalBalance | formatPrice }}
+                          $
+                          <number
+                            ref="tweenedTotalSupply"
+                            class="tweened-number-blue"
+                            :from="item"
+                            :to="item"
+                            :format="tweenedFormat"
+                            :duration="5"
+                            :delay="1"
+                            easing="Power0.easeIn"
+                          />
                         </h2>
                       </v-col>
                       <v-col cols="1" class="pa-0"><span class="text-left">USD</span></v-col>
@@ -45,7 +59,7 @@
                     <v-row>
                       <v-divider />
                     </v-row>
-                    <v-row>
+                    <v-row v-for="item in totalSupplied" :key="item">
                       <v-col cols="6" class="px-0"><h4>Total Supplied:</h4></v-col>
                       <v-col cols="5" class="px-0">
                         <h4 class="text-center">
@@ -53,7 +67,8 @@
                           <number
                             ref="tweenedTotalSupply"
                             class="tweened-number"
-                            :to="!totalSupplied ? 0 : totalSupplied.toNumber()"
+                            :from="item"
+                            :to="item"
                             :format="tweenedFormat"
                             :duration="5"
                             :delay="1"
@@ -63,7 +78,7 @@
                       </v-col>
                       <v-col cols="1" class="pa-0"><span class="text-left">USD</span></v-col>
                     </v-row>
-                    <v-row>
+                    <v-row v-for="item in totalBorrowed" :key="item">
                       <v-col cols="6" class="px-0"><h4>Total Borrowed:</h4></v-col>
                       <v-col cols="5" class="px-0">
                         <h4 class="text-center">
@@ -71,7 +86,8 @@
                           <number
                             ref="tweenedTotalBorrow"
                             class="tweened-number"
-                            :to="!totalBorrowed ? 0 : totalBorrowed.toNumber()"
+                            :from="item"
+                            :to="item"
                             :format="tweenedFormat"
                             :duration="5"
                             :delay="1"
@@ -183,6 +199,7 @@
                       <number
                         ref="number1"
                         class="tweened-number"
+                        :from="item.oldPrice"
                         :to="item.price"
                         :format="tweenedFormat"
                         :duration="5"
@@ -207,6 +224,15 @@
 
       <v-row class="ma-0"> </v-row>
     </div>
+    <template v-else>
+      <v-card flat class="loader d-flex align-center justify-center">
+        <div class="container">
+          <v-row class="my-5 d-flex justify-center">
+            <v-progress-circular indeterminate :size="80" color="#008CFF" />
+          </v-row>
+        </div>
+      </v-card>
+    </template>
   </div>
 </template>
 
@@ -217,6 +243,8 @@ import { mapState } from 'vuex'
 import { cTokensDetails } from '../middleware/constants'
 import Vue from 'vue'
 import VueNumber from 'vue-number-animation'
+Vue.config.productionTip = false
+
 Vue.use(VueNumber)
 
 export default {
@@ -228,14 +256,15 @@ export default {
   data() {
     return {
       healthFactor: 0,
-      totalBalance: 0,
-      totalSupplied: 0,
-      oldTotalSupplied: 0,
-      totalBorrowed: 0,
+      totalBalance: [],
+      totalSupplied: [],
+      totalBorrowed: [],
       showHealthWarning: null,
       polling: null,
       markets: [],
       accountStorage: '',
+      auxiliar: 1,
+      dataLaoded: false,
     }
   },
   computed: {
@@ -263,11 +292,6 @@ export default {
   beforeDestroy() {
     clearInterval(this.polling)
   },
-  mounted() {
-    if (localStorage.account) {
-      this.accountStorage = localStorage.account
-    }
-  },
   async created() {
     for (const market of cTokensDetails) {
       this.$middleware.getAdapterPrice(market.adapter).then((price) => {
@@ -282,6 +306,7 @@ export default {
       })
     }
     await this.fetchData()
+    this.dataLaoded = true
     this.pollData()
   },
   methods: {
@@ -294,9 +319,10 @@ export default {
       const { borrowValue, supplyValue } = await this.$middleware.getTotalSupplysAndBorrows(
         this.account,
       )
-      this.totalBorrowed = borrowValue
-      this.totalSupplied = supplyValue
-      this.totalBalance = supplyValue.minus(borrowValue)
+      //refact this totals for int var and set in last hook
+      this.totalBorrowed[0] = borrowValue.toNumber()
+      this.totalSupplied[0] = supplyValue.toNumber()
+      this.totalBalance[0] = supplyValue.minus(borrowValue).toNumber()
       const health = await this.$middleware.getAccountHealth(this.account)
       this.healthFactor = health > 1 ? 100 : health * 100
       this.showHealthWarning = Number(this.healthFactor) === 0
@@ -308,12 +334,12 @@ export default {
         this.$middleware.getAdapterPrice(this.markets[indice].adapter).then((price) => {
           this.markets[indice].price = price.toNumber()
           this.markets[indice].priceUp = this.markets[indice].price - this.markets[indice].oldPrice
-          this.markets[indice].oldPrice = price.toNumber()
+          this.markets[indice].oldPrice = this.markets[indice].price
         })
       }
     },
     tweenedFormat(number) {
-      return number.toFixed(4)
+      return number.toFixed(3)
     },
   },
 }
