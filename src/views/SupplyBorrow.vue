@@ -62,12 +62,12 @@
     <v-row class="d-flex justify-center rsw-swap-launch">
       <v-banner elevation="0"
         ><v-avatar> </v-avatar>
-        <v-img class="rsw-swap-launch-logo" :src="require(`@/assets/rsk_logo.svg`)" />
         <a target="_blank" :href="getHttpTokenBridge">{{
           currentComponent == 'SupplyList'
-            ? 'Bring your ethereum tokens'
-            : 'Cross your tokens to ethereum'
+            ? 'Bring your ethereum tokens '
+            : 'Cross your tokens to ethereum '
         }}</a>
+        <v-img class="rsw-swap-launch-logo" :src="require(`@/assets/rsk_logo.svg`)" />
       </v-banner>
     </v-row>
   </div>
