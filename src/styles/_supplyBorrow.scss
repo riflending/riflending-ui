@@ -25,8 +25,17 @@
 }
 
 .rsw-swap-launch{
-  text-decoration:none !important;
-  color:black!important;
-  font-family: "Rubik", sans-serif;
-  font-style: normal;
+  a{
+
+    text-decoration:none !important;
+    color:black!important;
+    font-family: "Rubik", sans-serif;
+    font-style: normal;
+  }
+}
+.rsw-swap-launch-logo{
+  display:inline-flex !important;
+  text-align: center !important;
+  vertical-align: text-bottom !important;
+  width: 10% !important;
 }

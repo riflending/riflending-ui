@@ -59,12 +59,11 @@
     <v-row class="d-flex justify-center">
       <component :is="currentComponent" @listChange="reset" />
     </v-row>
-    <v-row class="d-flex justify-center">
+    <v-row class="d-flex justify-center rsw-swap-launch">
       <v-banner elevation="0"
-        ><v-avatar>
-          <v-img :src="require(`@/assets/rskSwap.svg`)" />
-        </v-avatar>
-        <a target="_blank" class="rsw-swap-launch" href="https://app.rskswap.com/">{{
+        ><v-avatar> </v-avatar>
+        <v-img class="rsw-swap-launch-logo" :src="require(`@/assets/rsk_logo.svg`)" />
+        <a target="_blank" :href="getHttpTokenBridge">{{
           currentComponent == 'SupplyList'
             ? 'Bring your ethereum tokens'
             : 'Cross your tokens to ethereum'
@@ -103,6 +102,9 @@ export default {
       if (this.accountHealth <= 0.3) return '#EB5757'
       if (this.accountHealth > 0.3 && this.accountHealth <= 0.6) return '#F2994A'
       return '#24BD6B'
+    },
+    getHttpTokenBridge() {
+      return process.env.VUE_APP_HTTP_TOKEN_BRIDGE
     },
   },
   mounted() {
