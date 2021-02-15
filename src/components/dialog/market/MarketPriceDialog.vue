@@ -8,6 +8,7 @@
               <v-img
                 class="ml-5"
                 :src="require(`@/assets/tokens/${data.token.logo}.png`)"
+                :alt="`token ${data.token.logo} icon`"
                 contain
                 height="70"
               />

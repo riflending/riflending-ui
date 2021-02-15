@@ -1,5 +1,5 @@
-<template class="index">
-  <v-app light>
+<template>
+  <v-app light class="index">
     <AppBar />
     <v-main>
       <v-container fluid>

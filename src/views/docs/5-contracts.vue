@@ -77,13 +77,6 @@
           <h1 id="testnet">Testnet Deploy:</h1>
           <ul>
             <li>
-              Dai Oracle:
-              <a
-                href="https://explorer.testnet.rsk.co/address/0xee1e9bc499242d2de09d10a1affe3a6eb687d98f"
-                >0xEE1e9Bc499242D2De09d10A1AffE3A6eb687d98f</a
-              >
-            </li>
-            <li>
               MultiSigWallet:
               <a
                 href="https://explorer.testnet.rsk.co/address/0x9760d4a155058f6bec8d9fd8d50222073e57083e"
@@ -112,13 +105,6 @@
               >
             </li>
             <li>
-              DAI PriceOracleAdapter:
-              <a
-                href="https://explorer.testnet.rsk.co/address/0x238b2703a389d72098c0d1e76a326a2247bb5f26"
-                >0x238b2703A389D72098C0d1e76a326a2247bb5f26</a
-              >
-            </li>
-            <li>
               RBTC PriceOracleAdapter:
               <a
                 href="https://explorer.testnet.rsk.co/address/0xc02c09c578ae2680796e33f6662b779580cd84b6"
@@ -138,13 +124,6 @@
               <a
                 href="https://explorer.testnet.rsk.co/address/0xa9a4da01daea36da9000f83f34691ba6132e5e87"
                 >0xA9a4Da01DaeA36DA9000F83F34691Ba6132e5E87</a
-              >
-            </li>
-            <li>
-              crDAI:
-              <a
-                href="https://explorer.testnet.rsk.co/address/0xfe281bdfef9ecd8dad7194b13ce3896c2e0b6ae1"
-                >0xFE281BDfeF9ECd8DAd7194B13CE3896C2E0b6aE1</a
               >
             </li>
             <li>
