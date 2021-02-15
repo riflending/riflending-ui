@@ -1,6 +1,6 @@
 <template>
   <div class="my-activity">
-    <div v-if="dataLaoded" class="upper-banner">
+    <div v-if="dataLoaded" class="upper-banner">
       <v-dialog v-model="showHealthWarning" width="450">
         <v-card class="container">
           <v-row class="ma-0 py-2 d-flex justify-center">
@@ -43,7 +43,7 @@
                         <h2 class="text-center">
                           $
                           <number
-                            ref="tweenedTotalSupply"
+                            ref="tweenedTotalBalance"
                             class="tweened-number-blue"
                             :from="item"
                             :to="item"
@@ -243,7 +243,6 @@ import { mapState } from 'vuex'
 import { cTokensDetails } from '../middleware/constants'
 import Vue from 'vue'
 import VueNumber from 'vue-number-animation'
-Vue.config.productionTip = false
 
 Vue.use(VueNumber)
 
@@ -263,8 +262,7 @@ export default {
       polling: null,
       markets: [],
       accountStorage: '',
-      auxiliar: 1,
-      dataLaoded: false,
+      dataLoaded: false,
     }
   },
   computed: {
@@ -306,7 +304,7 @@ export default {
       })
     }
     await this.fetchData()
-    this.dataLaoded = true
+    this.dataLoaded = true
     this.pollData()
   },
   methods: {

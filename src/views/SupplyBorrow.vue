@@ -59,15 +59,14 @@
     <v-row class="d-flex justify-center">
       <component :is="currentComponent" @listChange="reset" />
     </v-row>
-    <v-row class="d-flex justify-center rsw-swap-launch">
-      <v-banner elevation="0"
-        ><v-avatar> </v-avatar>
+    <v-row class="d-flex justify-center token-bridge-launch">
+      <v-banner elevation="0">
+        <v-img class="token-bridge-launch-logo" :src="require(`@/assets/tokenbridge_logo.jpg`)" />
         <a target="_blank" :href="getHttpTokenBridge">{{
           currentComponent == 'SupplyList'
             ? 'Bring your ethereum tokens '
             : 'Cross your tokens to ethereum '
         }}</a>
-        <v-img class="rsw-swap-launch-logo" :src="require(`@/assets/rsk_logo.svg`)" />
       </v-banner>
     </v-row>
   </div>

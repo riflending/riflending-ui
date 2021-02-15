@@ -24,18 +24,25 @@
   }
 }
 
-.rsw-swap-launch{
+.token-bridge-launch{
   a{
-
+    
     text-decoration:none !important;
     color:black!important;
     font-family: "Rubik", sans-serif;
     font-style: normal;
   }
+  div{
+    display: flex;
+    align-items: center;
+    text-align: center !important;
+
+  }
 }
-.rsw-swap-launch-logo{
+.token-bridge-launch-logo{
   display:inline-flex !important;
   text-align: center !important;
   vertical-align: text-bottom !important;
-  width: 10% !important;
+  width: 100px !important;
+  // width: 10% !important;
 }
