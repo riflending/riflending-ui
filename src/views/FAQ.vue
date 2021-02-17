@@ -8,13 +8,13 @@
           <p><a href="#canTrade">is rLending a DEX?</a></p>
           <p><a href="#howWorks">How does rLending work?</a></p>
           <p><a href="#howCost">Can I try it for free?</a></p>
-          <p><a href="#wallet">How do I get a wallet?</a></p>
+          <p><a href="#getWallet">How do I get a wallet?</a></p>
           <p><a href="#howProfit">How does rLending profit?</a></p>
           <p><a href="#wallet">How to install a wallet</a></p>
           <p><a href="#testnet">Connecting to Testnet</a></p>
           <p><a href="#mainnet">Connecting to Mainnet</a></p>
-          <p><a href="#whyGas">Why Is Gas Price So High?</a></p>
-          <p><a href="#howInterest">How do accounts earn interests?</a></p>
+          <p><a href="#gasPrice">Why Is Gas Price So High?</a></p>
+          <p><a href="#earnings">How do accounts earn interests?</a></p>
           <p><a href="#howMuchEarnings">How much earnings can I expect?</a></p>
           <p><a href="#canBorrow">Can I borrow without a deposit? </a></p>
           <p><a href="#howBorrow">How does Borrowing work? </a></p>
@@ -22,6 +22,14 @@
             <a href="#borrowFee"
               >What fees are involved inexpand-on-hoverll Of The Balance In The Contracts?
             </a>
+          </p>
+          <p><a href="#howColFact">How does Collateral Factor work?</a></p>
+          <p><a href="#crossBorrow">Can I borrow from a market I have not supplied to?</a></p>
+          <p><a href="#whatDebt">What happens if someone doesn't pay their debt?</a></p>
+          <p>
+            <a href="#reserves"
+              >What's preventing someone from withdrawing all of the balance in the contracts?</a
+            >
           </p>
           <p><a href="#priceVariation">How Can I Have More Debt Than Before? </a></p>
           <p><a href="#healthFactor">What Is A Health Factor? </a></p>
@@ -123,6 +131,7 @@
           </p>
           <h2 id="howProfit">How does rLending make money?</h2>
           <p>
+            The protocol takes no fees! So
             <strong>rLending doesn't generate any profit by itself.</strong> The project was funded
             by private investors in the hopes of building the basis for a stronger, smarter,
             non-custodial, trustless distributed ecosystem in the
@@ -134,7 +143,7 @@
             (<em>DEFI</em>). See the <a href="docs#integration">Integration Section</a> in the
             <a href="docs">Documentation</a> to learn more about this.
           </p>
-          <h2 id="wallet">How do I get a wallet?</h2>
+          <h2 id="getWallet">How do I get a wallet?</h2>
           <p>
             rLending supports both
             <a href="https://www.poa.network/for-users/nifty-wallet">Nifty</a> and
@@ -291,7 +300,7 @@
             <a href="docs#howInterest">APR</a> and <a href="docs#howData">Market Data</a> before
             performing any transaction
           </p>
-          <h2 id="whyDeposit">Can I borrow without a deposit?</h2>
+          <h2 id="canBorrow">Can I borrow without a deposit?</h2>
           <p>
             <strong> No.</strong> In order to manage the risk factor, the platform does not allow
             for users to borrow funds without providing collateral. This is a common practice among
@@ -307,7 +316,7 @@
             wallet will receive the <a href="docs#underlying"> underlying asset</a>.
           </p>
 
-          <h2 id="whatFees">What are the fees for borrowing?</h2>
+          <h2 id="borrowFee">What are the fees for borrowing?</h2>
           <p>
             You can check the current borrowing fees in the
             <a href="https://rlending.app/status">Market Data</a>. If you wish to know more about
