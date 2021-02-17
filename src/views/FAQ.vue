@@ -19,9 +19,7 @@
           <p><a href="#canBorrow">Can I borrow without a deposit? </a></p>
           <p><a href="#howBorrow">How does Borrowing work? </a></p>
           <p>
-            <a href="#borrowFee"
-              >What fees are involved inexpand-on-hoverll Of The Balance In The Contracts?
-            </a>
+            <a href="#borrowFee">What fees are involved in Borrowing? </a>
           </p>
           <p><a href="#howColFact">How does Collateral Factor work?</a></p>
           <p><a href="#crossBorrow">Can I borrow from a market I have not supplied to?</a></p>
@@ -34,7 +32,7 @@
           <p><a href="#priceVariation">How Can I Have More Debt Than Before? </a></p>
           <p><a href="#healthFactor">What Is A Health Factor? </a></p>
           <p><a href="#liquidation">What Happens If My Health Factor Becomes Negative?</a></p>
-          <p><a href="#security">How Secure Is RLending? </a></p>
+          <p><a href="#security">How Secure Is rLending? </a></p>
           <p><a href="#dev">I am a Developer </a></p>
           <p><a href="#help">General Troubleshooting </a></p>
           <p><a href="#support">How do I contact Support?</a></p>
@@ -100,7 +98,7 @@
           </p>
           <p>
             <strong
-              >Users supply their cryptoassets, which can either earn interest or act as collateral
+              >Users supply their crypto assets, which can either earn interest or act as collateral
               for loans. This creates a shared pool of liquidity. Traders can take short positions
               in tokens (Markets) supported by rLending.
             </strong>
@@ -161,12 +159,12 @@
             read more about wallets and how they work, visit
             <a href="https://developers.rsk.co/wallet/">this article</a>
           </p>
-          <h2 id="testnet">How do I connect to rlending in Test Network?</h2>
+          <h2 id="testnet">How do I connect to rLending in Test Network?</h2>
           <p>
             If you wish to try the platform and get comfortable with the features it provides but at
-            the same time you are hessitant about moving valued cryptocurrencies, you can always
-            connect through Testnet. Asuming you have your wallet extension installed, you will have
-            to make certain you have it switched to <strong>RSK Testnet</strong>
+            the same time you are hesitant about moving valued cryptocurrencies, you can always
+            connect through Testnet. Assuming you have your wallet extension installed, you will
+            have to make certain you have it switched to <strong>RSK Testnet</strong>
           </p>
           <p align="center">
             <v-img
@@ -214,7 +212,7 @@
           </p>
           <h2 id="mainnet">How do I connect to rLending in main net?</h2>
           <p>
-            Asuming you have your wallet extension installed (in this example we are using
+            Assuming you have your wallet extension installed (in this example we are using
             <em>Metamask</em>, but Nifty is also supported), you will have to make certain you have
             it switched to <strong>RSK Network</strong>
           </p>
@@ -405,7 +403,7 @@
           </p>
           <h2 id="security">How secure is rLending?</h2>
           <p>
-            <strong>The r-Lending Protocol is compliant with modern security practices. </strong>
+            <strong>The rLending Protocol is compliant with modern security practices. </strong>
             This means the <a href="docs#contract">smart contracts</a> have been
             <a href="docs#audits">audited</a> both by internal and external third party
             professionals.
@@ -451,11 +449,11 @@
           <h2>The website looks weird on my mobile phone:</h2>
           <p>
             Yes, while in Beta, the rLending platform is not designed to be used on mobile phones or
-            tablets. A PC with a web browser is recomended.
+            tablets. A PC with a web browser is recommended.
           </p>
           <h2>I can't connect:</h2>
           <p>
-            This is most likely due to a missconfiguration of the web3 wallet. We recomend you
+            This is most likely due to a missconfiguration of the web3 wallet. We recommend you
             follow <a href="mainnet">these steps</a>. If you are still unable to connect, feel free
             to <a href="">contact us</a> or <a href="">join the Discord community</a>.
           </p>
