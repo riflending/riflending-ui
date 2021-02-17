@@ -35,7 +35,7 @@
           </v-list-item>
           <v-list-item>
             <v-list-item-content
-              ><a href="#howProfit">How does rLending profit?</a></v-list-item-content
+              ><a href="#howProfit">How much does using rLending cost?</a></v-list-item-content
             >
           </v-list-item>
           <v-list-item>
@@ -234,12 +234,10 @@
             If you wish to know more about what a Test Network is and how it works, you might find
             <a href="https://cryptodefinitions.com/dictionary/testnet/"> this article</a> helpful.
           </p>
-          <h2 id="howProfit">How does rLending make money?</h2>
+          <h2 id="howProfit">How much does using rLending cost?</h2>
           <p>
-            The protocol takes no fees! So
-            <strong>rLending doesn't generate any profit by itself.</strong> The project was funded
-            by private investors in the hopes of building the basis for a stronger, smarter,
-            non-custodial, trustless distributed ecosystem in the
+            <strong>rLending doesn't charge users.</strong> The project was built on the basis for a
+            more inclusive stronger, smarter, non-custodial, trustless distributed ecosystem in the
             <a href="https://www.rsk.co">RSK Network</a>.
           </p>
           <p>
