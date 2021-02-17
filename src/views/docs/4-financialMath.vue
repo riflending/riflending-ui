@@ -120,10 +120,10 @@
           <p>
             <strong>Collateral Factor</strong> — The maximum amount users can borrow is limited by
             the <em>collateral factor</em> of the assets they have supplied. For example, if a user
-            supplies 100 DAI as collateral and the posted <em>collateral factor</em> for DAI is 75%,
-            then the user can borrow at most 75 DAI worth of other assets at any given time. Each
-            asset on <strong>rLending</strong> has a different <em>collateral factor</em>. They can
-            be fetched using the Comptroller contract.
+            supplies 100 USDT as collateral and the posted <em>collateral factor</em> for USDT is
+            75%, then the user can borrow at most 75 USDT worth of other assets at any given time.
+            Each asset on <strong>rLending</strong> has a different <em>collateral factor</em>. They
+            can be fetched using the Comptroller contract.
           </p>
           <p>
             A cToken&#39;s collateral factor can range from 0-90% and represents the proportionate

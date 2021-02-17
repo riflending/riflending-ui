@@ -1,7 +1,10 @@
 <template>
   <Fragment>
     <v-app-bar class="app-bar ma-5" color="transparent" flat>
-      <h1 class="mx-5">rLending</h1>
+      <router-link class="title ml-lg-16" :to="{ name: 'Landing' }">
+        <h1 class="ml-lg-7">rLending</h1>
+        <v-img :src="require(`@/assets/rlending.png`)" alt="rLending logo" max-width="80" />
+      </router-link>
       <h2>{{ title }}</h2>
       <v-spacer />
 

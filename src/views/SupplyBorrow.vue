@@ -60,13 +60,19 @@
       <component :is="currentComponent" @listChange="reset" />
     </v-row>
     <v-row class="d-flex justify-center token-bridge-launch">
-      <v-banner elevation="0">
-        <v-img class="token-bridge-launch-logo" :src="require(`@/assets/tokenbridge_logo.jpg`)" />
-        <a target="_blank" :href="getHttpTokenBridge">{{
-          currentComponent == 'SupplyList'
-            ? 'Bring your ethereum tokens '
-            : 'Cross your tokens to ethereum '
-        }}</a>
+      <v-banner single-line elevation="0">
+        <a target="_blank" :href="getHttpTokenBridge" class="center-content">
+          <v-img
+            class="token-bridge-launch-logo"
+            :src="require(`@/assets/tokenbridge_logo.jpg`)"
+            alt="tokenbridge logo"
+          />
+          {{
+            currentComponent == 'SupplyList'
+              ? 'Bring your ethereum tokens '
+              : 'Cross your tokens to ethereum '
+          }}</a
+        >
       </v-banner>
     </v-row>
   </div>

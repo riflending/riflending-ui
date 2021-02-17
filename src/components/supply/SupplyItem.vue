@@ -6,7 +6,10 @@
           <v-row class="d-flex align-center">
             <v-col cols="6" class="pa-0 d-flex justify-end">
               <v-list-item-avatar tile size="40">
-                <v-img :src="require(`@/assets/tokens/${token.logo}.png`)" />
+                <v-img
+                  :src="require(`@/assets/tokens/${token.logo}.png`)"
+                  :alt="`token ${token.logo} icon`"
+                />
               </v-list-item-avatar>
             </v-col>
             <v-col cols="6" class="pa-0 d-flex justify-start">
