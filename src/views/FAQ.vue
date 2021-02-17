@@ -2,7 +2,15 @@
   <div id="top" class="faq">
     <div>
       <v-container>
-        <v-navigation-drawer absolute permanent expand-on-hover>
+        <v-navigation-drawer app permanent>
+          <v-list-item>
+            <v-list-item-content
+              ><center>
+                <v-img :src="require(`@/assets/rlending.png`)" alt="rLending logo" max-width="80" />
+                <h1>rLending</h1>
+              </center>
+            </v-list-item-content>
+          </v-list-item>
           <v-list-item>
             <v-list-item-content
               ><p>FAQs</p>
