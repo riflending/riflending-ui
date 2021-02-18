@@ -2,7 +2,7 @@
   <div id="top" class="faq">
     <div>
       <v-container>
-        <v-navigation-drawer app permanent>
+        <v-navigation-drawer app permanent width="25%">
           <v-list-item dense>
             <v-list-item-content
               ><center>
@@ -44,9 +44,6 @@
             <v-list-item-content
               ><a href="#getWallet">How do I get a wallet?</a></v-list-item-content
             >
-          </v-list-item>
-          <v-list-item dense>
-            <v-list-item-content><a href="#wallet">How to install a wallet</a></v-list-item-content>
           </v-list-item>
           <v-list-item dense>
             <v-list-item-content><a href="#testnet">Connecting to Testnet</a></v-list-item-content>
@@ -106,7 +103,7 @@
           <v-list-item dense>
             <v-list-item-content>
               <a href="#reserves"
-                >What's preventing someone from withdrawing all of the balance in the contracts?</a
+                >What is preventing someone from withdrawing all of the balance in the contracts?</a
               >
             </v-list-item-content>
           </v-list-item>
@@ -293,7 +290,7 @@
             Once you have your testnet funds (T-rBTC or t-RIF), head over to
             <a href="https://test.rlending.app">https://test.rlending.app</a>. Click on the blue
             boton at the top right corner. From here, users are prompted to connect with their
-            <a href="#wallet">web3 wallet of choice.</a> (in this example we are using Nifty but
+            <a href="#getWallet">web3 wallet of choice.</a> (in this example we are using Nifty but
             Metamask is also supported)
           </p>
           <p>
@@ -335,7 +332,7 @@
           <p>
             head over to <a href="https://rlending.app">https://rlending.app</a>. Click on the blue
             boton at the top right corner. From here, users are prompted to connect with their
-            <a href="#wallet">web3 wallet of choice.</a>
+            <a href="#getWallet">web3 wallet of choice.</a>
           </p>
           <p>
             Once connected, you will see the
@@ -451,7 +448,7 @@
             underlying collateral provided.
           </p>
           <h2 id="reserves">
-            What's preventing someone from withdrawing all of the balance in the contracts?
+            What is preventing someone from withdrawing all of the balance in the contracts?
           </h2>
           <p>
             Even though rLending is self-regulating and it has mechanisms in place to prevent
