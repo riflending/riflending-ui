@@ -136,6 +136,10 @@ export default {
     },
     scrollToTop() {
       window.scrollTo(0, 0)
+      const button = document.getElementById('connectButton')
+      if (button.click) {
+        button.click()
+      }
     },
   },
 }
