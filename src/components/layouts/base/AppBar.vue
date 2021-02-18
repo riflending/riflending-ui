@@ -24,7 +24,14 @@
         <router-link class="mx-5" :to="{ name: 'Landing' }"> Home </router-link>
         <router-link class="mx-5" :to="{ name: 'Docs' }"> Docs </router-link>
         <router-link class="mx-5" :to="{ name: 'FAQ' }"> FAQs </router-link>
-        <v-btn id="connectButton" class="ml-5 button" rounded color="#008CFF" @click="connect">
+        <v-btn
+          id="connectButton"
+          ref="connectButton"
+          class="ml-5 button"
+          rounded
+          color="#008CFF"
+          @click="connect"
+        >
           <span class="mx-5">Connect wallet</span>
         </v-btn>
       </div>
