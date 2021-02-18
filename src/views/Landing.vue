@@ -66,7 +66,7 @@
           <h4>2. Supply and Borrow</h4>
         </v-row>
         <v-row class="d-flex justify-center mx-6">
-          Use our simple interphase to supply or borrow from markets in a few clicks.
+          Use our simple Interface to supply or borrow from markets in a few clicks.
         </v-row>
       </v-col>
       <v-col>
@@ -136,6 +136,10 @@ export default {
     },
     scrollToTop() {
       window.scrollTo(0, 0)
+      const button = document.getElementById('connectButton')
+      if (button.click) {
+        button.click()
+      }
     },
   },
 }

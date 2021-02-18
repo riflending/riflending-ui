@@ -239,25 +239,21 @@ export default class Market {
     }
     // add decimals token
     const amountBN = this.getAmountDecimals(amount)
-    let tx
     // validate crbtc
     if (!this.isCRBTC) {
       // mint token
       const signerCtoken = this.instance.connect(this.factoryContract.getSigner())
-      tx = await signerCtoken.mint(amountBN.toString(), txOptions)
-    } else {
-      // set signer cRBTC
-      const signer = this.instance.connect(this.factoryContract.getSigner())
-      // set value
-      const overrides = {
-        value: amountBN.toString(),
-        ...txOptions,
-      }
-      // mint crbtc
-      tx = await signer.mint(overrides)
+      return signerCtoken.mint(amountBN.toString(), txOptions)
     }
-    // wait for mined transaction
-    return tx.wait()
+    // set signer cRBTC
+    const signer = this.instance.connect(this.factoryContract.getSigner())
+    // set value
+    const overrides = {
+      value: amountBN.toString(),
+      ...txOptions,
+    }
+    // mint crbtc
+    return signer.mint(overrides)
   }
 
   /**
@@ -277,9 +273,7 @@ export default class Market {
       return await signer.callStatic.borrow(amountBN.toString())
     }
     // perform borrow()
-    const tx = await signer.borrow(amountBN.toString())
-    // wait for mined transaction
-    return tx.wait()
+    return signer.borrow(amountBN.toString())
   }
 
   getAmountDecimals(amount, isCtoken = false) {
@@ -315,24 +309,9 @@ export default class Market {
     // set signer token
     const signer = this.instance.connect(this.factoryContract.getSigner())
     // send redeemUnderlying
-    const tx = await signer.redeemUnderlying(amount.toString(), txOptions)
-    // wait for mined transaction
-    return tx.wait()
+    return signer.redeemUnderlying(amount.toString(), txOptions)
   }
 
-  async redeem(amount) {
-    const amountBN = this.getAmountDecimals(amount, true)
-    // Required, please dont delete this
-    const txOptions = {
-      gasLimit: 250000,
-    }
-    // set signer token
-    const signer = this.instance.connect(this.factoryContract.getSigner())
-    // send redeem
-    const tx = await signer.redeem(amountBN.toString(), txOptions)
-    // wait for mined transaction
-    return tx.wait()
-  }
   // eslint-disable-next-line no-unused-vars
   withdraw(amount, max = false) {
     // add decimals token
@@ -356,8 +335,6 @@ export default class Market {
    */
   async payBorrow(amount) {
     let contractWithSigner
-    let tx
-
     // Required, please dont delete this
     const txOptions = {
       gasLimit: 250000,
@@ -366,17 +343,14 @@ export default class Market {
     if (this.isCRBTC) {
       // set signer token
       contractWithSigner = this.instance.connect(this.factoryContract.getSigner())
-      tx = await contractWithSigner.repayBorrow({
+      return contractWithSigner.repayBorrow({
         value: ethers.utils.parseEther(`${amount}`),
         ...txOptions,
       })
-    } else {
-      // set signer cRBTC
-      contractWithSigner = this.instance.connect(this.factoryContract.getSigner())
-      tx = await contractWithSigner.repayBorrow(ethers.utils.parseEther(`${amount}`), txOptions)
     }
-    // wait for mined transaction
-    return tx.wait()
+    // set signer cRBTC
+    contractWithSigner = this.instance.connect(this.factoryContract.getSigner())
+    return contractWithSigner.repayBorrow(ethers.utils.parseEther(`${amount}`), txOptions)
   }
 
   /**
@@ -580,23 +554,15 @@ export default class Market {
 
   async liquidateBorrow(liquidateAccount, amount, addressCollateralMarket) {
     const amountBN = this.getAmountDecimals(amount)
-    let tx
     //set signer
     const signer = this.instance.connect(this.factoryContract.getSigner())
     //validate crbtc
     if (!this.isCRBTC) {
-      tx = await signer.liquidateBorrow(
-        liquidateAccount,
-        amountBN.toString(),
-        addressCollateralMarket,
-      )
-    } else {
-      tx = await signer.liquidateBorrow(liquidateAccount, addressCollateralMarket, {
-        value: amountBN.toString(),
-      })
+      return signer.liquidateBorrow(liquidateAccount, amountBN.toString(), addressCollateralMarket)
     }
-    // wait for mined transaction
-    return tx.wait()
+    return signer.liquidateBorrow(liquidateAccount, addressCollateralMarket, {
+      value: amountBN.toString(),
+    })
   }
 
   /**

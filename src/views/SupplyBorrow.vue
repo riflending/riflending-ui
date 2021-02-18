@@ -57,7 +57,7 @@
       </v-alert>
     </v-row>
     <v-row class="d-flex justify-center">
-      <component :is="currentComponent" @listChange="reset" />
+      <component :is="currentComponent" @listChange="reset" @launchTx="catchTx" />
     </v-row>
     <v-row class="d-flex justify-center token-bridge-launch">
       <v-banner single-line elevation="0">
@@ -81,7 +81,8 @@
 <script>
 import SupplyList from '@/components/supply/SupplyList.vue'
 import BorrowList from '@/components/borrow/BorrowList.vue'
-import { mapState } from 'vuex'
+import { mapState, mapMutations } from 'vuex'
+import * as constants from '@/store/constants'
 
 export default {
   name: 'SupplyBorrow',
@@ -94,6 +95,7 @@ export default {
       accountHealth: 1,
       currentComponent: 'SupplyList',
       hasEnteredToSomeMarket: true,
+      transactionHash: null,
     }
   },
   computed: {
@@ -125,6 +127,44 @@ export default {
       this.accountHealth = await this.$middleware.getAccountHealth(this.account)
       this.hasEnteredToSomeMarket = await this.$middleware.hasEnteredToSomeMarket(this.account)
     },
+    catchTx(obj) {
+      const { promiseAction, symbol, nameAction, amount } = obj
+      //validate obj has an action
+      if (typeof promiseAction.then !== 'function') return
+      //send snack
+      this.setSnack('WAITING FOR CONFIRMATION')
+      //await action tx (sender to wallet)
+      promiseAction
+        .then((transaction) => {
+          this.transactionHash = transaction.hash
+          //when approve tx send wait snack
+          this.setWaitTxSnack()
+          //await for wait tx
+          return transaction.wait()
+          // })
+        })
+        //TODO validate transactionResult
+        // eslint-disable-next-line no-unused-vars
+        .then((transactionResult) => {
+          this.setSuccessTxSnack({
+            tx: this.transactionHash,
+            token: symbol,
+            amount: this.$options.filters.formatNumber(amount),
+            action: nameAction,
+          })
+        })
+        .catch((error) => {
+          const userError = typeof error === 'string' ? error : error.message || ''
+          this.setFailTxSnack({ error: userError })
+        })
+    },
+
+    ...mapMutations({
+      setSnack: constants.SNACK_SET,
+      setSuccessTxSnack: constants.SNACK_SET_SUCCESS_TX,
+      setWaitTxSnack: constants.SNACK_SET_WAIT_TX,
+      setFailTxSnack: constants.SNACK_SET_FAIL_TX,
+    }),
   },
 }
 </script>

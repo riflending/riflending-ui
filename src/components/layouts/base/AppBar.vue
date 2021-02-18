@@ -2,8 +2,17 @@
   <Fragment>
     <v-app-bar class="app-bar ma-5" color="transparent" flat>
       <router-link class="title ml-lg-16" :to="{ name: 'Landing' }">
-        <h1 class="ml-lg-7">rLending</h1>
-        <v-img :src="require(`@/assets/rlending.png`)" alt="rLending logo" max-width="80" />
+        <v-container fill-height fluid>
+          <v-row align="center" justify="center">
+            <v-col class="align-center">
+              <h1>rLending</h1>
+              <h1 v-show="isTestnet" class="subtitle-1 red--text text--darken-1">Testnet</h1>
+            </v-col>
+            <v-col>
+              <v-img :src="require(`@/assets/rlending.png`)" alt="rLending logo" max-width="80" />
+            </v-col>
+          </v-row>
+        </v-container>
       </router-link>
       <h2>{{ title }}</h2>
       <v-spacer />
@@ -24,7 +33,14 @@
         <router-link class="mx-5" :to="{ name: 'Landing' }"> Home </router-link>
         <router-link class="mx-5" :to="{ name: 'Docs' }"> Docs </router-link>
         <router-link class="mx-5" :to="{ name: 'FAQ' }"> FAQs </router-link>
-        <v-btn id="connectButton" class="ml-5 button" rounded color="#008CFF" @click="connect">
+        <v-btn
+          id="connectButton"
+          ref="connectButton"
+          class="ml-5 button"
+          rounded
+          color="#008CFF"
+          @click="connect"
+        >
           <span class="mx-5">Connect wallet</span>
         </v-btn>
       </div>
@@ -38,6 +54,9 @@
     >
       The network you are trying to connect is not supported...
     </v-alert>
+    <template>
+      <Snackbar />
+    </template>
   </Fragment>
 </template>
 
@@ -48,15 +67,18 @@ import Vue from 'vue'
 import { ethers } from 'ethers'
 import { Fragment } from 'vue-fragment'
 import { NETWORK_ID } from '../../../config/constants'
+import Snackbar from '@/components/common/Snackbar.vue'
 
 export default {
   name: 'AppBar',
   components: {
     Fragment,
+    Snackbar,
   },
   data() {
     return {
       shouldDisplayWarningValidNetwork: false,
+      isTestnet: false,
     }
   },
   computed: {
@@ -94,6 +116,7 @@ export default {
     }),
     validateNetwork(chainId) {
       this.shouldDisplayWarningValidNetwork = NETWORK_ID != parseInt(chainId)
+      this.isTestnet = parseInt(chainId) == 31
       // Close the alert in 5 seconds
       setTimeout(() => {
         this.shouldDisplayWarningValidNetwork = false

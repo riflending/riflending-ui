@@ -27,6 +27,7 @@
         :key="`market-${idx}`"
         :market="market"
         @dialogClosed="reset"
+        v-on="$listeners"
       />
     </v-list>
     <template v-if="toggleMarketTransactionStatus === 'success'">

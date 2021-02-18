@@ -2,34 +2,149 @@
   <div id="top" class="faq">
     <div>
       <v-container>
-        <v-navigation-drawer absolute permanent expand-on-hover>
-          <p>FAQs</p>
-          <p><a href="#whatIs">What exactly is rLending?</a></p>
-          <p><a href="#canTrade">is rLending a DEX?</a></p>
-          <p><a href="#howWorks">How does rLending work?</a></p>
-          <p><a href="#howCost">Can I try it for free?</a></p>
-          <p><a href="#wallet">How do I get a wallet?</a></p>
-          <p><a href="#howProfit">How does rLending profit?</a></p>
-          <p><a href="#wallet">How to install a wallet</a></p>
-          <p><a href="#testnet">Connecting to Testnet</a></p>
-          <p><a href="#mainnet">Connecting to Mainnet</a></p>
-          <p><a href="#whyGas">Why Is Gas Price So High?</a></p>
-          <p><a href="#howInterest">How do accounts earn interests?</a></p>
-          <p><a href="#howMuchEarnings">How much earnings can I expect?</a></p>
-          <p><a href="#canBorrow">Can I borrow without a deposit? </a></p>
-          <p><a href="#howBorrow">How does Borrowing work? </a></p>
-          <p>
-            <a href="#borrowFee"
-              >What fees are involved inexpand-on-hoverll Of The Balance In The Contracts?
-            </a>
-          </p>
-          <p><a href="#priceVariation">How Can I Have More Debt Than Before? </a></p>
-          <p><a href="#healthFactor">What Is A Health Factor? </a></p>
-          <p><a href="#liquidation">What Happens If My Health Factor Becomes Negative?</a></p>
-          <p><a href="#security">How Secure Is RLending? </a></p>
-          <p><a href="#dev">I am a Developer </a></p>
-          <p><a href="#help">General Troubleshooting </a></p>
-          <p><a href="#support">How do I contact Support?</a></p>
+        <v-navigation-drawer app permanent>
+          <v-list-item dense>
+            <v-list-item-content
+              ><center>
+                <v-img :src="require(`@/assets/rlending.png`)" alt="rLending logo" max-width="80" />
+                <h1>rLending</h1>
+              </center>
+            </v-list-item-content>
+          </v-list-item>
+          <v-list-item dense>
+            <v-list-item-content
+              ><p>FAQs</p>
+              <v-list-item-subtitle> Frequently Asked Questions</v-list-item-subtitle>
+            </v-list-item-content>
+          </v-list-item>
+          <v-list-item dense>
+            <v-list-item-content>
+              <a href="#whatIs">What exactly is rLending?</a></v-list-item-content
+            >
+          </v-list-item>
+          <v-list-item dense>
+            <v-list-item-content class="faqItem"
+              ><a href="#canTrade">Is rLending a DEX?</a></v-list-item-content
+            >
+          </v-list-item>
+          <v-list-item dense>
+            <v-list-item-content class="faqItem"
+              ><a href="#howWorks">How does rLending work?</a></v-list-item-content
+            >
+          </v-list-item>
+          <v-list-item dense>
+            <v-list-item-content><a href="#howCost">Can I try it for free?</a></v-list-item-content>
+          </v-list-item>
+          <v-list-item dense>
+            <v-list-item-content
+              ><a href="#howProfit">How much does using rLending cost?</a></v-list-item-content
+            >
+          </v-list-item>
+          <v-list-item dense>
+            <v-list-item-content
+              ><a href="#getWallet">How do I get a wallet?</a></v-list-item-content
+            >
+          </v-list-item>
+          <v-list-item dense>
+            <v-list-item-content><a href="#wallet">How to install a wallet</a></v-list-item-content>
+          </v-list-item>
+          <v-list-item dense>
+            <v-list-item-content><a href="#testnet">Connecting to Testnet</a></v-list-item-content>
+          </v-list-item>
+          <v-list-item dense>
+            <v-list-item-content><a href="#mainnet">Connecting to Mainnet</a></v-list-item-content>
+          </v-list-item>
+          <v-list-item dense>
+            <v-list-item-content
+              ><a href="#gasPrice">Why Is Gas Price So High?</a></v-list-item-content
+            >
+          </v-list-item>
+          <v-list-item dense>
+            <v-list-item-content
+              ><a href="#earnings">How do accounts earn interests?</a></v-list-item-content
+            >
+          </v-list-item>
+          <v-list-item dense>
+            <v-list-item-content
+              ><a href="#howMuchEarnings">How much earnings can I expect?</a></v-list-item-content
+            >
+          </v-list-item>
+          <v-list-item dense>
+            <v-list-item-content
+              ><a href="#canBorrow">Can I borrow without a deposit? </a></v-list-item-content
+            >
+          </v-list-item>
+          <v-list-item dense>
+            <v-list-item-content
+              ><a href="#howBorrow">How does Borrowing work? </a></v-list-item-content
+            >
+          </v-list-item>
+          <v-list-item dense>
+            <v-list-item-content>
+              <a href="#borrowFee">What fees are involved in Borrowing? </a>
+            </v-list-item-content>
+          </v-list-item>
+          <v-list-item dense>
+            <v-list-item-content
+              ><a href="#howColFact">How does Collateral Factor work?</a></v-list-item-content
+            >
+          </v-list-item>
+          <v-list-item dense>
+            <v-list-item-content
+              ><a href="#crossBorrow"
+                >Can I borrow from a market I have not supplied to?</a
+              ></v-list-item-content
+            >
+          </v-list-item>
+          <v-list-item dense>
+            <v-list-item-content
+              ><a href="#whatDebt"
+                >What happens if someone doesn't pay their debt?</a
+              ></v-list-item-content
+            >
+          </v-list-item>
+          <v-list-item dense>
+            <v-list-item-content>
+              <a href="#reserves"
+                >What's preventing someone from withdrawing all of the balance in the contracts?</a
+              >
+            </v-list-item-content>
+          </v-list-item>
+          <v-list-item dense>
+            <v-list-item-content
+              ><a href="#priceVariation"
+                >How Can I Have More Debt Than Before?
+              </a></v-list-item-content
+            >
+          </v-list-item>
+          <v-list-item dense>
+            <v-list-item-content
+              ><a href="#healthFactor">What Is A Health Factor? </a></v-list-item-content
+            >
+          </v-list-item>
+          <v-list-item dense>
+            <v-list-item-content
+              ><a href="#liquidation"
+                >What Happens If My Health Factor Becomes Negative?</a
+              ></v-list-item-content
+            >
+          </v-list-item>
+          <v-list-item dense>
+            <v-list-item-content
+              ><a href="#security">How Secure Is rLending? </a></v-list-item-content
+            >
+          </v-list-item>
+          <v-list-item dense>
+            <v-list-item-content><a href="#dev">I am a Developer </a></v-list-item-content>
+          </v-list-item>
+          <v-list-item dense>
+            <v-list-item-content><a href="#help">General Troubleshooting </a></v-list-item-content>
+          </v-list-item>
+          <v-list-item dense>
+            <v-list-item-content
+              ><a href="#support">How do I contact Support?</a></v-list-item-content
+            >
+          </v-list-item>
         </v-navigation-drawer>
       </v-container>
     </div>
@@ -92,7 +207,7 @@
           </p>
           <p>
             <strong
-              >Users supply their cryptoassets, which can either earn interest or act as collateral
+              >Users supply their crypto assets, which can either earn interest or act as collateral
               for loans. This creates a shared pool of liquidity. Traders can take short positions
               in tokens (Markets) supported by rLending.
             </strong>
@@ -121,11 +236,10 @@
             If you wish to know more about what a Test Network is and how it works, you might find
             <a href="https://cryptodefinitions.com/dictionary/testnet/"> this article</a> helpful.
           </p>
-          <h2 id="howProfit">How does rLending make money?</h2>
+          <h2 id="howProfit">How much does using rLending cost?</h2>
           <p>
-            <strong>rLending doesn't generate any profit by itself.</strong> The project was funded
-            by private investors in the hopes of building the basis for a stronger, smarter,
-            non-custodial, trustless distributed ecosystem in the
+            <strong>rLending doesn't charge users.</strong> The project was built on the basis for a
+            more inclusive stronger, smarter, non-custodial, trustless distributed ecosystem in the
             <a href="https://www.rsk.co">RSK Network</a>.
           </p>
           <p>
@@ -134,7 +248,7 @@
             (<em>DEFI</em>). See the <a href="docs#integration">Integration Section</a> in the
             <a href="docs">Documentation</a> to learn more about this.
           </p>
-          <h2 id="wallet">How do I get a wallet?</h2>
+          <h2 id="getWallet">How do I get a wallet?</h2>
           <p>
             rLending supports both
             <a href="https://www.poa.network/for-users/nifty-wallet">Nifty</a> and
@@ -152,12 +266,12 @@
             read more about wallets and how they work, visit
             <a href="https://developers.rsk.co/wallet/">this article</a>
           </p>
-          <h2 id="testnet">How do I connect to rlending in Test Network?</h2>
+          <h2 id="testnet">How do I connect to rLending in Test Network?</h2>
           <p>
             If you wish to try the platform and get comfortable with the features it provides but at
-            the same time you are hessitant about moving valued cryptocurrencies, you can always
-            connect through Testnet. Asuming you have your wallet extension installed, you will have
-            to make certain you have it switched to <strong>RSK Testnet</strong>
+            the same time you are hesitant about moving valued cryptocurrencies, you can always
+            connect through Testnet. Assuming you have your wallet extension installed, you will
+            have to make certain you have it switched to <strong>RSK Testnet</strong>
           </p>
           <p align="center">
             <v-img
@@ -205,7 +319,7 @@
           </p>
           <h2 id="mainnet">How do I connect to rLending in main net?</h2>
           <p>
-            Asuming you have your wallet extension installed (in this example we are using
+            Assuming you have your wallet extension installed (in this example we are using
             <em>Metamask</em>, but Nifty is also supported), you will have to make certain you have
             it switched to <strong>RSK Network</strong>
           </p>
@@ -291,7 +405,7 @@
             <a href="docs#howInterest">APR</a> and <a href="docs#howData">Market Data</a> before
             performing any transaction
           </p>
-          <h2 id="whyDeposit">Can I borrow without a deposit?</h2>
+          <h2 id="canBorrow">Can I borrow without a deposit?</h2>
           <p>
             <strong> No.</strong> In order to manage the risk factor, the platform does not allow
             for users to borrow funds without providing collateral. This is a common practice among
@@ -307,7 +421,7 @@
             wallet will receive the <a href="docs#underlying"> underlying asset</a>.
           </p>
 
-          <h2 id="whatFees">What are the fees for borrowing?</h2>
+          <h2 id="borrowFee">What are the fees for borrowing?</h2>
           <p>
             You can check the current borrowing fees in the
             <a href="https://rlending.app/status">Market Data</a>. If you wish to know more about
@@ -396,7 +510,7 @@
           </p>
           <h2 id="security">How secure is rLending?</h2>
           <p>
-            <strong>The r-Lending Protocol is compliant with modern security practices. </strong>
+            <strong>The rLending Protocol is compliant with modern security practices. </strong>
             This means the <a href="docs#contract">smart contracts</a> have been
             <a href="docs#audits">audited</a> both by internal and external third party
             professionals.
@@ -442,11 +556,11 @@
           <h2>The website looks weird on my mobile phone:</h2>
           <p>
             Yes, while in Beta, the rLending platform is not designed to be used on mobile phones or
-            tablets. A PC with a web browser is recomended.
+            tablets. A PC with a web browser is recommended.
           </p>
           <h2>I can't connect:</h2>
           <p>
-            This is most likely due to a missconfiguration of the web3 wallet. We recomend you
+            This is most likely due to a missconfiguration of the web3 wallet. We recommend you
             follow <a href="mainnet">these steps</a>. If you are still unable to connect, feel free
             to <a href="">contact us</a> or <a href="">join the Discord community</a>.
           </p>

@@ -60,7 +60,7 @@
     </v-list-item>
     <v-divider />
     <template v-if="dialog">
-      <BorrowDialog :data="dataObject" @closed="reset" />
+      <BorrowDialog :data="dataObject" @closed="reset" v-on="$listeners" />
     </template>
   </div>
 </template>

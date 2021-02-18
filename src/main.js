@@ -75,7 +75,7 @@ if (
 if (process.env.VUE_APP_HOTJAR_ID) {
   Vue.use(Hotjar, {
     id: process.env.VUE_APP_HOTJAR_ID, // Hotjar Site ID,
-    isProduction: process.env.NODE_ENV == 'prod' ? true : false,
+    isProduction: process.env.NODE_ENV == 'production' ? true : false,
   })
 }
 

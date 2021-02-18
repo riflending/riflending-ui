@@ -252,26 +252,13 @@ export default {
   },
   methods: {
     withdraw() {
-      this.waiting = true
-      this.$emit('wait')
-      this.data.market
-        .withdraw(this.amount, false)
-        .then((res) => {
-          this.waiting = false
-          this.$emit('succeed', {
-            hash: res.transactionHash,
-            supplyBalanceInfo: this.amount,
-          })
-        })
-        .catch((error) => {
-          this.waiting = false
-          // validate user error message
-          const userError = typeof error === 'string' ? error : error.message || ''
-          this.$emit('error', {
-            userErrorMessage: userError,
-            supplyBalanceInfo: this.amount,
-          })
-        })
+      this.$emit('launchTx', {
+        promiseAction: this.data.market.withdraw(this.amount, false),
+        symbol: this.data.market.token.symbol,
+        amount: this.amount,
+        nameAction: 'withdrawn',
+      })
+      this.$emit('closeDialog')
     },
     getMaxAmount() {
       return this.maxWithdrawAllowed

@@ -36,7 +36,7 @@
         {{ new Date(item.date).toISOString().split('T')[0] }}
       </template>
       <template v-slot:[`item.price`]="{ item }">
-        {{ item.price | formatNumber }}
+        {{ !item.price ? 0 : item.price | formatNumber }}
       </template>
       <template v-slot:[`item.status`]="{ item }">
         {{ !item.status ? 'FAIL' : 'SUCCESS' }}
