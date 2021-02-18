@@ -2,9 +2,17 @@
   <Fragment>
     <v-app-bar class="app-bar ma-5" color="transparent" flat>
       <router-link class="title ml-lg-16" :to="{ name: 'Landing' }">
-        <h1 class="ml-lg-7">rLending</h1>
-        <h1 v-show="isTestnet" class="subtitle-1">(Testnet)</h1>
-        <v-img :src="require(`@/assets/rlending.png`)" alt="rLending logo" max-width="80" />
+        <v-container fill-height fluid>
+          <v-row align="center" justify="center">
+            <v-col class="align-center">
+              <h1>rLending</h1>
+              <h1 v-show="isTestnet" class="subtitle-1 red--text text--darken-1">Testnet</h1>
+            </v-col>
+            <v-col>
+              <v-img :src="require(`@/assets/rlending.png`)" alt="rLending logo" max-width="80" />
+            </v-col>
+          </v-row>
+        </v-container>
       </router-link>
       <h2>{{ title }}</h2>
       <v-spacer />
