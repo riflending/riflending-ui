@@ -60,7 +60,7 @@
     </v-list-item>
     <v-divider />
     <template v-if="dialog">
-      <SupplyDialog :data="dataObject" @closed="reset" />
+      <SupplyDialog :data="dataObject" @closed="reset" v-on="$listeners" />
     </template>
   </div>
 </template>

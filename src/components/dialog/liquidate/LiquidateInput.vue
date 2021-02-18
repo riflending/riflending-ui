@@ -329,42 +329,28 @@ export default {
     },
 
     liquidate() {
-      this.waiting = true
-      this.$emit('wait')
       const market = this.data.market
       //call allow liquidate
-      this.liquidateAllowed()
-        .then((allowed) => {
-          // validate allowed
-          if (!allowed) {
-            //liquidate
-            return market.liquidateBorrow(
+      this.liquidateAllowed().then((allowed) => {
+        // validate allowed
+        if (!allowed) {
+          //liquidate
+          this.$emit('launchTx', {
+            promiseAction: market.liquidateBorrow(
               this.liquidationAccount,
               this.collateralAmount,
               this.marketSelected.toString(),
-            )
-          }
-          //fail validate allowed
-          throw allowed
-        })
-        .then((res) => {
-          this.waiting = false
-          this.$emit('succeed', {
-            hash: res.transactionHash,
-            liquidateValue: this.liquidationAmount,
-            costValue: this.collateralAmount,
-            collateral: {
-              amount: this.selectCollateralAmount,
-              decimals: this.borrowMarketTokenDecimals,
-              symbol: this.getCollateralMarketSymbolAssetSelected(),
-            },
+            ),
+            symbol: this.getCollateralMarketSymbolAssetSelected(),
+            amount: this.collateralAmount,
+            nameAction: 'liquidated',
           })
-        })
-        .catch((error) => {
-          this.waiting = false
-          const userError = typeof error === 'string' ? error : error.message || ''
+          this.$emit('closeDialog')
+        } else {
+          const userError = typeof allowed === 'string' ? allowed : allowed.message || ''
           this.$emit('error', { userErrorMessage: userError, amount: this.selectCollateralAmount })
-        })
+        }
+      })
     },
     setLiquidationAccount(accountObject) {
       this.cMarketSymbol = this.data.market.symbol

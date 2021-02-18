@@ -54,6 +54,9 @@
     >
       The network you are trying to connect is not supported...
     </v-alert>
+    <template>
+      <Snackbar />
+    </template>
   </Fragment>
 </template>
 
@@ -64,11 +67,13 @@ import Vue from 'vue'
 import { ethers } from 'ethers'
 import { Fragment } from 'vue-fragment'
 import { NETWORK_ID } from '../../../config/constants'
+import Snackbar from '@/components/common/Snackbar.vue'
 
 export default {
   name: 'AppBar',
   components: {
     Fragment,
+    Snackbar,
   },
   data() {
     return {

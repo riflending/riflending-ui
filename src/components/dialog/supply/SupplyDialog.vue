@@ -38,6 +38,8 @@
             @wait="waiting = true"
             @error="actionError"
             @approve="backToDialog"
+            @closeDialog="close"
+            v-on="$listeners"
           />
         </template>
       </template>
@@ -203,10 +205,8 @@ export default {
       this.errorDialog = false
     },
     onClickOutside() {
-      if (!this.waiting && !this.succeed) {
-        this.reset()
-        this.$emit('closed')
-      }
+      this.reset()
+      this.$emit('closed')
     },
     close() {
       this.reset()
