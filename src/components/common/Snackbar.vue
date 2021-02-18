@@ -26,6 +26,7 @@
 </template>
 
 <script>
+import * as constants from '@/store/constants'
 export default {
   name: 'Snackbar',
   data() {
@@ -54,7 +55,7 @@ export default {
           if (this.$store.state.Snackbar.tx != 0) this.tx = this.$store.state.Snackbar.tx
           if (this.$store.state.Snackbar.subSnack)
             this.subMessage = this.$store.state.Snackbar.subSnack
-          this.$store.commit('setSnack', null)
+          this.$store.commit(constants.SNACK_SET, null)
         }
       },
     )
