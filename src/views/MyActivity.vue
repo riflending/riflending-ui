@@ -59,7 +59,7 @@
                     <v-row>
                       <v-divider />
                     </v-row>
-                    <v-row v-for="item in totalSupplied" :key="item">
+                    <v-row v-for="(item, index) in totalSupplied" :key="`totalSupplied-${index}`">
                       <v-col cols="6" class="px-0"><h4>Total Supplied:</h4></v-col>
                       <v-col cols="5" class="px-0">
                         <h4 class="text-center">
