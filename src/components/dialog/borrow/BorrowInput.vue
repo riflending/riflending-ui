@@ -213,32 +213,24 @@ export default {
       })
     },
     borrow() {
-      this.waiting = true
-      this.$emit('wait')
       // checks if borrowAllowed
-      this.borrowAllowed()
-        .then((allowed) => {
-          if (!allowed) {
-            this.isBorrowAllowed = true // probably get rid of this variable alltogether.
-            return this.data.market.borrow(this.amount)
-          }
-          throw allowed
-        })
-        .then((res) => {
-          this.waiting = false
-          this.$emit('succeed', {
-            hash: res.transactionHash,
-            borrowed: this.amount,
+      this.borrowAllowed().then((allowed) => {
+        if (!allowed) {
+          this.isBorrowAllowed = true // probably get rid of this variable alltogether.
+          this.$emit('launchTx', {
+            action: this.data.market.borrow(this.amount),
+            symbol: this.data.market.token.symbol,
+            amount: this.amount,
+            nameAction: 'borrowed',
           })
-        })
-        .catch((error) => {
-          // validate user error message
-          const userError = typeof error === 'string' ? error : error.message || ''
+          this.$emit('closeDialog')
+        } else {
+          const userError = typeof allowed === 'string' ? allowed : allowed.message || ''
           this.$emit('error', {
             userErrorMessage: userError,
           })
-          this.waiting = false
-        })
+        }
+      })
     },
     getMaxAmount() {
       return new BigNumber(this.maxBorrowAllowed).gt(this.cash)

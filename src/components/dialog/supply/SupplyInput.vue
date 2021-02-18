@@ -254,23 +254,13 @@ export default {
         })
     },
     supply() {
-      this.waiting = true
-      this.$emit('wait')
-      this.data.market
-        .supply(this.amount)
-        .then((res) => {
-          console.log('EMIT SUCCED')
-          this.waiting = false
-          this.$emit('succeed', {
-            hash: res.transactionHash,
-            supplyBalanceInfo: this.amount,
-          })
-        })
-        .catch((error) => {
-          this.waiting = false
-          const userError = typeof error === 'string' ? error : error.message || ''
-          this.$emit('error', { userErrorMessage: userError, supplyBalanceInfo: this.amount })
-        })
+      this.$emit('launchTx', {
+        action: this.data.market.supply(this.amount),
+        symbol: this.data.market.token.symbol,
+        amount: this.amount,
+        nameAction: 'supplied',
+      })
+      this.$emit('closeDialog')
     },
     asDouble(value) {
       return (Number(value) / 10 ** this.data.token.decimals).toFixed(this.data.token.decimals)

@@ -229,41 +229,31 @@ export default {
     approve() {
       this.waiting = true
       this.$emit('wait')
-      this.data.market
-        .approveWithMaxUint()
-        .then(() => {
-          this.approveDialog = true
-          this.needApproval = false
-        })
-        .catch((error) => {
-          this.waiting = false
-          const userError = typeof error === 'string' ? error : error.message || ''
-          this.$emit('error', { userErrorMessage: userError })
-        })
+      this.data.market.approveWithMaxUint().then(() => {
+        this.approveDialog = true
+        this.needApproval = false
+      })
     },
     repay() {
       //get amount
-      this.validateMaxToRepay().then((amount) => {
-        this.waiting = true
-        this.$emit('wait')
-        this.data.market
-          .payBorrow(amount)
-          .then((res) => {
-            this.waiting = false
-            this.$emit('succeed', {
-              hash: res.transactionHash,
-              pay: amount,
-            })
+      this.validateMaxToRepay()
+        .then((amount) => {
+          this.$emit('launchTx', {
+            action: this.data.market.payBorrow(amount),
+            symbol: this.data.market.token.symbol,
+            amount: amount,
+            nameAction: 'repayed',
           })
-          .catch((error) => {
-            // validate user error message
-            const userError = typeof error === 'string' ? error : error.message || ''
-            this.$emit('error', {
-              userErrorMessage: userError,
-            })
-            this.waiting = false
+          this.$emit('closeDialog')
+        })
+        .catch((error) => {
+          // validate user error message
+          const userError = typeof error === 'string' ? error : error.message || ''
+          this.$emit('error', {
+            userErrorMessage: userError,
           })
-      })
+          this.waiting = false
+        })
     },
     async validateMaxToRepay() {
       //validate if max
