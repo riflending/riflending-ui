@@ -31,6 +31,8 @@
             @wait="waiting = true"
             @error="actionError"
             @approve="backToDialog"
+            @closeDialog="close"
+            v-on="$listeners"
           />
         </template>
       </template>
