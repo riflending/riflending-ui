@@ -255,7 +255,7 @@ export default {
     },
     supply() {
       this.$emit('launchTx', {
-        action: this.data.market.supply(this.amount),
+        promiseAction: this.data.market.supply(this.amount),
         symbol: this.data.market.token.symbol,
         amount: this.amount,
         nameAction: 'supplied',

@@ -239,7 +239,7 @@ export default {
       this.validateMaxToRepay()
         .then((amount) => {
           this.$emit('launchTx', {
-            action: this.data.market.payBorrow(amount),
+            promiseAction: this.data.market.payBorrow(amount),
             symbol: this.data.market.token.symbol,
             amount: amount,
             nameAction: 'repayed',

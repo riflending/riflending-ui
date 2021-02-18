@@ -128,12 +128,13 @@ export default {
       this.hasEnteredToSomeMarket = await this.$middleware.hasEnteredToSomeMarket(this.account)
     },
     catchTx(obj) {
+      const { promiseAction, symbol, nameAction, amount } = obj
       //validate obj has an action
-      if (!obj.action) return
+      if (typeof promiseAction.then !== 'function') return
       //send snack
       this.setSnack('WAITING FOR CONFIRMATION')
       //await action tx (sender to wallet)
-      obj.action
+      promiseAction
         .then((transaction) => {
           this.transactionHash = transaction.hash
           //when approve tx send wait snack
@@ -147,9 +148,9 @@ export default {
         .then((transactionResult) => {
           this.setSuccessTxSnack({
             tx: this.transactionHash,
-            token: obj.symbol,
-            amount: this.$options.filters.formatNumber(obj.amount),
-            action: obj.nameAction,
+            token: symbol,
+            amount: this.$options.filters.formatNumber(amount),
+            action: nameAction,
           })
         })
         .catch((error) => {

@@ -253,7 +253,7 @@ export default {
   methods: {
     withdraw() {
       this.$emit('launchTx', {
-        action: this.data.market.withdraw(this.amount, false),
+        promiseAction: this.data.market.withdraw(this.amount, false),
         symbol: this.data.market.token.symbol,
         amount: this.amount,
         nameAction: 'withdrawn',

@@ -336,7 +336,7 @@ export default {
         if (!allowed) {
           //liquidate
           this.$emit('launchTx', {
-            action: market.liquidateBorrow(
+            promiseAction: market.liquidateBorrow(
               this.liquidationAccount,
               this.collateralAmount,
               this.marketSelected.toString(),

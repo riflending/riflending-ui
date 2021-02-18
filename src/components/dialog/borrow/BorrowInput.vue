@@ -218,7 +218,7 @@ export default {
         if (!allowed) {
           this.isBorrowAllowed = true // probably get rid of this variable alltogether.
           this.$emit('launchTx', {
-            action: this.data.market.borrow(this.amount),
+            promiseAction: this.data.market.borrow(this.amount),
             symbol: this.data.market.token.symbol,
             amount: this.amount,
             nameAction: 'borrowed',
