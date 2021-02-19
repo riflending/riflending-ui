@@ -4,4 +4,9 @@ module.exports = {
     'VueGoogleCharts',
   ],
   lintOnSave: false,
+  configureWebpack: {
+    output: {
+      filename: '[name].[hash].bundle.js',
+    }
+  }
 };
