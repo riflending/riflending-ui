@@ -23,6 +23,14 @@
         <v-col>
           <v-btn :to="{ name: 'SecurityAudits' }">Security and Audits </v-btn>
         </v-col>
+        <vcol>
+          <v-btn
+            href="https://github.com/riflending/rlending-protocol/tree/master/whitepaper/rLending-Whitepaper-v1.0.pdf"
+            target="_blank"
+          >
+            Whitepaper</v-btn
+          >
+        </vcol>
       </v-row>
     </v-app-bar>
   </div>
