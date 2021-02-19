@@ -23,6 +23,9 @@
         <v-col>
           <v-btn :to="{ name: 'SecurityAudits' }">Security and Audits </v-btn>
         </v-col>
+        <v-col>
+          <v-btn :to="{ name: 'Whitepaper' }">Whitepaper </v-btn>
+        </v-col>
       </v-row>
     </v-app-bar>
   </div>
