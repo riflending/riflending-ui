@@ -66,7 +66,7 @@ import * as constants from '@/store/constants'
 import Vue from 'vue'
 import { ethers } from 'ethers'
 import { Fragment } from 'vue-fragment'
-import { NETWORK_ID } from '../../../config/constants'
+import { NETWORK_ID } from '@/config/constants'
 import Snackbar from '@/components/common/Snackbar.vue'
 
 export default {
@@ -110,13 +110,15 @@ export default {
       this.$router.push({ name: 'MyActivity' })
     },
   },
+  created() {
+    this.isTestnet = NETWORK_ID === 31
+  },
   methods: {
     ...mapActions({
       connectToWeb3: constants.SESSION_CONNECT_WEB3,
     }),
     validateNetwork(chainId) {
       this.shouldDisplayWarningValidNetwork = NETWORK_ID != parseInt(chainId)
-      this.isTestnet = parseInt(chainId) == 31
       // Close the alert in 5 seconds
       setTimeout(() => {
         this.shouldDisplayWarningValidNetwork = false
