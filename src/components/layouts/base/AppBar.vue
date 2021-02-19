@@ -3,12 +3,12 @@
     <v-app-bar class="app-bar ma-5" color="transparent" flat>
       <router-link class="title ml-lg-16" :to="{ name: 'Landing' }">
         <v-container fill-height fluid>
-          <v-row align="center" justify="center">
-            <v-col class="align-center">
+          <v-row align="center row-sm-6" justify="center">
+            <v-col class="align-center col-sm-6">
               <h1>rLending</h1>
               <h1 v-show="isTestnet" class="subtitle-1 red--text text--darken-1">Testnet</h1>
             </v-col>
-            <v-col>
+            <v-col class="col-sm-6">
               <v-img :src="require(`@/assets/rlending.png`)" alt="rLending logo" max-width="80" />
             </v-col>
           </v-row>
@@ -66,7 +66,7 @@ import * as constants from '@/store/constants'
 import Vue from 'vue'
 import { ethers } from 'ethers'
 import { Fragment } from 'vue-fragment'
-import { NETWORK_ID } from '../../../config/constants'
+import { NETWORK_ID } from '@/config/constants'
 import Snackbar from '@/components/common/Snackbar.vue'
 
 export default {
@@ -110,13 +110,15 @@ export default {
       this.$router.push({ name: 'MyActivity' })
     },
   },
+  created() {
+    this.isTestnet = NETWORK_ID === 31
+  },
   methods: {
     ...mapActions({
       connectToWeb3: constants.SESSION_CONNECT_WEB3,
     }),
     validateNetwork(chainId) {
       this.shouldDisplayWarningValidNetwork = NETWORK_ID != parseInt(chainId)
-      this.isTestnet = parseInt(chainId) == 31
       // Close the alert in 5 seconds
       setTimeout(() => {
         this.shouldDisplayWarningValidNetwork = false
