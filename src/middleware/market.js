@@ -301,28 +301,23 @@ export default class Market {
     return ethers.utils.formatEther(liquidationIncentiveMantissa)
   }
 
-  async redeemUnderlying(amount) {
+  async redeemUnderlying(amount, callStatic = false) {
     // Required, please dont delete this
     const txOptions = {
       gasLimit: 250000,
     }
     // set signer token
     const signer = this.instance.connect(this.factoryContract.getSigner())
+    if (callStatic) return await signer.callStatic.redeemUnderlying(amount.toString(), txOptions)
     // send redeemUnderlying
     return signer.redeemUnderlying(amount.toString(), txOptions)
   }
 
-  // eslint-disable-next-line no-unused-vars
-  withdraw(amount, max = false) {
+  withdraw(amount, callStatic = false) {
     // add decimals token
     const amountBN = this.getAmountDecimals(amount)
-    // validate if max sets and is crbtc
-    // if ((max) || (this.isCRBTC)) {
-    //   //amount cToken
-    //   return this.redeem(amountBN.toString());
-    // }
     // amount token
-    return this.redeemUnderlying(amountBN.toString())
+    return this.redeemUnderlying(amountBN.toString(), callStatic)
   }
 
   /**
@@ -372,7 +367,7 @@ export default class Market {
    */
   async withdrawAllowed(amount, account) {
     // set
-    const amountBN = this.getAmountDecimals(amount)
+    const amountBN = this.getAmountDecimals(amount, true)
     // set contract Comptroller delegate (Unitroller)
     const contract = this.factoryContract.getContractByNameAndAbiName(
       constants.Unitroller,
@@ -587,5 +582,19 @@ export default class Market {
       const tx = await cTokenSigner.approve(this.instanceAddress, ethers.constants.MaxUint256)
       return tx.wait()
     }
+  }
+
+  getValueOfOneCtokenInUnderlying() {
+    const mantissa = parseInt(this.token.decimals) - this.decimals
+    return this.exchangeRateCurrent.toNumber() / Math.pow(10, mantissa)
+  }
+
+  getTokenByExchangeRate(cTokenValue) {
+    return new BigNumber(cTokenValue.toString()).multipliedBy(
+      this.getValueOfOneCtokenInUnderlying(),
+    )
+  }
+  getCtokenByExchangeRate(tokenValue) {
+    return new BigNumber(tokenValue.toString()).div(this.getValueOfOneCtokenInUnderlying())
   }
 }
