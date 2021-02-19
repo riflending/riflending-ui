@@ -19,9 +19,9 @@
 
       <div v-if="isLogged">
         <router-link class="mx-5" :to="{ name: 'MyActivity' }"> Dashboard </router-link>
-        <router-link class="mx-5" :to="{ name: 'SupplyBorrow' }"> Supply/Borrow </router-link>
+        <router-link class="mx-5" :to="{ name: 'SupplyBorrow' }"> Supply / Borrow </router-link>
         <!-- <template v-if="isOwner"> -->
-        <router-link class="mx-5" :to="{ name: 'Status' }"> Market Status </router-link>
+        <router-link class="mx-5" :to="{ name: 'Status' }"> Markets</router-link>
         <!-- </template> -->
         <router-link class="mx-5" :to="{ name: 'Docs' }"> Docs </router-link>
         <router-link class="mx-5" :to="{ name: 'FAQ' }"> FAQs</router-link>
@@ -90,7 +90,7 @@ export default {
       isOwner: (state) => state.Session.isOwner,
     }),
     title() {
-      if (this.$route.path === '/supplyBorrow') return 'Supply / Borrow'
+      if (this.$route.path === '/supplyBorrow') return 'Supply/Borrow'
       if (this.$route.path === '/myActivity') return 'My Activity'
       if (this.$route.path === '/status') return 'Status'
       return ''
