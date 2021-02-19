@@ -1,10 +1,11 @@
 {
   "name": "rlending-ui",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "private": true,
   "scripts": {
     "serve": "npx vue-cli-service serve",
     "build": "npx vue-cli-service build",
+    "deploy": "npm version patch --force && npm run build && firebase deploy",
     "e2e-chrome": "clear && node_modules/.bin/nightwatch /test-browser/tests --config nightwatch.conf.js --env chrome",
     "selenium": "node_modules/.bin/selenium-standalone install && node_modules/.bin/selenium-standalone start",
     "lint:check": "eslint './src/**/*.{js,vue}'",
