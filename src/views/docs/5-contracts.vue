@@ -76,13 +76,6 @@
           <h1 id="testnet">Testnet Deploy:</h1>
           <ul>
             <li>
-              MultiSigWallet:
-              <a
-                href="https://explorer.testnet.rsk.co/address/0x9760d4a155058f6bec8d9fd8d50222073e57083e"
-                >0x9760d4A155058F6BeC8d9fD8D50222073e57083e</a
-              >
-            </li>
-            <li>
               Unitroller:
               <a
                 href="https://explorer.testnet.rsk.co/address/0x3a983c7597b3ac4fbc3e0cf484d7631d70d04c05"
