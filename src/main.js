@@ -13,7 +13,7 @@ import './styles/main.scss'
 import VueGtag from 'vue-gtag'
 import * as Sentry from '@sentry/browser'
 import { Integrations } from '@sentry/tracing'
-import { NETWORK_ID, HTTP_PROVIDER } from './config/constants'
+import { NETWORK_ID } from './config/constants'
 import Hotjar from 'vue-hotjar'
 
 require('./filters')
@@ -32,7 +32,8 @@ Vue.prototype.$rLogin = Vue.rLogin = new RLogin({
       package: WalletConnectProvider,
       options: {
         rpc: {
-          [NETWORK_ID]: HTTP_PROVIDER,
+          30: 'https://public-node.rsk.co',
+          31: 'https://public-node.testnet.rsk.co',
         },
       },
     },
