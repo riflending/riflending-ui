@@ -193,7 +193,7 @@
                         :src="require(`@/assets/myActivity/equal_circle.svg`)"
                       /> </v-list-item-avatar
                   ></v-col>
-                  <v-col cols="3" class="px-0 text-left market-price">
+                  <v-col cols="3" class="px-0 text-no-wrap text-left market-price">
                     <h4 class="text-left">
                       $
                       <number
@@ -208,7 +208,7 @@
                       />
                     </h4>
                   </v-col>
-                  <v-col cols="3" class="pa-0"><span class="text-left">USD</span></v-col>
+                  <v-col cols="2" class="pa-0 ml-2"><span class="text-left">USD</span></v-col>
                 </v-row>
               </v-col>
             </v-row>
