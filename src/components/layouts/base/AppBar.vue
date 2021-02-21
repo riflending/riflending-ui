@@ -68,6 +68,7 @@ import { ethers } from 'ethers'
 import { Fragment } from 'vue-fragment'
 import { NETWORK_ID } from '@/config/constants'
 import Snackbar from '@/components/common/Snackbar.vue'
+import * as Sentry from '@sentry/browser'
 
 export default {
   name: 'AppBar',
@@ -154,6 +155,7 @@ export default {
         Vue.web3Provider = this.$web3Provider
       } catch (e) {
         this.$rLogin.clearCachedProvider()
+        Sentry.captureException(e)
       }
       this.connectToWeb3()
     },

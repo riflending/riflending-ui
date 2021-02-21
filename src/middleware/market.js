@@ -2,6 +2,7 @@ import { ethers } from 'ethers'
 import BigNumber from 'bignumber.js'
 import FactoryContract from './factoryContract'
 import { constants, decimals, abi, percentageOfHealthToBorrow } from './constants'
+import * as Sentry from '@sentry/browser'
 
 BigNumber.set({ EXPONENTIAL_AT: [-18, 36] })
 
@@ -539,6 +540,7 @@ export default class Market {
         }
       } catch (error) {
         console.error('ERROR', error)
+        Sentry.captureException(error)
       }
     }
     //TODO see if apply distinct once
