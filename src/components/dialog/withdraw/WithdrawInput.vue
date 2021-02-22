@@ -251,14 +251,31 @@ export default {
       })
   },
   methods: {
-    withdraw() {
-      this.$emit('launchTx', {
-        promiseAction: this.data.market.withdraw(this.amount, false),
-        symbol: this.data.market.token.symbol,
-        amount: this.amount,
-        nameAction: 'withdrawn',
+    async withdrawAllow(amountUnderlying) {
+      return this.data.market.withdraw(amountUnderlying, true).then((allowed) => {
+        if (Number(allowed) !== 0) {
+          return this.$middleware.getMsjErrorCodeComptroller(allowed.toHexString())
+        }
+        return ''
       })
-      this.$emit('closeDialog')
+    },
+    withdraw() {
+      this.withdrawAllow(this.amount).then((allowed) => {
+        if (!allowed) {
+          this.$emit('launchTx', {
+            promiseAction: this.data.market.withdraw(this.amount, false),
+            symbol: this.data.market.token.symbol,
+            amount: this.amount,
+            nameAction: 'withdrawn',
+          })
+          this.$emit('closeDialog')
+        } else {
+          const userError = typeof allowed === 'string' ? allowed : allowed.message || ''
+          this.$emit('error', {
+            userErrorMessage: userError,
+          })
+        }
+      })
     },
     getMaxAmount() {
       return this.maxWithdrawAllowed
