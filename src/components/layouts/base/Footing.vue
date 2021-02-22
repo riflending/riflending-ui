@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-footer color="black lighten-1" padless>
+    <v-footer class="footering" color="black lighten-1" padless>
       <v-container fluid>
         <v-row class="text-center">
           <v-col cols="4">
@@ -8,7 +8,7 @@
               <v-img src="../../../assets/footing/logo_black.png" height="75" contain />
             </div>
             <div class="my-1">
-              <v-btn color="white" text rounded href="https://test.rlending.app"> rLending </v-btn>
+              <v-btn color="blue" text rounded href="https://test.rlending.app"> rLending </v-btn>
             </div>
           </v-col>
           <v-col cols="3">
@@ -37,11 +37,30 @@
               <v-btn color="white" text rounded> Contribute </v-btn>
             </div>
           </v-col>
+          <v-col cols="2">
+            <div class="mx-14">
+              <v-row>
+                <a href="" target="_blank">
+                  <v-img light width="50" :src="require(`@/assets/footing/Telegram-512.png`)" />
+                </a>
+              </v-row>
+              <v-row>
+                <a href="https://twitter.com/r_lending" target="_blank">
+                  <v-img light width="50" :src="require(`@/assets/footing/twitter.png`)" />
+                </a>
+              </v-row>
+              <v-row>
+                <a href="https://github.com/riflending/" target="_blank">
+                  <v-img light width="40" :src="require(`@/assets/footing/github.png`)" />
+                </a>
+              </v-row>
+            </div>
+          </v-col>
         </v-row>
 
-        <v-row>
+        <v-row class="licence">
           <v-col cols="12">
-            <p class="text-left grey--text text--lighten-2">Copyright rLending 2021</p>
+            <p class="text-left black--text text--lighten-2">&#169; 2021 rLending</p>
           </v-col>
         </v-row>
       </v-container>
