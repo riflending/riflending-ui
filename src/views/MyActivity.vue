@@ -60,7 +60,11 @@
                       <v-divider />
                     </v-row>
                     <v-row v-for="(item, index) in totalSupplied" :key="`totalSupplied-${index}`">
-                      <v-col cols="6" class="px-0"><h4>Total Supplied:</h4></v-col>
+                      <v-col cols="6" class="px-0">
+                        <router-link :to="{ name: 'SupplyBorrow' }">
+                          <h4 :style="{ textDecoration: 'underline' }">Total Supplied:</h4>
+                        </router-link>
+                      </v-col>
                       <v-col cols="5" class="px-0">
                         <h4 class="text-center">
                           $
