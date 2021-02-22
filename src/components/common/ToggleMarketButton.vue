@@ -18,6 +18,7 @@
 <script>
 import { mapState } from 'vuex'
 import Confirm from '@/components/common/Confirm.vue'
+import * as Sentry from '@sentry/browser'
 
 export default {
   name: 'ToggleMarketButton',
@@ -101,6 +102,8 @@ export default {
             message,
           })
         } catch (err) {
+          Sentry.captureException(err)
+
           this.$root.$emit('toggleMarketStatusTransaction', {
             status: 'error',
             value: this.value,

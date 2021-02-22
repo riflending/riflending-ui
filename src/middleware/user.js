@@ -1,5 +1,7 @@
 import { NETWORK_ID } from '../config/constants'
 import Vue from 'vue'
+import * as Sentry from '@sentry/browser'
+
 export default class User {
   constructor() {
     const chainId = +Vue?.web3Provider?.network?.chainId || NETWORK_ID
@@ -22,6 +24,7 @@ export default class User {
         return JSON.parse(localStorage.getItem(keyLS))
       } catch (e) {
         localStorage.removeItem(keyLS)
+        Sentry.captureException(e)
       }
     }
   }

@@ -135,6 +135,7 @@ import { mapState } from 'vuex'
 import Loader from '@/components/common/Loader.vue'
 import Approve from '@/components/common/Approve.vue'
 import BigNumber from 'bignumber.js'
+import * as Sentry from '@sentry/browser'
 
 export default {
   name: 'SupplyInput',
@@ -248,6 +249,7 @@ export default {
           this.needApproval = false
         })
         .catch((error) => {
+          Sentry.captureException(error)
           this.waiting = false
           const userError = typeof error === 'string' ? error : error.message || ''
           this.$emit('error', { userErrorMessage: userError })
