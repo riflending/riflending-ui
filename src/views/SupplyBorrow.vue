@@ -129,6 +129,7 @@ export default {
     },
     catchTx(obj) {
       const { promiseAction, symbol, nameAction, amount, isApprove } = obj
+      this.transactionHash = null
       //validate obj has an action
       if (typeof promiseAction.then !== 'function') return
       //send snack
@@ -146,6 +147,8 @@ export default {
         //TODO validate transactionResult
         // eslint-disable-next-line no-unused-vars
         .then((transactionResult) => {
+          this.persistEventLocalStorage(nameAction, amount, this.transactionHash, Date.now(), true)
+
           if (isApprove === true)
             this.setSuccessApproveTxSnack({
               tx: this.transactionHash,
@@ -162,9 +165,9 @@ export default {
         .catch((error) => {
           const userError = typeof error === 'string' ? error : error.message || ''
           this.setFailTxSnack({ error: userError })
+          this.persistEventLocalStorage(nameAction, amount, this.transactionHash, Date.now(), false)
         })
     },
-
     ...mapMutations({
       setSnack: constants.SNACK_SET,
       setSuccessTxSnack: constants.SNACK_SET_SUCCESS_TX,
@@ -172,6 +175,10 @@ export default {
       setWaitTxSnack: constants.SNACK_SET_WAIT_TX,
       setFailTxSnack: constants.SNACK_SET_FAIL_TX,
     }),
+    persistEventLocalStorage(event, amount, hash, date, status) {
+      const txLS = this.$user.createTx(hash, event, amount, date, status)
+      this.$user.addTxToAccountList(txLS, this.account)
+    },
   },
 }
 </script>
