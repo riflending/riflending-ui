@@ -253,7 +253,7 @@ export default {
   methods: {
     async withdrawAllow(amountUnderlying) {
       return this.data.market.withdraw(amountUnderlying, true).then((allowed) => {
-        if (Number(allowed) !== 0) {
+        if (!!allowed && Number(allowed) !== 0) {
           return this.$middleware.getMsjErrorCodeComptroller(allowed.toHexString())
         }
         return ''

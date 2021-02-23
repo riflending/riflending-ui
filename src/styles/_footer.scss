@@ -1,17 +1,33 @@
 .footering {
+  height: 250px;
   overflow: hidden;
-  height: 160px;
   .arc {
-    background: #D6D6D6 !important;
-    border-radius: 50%;
+    height: 255px;
+    background: #000000 !important;
+    // border-radius: 50%;
     width: 600%;
     height: 300%;
     margin: 0 -400px 0 -400px !important;
+  }
+  .licence{
+    height: 80px;
+    background: #d1d1d1 !important;
+    font-weight: normal;
+    font-size: 12px;
+    line-height: 14px;
+    color: rgb(0, 0, 0);
   }
   p {
     font-weight: normal;
     font-size: 12px;
     line-height: 14px;
     color: white;
+  }
+  h1 {
+    font-weight: 500;
+    font-size: 20px;
+    line-height: 24px;
+    text-transform: capitalize;
+    color: #008CFF;
   }
 }
