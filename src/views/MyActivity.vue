@@ -1,7 +1,9 @@
 <template>
   <div class="my-activity">
-    <v-snackbar v-model="snackbar" :timeout="3000" app center top color="primary" text>
-      The site is still on beta
+    <v-snackbar v-model="snackbar" :timeout="5000" app center top color="primary" text>
+      This website is still in BETA. This means rLending is in a testing phase and it is likely to
+      contain errors.
+      <a href="terms" :style="{ textDecoration: 'underline' }">Read more about this notice.</a>
       <template v-slot:action="{ attrs }">
         <v-btn color="indigo" text v-bind="attrs" @click="snackbar = false"> Close </v-btn>
       </template>
