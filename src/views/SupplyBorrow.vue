@@ -128,7 +128,7 @@ export default {
       this.hasEnteredToSomeMarket = await this.$middleware.hasEnteredToSomeMarket(this.account)
     },
     catchTx(obj) {
-      const { promiseAction, symbol, nameAction, amount } = obj
+      const { promiseAction, symbol, nameAction, amount, isApprove } = obj
       //validate obj has an action
       if (typeof promiseAction.then !== 'function') return
       //send snack
@@ -146,12 +146,18 @@ export default {
         //TODO validate transactionResult
         // eslint-disable-next-line no-unused-vars
         .then((transactionResult) => {
-          this.setSuccessTxSnack({
-            tx: this.transactionHash,
-            token: symbol,
-            amount: this.$options.filters.formatNumber(amount),
-            action: nameAction,
-          })
+          if (isApprove === true)
+            this.setSuccessApproveTxSnack({
+              tx: this.transactionHash,
+              token: symbol,
+            })
+          else
+            this.setSuccessTxSnack({
+              tx: this.transactionHash,
+              token: symbol,
+              amount: this.$options.filters.formatNumber(amount),
+              action: nameAction,
+            })
         })
         .catch((error) => {
           const userError = typeof error === 'string' ? error : error.message || ''
@@ -162,6 +168,7 @@ export default {
     ...mapMutations({
       setSnack: constants.SNACK_SET,
       setSuccessTxSnack: constants.SNACK_SET_SUCCESS_TX,
+      setSuccessApproveTxSnack: constants.SNACK_SET_SUCCESS_APPROVE_TX,
       setWaitTxSnack: constants.SNACK_SET_WAIT_TX,
       setFailTxSnack: constants.SNACK_SET_FAIL_TX,
     }),

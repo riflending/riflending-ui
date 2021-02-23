@@ -271,21 +271,14 @@ export default {
   },
   methods: {
     approve() {
-      this.waiting = true
-      this.$emit('wait')
-      this.$middleware
-        .approveMarketWithMaxUint(this.getCollateralMarketSymbolAssetSelected())
-        .then(() => {
-          this.approveDialog = true
-          this.needApproval = false
-        })
-        .catch((error) => {
-          Sentry.captureException(error)
-
-          this.waiting = false
-          const userError = typeof error === 'string' ? error : error.message || ''
-          this.$emit('error', { userErrorMessage: userError })
-        })
+      this.$emit('launchTx', {
+        promiseAction: this.$middleware.approveMarketWithMaxUint(
+          this.getCollateralMarketSymbolAssetSelected(),
+        ),
+        symbol: this.data.market.token.symbol,
+        isApprove: true,
+      })
+      this.$emit('closeDialog')
     },
 
     maxToLiquidate() {

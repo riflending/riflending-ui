@@ -581,8 +581,7 @@ export default class Market {
     if (!this.isCRBTC) {
       const cTokenSigner = this.token.instance.connect(this.factoryContract.getSigner())
       // approve
-      const tx = await cTokenSigner.approve(this.instanceAddress, ethers.constants.MaxUint256)
-      return tx.wait()
+      return cTokenSigner.approve(this.instanceAddress, ethers.constants.MaxUint256)
     }
   }
 

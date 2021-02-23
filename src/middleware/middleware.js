@@ -359,10 +359,6 @@ export default class Middleware {
     //set signer
     const cTokenSigner = contract.connect(this.factoryContractInstance.getSigner())
     // approve
-    const tx = await cTokenSigner.approve(
-      addresses[cTokenDetail.symbol],
-      ethers.constants.MaxUint256,
-    )
-    return tx.wait()
+    return cTokenSigner.approve(addresses[cTokenDetail.symbol], ethers.constants.MaxUint256)
   }
 }
