@@ -70,6 +70,7 @@ export default {
       toggleMarketTransactionStatus: null,
       toggleMarketTransactionMessage: '',
       unsubscribeStore: null,
+      polling: null,
     }
   },
   computed: {
@@ -87,6 +88,7 @@ export default {
     })
   },
   beforeDestroy() {
+    clearInterval(this.polling)
     if (typeof this.unsubscribeStore === 'function') this.unsubscribeStore()
   },
   async created() {
@@ -97,8 +99,14 @@ export default {
         this.reloadItems()
       }
     })
+    this.pollData()
   },
   methods: {
+    pollData() {
+      this.polling = setInterval(() => {
+        this.reloadItems()
+      }, 20000)
+    },
     reset() {
       this.$emit('listChange')
     },
