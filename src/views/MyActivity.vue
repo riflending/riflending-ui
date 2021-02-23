@@ -1,5 +1,11 @@
 <template>
   <div class="my-activity">
+    <v-snackbar v-model="snackbar" :timeout="3000" app center top color="primary" text>
+      The site is still on beta
+      <template v-slot:action="{ attrs }">
+        <v-btn color="indigo" text v-bind="attrs" @click="snackbar = false"> Close </v-btn>
+      </template>
+    </v-snackbar>
     <div v-if="dataLoaded" class="upper-banner">
       <v-dialog v-model="showHealthWarning" width="450">
         <v-card class="container">
@@ -258,6 +264,7 @@ export default {
   },
   data() {
     return {
+      snackbar: true,
       healthFactor: 0,
       totalBalance: [],
       totalSupplied: [],
