@@ -252,10 +252,9 @@ export default {
   },
   methods: {
     async withdrawAllow(amountUnderlying) {
-      const cToken = this.data.market.getCtokenByExchangeRate(amountUnderlying)
-      return this.data.market.withdrawAllowed(cToken, this.account).then((allowed) => {
-        if (Number(allowed) !== 0) {
-          return this.$middleware.getMsjErrorCodeComptroller(allowed.errorCode.toHexString())
+      return this.data.market.withdraw(amountUnderlying, true).then((allowed) => {
+        if (!!allowed && Number(allowed) !== 0) {
+          return this.$middleware.getMsjErrorCodeComptroller(allowed.toHexString())
         }
         return ''
       })

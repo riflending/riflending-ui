@@ -16,7 +16,7 @@
               <h1>Company</h1>
               <v-btn color="white" text rounded href="docs/introduction"> About rLending </v-btn>
               <v-btn color="white" text rounded href="docs/securityAudits"> Privacy Policy </v-btn>
-              <v-btn color="white" text rounded> Terms &#38; Conditions </v-btn>
+              <v-btn color="white" text rounded href="terms"> Terms &#38; Conditions </v-btn>
               <v-btn color="white" text rounded href="mailto:contact@rlending.app"> Contact </v-btn>
             </div>
           </v-col>
