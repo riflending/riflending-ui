@@ -54,6 +54,7 @@ import SupplyItem from '@/components/supply/SupplyItem.vue'
 import SuccessDialog from '@/components/dialog/SuccessDialog.vue'
 import WaitingDialog from '@/components/dialog/WaitingDialog.vue'
 import ErrorDisplayDialog from '@/components/dialog/ErrorDisplayDialog.vue'
+import * as constants from '@/store/constants'
 
 export default {
   name: 'SupplyList',
@@ -68,6 +69,7 @@ export default {
       markets: [],
       toggleMarketTransactionStatus: null,
       toggleMarketTransactionMessage: '',
+      unsubscribeStore: null,
     }
   },
   computed: {
@@ -81,9 +83,17 @@ export default {
       this.toggleMarketTransactionMessage = message
     })
   },
+  beforeDestroy() {
+    if (typeof this.unsubscribeStore === 'function') this.unsubscribeStore()
+  },
   async created() {
     // get all markets
     this.markets = await this.$middleware.getMarkets(this.account)
+    this.unsubscribeStore = this.$store.subscribe((mutation) => {
+      if (mutation.type === constants.SNACK_SET_SUCCESS_TX) {
+        this.reloadItems()
+      }
+    })
   },
   methods: {
     reset() {

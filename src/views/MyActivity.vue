@@ -1,5 +1,13 @@
 <template>
   <div class="my-activity">
+    <v-snackbar v-model="snackbar" :timeout="5000" app center top color="primary" text>
+      This website is still in BETA. This means rLending is in a testing phase and it is likely to
+      contain errors.
+      <a href="terms" :style="{ textDecoration: 'underline' }">Read more about this notice.</a>
+      <template v-slot:action="{ attrs }">
+        <v-btn color="indigo" text v-bind="attrs" @click="snackbar = false"> Close </v-btn>
+      </template>
+    </v-snackbar>
     <div v-if="dataLoaded" class="upper-banner">
       <v-dialog v-model="showHealthWarning" width="450">
         <v-card class="container">
@@ -60,7 +68,11 @@
                       <v-divider />
                     </v-row>
                     <v-row v-for="(item, index) in totalSupplied" :key="`totalSupplied-${index}`">
-                      <v-col cols="6" class="px-0"><h4>Total Supplied:</h4></v-col>
+                      <v-col cols="6" class="px-0">
+                        <router-link :to="{ name: 'SupplyBorrow' }">
+                          <h4 :style="{ textDecoration: 'underline' }">Total Supplied:</h4>
+                        </router-link>
+                      </v-col>
                       <v-col cols="5" class="px-0">
                         <h4 class="text-center">
                           $
@@ -254,6 +266,7 @@ export default {
   },
   data() {
     return {
+      snackbar: true,
       healthFactor: 0,
       totalBalance: [],
       totalSupplied: [],
