@@ -368,7 +368,7 @@ export default class Market {
    */
   async withdrawAllowed(amount, account) {
     // set
-    const amountBN = this.getAmountDecimals(amount, true)
+    const amountBN = this.getAmountDecimals(amount)
     // set contract Comptroller delegate (Unitroller)
     const contract = this.factoryContract.getContractByNameAndAbiName(
       constants.Unitroller,
@@ -586,17 +586,14 @@ export default class Market {
     }
   }
 
-  getValueOfOneCtokenInUnderlying() {
-    const mantissa = parseInt(this.token.decimals) - this.decimals
-    return this.exchangeRateCurrent.toNumber() / Math.pow(10, mantissa)
-  }
-
   getTokenByExchangeRate(cTokenValue) {
-    return new BigNumber(cTokenValue.toString()).multipliedBy(
-      this.getValueOfOneCtokenInUnderlying(),
-    )
+    const mantissa = parseInt(this.token.decimals) - this.decimals
+    const aux = new BigNumber(cTokenValue.toString()).multipliedBy(this.exchangeRateCurrent)
+    return aux.div(Math.pow(10, mantissa))
   }
   getCtokenByExchangeRate(tokenValue) {
-    return new BigNumber(tokenValue.toString()).div(this.getValueOfOneCtokenInUnderlying())
+    const mantissa = parseInt(this.token.decimals) - this.decimals
+    const aux = new BigNumber(tokenValue.toString()).multipliedBy(Math.pow(10, mantissa))
+    return aux.div(this.exchangeRateCurrent)
   }
 }
