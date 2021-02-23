@@ -68,6 +68,7 @@ export default {
       markets: [],
       toggleMarketTransactionStatus: null,
       toggleMarketTransactionMessage: '',
+      polling: null,
     }
   },
   computed: {
@@ -84,11 +85,20 @@ export default {
       }
     })
   },
+  beforeDestroy() {
+    clearInterval(this.polling)
+  },
   async created() {
     // get all markets
     this.markets = await this.$middleware.getMarkets(this.account)
+    this.pollData()
   },
   methods: {
+    pollData() {
+      this.polling = setInterval(() => {
+        this.reloadItems()
+      }, 20000)
+    },
     reset() {
       this.$emit('listChange')
     },
