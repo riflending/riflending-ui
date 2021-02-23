@@ -152,6 +152,7 @@ export default {
             amount: this.$options.filters.formatNumber(amount),
             action: nameAction,
           })
+          this.reset()
         })
         .catch((error) => {
           const userError = typeof error === 'string' ? error : error.message || ''

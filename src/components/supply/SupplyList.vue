@@ -54,6 +54,7 @@ import SupplyItem from '@/components/supply/SupplyItem.vue'
 import SuccessDialog from '@/components/dialog/SuccessDialog.vue'
 import WaitingDialog from '@/components/dialog/WaitingDialog.vue'
 import ErrorDisplayDialog from '@/components/dialog/ErrorDisplayDialog.vue'
+import * as constants from '@/store/constants'
 
 export default {
   name: 'SupplyList',
@@ -84,6 +85,11 @@ export default {
   async created() {
     // get all markets
     this.markets = await this.$middleware.getMarkets(this.account)
+    this.$store.subscribe((mutation) => {
+      if (mutation.type === constants.SNACK_SET_SUCCESS_TX) {
+        this.reloadItems()
+      }
+    })
   },
   methods: {
     reset() {
