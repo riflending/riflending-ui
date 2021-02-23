@@ -204,7 +204,7 @@ export default {
   },
   methods: {
     async borrowAllowed() {
-      return this.data.market.borrow(this.amount, this.amount).then((allowed) => {
+      return this.data.market.borrow(this.amount, true).then((allowed) => {
         if (!!allowed && Number(allowed) !== 0) {
           this.isBorrowAllowed = false // if not allowed, sets internal variable to false
           return this.$middleware.getMsjErrorCodeComptroller(allowed.toHexString())
