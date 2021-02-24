@@ -14,7 +14,6 @@
           </v-row>
         </v-container>
       </router-link>
-      <h2 class="d-none d-lg-flex d-xl-flex">{{ title }}</h2>
       <v-spacer />
 
       <div v-if="isLogged">
