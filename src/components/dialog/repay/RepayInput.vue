@@ -273,8 +273,6 @@ export default {
       })
     },
     getMaxAmount() {
-      console.log('this.userTotalBorrow', this.userTotalBorrow)
-      console.log('this.maxAmountBalanceAllowed', this.maxAmountBalanceAllowed)
       return ethers.utils
         .parseUnits(this.userTotalBorrow, this.data.market.token.decimals)
         .lte(ethers.utils.parseUnits(this.maxAmountBalanceAllowed, this.data.market.token.decimals))
