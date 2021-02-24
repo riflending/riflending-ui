@@ -124,31 +124,21 @@
         </v-row>
       </div>
     </template>
-    <template v-else-if="!approveDialog">
-      <Loader />
-    </template>
-    <template v-else>
-      <Approve dialog-father-name="Liquidate" @backToMainDialog="closeTemplateApprove" />
-    </template>
   </div>
 </template>
 
 <script>
 import { mapState } from 'vuex'
 import LiquidateList from '@/components/dialog/liquidate/LiquidateList.vue'
-import Loader from '@/components/common/Loader.vue'
 import BigNumber from 'bignumber.js'
 import { ethers } from 'ethers'
 import { cTokensDetails } from '../../../middleware/constants'
-import Approve from '@/components/common/Approve.vue'
 import * as Sentry from '@sentry/browser'
 
 export default {
   name: 'LiquidateInput',
   components: {
-    Loader,
     LiquidateList,
-    Approve,
   },
   props: {
     data: {

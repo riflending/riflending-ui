@@ -107,22 +107,15 @@
         </v-btn>
       </v-row>
     </template>
-    <template v-else>
-      <Loader />
-    </template>
   </div>
 </template>
 
 <script>
 import { mapState } from 'vuex'
-import Loader from '@/components/common/Loader.vue'
 import BigNumber from 'bignumber.js'
 
 export default {
   name: 'BorrowInput',
-  components: {
-    Loader,
-  },
   props: {
     data: {
       type: Object,

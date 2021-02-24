@@ -100,28 +100,16 @@
         </v-btn>
       </v-row>
     </template>
-    <template v-else-if="!approveDialog">
-      <Loader />
-    </template>
-    <template v-else>
-      <Approve dialog-father-name="Repay" @backToMainDialog="closeTemplateApprove" />
-    </template>
   </div>
 </template>
 
 <script>
 import { mapState } from 'vuex'
-import Loader from '@/components/common/Loader.vue'
-import Approve from '@/components/common/Approve.vue'
 import { ethers } from 'ethers'
 import BigNumber from 'bignumber.js'
 
 export default {
   name: 'RepayInput',
-  components: {
-    Loader,
-    Approve,
-  },
   props: {
     data: {
       type: Object,
