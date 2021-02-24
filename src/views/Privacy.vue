@@ -211,11 +211,15 @@
           instructions in those communications or by emailing us at
           <a href="mailto:support@rlending.app">support@rlending.app</a>
         </p>
-        <h2 id="contact-us">Contact Us</h2>
-        <p>
-          If you have any questions about this Privacy Statement, please contact us at:
-          <a href="mailto:support@rlending.app">support@rlending.app</a>
-        </p>
+        <ul>
+          <li>
+            <h2 id="contact-us">Contact Us</h2>
+            <p>
+              If you have any questions about this Privacy Statement, please contact us at:
+              <a href="mailto:support@rlending.app">support@rlending.app</a>
+            </p>
+          </li>
+        </ul>
       </v-row>
     </v-container>
   </div>
