@@ -194,12 +194,7 @@
         <h3>Account Information</h3>
         <p>
           You may update, correct or delete information about you at any time by emailing us at
-          <a
-            href="/cdn-cgi/l/email-protection"
-            class="__cf_email__"
-            data-cfemail="fa93949c95ba89958c888394d49b8a8ad4"
-            >[email&#160;protected]</a
-          >
+          <a href="mailto:support@rlending.app">support@rlending.app</a>
           Please note that we may retain cached or archived copies of information about you for a
           certain period of time.
         </p>
@@ -214,12 +209,7 @@
         <p>
           You may opt out of receiving promotional communications from rLending by following the
           instructions in those communications or by emailing us at
-          <a
-            href="/cdn-cgi/l/email-protection"
-            class="__cf_email__"
-            data-cfemail="741d1a121b34071b02060d1a5a1504045a"
-            >[email&#160;protected]</a
-          >
+          <a href="mailto:support@rlending.app">support@rlending.app</a>
         </p>
         <h2 id="contact-us">Contact Us</h2>
         <p>
