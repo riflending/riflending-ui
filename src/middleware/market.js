@@ -241,21 +241,20 @@ export default class Market {
     }
     // add decimals token
     const amountBN = this.getAmountDecimals(amount)
+    // set signer
+    const signerCtoken = this.instance.connect(this.factoryContract.getSigner())
     // validate crbtc
     if (!this.isCRBTC) {
       // mint token
-      const signerCtoken = this.instance.connect(this.factoryContract.getSigner())
       return signerCtoken.mint(amountBN.toString(), txOptions)
     }
-    // set signer cRBTC
-    const signer = this.instance.connect(this.factoryContract.getSigner())
     // set value
     const overrides = {
       value: amountBN.toString(),
       ...txOptions,
     }
     // mint crbtc
-    return signer.mint(overrides)
+    return signerCtoken.mint(overrides)
   }
 
   /**
