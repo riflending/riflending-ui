@@ -231,12 +231,10 @@ export default {
       .then((balanceOfToken) => {
         this.$middleware.getGasPrice().then((price) => {
           // balanceOfToken - (gasPrice * gasLimit * 2)
-          this.maxAmountBalanceAllowed = price
-            .multipliedBy(this.data.market.gasLimit)
-            .multipliedBy(2)
-            .minus(balanceOfToken)
-            .absoluteValue()
-            .toString()
+          const max = new BigNumber(balanceOfToken).minus(
+            price.multipliedBy(this.data.market.gasLimit).multipliedBy(2),
+          )
+          this.maxAmountBalanceAllowed = max.isNegative() ? 0 : max.toString()
         })
       })
   },

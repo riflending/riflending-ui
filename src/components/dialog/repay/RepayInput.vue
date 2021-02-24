@@ -114,6 +114,7 @@ import { mapState } from 'vuex'
 import Loader from '@/components/common/Loader.vue'
 import Approve from '@/components/common/Approve.vue'
 import { ethers } from 'ethers'
+import BigNumber from 'bignumber.js'
 
 export default {
   name: 'RepayInput',
@@ -219,11 +220,10 @@ export default {
     walletBalancePromise.then((balanceOfToken) => {
       this.$middleware.getGasPrice().then((price) => {
         // balanceOfToken - (gasPrice * gasLimit)
-        this.maxAmountBalanceAllowed = price
-          .multipliedBy(this.data.market.gasLimit)
-          .minus(balanceOfToken)
-          .absoluteValue()
-          .toString()
+        const max = new BigNumber(balanceOfToken).minus(
+          price.multipliedBy(this.data.market.gasLimit).multipliedBy(2),
+        )
+        this.maxAmountBalanceAllowed = max.isNegative() ? 0 : max.toString()
       })
     })
   },
