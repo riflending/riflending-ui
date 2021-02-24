@@ -14,17 +14,19 @@
           </v-row>
         </v-container>
       </router-link>
-      <h2>{{ title }}</h2>
+      <h2 class="d-none d-lg-flex d-xl-flex">{{ title }}</h2>
       <v-spacer />
 
       <div v-if="isLogged">
-        <router-link class="mx-5" :to="{ name: 'MyActivity' }"> Dashboard </router-link>
-        <router-link class="mx-5" :to="{ name: 'SupplyBorrow' }"> Supply / Borrow </router-link>
+        <router-link class="mx-5" :to="{ name: 'MyActivity' }" exact> Dashboard </router-link>
+        <router-link class="mx-5" :to="{ name: 'SupplyBorrow' }" exact>
+          Supply / Borrow
+        </router-link>
         <!-- <template v-if="isOwner"> -->
-        <router-link class="mx-5" :to="{ name: 'Status' }"> Markets</router-link>
+        <router-link class="mx-5" :to="{ name: 'Status' }" exact> Markets</router-link>
         <!-- </template> -->
-        <router-link class="mx-5" :to="{ name: 'Docs' }"> Docs </router-link>
-        <router-link class="mx-5" :to="{ name: 'FAQ' }"> FAQs</router-link>
+        <router-link class="mx-5" :to="{ name: 'Docs' }" exact> Docs </router-link>
+        <router-link class="mx-5" :to="{ name: 'FAQ' }" exact> FAQs</router-link>
         <v-btn class="mx-5" rounded outlined color="#008CFF">
           {{ accountCutOff }}
         </v-btn>
