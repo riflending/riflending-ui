@@ -269,7 +269,7 @@
           </li>
           <li>
             <h4>Governing Law</h4>
-            You agree that the laws of the State of California, without regard to principles of
+            You agree that the laws of the State of Delaware, without regard to principles of
             conflict of laws, govern this Agreement and any Dispute between you and us. You further
             agree that the Interface shall be deemed to be based solely in the State of California,
             and that although the Interface may be available in other jurisdictions, its
