@@ -229,7 +229,15 @@ export default {
           : this.$middleware.getWalletAccountBalanceForRBTC(this.account)
       })
       .then((balanceOfToken) => {
-        this.maxAmountBalanceAllowed = balanceOfToken
+        this.$middleware.getGasPrice().then((price) => {
+          // balanceOfToken - (gasPrice * gasLimit * 2)
+          this.maxAmountBalanceAllowed = price
+            .multipliedBy(this.data.market.gasLimit)
+            .multipliedBy(2)
+            .minus(balanceOfToken)
+            .absoluteValue()
+            .toString()
+        })
       })
   },
   methods: {

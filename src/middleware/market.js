@@ -81,6 +81,7 @@ export default class Market {
     this.borrowApy = new BigNumber(
       (Math.pow(this.borrowRatePerBlock.toNumber() * blocksPerDay + 1, daysPerYear - 1) - 1) * 100,
     )
+    this.gasLimit = 250000
   }
 
   async getValueMoc() {
@@ -236,7 +237,7 @@ export default class Market {
   async supply(amount) {
     // Required, please dont delete this
     const txOptions = {
-      gasLimit: 250000,
+      gasLimit: this.gasLimit,
     }
     // add decimals token
     const amountBN = this.getAmountDecimals(amount)
@@ -305,7 +306,7 @@ export default class Market {
   async redeemUnderlying(amount, callStatic = false) {
     // Required, please dont delete this
     const txOptions = {
-      gasLimit: 250000,
+      gasLimit: this.gasLimit,
     }
     // set signer token
     const signer = this.instance.connect(this.factoryContract.getSigner())
@@ -333,7 +334,7 @@ export default class Market {
     let contractWithSigner
     // Required, please dont delete this
     const txOptions = {
-      gasLimit: 250000,
+      gasLimit: this.gasLimit,
     }
     // validate crbtc
     if (this.isCRBTC) {
