@@ -271,7 +271,7 @@
             <h4>Governing Law</h4>
             You agree that the laws of the State of Delaware, without regard to principles of
             conflict of laws, govern this Agreement and any Dispute between you and us. You further
-            agree that the Interface shall be deemed to be based solely in the State of California,
+            agree that the Interface shall be deemed to be based solely in the State of Delaware,
             and that although the Interface may be available in other jurisdictions, its
             availability does not give rise to general or specific personal jurisdiction in any
             forum outside the State of California. Any arbitration conducted pursuant to this
