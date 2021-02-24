@@ -217,7 +217,14 @@ export default {
       ? this.$middleware.getWalletAccountBalance(this.account, this.data.market.token?.address)
       : this.$middleware.getWalletAccountBalanceForRBTC(this.account)
     walletBalancePromise.then((balanceOfToken) => {
-      this.maxAmountBalanceAllowed = balanceOfToken
+      this.$middleware.getGasPrice().then((price) => {
+        // balanceOfToken - (gasPrice * gasLimit)
+        this.maxAmountBalanceAllowed = price
+          .multipliedBy(this.data.market.gasLimit)
+          .minus(balanceOfToken)
+          .absoluteValue()
+          .toString()
+      })
     })
   },
   methods: {
@@ -266,6 +273,8 @@ export default {
       })
     },
     getMaxAmount() {
+      console.log('this.userTotalBorrow', this.userTotalBorrow)
+      console.log('this.maxAmountBalanceAllowed', this.maxAmountBalanceAllowed)
       return ethers.utils
         .parseUnits(this.userTotalBorrow, this.data.market.token.decimals)
         .lte(ethers.utils.parseUnits(this.maxAmountBalanceAllowed, this.data.market.token.decimals))

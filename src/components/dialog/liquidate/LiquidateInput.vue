@@ -402,17 +402,23 @@ export default {
     getCollateralToken(accountObject) {
       this.borrowMarketSymbol = accountObject.collateral.token.symbol
       this.borrowMarketTokenDecimals = accountObject.collateral.token.decimals
-      if (!accountObject.collateral.isCRBTC) {
-        this.$middleware
-          .getWalletAccountBalance(this.account, accountObject.collateral.token.address)
-          .then((funds) => {
-            this.funds = funds
-          })
-      } else {
-        this.$middleware.getWalletAccountBalanceForRBTC(this.account).then((funds) => {
-          this.funds = funds
+
+      const walletBalancePromise = !accountObject.collateral.isCRBTC
+        ? this.$middleware.getWalletAccountBalance(
+            this.account,
+            accountObject.collateral.token.address,
+          )
+        : this.$middleware.getWalletAccountBalanceForRBTC(this.account)
+      walletBalancePromise.then((balanceOfToken) => {
+        this.$middleware.getGasPrice().then((price) => {
+          // balanceOfToken - (gasPrice * gasLimit)
+          this.funds = price
+            .multipliedBy(this.data.market.gasLimit)
+            .minus(balanceOfToken)
+            .absoluteValue()
+            .toString()
         })
-      }
+      })
     },
     getCollateralMarketMaxAssetSelected() {
       try {
