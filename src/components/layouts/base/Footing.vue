@@ -50,7 +50,10 @@
                 </a>
               </v-row>
               <v-row>
-                <a href="https://github.com/riflending/" target="_blank">
+                <a
+                  :href="`https://github.com/riflending/rlending-ui/commit/${commitHash}`"
+                  target="_blank"
+                >
                   <v-img light width="40" :src="require(`@/assets/footing/github.png`)" />
                 </a>
               </v-row>
@@ -69,7 +72,14 @@
 </template>
 
 <script>
+import { COMMIT_HASH } from '@/config/constants'
+
 export default {
   name: 'Footing',
+  data() {
+    return {
+      commitHash: COMMIT_HASH,
+    }
+  },
 }
 </script>
