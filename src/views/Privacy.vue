@@ -28,46 +28,54 @@
           practices and the choices available to you.
         </p>
         <v-row><h2>Collection of Information</h2></v-row>
-        <h3>Information You Provide To Us</h3>
-        <p>
-          We collect information you provide directly to us. For example, we collect information
-          when you participate in any interactive features of the Services, fill out a form,
-          communicate with us via third party social media sites, request customer support or
-          otherwise communicate with us. The types of information we may collect include your email
-          address and any other information you choose to provide.
-        </p>
-        <h3>Automatically Collected Information</h3>
-        <p>
-          When you access or use our Services, we automatically collect information about you,
-          including:
-        </p>
-        <ul>
+        <ol>
           <li>
-            Log Information: We collect log information about your use of the Services, including
-            the type of browser you use, access times, pages viewed, your IP address and the page
-            you visited before navigating to our Services.
+            <h3>Information You Provide To Us</h3>
+            <p>
+              We collect information you provide directly to us. For example, we collect information
+              when you participate in any interactive features of the Services, fill out a form,
+              communicate with us via third party social media sites, request customer support or
+              otherwise communicate with us. The types of information we may collect include your
+              email address and any other information you choose to provide.
+            </p>
           </li>
           <li>
-            Device Information: We collect information about the computer or mobile device you use
-            to access our Services, including the hardware model, operating system and version,
-            unique device identifiers, and mobile network information.
+            <h3>Automatically Collected Information</h3>
+            <p>
+              When you access or use our Services, we automatically collect information about you,
+              including:
+            </p>
+            <ul>
+              <li>
+                Log Information: We collect log information about your use of the Services,
+                including the type of browser you use, access times, pages viewed, your IP address
+                and the page you visited before navigating to our Services.
+              </li>
+              <li>
+                Device Information: We collect information about the computer or mobile device you
+                use to access our Services, including the hardware model, operating system and
+                version, unique device identifiers, and mobile network information.
+              </li>
+              <li>
+                Information Collected by Cookies and Other Tracking Technologies: We use various
+                technologies to collect information, including cookies and web beacons. Cookies are
+                small data files stored on your hard drive or in device memory that help us improve
+                our Services and your experience, see which areas and features of our Services are
+                popular and count visits. Web beacons are electronic images that may be used in our
+                Services or emails and help deliver cookies, count visits and understand usage and
+                campaign effectiveness. For more information about cookies and how to disable them,
+                please see “Your Choices” below.
+              </li>
+            </ul>
           </li>
           <li>
-            Information Collected by Cookies and Other Tracking Technologies: We use various
-            technologies to collect information, including cookies and web beacons. Cookies are
-            small data files stored on your hard drive or in device memory that help us improve our
-            Services and your experience, see which areas and features of our Services are popular
-            and count visits. Web beacons are electronic images that may be used in our Services or
-            emails and help deliver cookies, count visits and understand usage and campaign
-            effectiveness. For more information about cookies and how to disable them, please see
-            “Your Choices” below.
+            <h3>Information We Collect from Other Sources</h3>
+            <p>
+              We may obtain information from other sources, including third parties, and combine
+              that with information we collect through our Services.
+            </p>
           </li>
-        </ul>
-        <h3>Information We Collect from Other Sources</h3>
-        <p>
-          We may obtain information from other sources, including third parties, and combine that
-          with information we collect through our Services.
-        </p>
+        </ol>
         <h2>Use of Information</h2>
         <p>
           We use the information we collect to provide, maintain, and improve our services. We may
