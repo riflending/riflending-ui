@@ -1,11 +1,19 @@
 <template>
   <div class="my-activity">
-    <v-snackbar v-model="snackbar" :timeout="5000" app center top color="primary" text>
+    <v-snackbar
+      v-model="shouldDisplayDemoAlert"
+      :timeout="20000"
+      app
+      center
+      top
+      color="primary"
+      text
+    >
       This website is still in BETA. This means rLending is in a testing phase and it is likely to
       contain errors.
       <a href="terms" :style="{ textDecoration: 'underline' }">Read more about this notice.</a>
       <template v-slot:action="{ attrs }">
-        <v-btn color="indigo" text v-bind="attrs" @click="snackbar = false"> Close </v-btn>
+        <v-btn color="indigo" text v-bind="attrs" @click="closeDemoAlert"> Close </v-btn>
       </template>
     </v-snackbar>
     <div v-if="dataLoaded" class="upper-banner">
@@ -251,7 +259,8 @@
 <script>
 import SupplyBorrowGraph from '@/components/dashboard/SupplyBorrowGraph.vue'
 import TransactionList from '@/components/dashboard/TransactionList.vue'
-import { mapState } from 'vuex'
+import { mapState, mapMutations } from 'vuex'
+import * as constants from '@/store/constants'
 import { cTokensDetails } from '../middleware/constants'
 import Vue from 'vue'
 import VueNumber from 'vue-number-animation'
@@ -266,7 +275,6 @@ export default {
   },
   data() {
     return {
-      snackbar: true,
       healthFactor: 0,
       totalBalance: [],
       totalSupplied: [],
@@ -281,6 +289,7 @@ export default {
   computed: {
     ...mapState({
       account: (state) => state.Session.account,
+      shouldDisplayDemoAlert: (state) => state.Session.displayDemoAlert,
     }),
     accountHealth() {
       return this.healthFactor.toFixed(2)
@@ -326,6 +335,9 @@ export default {
         await this.fetchData()
       }, 20000)
     },
+    closeDemoAlert() {
+      this.stopDisplayingDemoAlert(false)
+    },
     async fetchData() {
       const { borrowValue, supplyValue } = await this.$middleware.getTotalSupplysAndBorrows(
         this.account,
@@ -352,6 +364,9 @@ export default {
     tweenedFormat(number) {
       return number.toFixed(3)
     },
+    ...mapMutations({
+      stopDisplayingDemoAlert: constants.SESSION_DISPLAY_DEMO_ALERT,
+    }),
   },
 }
 </script>
