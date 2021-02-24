@@ -35,8 +35,15 @@ button {
   border-radius: 20px !important;
 }
 
-.button {
+.v-btn {
+  text-transform: none;
+}
+
+.v-btn:first-letter{
   text-transform: capitalize;
+}
+
+.button {
   margin: 0 40px 0 40px;
   font-weight: normal;
   font-size: 15px;
