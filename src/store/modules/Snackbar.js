@@ -1,4 +1,5 @@
 import * as constants from '@/store/constants'
+import * as Sentry from '@sentry/browser'
 
 const state = () => ({
   snack: null,
@@ -22,6 +23,7 @@ const mutations = {
     state.tx = 0
     state.loader = false
     state.subSnack = objSuccess.error
+    Sentry.captureException(new Error(objSuccess.error))
   },
   [constants.SNACK_SET_SUCCESS_TX]: (state, objSuccess) => {
     state.snack = 'Success !'
@@ -29,6 +31,13 @@ const mutations = {
     state.tx = objSuccess.tx
     state.loader = false
     state.subSnack = `You have successfully ${objSuccess.action} ${objSuccess.token} with ${objSuccess.amount}`
+  },
+  [constants.SNACK_SET_SUCCESS_APPROVE_TX]: (state, objSuccess) => {
+    state.snack = 'Success !'
+    state.color = 'success'
+    state.tx = objSuccess.tx
+    state.loader = false
+    state.subSnack = `You have successfully approve the ${objSuccess.token} market`
   },
   [constants.SNACK_SET_WAIT_TX]: (state) => {
     state.snack = ''

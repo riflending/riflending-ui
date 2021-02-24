@@ -9,7 +9,7 @@
             In order to use <strong>rLending</strong> you will need your <em>Metamask</em> wallet
             connected to the <strong>RSK network</strong> Direct your browser towards the
             <a href="www.rlending.app"><strong>rLending</strong> website</a> and click
-            <strong>Connect Wallet</strong>. The screen will let you connect your
+            <strong>Connect wallet</strong>. The screen will let you connect your
             <em>Metamask/Nifty</em> wallet.
             <v-img
               contain

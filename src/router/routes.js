@@ -82,6 +82,11 @@ export default [
     component: () => import(/* webpackChunkName: "faq" */ '@/views/FAQ.vue'),
   },
   {
+    path: '/terms',
+    name: 'Terms',
+    component: () => import(/* webpackChunkName: "terms" */ '@/views/Terms.vue'),
+  },
+  {
     path: '*',
     redirect: { name: 'Landing' },
   },

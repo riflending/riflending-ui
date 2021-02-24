@@ -138,13 +138,6 @@ export default {
       this.waiting = false
       this.errorDialog = true
       this.userErrorMessage = errorObject.userErrorMessage || ''
-      this.persistEventLocalStorage(
-        this.currentComponent.replace('Input', ''),
-        !this.borrowed ? this.pay : this.borrowed,
-        this.hash,
-        Date.now(),
-        false,
-      )
     },
     actionSucceed(succeedObject) {
       this.hash = succeedObject.hash
@@ -154,13 +147,6 @@ export default {
       this.succeed = true
       this.waiting = false
       this.errorDialog = false
-      this.persistEventLocalStorage(
-        this.currentComponent.replace('Input', ''),
-        !this.borrowed ? this.pay : this.borrowed,
-        this.hash,
-        Date.now(),
-        true,
-      )
     },
     backToDialog() {
       this.succeed = false
@@ -176,10 +162,6 @@ export default {
     close() {
       this.reset()
       this.$emit('closed')
-    },
-    persistEventLocalStorage(event, price, hash, date, status) {
-      const txLS = this.$user.createTx(hash, event, price, date, status)
-      this.$user.addTxToAccountList(txLS, this.account)
     },
   },
 }

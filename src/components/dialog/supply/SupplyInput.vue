@@ -239,19 +239,12 @@ export default {
       this.$emit('approve')
     },
     approve() {
-      this.waiting = true
-      this.$emit('wait')
-      this.data.market
-        .approveWithMaxUint()
-        .then(() => {
-          this.approveDialog = true
-          this.needApproval = false
-        })
-        .catch((error) => {
-          this.waiting = false
-          const userError = typeof error === 'string' ? error : error.message || ''
-          this.$emit('error', { userErrorMessage: userError })
-        })
+      this.$emit('launchTx', {
+        promiseAction: this.data.market.approveWithMaxUint(),
+        symbol: this.data.market.token.symbol,
+        isApprove: true,
+      })
+      this.$emit('closeDialog')
     },
     supply() {
       this.$emit('launchTx', {

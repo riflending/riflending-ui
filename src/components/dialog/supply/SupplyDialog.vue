@@ -173,13 +173,6 @@ export default {
       this.errorDialog = true
       this.userErrorMessage = errorObject.userErrorMessage || ''
       this.supplyBalanceInfo = errorObject.supplyBalanceInfo ?? errorObject.amount
-      this.persistEventLocalStorage(
-        this.currentComponent.replace('Input', ''),
-        this.supplyBalanceInfo,
-        this.hash,
-        Date.now(),
-        false,
-      )
     },
     actionSucceed(succeedObject) {
       this.hash = succeedObject.hash
@@ -191,13 +184,6 @@ export default {
       this.liquidateValue = succeedObject.liquidateValue
       this.collateral = succeedObject.collateral
       this.costValue = succeedObject.costValue
-      this.persistEventLocalStorage(
-        this.currentComponent.replace('Input', ''),
-        this.supplyBalanceInfo,
-        this.hash,
-        Date.now(),
-        true,
-      )
     },
     backToDialog() {
       this.succeed = false
@@ -211,10 +197,6 @@ export default {
     close() {
       this.reset()
       this.$emit('closed')
-    },
-    persistEventLocalStorage(event, price, hash, date, status) {
-      const txLS = this.$user.createTx(hash, event, price, date, status)
-      this.$user.addTxToAccountList(txLS, this.account)
     },
   },
 }

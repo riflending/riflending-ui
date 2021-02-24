@@ -141,6 +141,7 @@ import BigNumber from 'bignumber.js'
 import { ethers } from 'ethers'
 import { cTokensDetails } from '../../../middleware/constants'
 import Approve from '@/components/common/Approve.vue'
+import * as Sentry from '@sentry/browser'
 
 export default {
   name: 'LiquidateInput',
@@ -270,19 +271,14 @@ export default {
   },
   methods: {
     approve() {
-      this.waiting = true
-      this.$emit('wait')
-      this.$middleware
-        .approveMarketWithMaxUint(this.getCollateralMarketSymbolAssetSelected())
-        .then(() => {
-          this.approveDialog = true
-          this.needApproval = false
-        })
-        .catch((error) => {
-          this.waiting = false
-          const userError = typeof error === 'string' ? error : error.message || ''
-          this.$emit('error', { userErrorMessage: userError })
-        })
+      this.$emit('launchTx', {
+        promiseAction: this.$middleware.approveMarketWithMaxUint(
+          this.getCollateralMarketSymbolAssetSelected(),
+        ),
+        symbol: this.data.market.token.symbol,
+        isApprove: true,
+      })
+      this.$emit('closeDialog')
     },
 
     maxToLiquidate() {
@@ -424,6 +420,7 @@ export default {
           (market) => market.marketAddress === this.marketSelected.toString(),
         ).balance
       } catch (error) {
+        Sentry.captureException(error)
         return ''
       }
     },
@@ -433,6 +430,7 @@ export default {
           (market) => market.marketAddress === this.marketSelected.toString(),
         ).price
       } catch (error) {
+        Sentry.captureException(error)
         return ''
       }
     },
@@ -442,6 +440,7 @@ export default {
           (market) => market.marketAddress === this.marketSelected.toString(),
         ).symbol
       } catch (error) {
+        Sentry.captureException(error)
         return ''
       }
     },
@@ -455,6 +454,7 @@ export default {
           .minus(liquidate.sub)
           .decimalPlaces(liquidate.decimalToFix, BigNumber.ROUND_DOWN)
       } catch (error) {
+        Sentry.captureException(error)
         return ''
       }
     },
