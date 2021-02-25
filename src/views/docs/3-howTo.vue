@@ -13,8 +13,8 @@
             <em>Metamask/Nifty</em> wallet.
             <v-img
               contain
-              max-height="650"
-              max-width="850"
+              max-height="450"
+              max-width="450"
               src="@/assets/docs/connecting.jpg"
               alt="Connecting"
             />
@@ -26,9 +26,9 @@
           <p>
             <v-img
               contain
-              max-height="650"
-              max-width="850"
-              src="@/assets/docs/dashboard.jpg"
+              max-height="450"
+              max-width="450"
+              src="@/assets/docs/dashboard.png"
               alt="Dashboard"
             />
           </p>
@@ -52,9 +52,9 @@
           <p>
             <v-img
               contain
-              max-height="650"
-              max-width="850"
-              src="@/assets/docs/supplyList-0.jpg"
+              max-height="550"
+              max-width="550"
+              src="@/assets/docs/supplyList.png"
               alt="Supply List"
             />
           </p>
@@ -69,8 +69,8 @@
           <p>
             <v-img
               contain
-              max-height="650"
-              max-width="850"
+              max-height="550"
+              max-width="550"
               src="@/assets/docs/supplyInput-2.jpg"
               alt="Supply Input"
             />
@@ -91,8 +91,8 @@
           <p>
             <v-img
               contain
-              max-height="650"
-              max-width="850"
+              max-height="550"
+              max-width="550"
               src="@/assets/docs/supplySuccess.jpg"
               alt="Supply Success"
             />
@@ -129,8 +129,8 @@
           <p>
             <v-img
               contain
-              max-height="650"
-              max-width="850"
+              max-height="450"
+              max-width="450"
               src="@/assets/docs/toggle.jpg"
               alt="Toggling Market"
             />
@@ -146,8 +146,8 @@
           <p>
             <v-img
               contain
-              max-height="650"
-              max-width="850"
+              max-height="350"
+              max-width="350"
               src="@/assets/docs/enteredMarket.jpg"
               alt="Entered Market"
             />
@@ -162,6 +162,56 @@
             >
           </p>
           <p>In this example we will be borrowing <strong>RIF</strong></p>
+          <p>
+            Head over to the <strong>Borrow tab</strong>. Notice that the APR column has changed
+            values. This is because you are now viewing the current borrow interest rates. Borrowing
+            rates will always be higher than Supplying Interest Rates.
+          </p>
+          <p>
+            <v-img
+              contain
+              max-height="450"
+              max-width="450"
+              src="@/assets/docs/borrowList.png"
+              alt="Entered Market"
+            />
+          </p>
+          <p>
+            Select the market you wish to borrow from (in this example, <strong>RIF</strong>) by
+            clicking on the right side arrow. This will pop-up the borrowing input window.
+          </p>
+          <p>
+            <v-img
+              contain
+              max-height="450"
+              max-width="450"
+              src="@/assets/docs/borrowInput.png"
+              alt="Entered Market"
+            />
+          </p>
+          <p>
+            Input the amount you wish to borrow (in this example, <i> 13.37 RIF</i>). It is
+            important to notice that
+            <strong
+              >you should never borrow close to your max borrow allowed, otherwise you run the risk
+              of getting liquidated when the interests accrue and your account incurs in
+              shortfall</strong
+            >. After you have confirmed the transaction, the borrow list will show the updated
+            values. Notice that your borrow starts increasing in interests as soon as the next block
+            accrues them. We borrowed <i>13.37 RIF</i> and a few blocks after, or debt is now
+            <i>13.3701 RIF</i>. Also, notice that your <i> borrowed asset</i> (in this example RIF)
+            is now also marked as a collateralized market. Lastly, notice that your
+            <strong>Health Factor</strong> has decreased.
+          </p>
+          <p>
+            <v-img
+              contain
+              max-height="450"
+              max-width="450"
+              src="@/assets/docs/borrowed.png"
+              alt="Entered Market"
+            />
+          </p>
           <p>&nbsp;</p>
           <hr />
           <h1 id="howWithdraw">How to make a withdrawal:</h1>
@@ -174,9 +224,9 @@
           <p>
             <v-img
               contain
-              max-height="650"
-              max-width="850"
-              src="@/assets/docs/supplyList.jpg"
+              max-height="550"
+              max-width="550"
+              src="@/assets/docs/withdrawList.png"
               alt="Supply/Borrow list"
             />
           </p>
@@ -184,31 +234,34 @@
           <p>
             <v-img
               contain
-              max-height="650"
-              max-width="850"
-              src="@/assets/docs/withdrawInput.jpg"
+              max-height="450"
+              max-width="450"
+              src="@/assets/docs/withdrawInput.png"
               alt="Withdraw Input"
             />
           </p>
           <p>
-            After you&#39;ve chosen the amount you wish to withdraw, click
+            When you&#39;ve chosen the amount you wish to withdraw, click
             <em>Withdraw my tokens</em> and <em>Metamask/Nifty</em> will prompt you with the
-            transaction.
+            transaction. After the withdrawal has been broadcasted you will receive confirmation and
+            your funds will be credited to your account.
           </p>
           <p>
             <v-img
               contain
-              max-height="650"
-              max-width="850"
-              src="@/assets/docs/withdrawMetamask.jpg"
-              alt="Withdraw Aproval"
+              max-height="450"
+              max-width="450"
+              src="@/assets/docs/withdrawed.png"
+              alt="Withdraw Input"
             />
           </p>
           <p>
-            After the withdrawal has been broadcasted you will receive confirmation and your funds
-            will be credited to your account.
+            <strong
+              >Note that your Health Factor has been updated as withdrawing balance reduces your
+              collateral.</strong
+            >
           </p>
-          <p><em>Note that big withdrawals may considerably reduce your health factor!!</em></p>
+          <p><em>Bigger withdrawals may considerably reduce your health factor!!</em></p>
           <p>&nbsp;</p>
           <hr />
           <h1 id="howRepay">How to repay debt:</h1>
@@ -228,8 +281,8 @@
           <p>
             <v-img
               contain
-              max-height="650"
-              max-width="850"
+              max-height="450"
+              max-width="450"
               src="@/assets/docs/liquidateInput.jpg"
               alt="Liquidation list"
             />
@@ -241,8 +294,8 @@
           <p>
             <v-img
               contain
-              max-height="650"
-              max-width="850"
+              max-height="450"
+              max-width="450"
               src="@/assets/docs/liquidateInput2.jpg"
               alt="Liquidation list"
             />
@@ -261,7 +314,7 @@
             <v-img
               contain
               max-height="650"
-              max-width="850"
+              max-width="650"
               src="@/assets/docs/marketList.jpg"
               alt="Market List"
             />
@@ -273,8 +326,8 @@
           <p>
             <v-img
               contain
-              max-height="650"
-              max-width="850"
+              max-height="450"
+              max-width="450"
               src="@/assets/docs/marketData.jpg"
               alt="Market Data"
             />
@@ -300,8 +353,8 @@
           <p>
             <v-img
               contain
-              max-height="650"
-              max-width="850"
+              max-height="450"
+              max-width="450"
               src="@/assets/docs/aliceSupply.png"
               alt="Supply"
             />
@@ -322,8 +375,8 @@
           <p>
             <v-img
               contain
-              max-height="650"
-              max-width="850"
+              max-height="450"
+              max-width="450"
               src="@/assets/docs/aliceWithdraw.png"
               alt="Withdraw"
             />
