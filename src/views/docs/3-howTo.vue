@@ -315,7 +315,7 @@
               contain
               max-height="650"
               max-width="650"
-              src="@/assets/docs/marketList.jpg"
+              src="@/assets/docs/marketList.png"
               alt="Market List"
             />
           </p>
@@ -328,7 +328,7 @@
               contain
               max-height="450"
               max-width="450"
-              src="@/assets/docs/marketData.jpg"
+              src="@/assets/docs/rbtcStatus.png"
               alt="Market Data"
             />
           </p>

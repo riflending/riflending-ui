@@ -50,8 +50,8 @@
           <p>
             <v-img
               contain
-              max-height="650"
-              max-width="850"
+              max-height="450"
+              max-width="450"
               src="@/assets/docs/supplyCycle.png"
               alt="supplyCycle"
             />
@@ -78,8 +78,8 @@
           <p>
             <v-img
               contain
-              max-height="650"
-              max-width="850"
+              max-height="450"
+              max-width="450"
               src="@/assets/docs/borrowCycle.png"
               alt="borrowCycle"
             />
