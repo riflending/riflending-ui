@@ -30,7 +30,7 @@ const mutations = {
     state.color = 'success'
     state.tx = objSuccess.tx
     state.loader = false
-    state.subSnack = `You have successfully ${objSuccess.action} ${objSuccess.token} with ${objSuccess.amount}`
+    state.subSnack = `You have successfully ${objSuccess.action} ${objSuccess.amount} ${objSuccess.token}`
   },
   [constants.SNACK_SET_SUCCESS_APPROVE_TX]: (state, objSuccess) => {
     state.snack = 'Success !'

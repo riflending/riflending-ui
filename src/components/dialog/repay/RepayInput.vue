@@ -100,27 +100,16 @@
         </v-btn>
       </v-row>
     </template>
-    <template v-else-if="!approveDialog">
-      <Loader />
-    </template>
-    <template v-else>
-      <Approve dialog-father-name="Repay" @backToMainDialog="closeTemplateApprove" />
-    </template>
   </div>
 </template>
 
 <script>
 import { mapState } from 'vuex'
-import Loader from '@/components/common/Loader.vue'
-import Approve from '@/components/common/Approve.vue'
 import { ethers } from 'ethers'
+import BigNumber from 'bignumber.js'
 
 export default {
   name: 'RepayInput',
-  components: {
-    Loader,
-    Approve,
-  },
   props: {
     data: {
       type: Object,
@@ -217,7 +206,13 @@ export default {
       ? this.$middleware.getWalletAccountBalance(this.account, this.data.market.token?.address)
       : this.$middleware.getWalletAccountBalanceForRBTC(this.account)
     walletBalancePromise.then((balanceOfToken) => {
-      this.maxAmountBalanceAllowed = balanceOfToken
+      this.$middleware.getGasPrice().then((price) => {
+        // balanceOfToken - (gasPrice * gasLimit)
+        const max = new BigNumber(balanceOfToken).minus(
+          price.multipliedBy(this.data.market.gasLimit).multipliedBy(2),
+        )
+        this.maxAmountBalanceAllowed = max.isNegative() ? 0 : max.toString()
+      })
     })
   },
   methods: {

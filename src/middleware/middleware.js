@@ -361,4 +361,10 @@ export default class Middleware {
     // approve
     return cTokenSigner.approve(addresses[cTokenDetail.symbol], ethers.constants.MaxUint256)
   }
+
+  async getGasPrice() {
+    return Vue.web3Provider.getGasPrice().then((price) => {
+      return new BigNumber(price.toString()).div(this.factor)
+    })
+  }
 }
