@@ -71,9 +71,7 @@ export default {
       return (this.tokenBalance / 10 ** this.data.token.decimals).toFixed(this.data.token.decimals)
     },
     rskExplorerUrl() {
-      return !process.env.VUE_APP_HTTP_EXPLORER
-        ? '#'
-        : `${process.env.VUE_APP_HTTP_EXPLORER}address/${this.tokenAddress}`
+      return `${process.env.VUE_APP_HTTP_EXPLORER}address/${this.tokenAddress}`
     },
   },
   created() {
