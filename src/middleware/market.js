@@ -19,6 +19,7 @@ export default class Market {
       underlyingName,
       underlyingDecimals,
       logo,
+      interestRateModel,
       account,
       collateralFactorMantissa,
       exchangeRateCurrent,
@@ -51,6 +52,8 @@ export default class Market {
     this.token.name = underlyingName
     this.token.decimals = underlyingDecimals
     this.token.logo = logo
+    //set interest rate model
+    this.interestRateModel = this.factoryContract.getContract(interestRateModel)
     // set borrow rate
     this.factor = 1e18
     this.blocksPerYear = 1051200
@@ -594,5 +597,59 @@ export default class Market {
     const mantissa = parseInt(this.token.decimals) - this.decimals
     const aux = new BigNumber(tokenValue.toString()).multipliedBy(Math.pow(10, mantissa))
     return aux.div(this.exchangeRateCurrent)
+  }
+
+  async calculateSupplyRate(supplyAmount = 0, borrowAmount = 0) {
+    const cash = await this.getMarketCash(true)
+    const totalBorrow = this.totalBorrows
+    const totalReseves = await this.instance.callStatic.totalReserves()
+    const factor = this.reserveFactorMantissa.multipliedBy(this.factor).toString()
+    const rateModel = this.interestRateModel.connect(this.factoryContract.getSigner())
+
+    const calculateTotalSupply = cash
+      .plus(supplyAmount)
+      .multipliedBy(10 ** this.token.decimals)
+      .toString()
+    const calculateTotalBorrow = totalBorrow
+      .plus(borrowAmount)
+      .multipliedBy(10 ** this.token.decimals)
+      .toString()
+    const calculateSupplyRate = await rateModel.callStatic.getSupplyRate(
+      calculateTotalSupply,
+      calculateTotalBorrow,
+      totalReseves.toString(),
+      factor,
+    )
+    const calculateSupplyRateFormated = new BigNumber(calculateSupplyRate.toString()).div(
+      this.factor,
+    )
+
+    return calculateSupplyRateFormated.times(100 * this.blocksPerYear).toNumber()
+  }
+
+  async calculateBorrowRate(borrowAmount = 0, supplyAmount = 0) {
+    const cash = await this.getMarketCash(true)
+    const totalBorrow = this.totalBorrows
+    const totalReseves = await this.instance.callStatic.totalReserves()
+    const rateModel = this.interestRateModel.connect(this.factoryContract.getSigner())
+    const calculateTotalSupply = cash
+      .plus(supplyAmount)
+      .multipliedBy(10 ** this.token.decimals)
+      .toString()
+    const calculateTotalBorrow = totalBorrow
+      .plus(borrowAmount)
+      .multipliedBy(10 ** this.token.decimals)
+      .toString()
+
+    const calculateBorrowRate = await rateModel.callStatic.getBorrowRate(
+      calculateTotalSupply,
+      calculateTotalBorrow,
+      totalReseves.toString(),
+    )
+    const calculateBorrowRateFormated = new BigNumber(calculateBorrowRate.toString()).div(
+      this.factor,
+    )
+
+    return calculateBorrowRateFormated.times(100 * this.blocksPerYear).toNumber()
   }
 }
