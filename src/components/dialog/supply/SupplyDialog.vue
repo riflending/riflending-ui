@@ -148,6 +148,7 @@ export default {
         this.successComponent = 'LiquidateSuccess'
         this.topComponent = 'SupplyTop'
       }
+      this.$emit('setCalulateApr', 0)
     },
   },
   mounted() {

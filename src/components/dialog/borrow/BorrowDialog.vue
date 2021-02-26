@@ -120,6 +120,7 @@ export default {
     currentComponent() {
       this.successComponent =
         this.currentComponent === 'BorrowInput' ? 'BorrowSuccess' : 'RepaySuccess'
+      this.$emit('setCalulateApr', 0)
     },
   },
   methods: {
