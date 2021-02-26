@@ -33,7 +33,6 @@ export default class Middleware {
         totalReserves,
         totalSupply,
       } = await this.getCTokenMetadata(addresses[cTokensDetail.symbol])
-
       const options = {
         cTokenSymbol: cTokensDetail.symbol,
         cTokenDecimals: cTokensDetail.decimals,
@@ -41,6 +40,7 @@ export default class Middleware {
         underlyingName: cTokensDetail.underlying.name,
         underlyingDecimals: cTokensDetail.underlying.decimals,
         logo: cTokensDetail.logo,
+        interestRateModel: cTokensDetail.interestRateModel,
         collateralFactorMantissa,
         exchangeRateCurrent,
         reserveFactorMantissa,
