@@ -4,6 +4,7 @@ const state = {
   markets: [],
   factor: 1e16,
   mantissa: 1e6,
+  calculateApr: null,
 }
 
 const actions = {
@@ -62,6 +63,10 @@ const mutations = {
   // eslint-disable-next-line no-shadow
   [constants.CONTROLLER_SET_MARKET_TOTAL_SUPPLIES]: (state, { marketIndex, marketSupplies }) => {
     state.markets[marketIndex].supplied = Number(marketSupplies)
+  },
+  // eslint-disable-next-line no-shadow
+  [constants.CALCULATE_APR]: (state, apr) => {
+    state.calculateApr = apr
   },
 }
 
