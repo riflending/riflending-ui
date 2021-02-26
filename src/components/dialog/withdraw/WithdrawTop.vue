@@ -32,13 +32,15 @@
         <h2>apr:</h2>
       </v-row>
       <v-row class="item d-flex justify-start">
-        {{ supplyRate | formatPercentage }}
+        {{ calculateSupplyRate | formatPercentage }}
       </v-row>
     </v-col>
   </v-row>
 </template>
 
 <script>
+import { mapState } from 'vuex'
+
 export default {
   name: 'WithdrawTop',
   props: {
@@ -58,9 +60,14 @@ export default {
   },
   computed: {
     rskExplorerUrl() {
-      return !process.env.VUE_APP_HTTP_EXPLORER
-        ? '#'
-        : `${process.env.VUE_APP_HTTP_EXPLORER}address/${this.tokenAddress}`
+      return `${process.env.VUE_APP_HTTP_EXPLORER}address/${this.tokenAddress}`
+    },
+    ...mapState({
+      calculateApr: (state) => state.Controller.calculateApr,
+    }),
+    calculateSupplyRate() {
+      if (!this.calculateApr) return this.supplyRate
+      return this.calculateApr
     },
   },
   created() {

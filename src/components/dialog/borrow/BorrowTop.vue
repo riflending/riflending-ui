@@ -37,7 +37,9 @@
       <v-row>
         <h2>apr:</h2>
       </v-row>
-      <v-row class="item d-flex justify-start"> {{ apr }}% </v-row>
+      <v-row class="item d-flex justify-start">
+        {{ calculateBorrowRate | formatPercentage }}
+      </v-row>
     </v-col>
   </v-row>
 </template>
@@ -68,14 +70,14 @@ export default {
   computed: {
     ...mapState({
       account: (state) => state.Session.account,
+      calculateApr: (state) => state.Controller.calculateApr,
     }),
-    apr() {
-      return this.borrowRate.toFixed(2)
+    calculateBorrowRate() {
+      if (!this.calculateApr) return this.borrowRate
+      return this.calculateApr
     },
     rskExplorerUrl() {
-      return !process.env.VUE_APP_HTTP_EXPLORER
-        ? '#'
-        : `${process.env.VUE_APP_HTTP_EXPLORER}address/${this.tokenAddress}`
+      return `${process.env.VUE_APP_HTTP_EXPLORER}address/${this.tokenAddress}`
     },
   },
   created() {

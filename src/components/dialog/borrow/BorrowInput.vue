@@ -179,6 +179,7 @@ export default {
     amount() {
       if (this.amount === this.getMaxAmount()) this.isAmountMax = true
       else this.isAmountMax = false
+      this.setCalculateApr()
     },
   },
   created() {
@@ -233,6 +234,18 @@ export default {
     setMaxAmount() {
       this.isAmountMax = true
       this.amount = this.getMaxAmount()
+    },
+    async calculateAprWithAmount() {
+      return this.data.market.calculateBorrowRate(this.amount).then((calculateApr) => {
+        return calculateApr
+      })
+    },
+    async setCalculateApr() {
+      if (this.validForm) {
+        this.calculateAprWithAmount().then((calculateApr) => {
+          this.$emit('setCalulateApr', calculateApr)
+        })
+      }
     },
   },
 }

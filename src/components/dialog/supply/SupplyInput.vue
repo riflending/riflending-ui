@@ -149,6 +149,7 @@ export default {
       tokenBalance: 0,
       needApproval: true,
       approveDialog: false,
+      polling: null,
       rules: {
         required: () => (!!Number(this.amount) && Math.sign(this.amount) == 1) || 'Required.',
         decimals: () =>
@@ -190,7 +191,11 @@ export default {
       this.getValues()
       if (this.amount === this.getMaxAmount()) this.isAmountMax = true
       else this.isAmountMax = false
+      this.setCalculateApr()
     },
+  },
+  beforeDestroy() {
+    clearInterval(this.polling)
   },
   created() {
     this.data.market
@@ -276,6 +281,25 @@ export default {
     setMaxAmount() {
       this.isAmountMax = true
       this.amount = this.getMaxAmount()
+    },
+    async calculateAprWithAmount() {
+      return this.data.market.calculateSupplyRate(this.amount).then((calculateApr) => {
+        return calculateApr
+      })
+    },
+    async setCalculateApr() {
+      if (this.validForm) {
+        this.calculateAprWithAmount().then((calculateApr) => {
+          this.supplyRate = calculateApr
+        })
+        if (!this.polling) this.pollData()
+      }
+    },
+
+    pollData() {
+      this.polling = setInterval(async () => {
+        await this.setCalculateApr()
+      }, 10000)
     },
   },
 }
