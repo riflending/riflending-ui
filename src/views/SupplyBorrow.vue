@@ -57,7 +57,12 @@
       </v-alert>
     </v-row>
     <v-row class="d-flex justify-center">
-      <component :is="currentComponent" @listChange="reset" @launchTx="catchTx" />
+      <component
+        :is="currentComponent"
+        @listChange="reset"
+        @launchTx="catchTx"
+        @setCalulateApr="setApr"
+      />
     </v-row>
     <v-row class="d-flex justify-center token-bridge-launch">
       <v-banner single-line elevation="0">
@@ -126,6 +131,8 @@ export default {
     async reset() {
       this.accountHealth = await this.$middleware.getAccountHealth(this.account)
       this.hasEnteredToSomeMarket = await this.$middleware.hasEnteredToSomeMarket(this.account)
+      //clear calculate apr
+      this.setApr(0)
     },
     catchTx(obj) {
       const { promiseAction, symbol, nameAction, amount, isApprove } = obj
@@ -142,7 +149,6 @@ export default {
           this.setWaitTxSnack()
           //await for wait tx
           return transaction.wait()
-          // })
         })
         //TODO validate transactionResult
         // eslint-disable-next-line no-unused-vars
@@ -175,10 +181,14 @@ export default {
       setSuccessApproveTxSnack: constants.SNACK_SET_SUCCESS_APPROVE_TX,
       setWaitTxSnack: constants.SNACK_SET_WAIT_TX,
       setFailTxSnack: constants.SNACK_SET_FAIL_TX,
+      setCalulatedApr: constants.CALCULATE_APR,
     }),
     persistEventLocalStorage(event, amount, hash, date, status) {
       const txLS = this.$user.createTx(hash, event, amount, date, status)
       this.$user.addTxToAccountList(txLS, this.account)
+    },
+    setApr(calulateApr) {
+      this.setCalulatedApr(calulateApr)
     },
   },
 }
