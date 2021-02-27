@@ -33,7 +33,6 @@ export default class Middleware {
         totalReserves,
         totalSupply,
       } = await this.getCTokenMetadata(addresses[cTokensDetail.symbol])
-
       const options = {
         cTokenSymbol: cTokensDetail.symbol,
         cTokenDecimals: cTokensDetail.decimals,
@@ -41,6 +40,7 @@ export default class Middleware {
         underlyingName: cTokensDetail.underlying.name,
         underlyingDecimals: cTokensDetail.underlying.decimals,
         logo: cTokensDetail.logo,
+        interestRateModel: cTokensDetail.interestRateModel,
         collateralFactorMantissa,
         exchangeRateCurrent,
         reserveFactorMantissa,
@@ -360,5 +360,11 @@ export default class Middleware {
     const cTokenSigner = contract.connect(this.factoryContractInstance.getSigner())
     // approve
     return cTokenSigner.approve(addresses[cTokenDetail.symbol], ethers.constants.MaxUint256)
+  }
+
+  async getGasPrice() {
+    return Vue.web3Provider.getGasPrice().then((price) => {
+      return new BigNumber(price.toString()).div(this.factor)
+    })
   }
 }

@@ -5,6 +5,7 @@ const state = {
   account: null,
   instance: null,
   isOwner: false,
+  displayDemoAlert: true,
 }
 
 const actions = {
@@ -24,6 +25,9 @@ const mutations = {
   [constants.SESSION_SET_PROPERTY]: (state, data) => {
     const [[property, value]] = Object.entries(data)
     state[property] = value
+  },
+  [constants.SESSION_DISPLAY_DEMO_ALERT]: (state, shouldBeDisplayed) => {
+    state.displayDemoAlert = shouldBeDisplayed
   },
 }
 

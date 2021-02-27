@@ -117,23 +117,16 @@
         </v-btn>
       </v-row>
     </template>
-    <template v-else>
-      <Loader />
-    </template>
   </div>
 </template>
 
 <script>
 import { mapState } from 'vuex'
-import Loader from '@/components/common/Loader.vue'
 import { ethers } from 'ethers'
 import BigNumber from 'bignumber.js'
 
 export default {
   name: 'WithdrawInput',
-  components: {
-    Loader,
-  },
   props: {
     data: {
       type: Object,
@@ -206,6 +199,7 @@ export default {
     amount() {
       if (this.amount === this.getMaxAmount()) this.isAmountMax = true
       else this.isAmountMax = false
+      this.setCalculateApr()
     },
   },
   created() {
@@ -283,6 +277,18 @@ export default {
     setMaxAmount() {
       this.isAmountMax = true
       this.amount = this.getMaxAmount()
+    },
+    async calculateAprWithAmount() {
+      return this.data.market.calculateSupplyRate(-this.amount).then((calculateApr) => {
+        return calculateApr
+      })
+    },
+    async setCalculateApr() {
+      if (this.validForm) {
+        this.calculateAprWithAmount().then((calculateApr) => {
+          this.$emit('setCalulateApr', calculateApr)
+        })
+      }
     },
   },
 }

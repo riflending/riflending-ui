@@ -124,31 +124,21 @@
         </v-row>
       </div>
     </template>
-    <template v-else-if="!approveDialog">
-      <Loader />
-    </template>
-    <template v-else>
-      <Approve dialog-father-name="Liquidate" @backToMainDialog="closeTemplateApprove" />
-    </template>
   </div>
 </template>
 
 <script>
 import { mapState } from 'vuex'
 import LiquidateList from '@/components/dialog/liquidate/LiquidateList.vue'
-import Loader from '@/components/common/Loader.vue'
 import BigNumber from 'bignumber.js'
 import { ethers } from 'ethers'
 import { cTokensDetails } from '../../../middleware/constants'
-import Approve from '@/components/common/Approve.vue'
 import * as Sentry from '@sentry/browser'
 
 export default {
   name: 'LiquidateInput',
   components: {
-    Loader,
     LiquidateList,
-    Approve,
   },
   props: {
     data: {
@@ -402,17 +392,22 @@ export default {
     getCollateralToken(accountObject) {
       this.borrowMarketSymbol = accountObject.collateral.token.symbol
       this.borrowMarketTokenDecimals = accountObject.collateral.token.decimals
-      if (!accountObject.collateral.isCRBTC) {
-        this.$middleware
-          .getWalletAccountBalance(this.account, accountObject.collateral.token.address)
-          .then((funds) => {
-            this.funds = funds
-          })
-      } else {
-        this.$middleware.getWalletAccountBalanceForRBTC(this.account).then((funds) => {
-          this.funds = funds
+
+      const walletBalancePromise = !accountObject.collateral.isCRBTC
+        ? this.$middleware.getWalletAccountBalance(
+            this.account,
+            accountObject.collateral.token.address,
+          )
+        : this.$middleware.getWalletAccountBalanceForRBTC(this.account)
+      walletBalancePromise.then((balanceOfToken) => {
+        this.$middleware.getGasPrice().then((price) => {
+          // balanceOfToken - (gasPrice * gasLimit)
+          const max = new BigNumber(balanceOfToken).minus(
+            price.multipliedBy(this.data.market.gasLimit),
+          )
+          this.funds = max.isNegative() ? 0 : max.toString()
         })
-      }
+      })
     },
     getCollateralMarketMaxAssetSelected() {
       try {

@@ -121,27 +121,15 @@
         </v-btn>
       </v-row>
     </template>
-    <template v-else-if="!approveDialog">
-      <Loader />
-    </template>
-    <template v-else>
-      <Approve dialog-father-name="Supply" @backToMainDialog="closeTemplateApprove" />
-    </template>
   </div>
 </template>
 
 <script>
 import { mapState } from 'vuex'
-import Loader from '@/components/common/Loader.vue'
-import Approve from '@/components/common/Approve.vue'
 import BigNumber from 'bignumber.js'
 
 export default {
   name: 'SupplyInput',
-  components: {
-    Loader,
-    Approve,
-  },
   props: {
     data: {
       type: Object,
@@ -161,6 +149,7 @@ export default {
       tokenBalance: 0,
       needApproval: true,
       approveDialog: false,
+      polling: null,
       rules: {
         required: () => (!!Number(this.amount) && Math.sign(this.amount) == 1) || 'Required.',
         decimals: () =>
@@ -202,7 +191,11 @@ export default {
       this.getValues()
       if (this.amount === this.getMaxAmount()) this.isAmountMax = true
       else this.isAmountMax = false
+      this.setCalculateApr()
     },
+  },
+  beforeDestroy() {
+    clearInterval(this.polling)
   },
   created() {
     this.data.market
@@ -229,7 +222,13 @@ export default {
           : this.$middleware.getWalletAccountBalanceForRBTC(this.account)
       })
       .then((balanceOfToken) => {
-        this.maxAmountBalanceAllowed = balanceOfToken
+        this.$middleware.getGasPrice().then((price) => {
+          // balanceOfToken - (gasPrice * gasLimit * 2)
+          const max = new BigNumber(balanceOfToken).minus(
+            price.multipliedBy(this.data.market.gasLimit).multipliedBy(2),
+          )
+          this.maxAmountBalanceAllowed = max.isNegative() ? 0 : max.toString()
+        })
       })
   },
   methods: {
@@ -282,6 +281,25 @@ export default {
     setMaxAmount() {
       this.isAmountMax = true
       this.amount = this.getMaxAmount()
+    },
+    async calculateAprWithAmount() {
+      return this.data.market.calculateSupplyRate(this.amount).then((calculateApr) => {
+        return calculateApr
+      })
+    },
+    async setCalculateApr() {
+      if (this.validForm) {
+        this.calculateAprWithAmount().then((calculateApr) => {
+          this.supplyRate = calculateApr
+        })
+        if (!this.polling) this.pollData()
+      }
+    },
+
+    pollData() {
+      this.polling = setInterval(async () => {
+        await this.setCalculateApr()
+      }, 10000)
     },
   },
 }

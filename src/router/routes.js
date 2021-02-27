@@ -87,6 +87,11 @@ export default [
     component: () => import(/* webpackChunkName: "terms" */ '@/views/Terms.vue'),
   },
   {
+    path: '/privacy',
+    name: 'Privacy',
+    component: () => import(/* webpackChunkName: "privacy" */ '@/views/Privacy.vue'),
+  },
+  {
     path: '*',
     redirect: { name: 'Landing' },
   },

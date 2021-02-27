@@ -111,7 +111,7 @@
                 >0xc02c09c578ae2680796e33f6662b779580cd84b6</a
               >
             </li>
-            <li>Comptroller (Logic only): 0x2e64b3acd75d86a8Ff17B98e02dAe4dCf2852a94</li>
+            <li>Comptroller (logic only): 0x2e64b3acd75d86a8Ff17B98e02dAe4dCf2852a94</li>
             <li>
               JumpRateModelV2:
               <a

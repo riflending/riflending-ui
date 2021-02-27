@@ -135,6 +135,7 @@ export const cTokensDetails = [
     underlying: { symbol: 'RBTC', name: 'RSK Smart Bitcoin', decimals: decimals.RBTC },
     logo: 'rbtc',
     adapter: 'PriceOracleAdapterRBTC',
+    interestRateModel: 'WhitePaperInterestRateModel',
     //this is use to substract the calculate liquidated amount (closed Factor * borrow borrower), because this calculate have a insignificant (but precius) % of  lost
     liquidate: {
       sub: 0.000001,
@@ -148,6 +149,7 @@ export const cTokensDetails = [
     underlying: { symbol: 'RIF', name: 'RSK Infrastructure Token', decimals: decimals.RIF },
     logo: 'rif',
     adapter: 'PriceOracleAdapterRif',
+    interestRateModel: 'WhitePaperInterestRateModel',
     //this is use to substract the calculate liquidated amount (closed Factor * borrow borrower), because this calculate have a insignificant (but precius) % of  lost
     liquidate: {
       sub: 0.001,
@@ -161,6 +163,7 @@ export const cTokensDetails = [
     underlying: { symbol: 'rUSDT', name: 'Tether USD', decimals: decimals.rUSDT },
     logo: 'usdt',
     adapter: 'PriceOracleAdapterUSDT',
+    interestRateModel: 'JumpRateModelV2',
     //this is use to substract the calculate liquidated amount (closed Factor * borrow borrower), because this calculate have a insignificant (but precius) % of  lost
     liquidate: {
       sub: 0.0001,
