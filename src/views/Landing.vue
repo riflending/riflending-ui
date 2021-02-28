@@ -13,7 +13,7 @@
             Go to rLending Dapp</v-btn>
         </v-row> -->
       </v-col>
-      <v-col cols="6" class="d-flex justify-center align-center">
+      <v-col cols="6" class="hidden-sm-and-down justify-center align-center">
         <img class="landing-1" src="../assets/landing/Ellipse_20.png" alt="" />
       </v-col>
     </v-row>
