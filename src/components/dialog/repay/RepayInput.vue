@@ -131,18 +131,18 @@ export default {
       needApproval: true,
       approveDialog: false,
       rules: {
-        required: () => !!Number(this.amount) || 'Required.',
+        required: () => !!Number(this.amount) || 'Required',
         decimals: () =>
           this.decimalPositions ||
-          `Maximum ${this.data.token.decimals} decimal places for ${this.data.token.symbol}.`,
+          `Maximum ${this.data.token.decimals} decimal places for ${this.data.token.symbol}`,
         debtExists: () =>
           (this.userTotalBorrow > 0 && !!this.contractAmount) ||
-          'You do not have a debt on this market.',
+          'You do not have a debt on this market',
         hasEnoughTokens: () =>
           Number(this.maxAmountBalanceAllowed) >= Number(this.amount) ||
           `You do not have enough ${this.data.token.symbol}`,
         notBiggerThanDebt: () =>
-          this.userTotalBorrow >= Number(this.amount) || 'You do not owe that much.',
+          this.userTotalBorrow >= Number(this.amount) || 'You do not owe that much',
       },
     }
   },

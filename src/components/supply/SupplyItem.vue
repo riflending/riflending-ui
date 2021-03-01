@@ -114,7 +114,7 @@ export default {
     },
   },
   mounted() {
-    this.$parent.$parent.$parent.$on('reload', this.reset)
+    this.$parent.$parent.$parent.$on('reload', this.reload)
   },
   created() {
     // set data token
@@ -139,6 +139,10 @@ export default {
   methods: {
     reset() {
       this.dialog = false
+      this.reload()
+      this.$emit('dialogClosed')
+    },
+    reload() {
       this.market
         .getUserBalanceOfUnderlying()
         .then((balance) => {
@@ -155,7 +159,6 @@ export default {
         .then((supplyRate) => {
           this.supplyRate = supplyRate
         })
-      this.$emit('dialogClosed')
     },
   },
 }

@@ -43,4 +43,29 @@
 
 .is-active{
   font-weight: 700 !important;
+  span.v-btn__content {
+    text-decoration: underline;
+  }
+}
+
+.v-btn:before {
+  background-color: transparent !important;
+}
+
+.v-ripple__container {
+  display:none !important;
+}
+
+.highlight{
+  font-weight: 700;
+  text-decoration: underline;
+}
+
+@media screen and (max-width: 600px) {
+  .text-truncate {
+    margin-right: 10px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
 }

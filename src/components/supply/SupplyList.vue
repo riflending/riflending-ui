@@ -30,45 +30,22 @@
         v-on="$listeners"
       />
     </v-list>
-    <template v-if="toggleMarketTransactionStatus === 'success'">
-      <SuccessDialog
-        :message="toggleMarketTransactionMessage"
-        :is-open="toggleMarketTransactionStatus === 'success'"
-      />
-    </template>
-    <template v-if="toggleMarketTransactionStatus === 'waiting'">
-      <WaitingDialog :is-open="toggleMarketTransactionStatus === 'waiting'" />
-    </template>
-    <template v-if="toggleMarketTransactionStatus === 'error'">
-      <ErrorDisplayDialog
-        :message="toggleMarketTransactionMessage"
-        :is-open="toggleMarketTransactionStatus === 'error'"
-      />
-    </template>
   </v-card>
 </template>
 
 <script>
 import { mapState } from 'vuex'
 import SupplyItem from '@/components/supply/SupplyItem.vue'
-import SuccessDialog from '@/components/dialog/SuccessDialog.vue'
-import WaitingDialog from '@/components/dialog/WaitingDialog.vue'
-import ErrorDisplayDialog from '@/components/dialog/ErrorDisplayDialog.vue'
 import * as constants from '@/store/constants'
 
 export default {
   name: 'SupplyList',
   components: {
     SupplyItem,
-    SuccessDialog,
-    WaitingDialog,
-    ErrorDisplayDialog,
   },
   data() {
     return {
       markets: [],
-      toggleMarketTransactionStatus: null,
-      toggleMarketTransactionMessage: '',
       unsubscribeStore: null,
       polling: null,
     }
@@ -77,12 +54,6 @@ export default {
     ...mapState({
       account: (state) => state.Session.account,
     }),
-  },
-  mounted() {
-    this.$root.$on('toggleMarketStatusTransaction', ({ status, message }) => {
-      this.toggleMarketTransactionStatus = status
-      this.toggleMarketTransactionMessage = message
-    })
   },
   beforeDestroy() {
     clearInterval(this.polling)
@@ -108,7 +79,7 @@ export default {
       this.$emit('listChange')
     },
     reloadItems() {
-      // this.$emit('reload')
+      this.$emit('reload')
     },
   },
 }
