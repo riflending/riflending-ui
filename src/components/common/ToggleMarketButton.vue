@@ -16,9 +16,10 @@
   </div>
 </template>
 <script>
-import { mapState } from 'vuex'
+import { mapState, mapMutations } from 'vuex'
 import Confirm from '@/components/common/Confirm.vue'
 import * as Sentry from '@sentry/browser'
+import * as constants from '@/store/constants'
 
 export default {
   name: 'ToggleMarketButton',
@@ -68,15 +69,15 @@ export default {
       const result = await this.$refs.confirm.open(title, description)
       if (result) {
         try {
-          this.$root.$emit('toggleMarketStatusTransaction', {
-            status: 'waiting',
-            value: this.value,
-            message: '',
-          })
-
+          this.setSnack('WAITING FOR CONFIRMATION')
+          let tx
           if (this.value) {
             // Exit the market
-            const { events } = await this.market.exitMarket()
+            const { events } = await this.market.exitMarket().then(async (exitMarket) => {
+              tx = exitMarket.hash
+              this.setWaitTxSnack()
+              return await exitMarket.wait()
+            })
             if (events.length > 0 && events[0]?.event === 'Failure') {
               throw new Error(
                 'There was a problem trying to exit the market, please try again later',
@@ -84,7 +85,11 @@ export default {
             }
           } else {
             // Enter the market
-            const { events } = await this.market.enterMarket()
+            const { events } = await this.market.enterMarket().then(async (enterMarket) => {
+              tx = enterMarket.hash
+              this.setWaitTxSnack()
+              return await enterMarket.wait()
+            })
             if (events.length > 0 && events[0]?.event === 'Failure') {
               throw new Error(
                 'There was a problem trying to enter the market, please try again later',
@@ -96,22 +101,25 @@ export default {
             ? 'You have successfully entered the market!'
             : 'You successfully exit the market!'
 
-          this.$root.$emit('toggleMarketStatusTransaction', {
-            status: 'success',
-            value: this.value,
-            message,
+          this.setGeneralSnack({
+            snack: 'Success !',
+            subMessage: message,
+            color: 'success',
+            tx: tx,
           })
         } catch (err) {
           Sentry.captureException(err)
-
-          this.$root.$emit('toggleMarketStatusTransaction', {
-            status: 'error',
-            value: this.value,
-            message: err.message,
-          })
+          const userError = typeof err === 'string' ? err : err.message || ''
+          this.setFailTxSnack({ error: userError })
         }
       }
     },
+    ...mapMutations({
+      setSnack: constants.SNACK_SET,
+      setWaitTxSnack: constants.SNACK_SET_WAIT_TX,
+      setFailTxSnack: constants.SNACK_SET_FAIL_TX,
+      setGeneralSnack: constants.SNACK_GENERAL_SET,
+    }),
   },
 }
 </script>
