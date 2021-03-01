@@ -191,24 +191,28 @@
               financial permissionless lending system built on the
               <a href="https://www.rsk.co" target="_blank">RSK Network</a>.
               <strong>rLending</strong> enables users to lend and borrow popular cryptocurrencies
-              like
+              like <strong>RSK Smart Bitcoin</strong> and
               <a href="https://coinmarketcap.com/currencies/tether/" target="_blank">USDT</a> in
               exchange for interest or debt.
             </p>
             <h2 id="howWorks">How does it work?</h2>
             <p>
               <strong>rLending</strong> leverages
-              <a href="docs/securityAudits" target="_blank">audited</a>
-              <a href="https://en.wikipedia.org/wiki/Smart_contract" target="_blank"
-                >Smart Contracts</a
+              <a href="docs/securityAudits" target="_blank"> audited</a>
+              <a href="https://en.wikipedia.org/wiki/Smart_contract" target="_blank">
+                Smart Contracts</a
               >
-              which are responsible for the storage, management and facilitation of all funds. This
+              which are responsible for the storage, management, and facilitation of all funds. This
               means that users do not have a rLending login, but rather connect to the
-              <a href="https://www.rsk.co" target="_blank">RSK Network</a> and its benefits through
-              web3 wallets. rLending
-              <a href="docs/keyConcepts#markets" target="_blank">Markets</a> are always on, meaning
-              that anyone can lend or borrow their assets in minutes without any intervention or
-              permission request, since the <em>Smart Contracts</em> are self-regulating.
+              <a href="https://www.rsk.co" target="_blank">RSK Network</a>, and its benefits through
+              web3 wallets. <strong>rLending</strong>
+              <a href="docs/keyConcepts#markets" target="_blank"> Markets</a> are always on, meaning
+              that anyone can lend or borrow their assets in minutes, and without any intervention
+              or permission request since the
+              <a href="https://en.wikipedia.org/wiki/Smart_contract" target="_blank">
+                Smart Contracts</a
+              >
+              are self-regulating.
             </p>
             <p>
               <strong
@@ -235,19 +239,20 @@
               <a href="https://github.com/riflending/" target="_blank">rLending platform</a> is open
               sourced. The only costs involved in using the platform are related to the
               <a href="https://www.investopedia.com/terms/g/gas-ethereum.asp" target="_blank">
-                GAS price</a
-              >
+                GAS price,
+              </a>
               and they vary for each transaction.
             </p>
             <p>
-              You can always try rLending for free, since there is a
+              You can always try <strong>rLending</strong> for free, since there is a
               <a href="http://test.rlending.app" target="_blank"> test-net deploy </a> of
               <a href="https://github.com/riflending/rlending-protocol" target="_blank"
                 >the protocol</a
               >. To access it, follow the steps in the <a href="#testnet">section below</a>
             </p>
             <p>
-              If you wish to know more about what a Test Network is and how it works, you might find
+              If you wish to know more about what a Test Network is, and how it works, you might
+              find
               <a href="https://cryptodefinitions.com/dictionary/testnet/" target="_blank">
                 this article</a
               >
@@ -256,19 +261,19 @@
             <h2 id="howProfit">How much does using rLending cost?</h2>
             <p>
               <strong>rLending doesn't charge users.</strong> The project was built on the basis for
-              a more inclusive stronger, smarter, non-custodial, trustless distributed ecosystem in
-              the <a href="https://www.rsk.co" target="_blank">RSK Network</a>.
+              a more inclusive, stronger, smarter, non-custodial, and trustless distributed
+              ecosystem in the <a href="https://www.rsk.co" target="_blank">RSK Network</a>.
             </p>
             <p>
-              As more projects like rLending emerge, it becomes easier and more secure to transition
-              from a classic Centralized Financial System (<em>CEFI</em>) to a decentralized one
-              (<em>DEFI</em>). See the
+              As more projects like <strong>rLending</strong> emerge, it becomes easier and more
+              secure to transition from a classic Centralized Financial System (<em>CEFI</em>) to a
+              decentralized one (<em>DEFI</em>). See the
               <a href="docs/howTo#integration" target="_blank">Integration Section</a> in the
               <a href="docs" target="_blank">Documentation</a> to learn more about this.
             </p>
             <h2 id="getWallet">How do I get a wallet?</h2>
             <p>
-              rLending supports both
+              <strong>rLending</strong> supports both
               <a href="https://www.poa.network/for-users/nifty-wallet" target="_blank">Nifty</a> and
               <a href="https://metamask.io/" target="_blank">Metamask</a> wallets.
               <a href="https://www.rsk.co" target="_blank">RSK</a> has created a nice tutorial on
@@ -287,10 +292,11 @@
             </p>
             <h2 id="testnet">How do I connect to rLending in Test Network?</h2>
             <p>
-              If you wish to try the platform and get comfortable with the features it provides but
-              at the same time you are hesitant about moving valued cryptocurrencies, you can always
-              connect through Testnet. Assuming you have your wallet extension installed, you will
-              have to make certain you have it switched to <strong>RSK Testnet</strong>
+              If you wish to try the platform, and get comfortable with the features it provides,
+              but at the same time you are hesitant about moving valued cryptocurrencies, you can
+              always connect through <a href="http://test.rlending.app" target="_blank">Testnet</a>.
+              Assuming you have your wallet extension installed, you will have to make certain you
+              have it switched to <strong>RSK Testnet</strong>
             </p>
             <p align="center">
               <v-img
@@ -305,16 +311,16 @@
               Users of the RSK Network are able to request Testnet funds through the
               <a href="https://faucet.rsk.co/" target="_blank">RSK Testnet Faucet</a>. This faucet
               will provide your <a href="docs/keyConcepts#account" target="_blank">account</a> with
-              0.05 T-rBTC to get you started on testing applications. There is also a
-              <a href="https://faucet.rifos.org/" target="_blank"> Testnet tRIF faucet</a> if you
+              <strong>0.05 T-rBTC</strong> to get you started on testing applications. There is also
+              a <a href="https://faucet.rifos.org/" target="_blank"> Testnet tRIF faucet</a> if you
               wish to try it as well.
             </p>
             <p>
               Once you have your testnet funds (T-rBTC or t-RIF), head over to
               <a href="https://test.rlending.app" target="_blank">https://test.rlending.app</a>.
-              Click on the blue boton at the top right corner. From here, users are prompted to
-              connect with their <a href="#getWallet">web3 wallet of choice.</a> (in this example we
-              are using Nifty but Metamask is also supported)
+              Click on the blue boton at the top right corner. From there, users are prompted to
+              connect their <a href="#getWallet">web3 wallet</a> (in this example we are using Nifty
+              but Metamask is also supported)
             </p>
             <p>
               Once connected, you will see the
@@ -355,10 +361,10 @@
               />
             </p>
             <p>
-              head over to <a href="https://rlending.app" target="_blank">https://rlending.app</a>.
+              Head over to <a href="https://rlending.app" target="_blank">https://rlending.app</a>.
               Click on the blue boton at the top right corner. From here, users are prompted to
               connect with their
-              <a href="#getWallet">web3 wallet of choice.</a>
+              <a href="#getWallet">web3 wallet.</a>
             </p>
             <p>
               Once connected, you will see the
@@ -392,10 +398,11 @@
               functions may fluctuate by
               <a href="docs/keyConcepts#markets" target="_blank">market</a> and
               <a href="docs/keyConcepts#account" target="_blank">user</a>. External calls, such as
-              to underlying ERC-20 tokens, may use an arbitrary amount of gas. Any calculations that
-              involve checking <a href="docs/keyConcepts#account" target="_blank">account</a>
-              <a href="docs/keyConcepts#liquidity" target="_blank"> liquidity</a>, have gas costs
-              that increase with the number of entered markets. Thus, while it can be difficult to
+              the ones made to underlying ERC-20 tokens, may use an arbitrary amount of gas. Any
+              calculations that involve checking
+              <a href="docs/keyConcepts#account" target="_blank">account</a>
+              <a href="docs/keyConcepts#liquidity" target="_blank"> liquidity</a>, incur in gas
+              costs that increase with the number of entered markets. While it can be difficult to
               provide any guarantees about costs, we provide the table below for guidance:
             </p>
 
@@ -418,7 +425,8 @@
             <h2 id="earnings">How do users earn money with rLending?</h2>
             <p>
               Each <a href="docs/keyConcepts#markets" target="_blank">market</a> has its own Supply
-              interest rate (APR). Interest isn&#39;t distributed; instead,
+              interest rate (APR). Interest isn&#39;t distributed by a centralized authority;
+              instead,
               <strong
                 >simply by holding <a href="docs/keyConcepts#ctokens" target="_blank">cTokens</a>,
                 you&#39;ll earn interest!</strong
@@ -439,18 +447,18 @@
             </p>
             <h2 id="howMuchEarnings">How much earnings can I expect?</h2>
             <p>
-              Earnings depend upon many factors and it is always impossible to predict the future,
-              but a good starting point is to run your own predictions based upon the
+              Earnings depend upon many factors, and it is always impossible to predict the future.
+              A good starting point is to run your own predictions based upon the
               <a href="docs/keyConcepts#howInterest" target="_blank">APR</a> and
-              <a href="docs/keyConcepts" target="_blank">Market Data</a> before performing any
-              transaction
+              <a href="docs/keyConcepts" target="_blank">Market Data</a>, before performing any
+              transaction.
             </p>
             <h2 id="canBorrow">Can I borrow without a deposit?</h2>
             <p>
               <strong> No.</strong> In order to manage the risk factor, the platform does not allow
-              for users to borrow funds without providing collateral. This is a common practice
-              among <em>DEFI</em> implementations. We encourage you to read more about this topic in
-              <a href="docs" target="_blank">the documentation</a>.
+              for users to borrow funds without providing collateral first. This is a common
+              practice among <em>DEFI</em> implementations. We encourage you to read more about this
+              topic in <a href="docs" target="_blank">the documentation</a>.
             </p>
             <h2 id="howBorrow">How does borrowing work?</h2>
             <p>
@@ -463,7 +471,7 @@
               >
                 Collateral Factor</a
               >. If you borrow, your
-              <a href="docs/keyConcepts#ctokens"> target="_blank"CTokens</a> will act as collateral
+              <a href="docs/keyConcepts#ctokens" target="_blank">CTokens</a> will act as collateral
               for <a href="docs/keyConcepts#account" target="_blank">your account</a>, and your
               wallet will receive the
               <a href="docs/keyConcepts#underlying" target="_blank"> underlying asset</a>.
@@ -479,43 +487,44 @@
             <h2 id="howColFact">How does Collateral Factor work?</h2>
             <p>
               <strong>Collateral Factor</strong> is the percentage of supplied assets in a
-              <a href="docs/keyConcepts#markets" target="_blank">market</a> that is locked as
+              <a href="docs/keyConcepts#markets" target="_blank">market,</a> that is locked as
               collateral for borrowing. If you wish to know more about these values, we encourage
               you to check <a href="docs/keyConcepts" target="_blank">the documentation</a>.
             </p>
             <h2 id="crossBorrow">Can I borrow from a market I have not supplied to?</h2>
-            <p><strong>Yes!</strong>This is one of the most used transactions.</p>
+            <p><strong>Yes!</strong> This is one of the most used transactions.</p>
             <h2 id="whatDebt">What happens if someone doesn't pay their debt?</h2>
             <p>
               Users incur in <a href="docs/keyConcepts#debt" target="_blank">debt</a> by borrowing
               assets. In order to borrow they have to
               <a href="#howBorrow">provide collateral</a> first. In the event that
               <a href="docs/keyConcepts#liquidity" target="_blank">user's liquidity</a> runs out,
-              the <a href="docs/keyConcepts#account" target="_blank">account</a> incurs in shortfall
-              and becomes prone to
+              the <a href="docs/keyConcepts#account" target="_blank">account</a> incurs in
+              shortfall, and becomes prone to
               <a href="docs/keyConcepts#liquidation" target="_blank">liquidation</a>.
             </p>
             <p>
               When an account is liquidated by another account, the liquidator buys a portion of the
-              liquidated's underlying at a discount given by the
+              liquidated's underlying at a discount, given by the
               <a href="docs/keyConcepts#liquidation" target="_blank">Close Factor</a> (currently set
               to 8%).
             </p>
             <p>
-              Getting liquidated is very bad, because the liquidated user looses a part of their
-              underlying collateral provided.
+              <strong>Getting liquidated is very bad</strong>How Can I Have More Debt T because the
+              liquidated user looses a part of their underlying collateral provided.
             </p>
             <h2 id="reserves">
               What is preventing someone from withdrawing all of the balance in the contracts?
             </h2>
             <p>
-              Even though rLending is self-regulating and it has mechanisms in place to prevent
-              abuses. Self-regulating means there is an automated balance that runs the interest
-              ratios for each <a href="docs/keyConcepts#markets" target="_blank">market</a> if there
-              is too much supply and not enough borrows to pay for them, the borrowing fees will
-              automatically drop, becoming a more attractive investment opportunity. If on the other
-              hand, demand is heavy on the borrows but supply is short, then the Supply Rate will
-              rise to attract suppliers.
+              <strong>rLending</strong> is self-regulating and it has mechanisms in place to prevent
+              abuses. <em>Self-regulating</em> means there is an automated balance that runs the
+              interest ratios for each
+              <a href="docs/keyConcepts#markets" target="_blank">market</a>. If there is too much
+              supply, and not enough borrows to pay for them, the borrowing fees will automatically
+              drop. This makes for a more attractive investment opportunity for borrowers. If on the
+              other hand, demand is heavy on the borrows but supply is short, then the Supply Rate
+              will rise to attract suppliers.
             </p>
             <p>
               In short: <em>supply and demand</em> automatically dictate the balance of each
@@ -541,7 +550,7 @@
                 >the protocol</a
               >
               tends to have higher <a href="#howColFact">collateral factor</a> for
-              <a href="docs/keyConcepts#markets" target="_blank">markets</a> that are more volatile
+              <a href="docs/keyConcepts#markets" target="_blank">markets</a> that are more volatile,
               and lower for those with more stability.
             </p>
             <h2 id="healthFactor">What is a Health Factor?</h2>
@@ -581,20 +590,20 @@
             <p>
               <strong>The rLending Protocol is compliant with modern security practices. </strong>
               This means the <a href="docs/contracts" target="_blank">smart contracts</a> have been
-              <a href="docs/securityAudits" target="_blank">audited</a> both by internal and
+              <a href="docs/securityAudits" target="_blank">audited</a> both by internal, and
               external third party professionals.
             </p>
             <p>
               <strong>
-                The rLending app (<em> front end</em>) does not store any user information.</strong
+                The rLending app (<em> front end </em>) does not store any user information.</strong
               >
               It just provides the web services and functionalities to easily interact with the
               <a href="docs/contracts" target="_blank">smart contracts</a> running in the back-end.
             </p>
             <p>
-              rLending also has a
+              <strong>rLending</strong> also has a
               <a href="docs/securityAudits" target="_blank">Bug Bounty program</a> with several open
-              challenges to ethical hackers who wish to audit the source-code and find any
+              challenges for ethical hackers who wish to audit the source-code, and find any
               vulnerability.
             </p>
             <hr />
@@ -632,14 +641,14 @@
             <h2>The website looks weird on my mobile phone:</h2>
             <p>
               Yes, while in Beta, the rLending platform is not designed to be used on mobile phones
-              or tablets. A PC with a web browser is recommended.
+              or tablets. Using a PC with a web browser is recommended.
             </p>
             <h2>I can't connect:</h2>
             <p>
               This is most likely due to a missconfiguration of the web3 wallet. We recommend you
               follow <a href="#mainnet">these steps</a>. If you are still unable to connect, feel
               free to <a href="mailto:support@rlending.app" target="_blank">email us</a> or reach
-              out to us over <a href="https://twitter.com/r_lending" target="_blank">Twitter</a>.
+              out to us over <a href="https://t.me/rLendingCommunity" target="_blank"> Telegram.</a>
             </p>
             <h2>Transaction Reverted:</h2>
             <p>
@@ -667,8 +676,9 @@
             <p>
               You can reach out to us on any of our social media. You can
               <a href="mailto:support@rlending.app" target="_blank">email us</a> or reach out to us
-              on
-              <a href="https://twitter.com/r_lending" target="_blank">Twitter</a>
+              on <a href="https://twitter.com/r_lending" target="_blank">Twitter</a>. You might also
+              want to join us on
+              <a href="https://t.me/rLendingCommunity" target="_blank"> Telegram.</a>
             </p>
             <hr />
             <div class="pan-container" align="right">
