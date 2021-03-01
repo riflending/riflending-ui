@@ -33,12 +33,12 @@
         <v-icon class="d-flex justify-center" x-large color="#000000"> error_outline </v-icon>
       </v-row>
       <v-row class="ma-6 d-flex justify-center">
-        <h1>There are no accounts available to be liquidated</h1>
+        <h1>There are no accounts prone to liquidation</h1>
       </v-row>
-      <v-row class="my-6 d-flex justify-center"> Please check later. </v-row>
+      <v-row class="my-6 d-flex justify-center"> Please check back later. </v-row>
     </div>
     <div v-else class="py-6 empty-liquidate">
-      <v-row class="my-6 d-flex justify-center"> Wait until load... </v-row>
+      <v-row class="my-6 d-flex justify-center"> Loading... </v-row>
       <v-row class="my-6 d-flex justify-center">
         <v-progress-circular indeterminate :size="30" color="#008CFF" />
       </v-row>
