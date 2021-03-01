@@ -8,6 +8,9 @@ The [rLending-protocol](https://github.com/riflending/rlending-protocol) is base
 
 Through the use of this web application, Lenders earn revenue in exchange for their supplied assets and borrowers pay interests for the assets they used.
 
+| ![Dashboard](./src/assets/readme/dashboard.png) | ![Supply](./src/assets/readme/supply.png) |
+| --- | --- |
+| ![Markets](./src/assets/readme/markets.png) | ![Architecture](./src/assets/readme/architecture.png) |
 
 # How to (developers)
 ## Requirements:
