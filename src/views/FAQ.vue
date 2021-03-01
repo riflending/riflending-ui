@@ -250,8 +250,9 @@
             <p>
               As more projects like rLending emerge, it becomes easier and more secure to transition
               from a classic Centralized Financial System (<em>CEFI</em>) to a decentralized one
-              (<em>DEFI</em>). See the <a href="docs#integration">Integration Section</a> in the
-              <a href="docs">Documentation</a> to learn more about this.
+              (<em>DEFI</em>). See the
+              <a href="docs/howTo#integration" target="_blank">Integration Section</a> in the
+              <a href="docs" target="_blank">Documentation</a> to learn more about this.
             </p>
             <h2 id="getWallet">How do I get a wallet?</h2>
             <p>
@@ -376,11 +377,10 @@
               <a href="docs/keyConcepts#markets" target="_blank">market</a> and
               <a href="docs/keyConcepts#account" target="_blank">user</a>. External calls, such as
               to underlying ERC-20 tokens, may use an arbitrary amount of gas. Any calculations that
-              involve checking
-              <a href="docs/keyConcepts#account" target="_blank">account</a> liquidity, have gas
-              costs that increase with the number of entered markets. Thus, while it can be
-              difficult to provide any guarantees about costs, we provide the table below for
-              guidance:
+              involve checking <a href="docs/keyConcepts#account" target="_blank">account</a>
+              <a href="docs/keyConcepts#liquidity" target="_blank"> liquidity</a>, have gas costs
+              that increase with the number of entered markets. Thus, while it can be difficult to
+              provide any guarantees about costs, we provide the table below for guidance:
             </p>
 
             <ul>
@@ -404,47 +404,53 @@
               Each <a href="docs/keyConcepts#markets" target="_blank">market</a> has its own Supply
               interest rate (APR). Interest isn&#39;t distributed; instead,
               <strong
-                >simply by holding <a href="docs/keyConcepts#ctokens">cTokens</a>, you&#39;ll earn
-                interest!</strong
+                >simply by holding <a href="docs/keyConcepts#ctokens" target="_blank">cTokens</a>,
+                you&#39;ll earn interest!</strong
               >
             </p>
             <p>
-              <a href="docs/keyConcepts#ctokens">cTokens</a> accumulate interest through their
-              exchange rate — over time, each cToken
+              <a href="docs/keyConcepts#ctokens" target="_blank">cTokens</a> accumulate interest
+              through their exchange rate — over time, each cToken
               <strong
                 >becomes convertible into an increasing amount of it&#39;s underlying asset</strong
               >, even while the number of cTokens in your wallet stays the same.
             </p>
             <p>
-              We encourage you to read through <a href="docs">the documentation</a> where you will
-              find <a href="docs#howInterests">a good example</a> on how this works.
+              We encourage you to read through
+              <a href="docs/keyConcepts" target="_blank">the documentation</a> where you will find
+              <a href="docs/keyConcepts#howInterests" target="_blank">a good example</a> on how this
+              works.
             </p>
             <h2 id="howMuchEarnings">How much earnings can I expect?</h2>
             <p>
               Earnings depend upon many factors and it is always impossible to predict the future,
               but a good starting point is to run your own predictions based upon the
-              <a href="docs#howInterest">APR</a> and <a href="docs#howData">Market Data</a> before
-              performing any transaction
+              <a href="docs/keyConcepts#howInterest" target="_blank">APR</a> and
+              <a href="docs/keyConcepts" target="_blank">Market Data</a> before performing any
+              transaction
             </p>
             <h2 id="canBorrow">Can I borrow without a deposit?</h2>
             <p>
               <strong> No.</strong> In order to manage the risk factor, the platform does not allow
               for users to borrow funds without providing collateral. This is a common practice
               among <em>DEFI</em> implementations. We encourage you to read more about this topic in
-              <a href="docs">the documentation</a>.
+              <a href="docs" target="_blank">the documentation</a>.
             </p>
             <h2 id="howBorrow">How does borrowing work?</h2>
             <p>
               In order to borrow you will be required to
-              <a href="#whyDeposit">provide liquidity</a>. The percentage of liquidity of an asset
+              <a href="#whyDeposit">provide liquidity</a>. The percentage of
+              <a href="docs/keyConcepts#liquidity" target="_blank">liquidity</a> of an asset
               required to borrow another is given by the
               <a href="docs/keyConcepts#markets" target="_blank">market</a>’s<a
-                href="docs#collateralFactor"
+                href="docs/keyConcepts#collateralFactor"
               >
                 Collateral Factor</a
-              >. If you borrow, your <a href="docs/keyConcepts#ctokens">CTokens</a> will act as
-              collateral for <a href="docs/keyConcepts#account" target="_blank">your account</a>,
-              and your wallet will receive the <a href="docs#underlying"> underlying asset</a>.
+              >. If you borrow, your
+              <a href="docs/keyConcepts#ctokens"> target="_blank"CTokens</a> will act as collateral
+              for <a href="docs/keyConcepts#account" target="_blank">your account</a>, and your
+              wallet will receive the
+              <a href="docs/keyConcepts#underlying" target="_blank"> underlying asset</a>.
             </p>
 
             <h2 id="borrowFee">What are the fees for borrowing?</h2>
@@ -452,28 +458,32 @@
               You can check the current borrowing fees in the
               <a href="https://rlending.app/status" target="_blank">Market Data</a>. If you wish to
               know more about these values, we encourage you to check
-              <a href="docs#howData">the documentation</a>.
+              <a href="docs/keyConcepts" target="_blank">the documentation</a>.
             </p>
             <h2 id="howColFact">How does Collateral Factor work?</h2>
             <p>
               <strong>Collateral Factor</strong> is the percentage of supplied assets in a
               <a href="docs/keyConcepts#markets" target="_blank">market</a> that is locked as
               collateral for borrowing. If you wish to know more about these values, we encourage
-              you to check <a href="docs#howData">the documentation</a>.
+              you to check <a href="docs/keyConcepts" target="_blank">the documentation</a>.
             </p>
             <h2 id="crossBorrow">Can I borrow from a market I have not supplied to?</h2>
             <p><strong>Yes!</strong>This is one of the most used transactions.</p>
             <h2 id="whatDebt">What happens if someone doesn't pay their debt?</h2>
             <p>
-              Users incur in debt by borrowing assets. In order to borrow they have to
-              <a href="#howBorrow">provide collateral</a> first. In the event that user's liquidity
-              runs out, the <a href="docs/keyConcepts#account" target="_blank">account</a> incurs in
-              shortfall and becomes prone to liquidation.
+              Users incur in <a href="docs/keyConcepts#debt" target="_blank">debt</a> by borrowing
+              assets. In order to borrow they have to
+              <a href="#howBorrow">provide collateral</a> first. In the event that
+              <a href="docs/keyConcepts#liquidity" target="_blank">user's liquidity</a> runs out,
+              the <a href="docs/keyConcepts#account" target="_blank">account</a> incurs in shortfall
+              and becomes prone to
+              <a href="docs/keyConcepts#liquidation" target="_blank">liquidation</a>.
             </p>
             <p>
               When an account is liquidated by another account, the liquidator buys a portion of the
               liquidated's underlying at a discount given by the
-              <a href="docs#liquidation">Close Factor</a> (currently set to 8%).
+              <a href="docs/keyConcepts#liquidation" target="_blank">Close Factor</a> (currently set
+              to 8%).
             </p>
             <p>
               Getting liquidated is very bad, because the liquidated user looses a part of their
@@ -497,16 +507,17 @@
             </p>
             <p>
               As for security measures, we encourage you to read up on them in
-              <a href="docs#security">the documentation</a>. For example: the
-              <a href="docs#reserveFactor">Reserve Factor</a> and the
-              <a href="docs#multiSig">Multi-Sig system</a>.
+              <a href="docs/securityAudits" target="_blank">the documentation</a>. For example: the
+              <a href="docs/keyConcepts#reserveFactor" target="_blank">Reserve Factor</a> and the
+              <a href="docs/securityAudits" target="_blank">Multi-Sig system</a>.
             </p>
             <h2 id="priceVariation">How can I have more debt than before?</h2>
             <p>
-              <a href="docs#debt">Debt and liquidity</a>are calculated in USD. This means that if a
-              user supplies collateral on an asset with a volatile
-              <a href="docs#marketPrice">market price </a>, the user's collateral provided becomes
-              volatile as well.
+              <a href="docs/keyConcepts#debt" target="_blank">Debt</a> and
+              <a href="docs/keyConcepts#liquidity" target="_blank">liquidity</a> are calculated in
+              USD. This means that if a user supplies collateral on an asset with a volatile
+              <a href="docs/keyConcepts#marketPrice" target="_blank">market price </a>, the user's
+              collateral provided becomes volatile as well.
             </p>
             <p>
               To mitigate this, the protocol tends to have higher
@@ -517,7 +528,8 @@
             <h2 id="healthFactor">What is a Health Factor?</h2>
             <p>
               <em>Health Factor</em> is the result of a formula that is used to predict how close to
-              liquidation an <a href="docs/keyConcepts#account" target="_blank">account</a> is.
+              <a href="docs/keyConcepts#liquidation" target="_blank">liquidation</a> an
+              <a href="docs/keyConcepts#account" target="_blank">account</a> is.
             </p>
             <ul>
               Generally speaking:
@@ -539,25 +551,27 @@
               </strong>
               If this happens, your
               <a href="docs/keyConcepts#account" target="_blank">account</a> is prone to
-              liquidation. You should deposit more collateral and repay your borrows before another
-              account liquidates your underlying.
+              <a href="docs/keyConcepts#liquidation" target="_blank">liquidation</a>. You should
+              deposit more collateral and repay your borrows before another account liquidates your
+              underlying.
             </p>
             <h2 id="security">How secure is rLending?</h2>
             <p>
               <strong>The rLending Protocol is compliant with modern security practices. </strong>
-              This means the <a href="docs#contract">smart contracts</a> have been
-              <a href="docs#audits">audited</a> both by internal and external third party
-              professionals.
+              This means the <a href="docs/contracts" target="_blank">smart contracts</a> have been
+              <a href="docs/securityAudits" target="_blank">audited</a> both by internal and
+              external third party professionals.
             </p>
             <p>
               <strong>
                 The rLending app (<em> front end</em>) does not store any user information.</strong
               >
               It just provides the web services and functionalities to easily interact with the
-              <a href="docs#contract">smart contracts</a> running in the back-end.
+              <a href="docs/contracts" target="_blank">smart contracts</a> running in the back-end.
             </p>
             <p>
-              rLending also has a <a href="docs#bugBounty">Bug Bounty program</a> with several open
+              rLending also has a
+              <a href="docs/securityAudits" target="_blank">Bug Bounty program</a> with several open
               challenges to ethical hackers who wish to audit the source-code and find any
               vulnerability.
             </p>
@@ -566,7 +580,8 @@
             <h2 id="contracts">How do I interact with the smart contracts?</h2>
             <p>
               All of the smart contracts are listed and verified. You may find a list in
-              <a href="docs#contracts">the documentation</a>, both for testnet and mainnet.
+              <a href="docs/contracts" target="_blank">the documentation</a>, both for testnet and
+              mainnet.
             </p>
             <h2 id="docs">Where can I find more info on...</h2>
             <p>
@@ -585,7 +600,8 @@
               Requests.
             </p>
             <p>
-              rLending also has a <a href="docs#bugBounty">Bug Bounty program</a> with several open
+              rLending also has a
+              <a href="docs/securityAudits" target="_blank">Bug Bounty program</a> with several open
               challenges to ethical hackers who wish to audit the source-code and find any
               vulnerability.
             </p>
@@ -599,8 +615,9 @@
             <h2>I can't connect:</h2>
             <p>
               This is most likely due to a missconfiguration of the web3 wallet. We recommend you
-              follow <a href="mainnet">these steps</a>. If you are still unable to connect, feel
-              free to <a href="">contact us</a> or <a href="">join the Discord community</a>.
+              follow <a href="#mainnet">these steps</a>. If you are still unable to connect, feel
+              free to <a href="mailto:support@rlending.app" target="_blank">email us</a> or
+              contacting us on <a href="https://twitter.com/r_lending" target="_blank">Twitter</a>.
             </p>
             <h2>Transaction Reverted:</h2>
             <p>
@@ -619,14 +636,16 @@
             <p>
               The liquidation tab is not yet optimized and it will take a couple of minutes to load
               the proper data. Keep in mind that we are still in Beta, and there is a chance no
-              <a href="docs/keyConcepts#account" target="_blank">account</a> is prone to liquidation
+              <a href="docs/keyConcepts#account" target="_blank">account</a> is prone to
+              <a href="docs/keyConcepts#liquidation" target="_blank">liquidation</a>
               yet. Liquidations are very rare.
             </p>
             <hr />
             <h1 id="support">How do I contact Support?</h1>
             <p>
-              You can reach out to us on any of our social media. You can join
-              <a href="">join the Discord community hub</a> or <a href="">join us in telegram</a>.
+              You can reach out to us on any of our social media. You can
+              <a href="mailto:support@rlending.app" target="_blank">email us</a> or contact us on
+              <a href="https://twitter.com/r_lending" target="_blank">Twitter</a>
             </p>
             <hr />
             <div class="pan-container" align="right">
