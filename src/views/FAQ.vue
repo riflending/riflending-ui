@@ -616,8 +616,8 @@
             <p>
               This is most likely due to a missconfiguration of the web3 wallet. We recommend you
               follow <a href="#mainnet">these steps</a>. If you are still unable to connect, feel
-              free to <a href="mailto:support@rlending.app" target="_blank">email us</a> or
-              contacting us on <a href="https://twitter.com/r_lending" target="_blank">Twitter</a>.
+              free to <a href="mailto:support@rlending.app" target="_blank">email us</a> or reach
+              out to us over <a href="https://twitter.com/r_lending" target="_blank">Twitter</a>.
             </p>
             <h2>Transaction Reverted:</h2>
             <p>
@@ -644,7 +644,8 @@
             <h1 id="support">How do I contact Support?</h1>
             <p>
               You can reach out to us on any of our social media. You can
-              <a href="mailto:support@rlending.app" target="_blank">email us</a> or contact us on
+              <a href="mailto:support@rlending.app" target="_blank">email us</a> or reach out to us
+              on
               <a href="https://twitter.com/r_lending" target="_blank">Twitter</a>
             </p>
             <hr />
