@@ -133,17 +133,17 @@ export default {
       oldMaxBorrowAllowed: 0,
       maxBorrowAllowed: 0,
       rules: {
-        required: () => !!Number(this.amount) || 'Required.',
+        required: () => !!Number(this.amount) || 'Required',
         allowed: () => this.isBorrowAllowed || "Borrow won't be allowed by the protocol",
         decimals: () =>
           this.decimalPositions ||
-          `Maximum ${this.data.token.decimals} decimal places for ${this.data.token.symbol}.`,
+          `Maximum ${this.data.token.decimals} decimal places for ${this.data.token.symbol}`,
         marketCash: () =>
           Number(this.cash) - Number(this.amount) >= 0 ||
           `This market doesn't have enough ${this.data.token.symbol} liquidity`,
         liquidity: () =>
           Number(this.amount) <= Number(this.maxBorrowAllowed) ||
-          "You don't have enough liquidity, supply more collateral to raise your Borrow Limit.",
+          "You don't have enough liquidity, supply more collateral to raise your Borrow Limit",
       },
     }
   },

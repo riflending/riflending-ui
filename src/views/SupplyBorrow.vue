@@ -1,6 +1,6 @@
 <template>
   <div class="supply-borrow">
-    <h1 class="text-center">Invest Or Borrow In Just A Few Clicks.</h1>
+    <h1 class="text-center">Invest Or Borrow In Just A Few Clicks</h1>
     <v-row class="my-5 d-flex justify-center">
       <div class="healthBorder d-flex justify-center">
         <div class="mx-3">

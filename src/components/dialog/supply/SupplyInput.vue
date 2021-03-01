@@ -151,10 +151,10 @@ export default {
       approveDialog: false,
       polling: null,
       rules: {
-        required: () => (!!Number(this.amount) && Math.sign(this.amount) == 1) || 'Required.',
+        required: () => (!!Number(this.amount) && Math.sign(this.amount) == 1) || 'Required',
         decimals: () =>
           this.decimalPositions ||
-          `Maximum ${this.data.token.decimals} decimal places for ${this.data.token.symbol}.`,
+          `Maximum ${this.data.token.decimals} decimal places for ${this.data.token.symbol}`,
         minBalance: () =>
           Number(this.maxAmountBalanceAllowed) >= Number(this.amount) || 'Not enough funds',
       },
