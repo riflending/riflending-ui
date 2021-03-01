@@ -169,11 +169,11 @@ export default {
       needApproval: true,
       approveDialog: false,
       rules: {
-        collateralMarketSelected: () => !!this.marketSelected || 'Select collateral market.',
-        required: () => !!Number(this.amount) || 'Required.',
+        collateralMarketSelected: () => !!this.marketSelected || 'Select collateral market',
+        required: () => !!Number(this.amount) || 'Required',
         decimals: () =>
           this.decimalPositions ||
-          `Maximum ${this.data.token.decimals} decimal places for ${this.data.token.symbol}.`,
+          `Maximum ${this.data.token.decimals} decimal places for ${this.data.token.symbol}`,
         funds: () => this.funds >= this.usdAmount / this.borrowMarketPrice || 'Not enough funds',
         maxAvailable: () =>
           this.amount <= this.maxToLiquidate() || 'There is not enough collateral to liquidate',

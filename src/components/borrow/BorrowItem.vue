@@ -112,7 +112,7 @@ export default {
     },
   },
   mounted() {
-    this.$parent.$parent.$parent.$on('reload', this.reset)
+    this.$parent.$parent.$parent.$on('reload', this.reload)
   },
   async created() {
     // set data token
@@ -126,11 +126,14 @@ export default {
     async reset() {
       this.dialog = false
       this.token = this.market.token
+      this.reload()
+      this.$emit('dialogClosed')
+    },
+    async reload() {
       this.borrowBalance = await this.market.borrowBalanceCurrent(this.account)
       this.price = await this.market.getPriceInDecimals()
       this.borrowRate = await this.market.getBorrowRate()
       this.hasEnteredTheMarket = await this.market.checkMembership(this.account)
-      this.$emit('dialogClosed')
     },
   },
 }

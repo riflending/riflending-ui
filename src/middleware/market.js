@@ -209,9 +209,7 @@ export default class Market {
     // set signer
     const contractWithSigner = contract.connect(this.factoryContract.getSigner())
     // send transaction
-    const tx = await contractWithSigner.enterMarkets([this.instanceAddress])
-    // await result transaction
-    return tx.wait()
+    return contractWithSigner.enterMarkets([this.instanceAddress])
   }
 
   /**
@@ -227,9 +225,7 @@ export default class Market {
     // set signer
     const contractWithSigner = contract.connect(this.factoryContract.getSigner())
     // send transaction
-    const tx = await contractWithSigner.exitMarket(this.instanceAddress)
-    // await result transaction
-    return tx.wait()
+    return contractWithSigner.exitMarket(this.instanceAddress)
   }
 
   /**

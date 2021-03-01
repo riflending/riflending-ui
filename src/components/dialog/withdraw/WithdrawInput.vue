@@ -152,10 +152,10 @@ export default {
       borrowValue: 0,
       debt: 0,
       rules: {
-        required: () => (!!Number(this.amount) && Math.sign(this.amount) == 1) || 'Required.',
+        required: () => (!!Number(this.amount) && Math.sign(this.amount) == 1) || 'Required',
         decimals: () =>
           this.decimalPositions ||
-          `Maximum ${this.data.token.decimals} decimal places for ${this.data.token.symbol}.`,
+          `Maximum ${this.data.token.decimals} decimal places for ${this.data.token.symbol}`,
         marketSupply: () =>
           Number(this.cash) >= Number(this.amount) || 'Market does not have enough funds',
         userSupply: () =>
