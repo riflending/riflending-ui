@@ -40,7 +40,7 @@
           <v-col cols="2">
             <div class="mx-14">
               <v-row>
-                <a href="" target="_blank">
+                <a href="https://t.me/rLendingCommunity" target="_blank">
                   <v-img light width="50" :src="require(`@/assets/footing/Telegram-512.png`)" />
                 </a>
               </v-row>
