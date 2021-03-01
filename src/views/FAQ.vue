@@ -154,41 +154,51 @@
                 Users are not required to wait long times for someone to process their transactions.
               </li>
               <li>
-                Transactions are highly secure (thanks to open protocols and independent auditors).
+                Transactions are highly secure (thanks to
+                <a href="https://github.com/riflending/rlending-protocol" target="_blank"
+                  >open protocols</a
+                >
+                and <a href="docs/securityAudits" target="_blank">independent auditors</a>).
               </li>
               <li>24/7 accessibility from anywhere in the world.</li>
             </ul>
             <p>
               In other words, there is no central bank or government authority imposing rules on how
               to operate. Instead, the platform was designed to be completely self-regulating. This
-              was achieved by programming the protocol using distributed
+              was achieved by programming
+              <a href="https://github.com/riflending/rlending-protocol" target="_blank"
+                >the protocol</a
+              >
+              using distributed
               <a href="https://en.wikipedia.org/wiki/Smart_contract" target="_blank"
                 >Smart Contracts</a
               >
               deployed on the <a href="https://www.rsk.co" target="_blank">RSK Network</a>. Smart
-              contracts handle the majority of logic that has historically been handled by human
+              contracts handle the majority of the logic that has historically been handled by human
               inputs, vastly optimizing transaction time and cost.
             </p>
             <p>
               <strong
                 >With all this in mind, our main motivation is to allow users to lend crypto assets
-                as collateral and to borrow them based on interest rates set by real-time supply and
-                demand.</strong
+                as collateral, and to borrow them based on interest rates set by real-time supply
+                and demand.</strong
               >
             </p>
             <h2 id="canTrade">Is rLending a Distributed Exchange (DEX)?</h2>
             <p>
               <strong>No.</strong> <em>Distributed Exchanges</em> allow users to exchange one
-              cryptocurrency for another. On the other hand, at a high level, rLending is a
+              cryptocurrency for another. Instead, at a high level, <strong>rLending</strong> is a
               financial permissionless lending system built on the
-              <a href="https://www.rsk.co" target="_blank">RSK Network</a>. rLending enables users
-              to lend and borrow popular cryptocurrencies like
+              <a href="https://www.rsk.co" target="_blank">RSK Network</a>.
+              <strong>rLending</strong> enables users to lend and borrow popular cryptocurrencies
+              like
               <a href="https://coinmarketcap.com/currencies/tether/" target="_blank">USDT</a> in
               exchange for interest or debt.
             </p>
             <h2 id="howWorks">How does it work?</h2>
             <p>
-              rLending leverages audited
+              <strong>rLending</strong> leverages
+              <a href="docs/securityAudits" target="_blank">audited</a>
               <a href="https://en.wikipedia.org/wiki/Smart_contract" target="_blank"
                 >Smart Contracts</a
               >
@@ -231,8 +241,10 @@
             </p>
             <p>
               You can always try rLending for free, since there is a
-              <a href="http://test.rlending.app" target="_blank"> test-net deploy </a> of the
-              protocol. To access it, follow the steps in the <a href="#testnet">section below</a>
+              <a href="http://test.rlending.app" target="_blank"> test-net deploy </a> of
+              <a href="https://github.com/riflending/rlending-protocol" target="_blank"
+                >the protocol</a
+              >. To access it, follow the steps in the <a href="#testnet">section below</a>
             </p>
             <p>
               If you wish to know more about what a Test Network is and how it works, you might find
@@ -373,7 +385,11 @@
             </p>
             <h2 id="gasPrice">Why is gas price so high?</h2>
             <p>
-              The gas usage of the protocol functions may fluctuate by
+              The gas usage of
+              <a href="https://github.com/riflending/rlending-protocol" target="_blank"
+                >the protocol</a
+              >
+              functions may fluctuate by
               <a href="docs/keyConcepts#markets" target="_blank">market</a> and
               <a href="docs/keyConcepts#account" target="_blank">user</a>. External calls, such as
               to underlying ERC-20 tokens, may use an arbitrary amount of gas. Any calculations that
@@ -520,8 +536,11 @@
               collateral provided becomes volatile as well.
             </p>
             <p>
-              To mitigate this, the protocol tends to have higher
-              <a href="#howColFact">collateral factor</a> for
+              To mitigate this,
+              <a href="https://github.com/riflending/rlending-protocol" target="_blank"
+                >the protocol</a
+              >
+              tends to have higher <a href="#howColFact">collateral factor</a> for
               <a href="docs/keyConcepts#markets" target="_blank">markets</a> that are more volatile
               and lower for those with more stability.
             </p>
