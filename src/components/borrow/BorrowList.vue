@@ -79,7 +79,7 @@ export default {
       this.$emit('listChange')
     },
     reloadItems() {
-      // this.$emit('reload')
+      this.$emit('reload')
     },
   },
 }
