@@ -121,7 +121,6 @@ export default {
   },
   mounted() {
     this.$on('reload', this.reset)
-    this.$root.$on('toggleMarketStatusTransaction', this.reset)
   },
   async created() {
     this.accountHealth = await this.$middleware.getAccountHealth(this.account)
