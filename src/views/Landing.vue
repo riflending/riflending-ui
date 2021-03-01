@@ -74,7 +74,7 @@
           <h4>3. Earn</h4>
         </v-row>
         <v-row class="d-flex justify-center mx-6">
-          Supply tokens to earn interest  with no risk, you can withdraw them whenever you want
+          Supply tokens to earn interest with no risk, you can withdraw them whenever you want
         </v-row>
       </v-col>
     </v-row>
