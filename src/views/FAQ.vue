@@ -283,8 +283,8 @@
             <p align="center">
               <v-img
                 contain
-                max-height="650"
-                max-width="850"
+                max-height="550"
+                max-width="450"
                 src="@/assets/faq/niftyrsk.png"
                 alt="nifty wallet connect"
               />
@@ -313,8 +313,8 @@
             <p align="center">
               <v-img
                 contain
-                max-height="650"
-                max-width="850"
+                max-height="550"
+                max-width="450"
                 src="@/assets/faq/dashboard1.png"
                 alt="new account dashboard"
               />
@@ -336,8 +336,8 @@
             <p align="center">
               <v-img
                 contain
-                max-height="650"
-                max-width="850"
+                max-height="550"
+                max-width="450"
                 src="@/assets/faq/metamaskrsk.png"
                 alt="metamask wallet connect"
               />
@@ -357,8 +357,8 @@
             <p align="center">
               <v-img
                 contain
-                max-height="650"
-                max-width="850"
+                max-height="550"
+                max-width="450"
                 src="@/assets/faq/dashboard1.png"
                 alt="new account dashboard"
               />
@@ -527,7 +527,8 @@
             </p>
             <h2 id="healthFactor">What is a Health Factor?</h2>
             <p>
-              <em>Health Factor</em> is the result of a formula that is used to predict how close to
+              <a href="docs/keyConcepts#healthFactor" target="_blank">Health Factor</a> is the
+              result of a formula that is used to predict how close to
               <a href="docs/keyConcepts#liquidation" target="_blank">liquidation</a> an
               <a href="docs/keyConcepts#account" target="_blank">account</a> is.
             </p>
@@ -553,7 +554,9 @@
               <a href="docs/keyConcepts#account" target="_blank">account</a> is prone to
               <a href="docs/keyConcepts#liquidation" target="_blank">liquidation</a>. You should
               deposit more collateral and repay your borrows before another account liquidates your
-              underlying.
+              underlying. See
+              <a href="docs/keyConcepts#healthFactor" target="_blank"> Health Factor</a> for more
+              information.
             </p>
             <h2 id="security">How secure is rLending?</h2>
             <p>
@@ -629,7 +632,7 @@
             </p>
             <h2>Why my health factor low?:</h2>
             <p>
-              See <a href="#healthFactor"> Health Factor</a> and
+              See <a href="docs/keyConcepts#healthFactor" target="_blank"> Health Factor</a> and
               <a href="#priceVariation"> How can I have more debt than before?</a>
             </p>
             <h2>Can't see accounts when trying to liquidate:</h2>
