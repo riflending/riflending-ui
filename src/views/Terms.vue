@@ -275,10 +275,10 @@
             and that although the Interface may be available in other jurisdictions, its
             availability does not give rise to general or specific personal jurisdiction in any
             forum outside the State of Delaware. Any arbitration conducted pursuant to this
-            Agreement shall be governed by the Federal Arbitration Act. You agree that
-            Wilmington, Delaware is the proper forum for any appeals of an arbitration award or for
-            court proceedings in the event that this Agreement’s binding arbitration clause is found
-            to be unenforceable.
+            Agreement shall be governed by the Federal Arbitration Act. You agree that Wilmington,
+            Delaware is the proper forum for any appeals of an arbitration award or for court
+            proceedings in the event that this Agreement’s binding arbitration clause is found to be
+            unenforceable.
           </li>
         </ol>
       </v-row>

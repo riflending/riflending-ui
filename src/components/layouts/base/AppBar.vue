@@ -1,51 +1,171 @@
 <template>
   <Fragment>
-    <v-app-bar class="app-bar ma-5" color="transparent" flat>
-      <router-link class="title ml-lg-16" :to="{ name: 'Landing' }">
-        <v-container fill-height fluid>
-          <v-row align="center row-sm-6" justify="center">
-            <v-col class="align-center col-sm-6">
-              <h1>rLending</h1>
-              <h1 v-show="isTestnet" class="subtitle-1 red--text text--darken-1">Testnet</h1>
-            </v-col>
-            <v-col class="col-sm-6">
-              <v-img :src="require(`@/assets/rlending.png`)" alt="rLending logo" max-width="80" />
-            </v-col>
-          </v-row>
-        </v-container>
-      </router-link>
-      <v-spacer />
+    <v-app-bar class="app-bar ma-5" color="transparent" flat clipped-left>
+      <v-toolbar flat fill-height align-center m-0 p-0>
+        <v-app-bar-nav-icon
+          class="hidden-md-and-up"
+          @click.stop="drawer = !drawer"
+        ></v-app-bar-nav-icon>
 
-      <div v-if="isLogged">
-        <router-link class="mx-5" :to="{ name: 'MyActivity' }" exact> Dashboard </router-link>
-        <router-link class="mx-5" :to="{ name: 'SupplyBorrow' }" exact>
-          Supply / Borrow
-        </router-link>
-        <!-- <template v-if="isOwner"> -->
-        <router-link class="mx-5" :to="{ name: 'Status' }" exact> Markets</router-link>
-        <!-- </template> -->
-        <router-link class="mx-5" :to="{ name: 'Docs' }" exact> Docs </router-link>
-        <router-link class="mx-5" :to="{ name: 'FAQ' }" exact> FAQs</router-link>
-        <v-btn class="mx-5" rounded outlined color="#008CFF">
-          {{ accountCutOff }}
-        </v-btn>
-      </div>
-      <div v-else>
-        <router-link class="mx-5" :to="{ name: 'Landing' }"> Home </router-link>
-        <router-link class="mx-5" :to="{ name: 'Docs' }"> Docs </router-link>
-        <router-link class="mx-5" :to="{ name: 'FAQ' }"> FAQs </router-link>
-        <v-btn
-          id="connectButton"
-          ref="connectButton"
-          class="ml-5 button"
-          rounded
-          color="#008CFF"
-          @click="connect"
-        >
-          <span class="mx-5">Connect wallet</span>
-        </v-btn>
-      </div>
+        <v-img
+          class="d-none d-sm-flex"
+          :src="require(`@/assets/rlending.png`)"
+          alt="rLending logo"
+          max-width="80"
+        />
+        <v-toolbar-title>
+          <h1 class="text-truncate">rLending</h1>
+          <h2 v-show="isTestnet" class="text-truncate red--text text--darken-1">Testnet</h2>
+        </v-toolbar-title>
+        <v-spacer></v-spacer>
+        <v-toolbar-items v-if="isLogged" class="hidden-sm-and-down align-center">
+          <v-btn text to="/myActivity" active-class="is-active" exact>Dashboard</v-btn>
+          <v-btn text to="/supplyBorrow" active-class="is-active" exact>Supply/Borrow</v-btn>
+          <v-btn text to="/status" active-class="is-active" exact>Markets</v-btn>
+          <v-menu open-on-hover offset-y transition="slide-x-transition" bottom right>
+            <template v-slot:activator="{ on, attrs }">
+              <v-btn
+                text
+                :class="$route.path.startsWith('/docs') ? 'is-active' : ''"
+                v-bind="attrs"
+                v-on="on"
+              >
+                Docs
+              </v-btn>
+            </template>
+            <v-list dense>
+              <v-list-item
+                v-for="(item, index) in docsSubsections"
+                :key="index"
+                :class="item.path === $route.path ? 'highlight' : ''"
+                @click="item.method"
+              >
+                <v-list-item-action>
+                  <v-list-item-title>{{ item.title }}</v-list-item-title>
+                </v-list-item-action>
+              </v-list-item>
+            </v-list>
+          </v-menu>
+          <v-btn text to="/faq" active-class="is-active" exact>FAQs</v-btn>
+        </v-toolbar-items>
+        <v-toolbar-items v-if="isLogged" class="d-flex align-center">
+          <v-btn rounded outlined height="30px !important" color="#008CFF">
+            {{ accountCutOff }}
+          </v-btn>
+        </v-toolbar-items>
+        <v-toolbar-items v-if="!isLogged" class="hidden-sm-and-down align-center">
+          <v-btn text to="/" active-class="is-active" exact>Home</v-btn>
+          <v-menu open-on-hover offset-y transition="slide-x-transition" bottom right>
+            <template v-slot:activator="{ on, attrs }">
+              <v-btn
+                text
+                :class="$route.path.startsWith('/docs') ? 'is-active' : ''"
+                v-bind="attrs"
+                v-on="on"
+              >
+                Docs
+              </v-btn>
+            </template>
+            <v-list dense>
+              <v-list-item
+                v-for="(item, index) in docsSubsections"
+                :key="index"
+                :class="item.path === $route.path ? 'highlight' : ''"
+                @click="item.method"
+              >
+                <v-list-item-action>
+                  <v-list-item-title>{{ item.title }}</v-list-item-title>
+                </v-list-item-action>
+              </v-list-item>
+            </v-list>
+          </v-menu>
+          <v-btn text to="/faq" active-class="is-active" exact>FAQs</v-btn>
+        </v-toolbar-items>
+        <v-toolbar-items v-if="!isLogged" class="d-flex align-center">
+          <v-btn
+            id="connectButton"
+            ref="connectButton"
+            rounded
+            color="#008CFF"
+            height="30px !important"
+            class="white--text d-flex"
+            @click="connect"
+          >
+            Connect wallet
+          </v-btn>
+        </v-toolbar-items>
+      </v-toolbar>
     </v-app-bar>
+    <v-navigation-drawer v-model="drawer" absolute temporary hide-overlay>
+      <v-list nav dense>
+        <v-list-item-group v-if="!isLogged" active-class="text--accent-4">
+          <v-list-item to="/">
+            <v-list-item-icon>
+              <v-icon>mdi-home</v-icon>
+            </v-list-item-icon>
+            <v-list-item-title>Home</v-list-item-title>
+          </v-list-item>
+
+          <v-list-item to="/docs/introduction">
+            <v-list-item-icon>
+              <v-icon>mdi-book-open-variant</v-icon>
+            </v-list-item-icon>
+            <v-list-item-title>Docs</v-list-item-title>
+          </v-list-item>
+
+          <v-list-item to="/faq">
+            <v-list-item-icon>
+              <v-icon>mdi-frequently-asked-questions</v-icon>
+            </v-list-item-icon>
+            <v-list-item-title>FAQs</v-list-item-title>
+          </v-list-item>
+        </v-list-item-group>
+
+        <v-list-item-group v-if="isLogged" active-class="text--accent-4">
+          <v-list-item to="/">
+            <v-list-item-icon>
+              <v-icon>mdi-home</v-icon>
+            </v-list-item-icon>
+            <v-list-item-title>Home</v-list-item-title>
+          </v-list-item>
+
+          <v-list-item to="/myActivity">
+            <v-list-item-icon>
+              <v-icon>mdi-chart-bar</v-icon>
+            </v-list-item-icon>
+            <v-list-item-title>Dashboard</v-list-item-title>
+          </v-list-item>
+
+          <v-list-item to="/supplyBorrow">
+            <v-list-item-icon>
+              <v-icon>mdi-bank</v-icon>
+            </v-list-item-icon>
+            <v-list-item-title>Supply/Borrow</v-list-item-title>
+          </v-list-item>
+
+          <v-list-item to="/status">
+            <v-list-item-icon>
+              <v-icon>mdi-frequently-asked-questions</v-icon>
+            </v-list-item-icon>
+            <v-list-item-title>Markets</v-list-item-title>
+          </v-list-item>
+
+          <v-list-item to="/docs/introduction">
+            <v-list-item-icon>
+              <v-icon>mdi-book-open-variant</v-icon>
+            </v-list-item-icon>
+            <v-list-item-title>Docs</v-list-item-title>
+          </v-list-item>
+
+          <v-list-item to="/faq">
+            <v-list-item-icon>
+              <v-icon>mdi-frequently-asked-questions</v-icon>
+            </v-list-item-icon>
+            <v-list-item-title>FAQs</v-list-item-title>
+          </v-list-item>
+        </v-list-item-group>
+      </v-list>
+    </v-navigation-drawer>
     <v-alert
       border="right"
       colored-border
@@ -80,6 +200,52 @@ export default {
     return {
       shouldDisplayWarningValidNetwork: false,
       isTestnet: false,
+      drawer: null,
+      docsSubsections: [
+        {
+          title: 'About',
+          path: '/docs/introduction',
+          method: () => this.$router.push({ name: 'Introduction' }),
+        },
+        {
+          title: 'Glossary',
+          path: '/docs/keyConcepts',
+          method: () => this.$router.push({ name: 'KeyConcepts' }),
+        },
+        {
+          title: 'How to',
+          path: '/docs/howTo',
+          method: () => this.$router.push({ name: 'HowTo' }),
+        },
+        {
+          title: 'Financial',
+          path: '/docs/financialMath',
+          method: () => this.$router.push({ name: 'FinancialMath' }),
+        },
+        {
+          title: 'Contracts',
+          path: '/docs/contracts',
+          method: () => this.$router.push({ name: 'Contracts' }),
+        },
+        {
+          title: 'Oracles',
+          path: '/docs/oracles',
+          method: () => this.$router.push({ name: 'Oracles' }),
+        },
+        {
+          title: 'Security',
+          path: '/docs/securityAudits',
+          method: () => this.$router.push({ name: 'SecurityAudits' }),
+        },
+        {
+          title: 'Whitepaper',
+          method: () =>
+            window.open(
+              'https://github.com/riflending/rlending-protocol/blob/master/whitepaper/rLending-Whitepaper-v1.0.pdf',
+              '_blank',
+            ),
+        },
+      ],
     }
   },
   computed: {
