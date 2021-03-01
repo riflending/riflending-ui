@@ -77,7 +77,7 @@
                     </v-row>
                     <v-row v-for="(item, index) in totalSupplied" :key="`totalSupplied-${index}`">
                       <v-col cols="6" class="px-0">
-                        <router-link :to="{ name: 'SupplyBorrow' }">
+                        <router-link :to="{ name: 'SupplyBorrow', params: { tab: 'supply' } }">
                           <h4 :style="{ textDecoration: 'underline' }">Total Supplied:</h4>
                         </router-link>
                       </v-col>
@@ -99,7 +99,11 @@
                       <v-col cols="1" class="pa-0"><span class="text-left">USD</span></v-col>
                     </v-row>
                     <v-row v-for="item in totalBorrowed" :key="item">
-                      <v-col cols="6" class="px-0"><h4>Total Borrowed:</h4></v-col>
+                      <v-col cols="6" class="px-0">
+                        <router-link :to="{ name: 'SupplyBorrow', params: { tab: 'borrow' } }">
+                          <h4 :style="{ textDecoration: 'underline' }">Total Borrowed:</h4>
+                        </router-link>
+                      </v-col>
                       <v-col cols="5" class="px-0">
                         <h4 class="text-center">
                           $
