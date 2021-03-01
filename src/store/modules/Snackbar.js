@@ -46,6 +46,16 @@ const mutations = {
     state.subSnack = 'Awaiting transaction approval'
     state.tx = 0
   },
+  [constants.SNACK_GENERAL_SET]: (
+    state,
+    { snack = '', color = 'info', subMessage = '', loader = false, tx = 0 },
+  ) => {
+    state.snack = snack
+    state.color = color
+    state.loader = loader
+    state.subSnack = subMessage
+    state.tx = tx
+  },
 }
 
 const getters = {
