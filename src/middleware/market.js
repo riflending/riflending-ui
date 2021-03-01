@@ -226,7 +226,6 @@ export default class Market {
     const contractWithSigner = contract.connect(this.factoryContract.getSigner())
     // send transaction
     return contractWithSigner.exitMarket(this.instanceAddress)
-    // await result transaction
   }
 
   /**
