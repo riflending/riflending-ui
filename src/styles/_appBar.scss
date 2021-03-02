@@ -5,18 +5,13 @@
     display: flex;
     align-items: center;
   }
-
   h1 {
     font-weight: 500;
-    font-size: 30px;
-    line-height: 36px;
     color: #000000;
   }
 
   h2 {
     font-weight: 500;
-    font-size: 20px;
-    line-height: 30px;
     text-transform: capitalize;
     color: #008CFF;
   }
@@ -61,6 +56,7 @@
   text-decoration: underline;
 }
 
+
 @media screen and (max-width: 600px) {
   .text-truncate {
     margin-right: 10px;
@@ -68,52 +64,35 @@
     overflow: hidden;
     text-overflow: ellipsis;
   }
+  .title-logo {
+    max-width: 80px;
+  }
+  h1 {
+    font-size: 25px;
+    line-height: 28px;
+  }
+  h2 {
+    font-size: 18px;
+    line-height: 25px;
+  }
+}
+@media screen and (min-width: 600px) {
+  h1 {
+    font-size: 30px;
+    line-height: 36px;
+  }
+
+  h2 {
+    font-size: 20px;
+    line-height: 30px;
+  }
+
+  .title-logo {
+    max-width: 100px;
+  }
 }
 
-.disconnected-btn {
-  word-break: normal;
-  tab-size: 4;
-  -webkit-font-smoothing: antialiased;
-  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
-  background-repeat: no-repeat;
-  box-sizing: inherit;
-  margin: 0;
-  font: inherit;
-  overflow: visible;
-  font-style: normal;
-  align-items: center;
-  display: inline-flex;
-  flex: 0 0 auto;
-  font-weight: 500;
-  letter-spacing: 0.0892857143em;
-  justify-content: center;
-  outline: 0;
-  position: relative;
-  text-decoration: none;
-  text-indent: 0.0892857143em;
-  transition-duration: 0.28s;
-  transition-property: box-shadow, transform, opacity;
-  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-  user-select: none;
-  vertical-align: middle;
-  white-space: nowrap;
-  box-shadow: none !important;
-  border: thin solid currentColor;
-  background-color: transparent;
-  border-radius: 28px !important;
-  cursor: pointer;
-  text-transform: none;
-  font-size: 0.875rem !important;
-  will-change: box-shadow !important;
-  margin-right: 20px !important;
-  margin-left: 20px !important;
-  height: 36px !important;
-  min-width: 64px !important;
-  padding: 0 16px !important;
-  color: rgb(0, 140, 255) !important;
-  caret-color: rgb(0, 140, 255);
-}
-
+.disconnected-btn,
 .connected-btn {
   word-break: normal;
   tab-size: 4;
@@ -148,7 +127,7 @@
   text-align: center;
   color: white !important;
   border-radius: 28px !important;
-  width: 300px;
+  max-width: 300px;
   letter-spacing: normal;
   font-size: 0.875rem !important;
   will-change: box-shadow !important;
