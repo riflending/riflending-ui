@@ -49,7 +49,7 @@
           <v-btn text to="/faq" active-class="is-active" exact>FAQs</v-btn>
         </v-toolbar-items>
         <v-toolbar-items v-if="isLogged" class="d-flex align-center">
-          <v-btn rounded outlined height="30px !important" color="#008CFF">
+          <v-btn rounded outlined class="disconnected-btn">
             {{ accountCutOff }}
           </v-btn>
         </v-toolbar-items>
@@ -86,9 +86,7 @@
             id="connectButton"
             ref="connectButton"
             rounded
-            color="#008CFF"
-            height="30px !important"
-            class="white--text d-flex"
+            class="connected-btn"
             @click="connect"
           >
             Connect wallet
