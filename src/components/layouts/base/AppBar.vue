@@ -13,7 +13,7 @@
           alt="rLending logo"
           max-width="80"
         />
-        <v-toolbar-title>
+        <v-toolbar-title @click="gotToLanding">
           <h1 class="text-truncate">rLending</h1>
           <h2 v-show="isTestnet" class="text-truncate red--text text--darken-1">Testnet</h2>
         </v-toolbar-title>
@@ -288,6 +288,9 @@ export default {
       setTimeout(() => {
         this.shouldDisplayWarningValidNetwork = false
       }, 5000)
+    },
+    gotToLanding() {
+      if (this.$route.path !== '/') this.$router.push({ name: 'Landing' })
     },
     async connect() {
       try {
