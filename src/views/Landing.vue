@@ -141,15 +141,15 @@
 </template>
 
 <script>
-import { mapState, mapMutations } from 'vuex'
+import { mapMutations } from 'vuex'
 import * as constants from '@/store/constants'
 
 export default {
   name: 'Landing',
-  computed: {
-    ...mapState({
-      shouldDisplayDemoAlert: (state) => state.Session.displayDemoAlert,
-    }),
+  data() {
+    return {
+      shouldDisplayDemoAlert: true,
+    }
   },
   methods: {
     toMyActivity() {
