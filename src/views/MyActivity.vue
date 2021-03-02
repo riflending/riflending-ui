@@ -140,7 +140,7 @@
                     </v-row>
                     <v-row class="ma-0 pt-3">
                       <p>
-                        Your Account has a <b>{{ risk }}</b> risk of liquidation
+                        Your account has a <b>{{ risk }}</b> risk of liquidation
                       </p>
                     </v-row>
                   </v-col>
