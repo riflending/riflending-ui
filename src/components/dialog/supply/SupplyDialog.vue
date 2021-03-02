@@ -5,14 +5,15 @@
         <component :is="topComponent" :data="marketTokenObject" />
         <template v-if="!waiting">
           <v-row class="d-flex justify-center">
-            <div class="toggle-triple my-5">
-              <v-btn
+            <div class="toggle my-5">
+              <!-- <div class="toggle-triple my-5"> -->
+              <!-- <v-btn
                 :class="[currentComponent === 'LiquidateInput' ? 'selected' : 'notSelected']"
                 text
                 @click="currentComponent = 'LiquidateInput'"
               >
                 <span>Liquidate</span>
-              </v-btn>
+              </v-btn> -->
               <v-btn
                 :class="[currentComponent === 'SupplyInput' ? 'selected' : 'notSelected']"
                 text
