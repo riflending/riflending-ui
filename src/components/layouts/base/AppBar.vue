@@ -2,22 +2,15 @@
   <Fragment>
     <v-app-bar class="app-bar ma-5" color="transparent" flat clipped-left>
       <v-toolbar flat fill-height align-center m-0 p-0>
-        <v-app-bar-nav-icon
-          class="hidden-md-and-up"
-          @click.stop="drawer = !drawer"
-        ></v-app-bar-nav-icon>
-
-        <v-img
-          class="d-none d-sm-flex"
-          :src="require(`@/assets/rlending.png`)"
-          alt="rLending logo"
-          max-width="80"
-        />
-        <v-toolbar-title>
-          <h1 class="text-truncate">rLending</h1>
-          <h2 v-show="isTestnet" class="text-truncate red--text text--darken-1">Testnet</h2>
-        </v-toolbar-title>
+        <v-btn large text class="title-button" @click="gotToLanding">
+          <v-app-bar-title>
+            <h1 class="pr-2">rLending</h1>
+            <h2 v-show="isTestnet" class="red--text text--darken-1">Testnet</h2>
+          </v-app-bar-title>
+          <v-img class="title-logo" :src="require(`@/assets/rlending.png`)" alt="rLending logo" />
+        </v-btn>
         <v-spacer></v-spacer>
+
         <v-toolbar-items v-if="isLogged" class="hidden-sm-and-down align-center">
           <v-btn text to="/myActivity" active-class="is-active" exact>Dashboard</v-btn>
           <v-btn text to="/supplyBorrow" active-class="is-active" exact>Supply/Borrow</v-btn>
@@ -47,12 +40,11 @@
             </v-list>
           </v-menu>
           <v-btn text to="/faq" active-class="is-active" exact>FAQs</v-btn>
-        </v-toolbar-items>
-        <v-toolbar-items v-if="isLogged" class="d-flex align-center">
-          <v-btn rounded outlined height="30px !important" color="#008CFF">
+          <v-btn rounded outlined class="disconnected-btn">
             {{ accountCutOff }}
           </v-btn>
         </v-toolbar-items>
+
         <v-toolbar-items v-if="!isLogged" class="hidden-sm-and-down align-center">
           <v-btn text to="/" active-class="is-active" exact>Home</v-btn>
           <v-menu open-on-hover offset-y transition="slide-x-transition" bottom right>
@@ -80,23 +72,25 @@
             </v-list>
           </v-menu>
           <v-btn text to="/faq" active-class="is-active" exact>FAQs</v-btn>
-        </v-toolbar-items>
-        <v-toolbar-items v-if="!isLogged" class="d-flex align-center">
           <v-btn
             id="connectButton"
             ref="connectButton"
             rounded
-            color="#008CFF"
-            height="30px !important"
-            class="white--text d-flex"
+            class="connected-btn"
             @click="connect"
           >
             Connect wallet
           </v-btn>
         </v-toolbar-items>
+
+        <v-app-bar-nav-icon
+          class="hidden-md-and-up"
+          @click.stop="drawer = !drawer"
+        ></v-app-bar-nav-icon>
       </v-toolbar>
     </v-app-bar>
-    <v-navigation-drawer v-model="drawer" absolute temporary hide-overlay>
+
+    <v-navigation-drawer v-model="drawer" absolute temporary hide-overlay right>
       <v-list nav dense>
         <v-list-item-group v-if="!isLogged" active-class="text--accent-4">
           <v-list-item to="/">
@@ -118,6 +112,12 @@
               <v-icon>mdi-frequently-asked-questions</v-icon>
             </v-list-item-icon>
             <v-list-item-title>FAQs</v-list-item-title>
+          </v-list-item>
+          <v-list-item @click="connect">
+            <v-list-item-icon>
+              <v-icon>mdi-wallet</v-icon>
+            </v-list-item-icon>
+            <v-list-item-title>Connect</v-list-item-title>
           </v-list-item>
         </v-list-item-group>
 
@@ -162,6 +162,13 @@
               <v-icon>mdi-frequently-asked-questions</v-icon>
             </v-list-item-icon>
             <v-list-item-title>FAQs</v-list-item-title>
+          </v-list-item>
+
+          <v-list-item to="/faq">
+            <v-list-item-icon>
+              <v-icon>mdi-wallet-outline</v-icon>
+            </v-list-item-icon>
+            <v-list-item-title>{{ accountCutOff }}</v-list-item-title>
           </v-list-item>
         </v-list-item-group>
       </v-list>
@@ -290,6 +297,9 @@ export default {
       setTimeout(() => {
         this.shouldDisplayWarningValidNetwork = false
       }, 5000)
+    },
+    gotToLanding() {
+      if (this.$route.path !== '/') this.$router.push({ name: 'Landing' })
     },
     async connect() {
       try {

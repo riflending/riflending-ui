@@ -663,13 +663,26 @@
               See <a href="docs/keyConcepts#healthFactor" target="_blank"> Health Factor</a> and
               <a href="#priceVariation"> How can I have more debt than before?</a>
             </p>
-            <h2>Can't see accounts when trying to liquidate:</h2>
+            <!-- <h2>Can't see accounts when trying to liquidate:</h2>
             <p>
               The liquidation tab is not yet optimized and it will take a couple of minutes to load
               the proper data. Keep in mind that we are still in Beta, and there is a chance no
               <a href="docs/keyConcepts#account" target="_blank">account</a> is prone to
               <a href="docs/keyConcepts#liquidation" target="_blank">liquidation</a>
               yet. Liquidations are very rare.
+            </p>
+            <hr /> -->
+            <h2>How can I liquidate underwater accounts?</h2>
+            <p>
+              The liquidation tab is not yet implemented. Keep in mind that we are still in Beta,
+              and there is a chance no
+              <a href="docs/keyConcepts#account" target="_blank">account</a> is prone to
+              <a href="docs/keyConcepts#liquidation" target="_blank">liquidation</a>
+              yet. Liquidations are very rare! Liquidations are still possible by developing a bot
+              that interacts directly with the
+              <a href="https://github.com/riflending/rlending-protocol" target="_blank"
+                >rLending Protocol</a
+              >
             </p>
             <hr />
             <h1 id="support">How do I contact Support?</h1>

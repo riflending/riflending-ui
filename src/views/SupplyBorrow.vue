@@ -98,7 +98,7 @@ export default {
   data() {
     return {
       accountHealth: 1,
-      currentComponent: 'SupplyList',
+      currentComponent: null,
       hasEnteredToSomeMarket: true,
       transactionHash: null,
     }
@@ -123,6 +123,7 @@ export default {
     this.$on('reload', this.reset)
   },
   async created() {
+    this.currentComponent = this.$route.params.tab === 'borrow' ? 'BorrowList' : 'SupplyList'
     this.accountHealth = await this.$middleware.getAccountHealth(this.account)
     this.hasEnteredToSomeMarket = await this.$middleware.hasEnteredToSomeMarket(this.account)
   },

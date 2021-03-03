@@ -1,11 +1,27 @@
 <template>
   <div class="landing container">
+    <v-snackbar
+      v-model="shouldDisplayDemoAlert"
+      :timeout="20000"
+      app
+      center
+      top
+      color="primary"
+      text
+    >
+      This website is still in BETA. This means rLending is in a testing phase and it is likely to
+      contain errors.
+      <a href="terms" :style="{ textDecoration: 'underline' }">Read more about this notice.</a>
+      <template v-slot:action="{ attrs }">
+        <v-btn color="indigo" text v-bind="attrs" @click="closeDemoAlert"> Close </v-btn>
+      </template>
+    </v-snackbar>
     <v-row class="d-flex align-center justify-center">
       <v-col cols="6">
         <v-row>
           <h1>Join the DeFi revolution on the RSK Network</h1>
         </v-row>
-        <v-row class="my-3 simple-text">
+        <v-row class="my-3 simple-text-2">
           Enjoy the possibilities that Open Finance offers in a safe, clear and understandable way
         </v-row>
         <!-- <v-row class="d-flex align-start">
@@ -26,7 +42,7 @@
       </v-col>
       <v-col>
         <v-row class="text-right">
-          <h3>Experience the basics of lending and borrowing assets</h3>
+          <h2>Experience the basics of lending and borrowing assets</h2>
         </v-row>
         <v-row class="my-6 text-right simple-text-2">
           Explore what you can do with your crypto assets and be part of the change to a more
@@ -42,7 +58,7 @@
     <v-row class="my-6 d-flex justify-center">
       <div class="my-6 divider"></div>
     </v-row>
-    <v-row class="ma-0">
+    <v-row class="ma-0 text-center">
       <v-col>
         <v-row class="d-flex justify-center">
           <h2>As easy as 1, 2, 3</h2>
@@ -74,14 +90,14 @@
           <h4>3. Earn</h4>
         </v-row>
         <v-row class="d-flex justify-center mx-6">
-          We support Metamask and Nifty Wallet. More soon to come!
+          Supply tokens to earn interest with no risk, you can withdraw them whenever you want
         </v-row>
       </v-col>
     </v-row>
     <v-row class="my-6 py-6 d-flex justify-center">
       <div class="divider"></div>
     </v-row>
-    <v-row class="my-6">
+    <v-row class="my-6 text-center">
       <v-col>
         <v-row class="d-flex justify-center">
           <h2>Say goodbye to unexpected collateral liquidations</h2>
@@ -125,8 +141,16 @@
 </template>
 
 <script>
+import { mapState, mapMutations } from 'vuex'
+import * as constants from '@/store/constants'
+
 export default {
   name: 'Landing',
+  computed: {
+    ...mapState({
+      shouldDisplayDemoAlert: (state) => state.Session.displayDemoAlert,
+    }),
+  },
   methods: {
     toMyActivity() {
       this.$router.push({ name: 'MyActivity' })
@@ -142,6 +166,12 @@ export default {
         button.click()
       }
     },
+    closeDemoAlert() {
+      this.stopDisplayingDemoAlert(false)
+    },
+    ...mapMutations({
+      stopDisplayingDemoAlert: constants.SESSION_DISPLAY_DEMO_ALERT,
+    }),
   },
 }
 </script>
