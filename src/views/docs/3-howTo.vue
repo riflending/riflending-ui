@@ -272,7 +272,7 @@
           </p>
           <p>&nbsp;</p>
           <hr />
-          <h1 id="howLiquidate">How to liquidate underwater accounts:</h1>
+          <!-- <h1 id="howLiquidate">How to liquidate underwater accounts:</h1>
           <p>
             In order to check the accounts that are prone to liquidation, go to the
             <a href="#howDeposit">Supply dialog</a> and then open up the Liquidation tab.
@@ -300,7 +300,7 @@
             />
           </p>
           <p>&nbsp;</p>
-          <hr />
+          <hr /> -->
           <h1 id="howData">How to view market data:</h1>
           <p>
             Like mentioned earlier, markets represent each asset listed in the
