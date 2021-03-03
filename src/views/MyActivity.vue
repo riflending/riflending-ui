@@ -31,14 +31,16 @@
           <v-row class="ma-0 py-0">
             <v-col class="pa-0 d-flex justify-center">
               <v-card class="graphics-card container" width="94%">
-                <v-row class="ma-0 d-flex align-center">
+                <v-row class="ma-0">
                   <v-col cols="12" class="py-0">
                     <v-row
                       v-for="item in totalBalance"
                       :key="item.toString().concat('balance')"
                       class="d-flex align-center"
                     >
-                      <v-col cols="6" class="px-0 text-left"><h2>Account balance:</h2></v-col>
+                      <v-col cols="6" class="ma-0 d-flex align-center px-0"
+                        ><h2>Account balance:</h2></v-col
+                      >
                       <v-col cols="5" class="px-0">
                         <h2 class="text-center">
                           $
@@ -56,7 +58,7 @@
                       </v-col>
                       <v-col cols="1" class="pa-0"><span class="text-left">USD</span></v-col>
                     </v-row>
-                    <v-row>
+                    <v-row class="d-flex align-center mt-0 pt-1">
                       <v-divider />
                     </v-row>
                     <v-row v-for="(item, index) in totalSupplied" :key="`totalSupplied-${index}`">
@@ -135,7 +137,7 @@
                         </div>
                       </v-tooltip>
                     </v-row>
-                    <v-row class="ma-0">
+                    <v-row class="ma-0 pt-1">
                       <v-divider />
                     </v-row>
                     <v-row class="ma-0 pt-3">
@@ -174,9 +176,9 @@
             <v-row class="ma-0 d-flex align-center">
               <v-col cols="12" class="py-0">
                 <v-row class="d-flex align-center">
-                  <v-col cols="9" class="px-0 text-left"><h2>Markets Prices:</h2></v-col>
+                  <v-col cols="9" class="ma-0 d-flex align-center"><h2>Markets Prices:</h2></v-col>
                 </v-row>
-                <v-row>
+                <v-row class="ma-0 pt-1">
                   <v-divider />
                 </v-row>
                 <v-row v-for="item in markets" :key="item.symbol" class="ma-0 d-flex align-center">
