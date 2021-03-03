@@ -23,7 +23,7 @@
 
     <v-list-item to="/status">
       <v-list-item-icon>
-        <v-icon>mdi-frequently-asked-questions</v-icon>
+        <v-icon>mdi-store</v-icon>
       </v-list-item-icon>
       <v-list-item-title>Markets</v-list-item-title>
     </v-list-item>
