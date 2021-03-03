@@ -1,8 +1,8 @@
 <template>
   <div class="supply-borrow-graph">
     <div>
-      <v-row class="ma-0">
-        <h1>Supply-Borrow Factor:</h1>
+      <v-row class="ma-0 d-flex align-center">
+        <h2>Supply-Borrow Factor:</h2>
       </v-row>
       <v-row class="ma-0 pt-1">
         <v-col cols="5" class="pa-0">

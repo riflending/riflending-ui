@@ -1,7 +1,9 @@
 <template>
   <div class="transaction-list">
-    <h2 class="d-flex align-center">Transaction History:</h2>
-    <v-divider class="divider-search" />
+    <h2 class="ma-0 d-flex align-center">Transaction History:</h2>
+    <div class="pt-1">
+      <v-divider class="divider-search" />
+    </div>
     <v-data-table
       dense
       :headers="headers"

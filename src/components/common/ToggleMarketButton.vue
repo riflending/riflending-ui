@@ -31,6 +31,9 @@ export default {
       type: Object,
       required: true,
     },
+    disabled: {
+      type: Boolean,
+    },
   },
   data() {
     return {
@@ -43,8 +46,9 @@ export default {
       account: (state) => state.Session.account,
     }),
     backgroundStyles() {
+      if (this.disabled) return 'grey-disabled'
       return {
-        'gold-mid': this.value,
+        'blue-mid': this.value,
         'gray-lighter': !this.value,
       }
     },
