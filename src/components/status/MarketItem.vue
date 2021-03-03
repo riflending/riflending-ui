@@ -140,7 +140,7 @@ export default {
     this.cash = this.market.totalCash
     this.totalSupply = await this.market.getTotalSupplyInUnderlying(false)
     this.totalBorrows = this.market.totalBorrows
-    this.loanToValue = this.market.loanToValue
+    this.loanToValue = this.market.loanToValue.multipliedBy(100)
   },
   methods: {
     reset() {
