@@ -14,7 +14,7 @@
             <v-row class="ml-5 item d-flex justify-start">
               <h1 class="ma-0">{{ data.token.symbol }}</h1>
             </v-row>
-            <v-row class="ml-5 d-flex justify-start">
+            <v-row v-if="!isCRBTC" class="ml-5 d-flex justify-start">
               <a class="listTitle" target="_blank" :href="rskExplorerUrl">
                 {{ data.token.symbol }} Addr
               </a>
@@ -174,6 +174,7 @@ export default {
       liqPen: 0, // the liquidation penalty
       mktLiqu: 0, // market liquidity in usd
       priceFlag: false,
+      isCRBTC: false,
     }
   },
   computed: {
@@ -214,6 +215,7 @@ export default {
             .toNumber()
         : 0
     this.liqPen = await this.data.market.getLiquidationIncentiveMantissa()
+    this.isCRBTC = this.data.market.isCRBTC
 
     this.reset()
   },
