@@ -1,5 +1,18 @@
 <template>
   <Fragment>
+    <div class="system-var-beta">
+      <v-system-bar dark color="black">
+        <v-spacer></v-spacer>
+        <span class="d-none d-sm-none d-md-flex">
+          This website is still in BETA. This means rLending is in a testing phase and it is likely
+          to contain errors</span
+        >
+        <span class="d-sm-flex d-md-none d-lg-none d-xl-none d-xl-flex">
+          This website is still in BETA.
+        </span>
+      </v-system-bar>
+      <br />
+    </div>
     <v-app-bar class="app-bar ma-5" color="transparent" flat clipped-left>
       <v-toolbar flat fill-height align-center m-0 p-0>
         <v-btn large text class="title-button" @click="gotToLanding">
