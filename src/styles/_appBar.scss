@@ -92,7 +92,6 @@
   }
 }
 
-.disconnected-btn,
 .connected-btn {
   word-break: normal;
   tab-size: 4;
@@ -137,6 +136,11 @@
   padding: 0 16px !important;
   background-color: rgb(0, 140, 255) !important;
   border-color: rgb(0, 140, 255);
+}
+
+.disconnected-btn {
+  @extend .connected-btn;
+  cursor: default;
 }
 
 .v-toolbar__items > .v-btn {
