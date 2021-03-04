@@ -37,7 +37,11 @@
           </p>
           <p>
             If you are interested in reading the auditor&#39;s report, you can find it
-            <a href="">here</a>
+            <a
+              href="https://github.com/riflending/rlending-protocol/blob/master/audit/rLending_Security_Audit_Final_Report_v210303.pdf"
+              target="_blank"
+              >here</a
+            >
           </p>
           <hr />
           <h1 id="eventualities">Eventualities:</h1>
