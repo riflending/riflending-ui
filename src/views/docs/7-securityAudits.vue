@@ -24,7 +24,7 @@
               protocol.</strong
             >
           </p>
-          <hr />
+
           <h1 id="audits">Audits:</h1>
           <p>
             As Compound is recognized to be one of the most audited and secure DEFI platforms
@@ -43,7 +43,7 @@
               >here</a
             >
           </p>
-          <hr />
+
           <h1 id="eventualities">Eventualities:</h1>
           <p>
             In the eventual case that any of the smart contracts malfunction, the protocol has a
@@ -69,13 +69,12 @@
             <li>The ability to update the Comptroller contract</li>
             <li>The ability to choose a new admin</li>
           </ul>
-          <hr />
+
           <div class="pan-container">
             <a href="/docs/oracles">&laquo; Oracles</a>
             <a href="#">Back to top</a>
             <a>- &raquo;</a>
           </div>
-          <hr />
         </v-col>
       </v-row>
     </v-container>

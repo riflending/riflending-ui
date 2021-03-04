@@ -1,15 +1,17 @@
 <template>
   <Fragment>
     <div class="system-var-beta">
-      <v-system-bar dark color="black">
+      <v-system-bar dark color="black" dense fixed app>
         <v-spacer></v-spacer>
+
         <span class="d-none d-sm-none d-md-flex">
-          This website is still in BETA. This means rLending is in a testing phase and it is likely
-          to contain errors</span
-        >
-        <span class="d-sm-flex d-md-none d-lg-none d-xl-none d-xl-flex">
-          This website is still in BETA.
+          This website is still in <a target="_blank" href="/terms"> BETA</a>. This means rLending
+          is in a testing phase and it is likely to contain errors
         </span>
+        <span class="d-sm-flex d-md-none d-lg-none d-xl-none d-xl-flex">
+          This website is still in <a target="_blank" href="/terms"> BETA</a>.
+        </span>
+        <v-spacer></v-spacer>
       </v-system-bar>
       <br />
     </div>
@@ -64,7 +66,8 @@
       </v-toolbar>
     </v-app-bar>
     <v-alert
-      border="right"
+      dismissible
+      border="left"
       colored-border
       type="error"
       elevation="2"
