@@ -57,13 +57,12 @@
               alt="Oracles Subsystem Graph"
             />
           </p>
-          <hr />
+
           <div class="pan-container">
             <a href="/docs/contracts">&laquo; Contracts</a>
             <a href="#">Back to top</a>
             <a href="/docs/securityAudits">Security and audits &raquo;</a>
           </div>
-          <hr />
         </v-col>
       </v-row>
     </v-container>

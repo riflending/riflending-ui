@@ -22,7 +22,7 @@
             determined by the market&#39;s Reserve Factor.
           </p>
           <p>&nbsp;</p>
-          <hr />
+
           <h1 id="borrowerDynamics">Borrower Dynamics</h1>
           <p>
             A borrower&#39;s balance, including accrued interest, is simply the ratio of the current
@@ -34,7 +34,7 @@
             interest was last accrued.
           </p>
           <p>&nbsp;</p>
-          <hr />
+
           <h1 id="exchangeRates">Exchange Rates:</h1>
           <p>
             Each cToken is convertible into an ever increasing quantity of the underlying asset, as
@@ -59,7 +59,7 @@
             </li>
           </ul>
           <p>&nbsp;</p>
-          <hr />
+
           <h1 id="reserveFactor">Reserve Factor:</h1>
           <p>
             The reserve factor defines the portion of borrower interest that is converted into
@@ -68,7 +68,7 @@
             subject to change through the Multi-Signature system.
           </p>
           <p>&nbsp;</p>
-          <hr />
+
           <h1 id="apy">APY / APR:</h1>
           <p>
             The <em>annual percentage yield</em> (<strong>APY</strong>) or
@@ -85,7 +85,7 @@
             on simple interest rates.
           </p>
           <p>&nbsp;</p>
-          <hr />
+
           <h1 id="riskManagement">Risk management and Liquidations:</h1>
           <p>
             If the value of an account’s borrowing balance exceeds their borrowing capacity, a
@@ -107,7 +107,7 @@
             tech-savvy users to develop bots that perform this task.
           </p>
           <p>&nbsp;</p>
-          <hr />
+
           <h1 id="collateral">Collateral and Collateral Factor:</h1>
           <p>
             Collateral — In order to borrow assets from the
@@ -139,7 +139,7 @@
             <strong>LTV</strong> (<em>Loan-To-Value</em>) ratio.
           </p>
           <p>&nbsp;</p>
-          <hr />
+
           <h1 id="accruingInterests">Accruing Interests:</h1>
           <p>
             Interest rates for each market update on any block in which the ratio of borrowed assets
@@ -197,13 +197,12 @@
               may change at any time.
             </strong>
           </p>
-          <hr />
+
           <div class="pan-container">
             <a href="/docs/howTo">&laquo; How To</a>
             <a href="#">Back to top</a>
             <a href="/docs/contracts">Contracts &raquo;</a>
           </div>
-          <hr />
         </v-col>
       </v-row>
     </v-container>

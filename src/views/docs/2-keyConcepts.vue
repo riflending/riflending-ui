@@ -9,7 +9,7 @@
             <strong>rBTC</strong> address that holds the assets and administers the transactions.
           </p>
           <p></p>
-          <hr />
+
           <h1 id="markets">Markets:</h1>
           <p>
             The smart contracts that power the <strong>rLending Protocol</strong> are deployed to
@@ -33,7 +33,7 @@
             >
           </p>
           <p></p>
-          <hr />
+
           <h1 id="supplyingAssets">Supplying Assets:</h1>
           <p>
             Unlike an exchange or peer-to-peer platform, where a user’s assets are matched and lent
@@ -64,7 +64,7 @@
             <strong>In this way, earning interest is as simple as holding a ERC-20 cToken.</strong>
           </p>
           <p></p>
-          <hr />
+
           <h1 id="borrowingAssets">Borrowing Assets:</h1>
           <p>
             <strong>rLending</strong> allows users to frictionlessly borrow from the protocol, using
@@ -88,7 +88,7 @@
             rate, set by market forces, which determines the borrowing cost for each asset.
           </p>
           <p></p>
-          <hr />
+
           <h1 id="ctokens">cTokens:</h1>
           <p>
             Each asset supported by the
@@ -103,7 +103,7 @@
             <a href="#borrowingAssets">borrowing assets</a>.
           </p>
           <p></p>
-          <hr />
+
           <h1 id="underlying">Underlying:</h1>
           <p>
             We say an asset is <strong> Underlying</strong> if it is integrated through a
@@ -111,7 +111,7 @@
             token for the <strong>cRIF</strong> cToken.
           </p>
           <p></p>
-          <hr />
+
           <h1 id="earningInterests">Earning Interests:</h1>
           <p>
             When users and applications supply an asset to the <strong>rLending Protocol</strong>,
@@ -132,7 +132,7 @@
             increases over time, based on the rate of interest earned by the underlying asset.
           </p>
           <p></p>
-          <hr />
+
           <h1 id="collateral">Collateral:</h1>
           <p>
             Assets held by the protocol (represented by ownership of a
@@ -163,7 +163,7 @@
             >
           </p>
           <p></p>
-          <hr />
+
           <h1 id="borrowLimit">Borrow Limit:</h1>
           <p>
             The max <a href="#borrowingAssets">borrowable</a> amount an
@@ -172,14 +172,14 @@
             <a href="#marketPrice">market price</a> of the asset.
           </p>
           <p></p>
-          <hr />
+
           <h1 id="contractLiquidity">Contract Liquidity:</h1>
           <p>
             The amount of underlying asset currently stored in the
             <a href="#cTokens">cToken</a> contract representing the <a href="#markets">market</a>.
           </p>
           <p></p>
-          <hr />
+
           <h1 id="supplyBalance">Supply Balance:</h1>
           <p>
             The <a href="#account">account&#39;s</a> supply balance is given by
@@ -194,7 +194,7 @@
             >) for their underlying assets at any time.
           </p>
           <p></p>
-          <hr />
+
           <h1 id="exchangeRate">Exchange Rate:</h1>
           <p>
             The rate at which the protocol is currently converting between
@@ -203,7 +203,7 @@
             they interests.
           </p>
           <p></p>
-          <hr />
+
           <h1 id="borrowBalance">Borrow Balance:</h1>
           <p>
             <strong
@@ -214,7 +214,7 @@
             <a href="#exchangeRate">exchange rate</a>.
           </p>
           <p></p>
-          <hr />
+
           <h1 id="debt">Debt:</h1>
           <p>
             Debt is calculated to be
@@ -225,7 +225,7 @@
             <a href="#marketPrice">market price</a>.
           </p>
           <p></p>
-          <hr />
+
           <h1 id="liquidation">Liquidation:</h1>
           <p>
             A <a href="#borrowingAssets">borrowing</a> <a href="#account">account</a> becomes
@@ -258,7 +258,7 @@
             contract.
           </p>
           <p></p>
-          <hr />
+
           <h1 id="closeFactor">Close Factor:</h1>
           <p>
             The percent, ranging from 0% to 100%, of <a href="#debt">debt</a> eligible to be closed
@@ -270,7 +270,7 @@
             aggregated value of a user’s outstanding borrowing.
           </p>
           <p></p>
-          <hr />
+
           <h1 id="liquidationIncentive">Liquidation Incentive:</h1>
           <p>
             The additional collateral given to liquidators as an incentive to perform liquidation of
@@ -279,7 +279,7 @@
             unit they close.
           </p>
           <p></p>
-          <hr />
+
           <h1 id="marketPrice">Market Price:</h1>
           <p>
             The current price in <strong>USD</strong> for a given asset, as provided by the
@@ -287,7 +287,7 @@
             subsystem.
           </p>
           <p></p>
-          <hr />
+
           <h1 id="withdrawal">Withdrawals:</h1>
           <p>
             Users that have non-negative health factor are able to withdraw their liquidity at any
@@ -296,14 +296,14 @@
             according to the current <strong>Exchange Rate</strong>.
           </p>
           <p></p>
-          <hr />
+
           <h1 id="repay">Repay:</h1>
           <p>
             Users that have <strong>Borrow Balance</strong> are able to <strong>Repay</strong> their
             debt in order to partially reduce it or cancel it.
           </p>
           <p></p>
-          <hr />
+
           <h1 id="liquidity">Liquidity:</h1>
           <p>
             <a href="#account">Account</a> Liquidity
@@ -321,14 +321,14 @@
             <strong>collateral factor</strong> times each USD withdrawn.
           </p>
           <p></p>
-          <hr />
+
           <h1 id="collateralFactor">Collateral Factor:</h1>
           <p>
             The percentage of supplied assets that is required to be collateralized when a user
             enters a market for borrowing purposes.
           </p>
           <p></p>
-          <hr />
+
           <h1 id="healthFactor">Health Factor:</h1>
           <p>
             <strong>Health Factor</strong> is the result of a formula that calculates how close an
@@ -337,7 +337,7 @@
             it&#39;s shortfall <a href="#liquidation">liquidated</a>. This would be bad.
           </p>
           <p></p>
-          <hr />
+
           <h1 id="governance">Governance and Administrators:</h1>
           <p>
             The <strong>rLending protocol</strong> does not support specific tokens by default;
@@ -369,13 +369,12 @@
             <li>The ability to update the Comptroller contract</li>
             <li>The ability to choose a new admin</li>
           </ul>
-          <hr />
+
           <div class="pan-container">
             <a href="/docs/introduction">&laquo; Introduction</a>
             <a href="#">Back to top</a>
             <a href="/docs/howTo">How To &raquo;</a>
           </div>
-          <hr />
         </v-col>
       </v-row>
     </v-container>
