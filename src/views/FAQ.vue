@@ -198,7 +198,12 @@
             <h2 id="howWorks">How does it work?</h2>
             <p>
               <strong>rLending</strong> leverages
-              <a href="docs/securityAudits" target="_blank"> audited</a>
+              <a
+                href="https://github.com/riflending/rlending-protocol/blob/master/audit/rLending_Security_Audit_Final_Report_v210303.pdf"
+                target="_blank"
+              >
+                audited</a
+              >
               <a href="https://en.wikipedia.org/wiki/Smart_contract" target="_blank">
                 Smart Contracts</a
               >
@@ -532,7 +537,13 @@
             </p>
             <p>
               As for security measures, we encourage you to read up on them in
-              <a href="docs/securityAudits" target="_blank">the documentation</a>. For example: the
+              <a href="docs/securityAudits" target="_blank">the documentation</a>, and the
+              independent
+              <a
+                href="https://github.com/riflending/rlending-protocol/blob/master/audit/rLending_Security_Audit_Final_Report_v210303.pdf"
+                target="_blank"
+                >auditor's report</a
+              >. For example: the
               <a href="docs/keyConcepts#reserveFactor" target="_blank">Reserve Factor</a> and the
               <a href="docs/securityAudits" target="_blank">Multi-Sig system</a>.
             </p>

@@ -27,6 +27,12 @@
             >
               Whitepaper
             </a>
+            <a
+              href="https://github.com/riflending/rlending-protocol/blob/master/audit/rLending_Security_Audit_Final_Report_v210303.pdf"
+              target="_blank"
+            >
+              Audits
+            </a>
           </v-col>
         </v-row>
 
