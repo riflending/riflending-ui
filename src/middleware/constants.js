@@ -33,10 +33,8 @@ export const abi = {
   Multicall: Multicall,
 }
 
-// Publicly revealed on the parent class
 export const constants = {
   Unitroller: 'Unitroller',
-  MultiSigWallet: 'MultiSigWallet',
   PriceOracleProxy: 'PriceOracleProxy',
   PriceOracleAdapterRif: 'PriceOracleAdapterRif',
   PriceOracleAdapterRBTC: 'PriceOracleAdapterRBTC',
@@ -64,14 +62,10 @@ export const address = {
   31: {
     // rsk testnet deployed contracts
     Unitroller: '0x3a983c7597b3ac4fbc3e0cf484d7631d70d04c05',
-    MultiSigWallet: '0x9760d4a155058f6bec8d9fd8d50222073e57083e',
     PriceOracleProxy: '0xbe898c9fc63c0185bc6e403e7b9c12e341a60aa7',
     PriceOracleAdapterRif: '0x5a9003e5f443607b7e0491dc27cad6796d309055',
     PriceOracleAdapterUSDT: '0x08c2feb0352ed646ea48e7e1874c6f2e4a934dad',
     PriceOracleAdapterRBTC: '0xc02c09c578ae2680796e33f6662b779580cd84b6',
-    Comptroller: '0x2e64b3acd75d86a8ff17b98e02dae4dcf2852a94',
-    JumpRateModelV2: '0xf8b35564e85800d60043ccdde0af47ba3463b6ce',
-    WhitePaperInterestRateModel: '0xa9a4da01daea36da9000f83f34691ba6132e5e87',
     RlendingLens: '0xef9a1856f3cd3b5da7104524065a3d6cc9b7a4b3',
     crUSDT: '0xfd09f3349fdab173d162cd0e4669b591ed5a78fb',
     cRIF: '0x4664d4cbd5104a0e974354724cbc8e0d9bd1aca3',
@@ -86,26 +80,22 @@ export const address = {
     Multicall: '0x4eeebb5580769ba6d26bfd07be636300076d1831', // https://github.com/Think-and-Dev/multicall
   },
   30: {
-    /* TODO - uptate this to RSK mainnet addresses */
-    Unitroller: '0x51401d51f7cfc1a91f88a973edd0762d2021bb5b',
-    MultiSigWallet: '0x0fce7d2e8e0a92ba6068a54ed2a7e628ea022e72',
-    PriceOracleProxy: '0x0d0006f3f700a468b6467615f2fb9efdec4e4e33',
-    PriceOracleAdapterRif: '0x20e3996603e6c9415e56181ee55d2b8e1c423acf',
-    PriceOracleAdapterUSDT: '0x08c2feb0352ed646ea48e7e1874c6f2e4a934dad',
-    PriceOracleAdapterRBTC: '0xc02c09c578ae2680796e33f6662b779580cd84b6',
-    Comptroller: '0xca8744cfaeb8ef4bc1fe5350f24058768fb78a5e',
-    JumpRateModelV2: '0x5f3fd1f2f5d8f6ac902d4653e517f1731732a0b6',
-    WhitePaperInterestRateModel: '0x8ac501b80a8932cfac4f0c55213b372c02631c5e',
-    crUSDT: '0xfd09f3349fdab173d162cd0e4669b591ed5a78fb',
-    cRIF: '0x2b47f1b810faf99d911228a87c9c6d0d61514b9d',
-    cRBTC: '0xa04bb527be81bb92b59059a45206101b2d11200d',
-    RLEN: '0xcbf15821e5ecb15d46af5d98bf25b7ce49e4ebd2',
-    MaximillionAddress: '0x5edd33c93086bef90692a3db1cbc51104734b851',
-    RBTCMocOracle: '0x26a00af444928d689ddec7b4d17c0e4a8c9d407d',
-    RIFMocOracle: '0x9d4b2c05818a0086e641437fcb64ab6098c7bbec',
-    USDTOracle: '0xc52c19df35a3e7cae0871ee15e4e3fb58ffbfee4',
-    RIF: '0x19f64674d8a5b4e652319f5e239efd3bc969a1fe',
-    rUSDT: '0x4cfe225ce54c6609a525768b13f7d87432358c57',
+    Unitroller: '0x57f3edae1d2a109f0d5e4e6269aca2f532cdbaaa',
+    PriceOracleProxy: '0x38273146634d1f1805cb11a7ae70c7f4818ee69c',
+    PriceOracleAdapterRif: '0x3f0c80c7fa4d313037a77d9e5d2070be2c8ea19d',
+    PriceOracleAdapterUSDT: '0x6d4174b7290d207c5631e4da6e9a0f1e3acd7411',
+    PriceOracleAdapterRBTC: '0xbc4a94b0e07a8a453d382747741d4652a0d0bcbf',
+    RlendingLens: '0xbd190212b60323e8756324fd5aaa448ddb50ab6a',
+    crUSDT: '0xd256c121a507cadd2687599e27fa45e31b7c3199',
+    cRIF: '0xb7ff2c56c897562c0aa6747d2679d35f5e937492',
+    cRBTC: '0x872664a885a1995d754e3666a23fad5c801401c4',
+    RLEN: '0x4f6b4d3af154d5f1ce200b97051a39b77e99f1f9',
+    MaximillionAddress: '0x7a1834092a00eacfe5292418a83f2dde4dcd9b97',
+    RBTCMocOracle: '0x7b19bb8e6c5188ec483b784d6fb5d807a77b21bf',
+    RIFMocOracle: '0x504efcadfb020d6bbaec8a5c5bb21453719d0e00',
+    USDTOracle: '0x7faf361a1ff5404f2e7a9bf44b94c95b61b0749b',
+    RIF: '0x2acc95758f8b5f583470ba265eb685a8f45fc9d5',
+    rUSDT: '0xef213441a85df4d7acbdae0cf78004e1e486bb96',
     Multicall: '0x4eeebb5580769ba6d26bfd07be636300076d1831', // https://github.com/Think-and-Dev/multicall
   },
 }
@@ -130,7 +120,7 @@ export const percentageOfHealthToBorrow = 0.01
 export const cTokensDetails = [
   {
     symbol: 'cRBTC',
-    name: 'ctoken rbtc',
+    name: 'cToken rLending RBTC',
     decimals: decimals.cRBTC,
     underlying: { symbol: 'RBTC', name: 'RSK Smart Bitcoin', decimals: decimals.RBTC },
     logo: 'rbtc',
@@ -144,7 +134,7 @@ export const cTokensDetails = [
   },
   {
     symbol: 'cRIF',
-    name: 'cToken rLending Rif',
+    name: 'cToken rLending RIF',
     decimals: decimals.cRIF,
     underlying: { symbol: 'RIF', name: 'RSK Infrastructure Token', decimals: decimals.RIF },
     logo: 'rif',
@@ -158,7 +148,7 @@ export const cTokensDetails = [
   },
   {
     symbol: 'crUSDT',
-    name: 'cToken rLending USDT',
+    name: 'cToken rLending rUSDT',
     decimals: decimals.crUSDT,
     underlying: { symbol: 'rUSDT', name: 'Tether USD', decimals: decimals.rUSDT },
     logo: 'usdt',
