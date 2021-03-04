@@ -1,7 +1,7 @@
 <template>
   <Fragment>
     <div class="system-var-beta">
-      <v-system-bar dark color="black">
+      <v-system-bar dark color="black" dense fixed app>
         <v-spacer></v-spacer>
 
         <span class="d-none d-sm-none d-md-flex">
@@ -66,7 +66,8 @@
       </v-toolbar>
     </v-app-bar>
     <v-alert
-      border="right"
+      dismissible
+      border="left"
       colored-border
       type="error"
       elevation="2"
