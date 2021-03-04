@@ -14,7 +14,7 @@
             />
           </p>
           <p>&nbsp;</p>
-          <hr />
+
           <h1 id="ctokensContracts">cTokens:</h1>
           <p>
             cTokens are the primary means of interacting with the
@@ -38,7 +38,7 @@
             <a href="www.rlending.app/status"><strong>rLending</strong> market status</a>.
           </p>
           <p>&nbsp;</p>
-          <hr />
+
           <h1 id="riskManagement">Risk Management:</h1>
           <p>
             The risk management layer of the <strong>rLending</strong> protocol is comprised of
@@ -61,7 +61,7 @@
             <strong>Unitroller</strong>.
           </p>
           <p>&nbsp;</p>
-          <hr />
+
           <h1 id="oracleExplain">Oracles:</h1>
           <p>
             An oracle is a way for a blockchain or smart contract to interact with external data.
@@ -72,7 +72,7 @@
             <strong>rLending</strong> Oracle subsystem is explained in detail.
           </p>
           <p>&nbsp;</p>
-          <hr />
+
           <h1 id="testnet">Testnet Deploy:</h1>
           <ul>
             <li>
@@ -161,16 +161,15 @@
               >
             </li>
           </ul>
-          <hr />
+
           <h1 id="testnet">Main Net:</h1>
           <p>Coming soon...</p>
-          <hr />
+
           <div class="pan-container">
             <a href="/docs/financialMath">&laquo; Financial Math</a>
             <a href="#">Back to top</a>
             <a href="/docs/oracles">Oracles &raquo;</a>
           </div>
-          <hr />
         </v-col>
       </v-row>
     </v-container>

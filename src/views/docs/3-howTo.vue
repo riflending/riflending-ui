@@ -36,7 +36,7 @@
             borrowed, available liquidity and health factor)
           </p>
           <p>&nbsp;</p>
-          <hr />
+
           <h1 id="howDeposit">How to make a deposit:</h1>
           <p>
             <strong>rLending</strong> deposits are easy! After you have
@@ -108,7 +108,7 @@
             <strong>Congratulations! You are already earning interests!!</strong>
           </p>
           <p>&nbsp;</p>
-          <hr />
+
           <h1 id="howBorrow">How to make a borrow:</h1>
           <p>
             All right, when a user supplies balance they immediately start earning interests... but
@@ -212,7 +212,7 @@
             />
           </p>
           <p>&nbsp;</p>
-          <hr />
+
           <h1 id="howWithdraw">How to make a withdrawal:</h1>
           <p>
             If at some point you decide you want to withdraw your funds, you should know you will be
@@ -262,7 +262,7 @@
           </p>
           <p><em>Bigger withdrawals may considerably reduce your health factor!!</em></p>
           <p>&nbsp;</p>
-          <hr />
+
           <h1 id="howRepay">How to repay debt:</h1>
           <p>
             Borrows can be repaid using a function on the respective cToken contract. Once a borrow
@@ -271,7 +271,7 @@
             account.
           </p>
           <p>&nbsp;</p>
-          <hr />
+
           <!-- <h1 id="howLiquidate">How to liquidate underwater accounts:</h1>
           <p>
             In order to check the accounts that are prone to liquidation, go to the
@@ -300,7 +300,7 @@
             />
           </p>
           <p>&nbsp;</p>
-          <hr /> -->
+           -->
           <h1 id="howData">How to view market data:</h1>
           <p>
             Like mentioned earlier, markets represent each asset listed in the
@@ -332,7 +332,7 @@
             />
           </p>
           <p>&nbsp;</p>
-          <hr />
+
           <h1 id="howInterest">How do tokens earn interests?:</h1>
           <p>
             Each market has its own Supply interest rate (APR). Interest isn&#39;t distributed;
@@ -423,13 +423,12 @@
             <a href="https://rskswap.com/">RSK Swap</a> Dapp which allows for instant exchange
             between assets in the network.
           </p>
-          <hr />
+
           <div class="pan-container">
             <a href="/docs/keyConcepts">&laquo; Key concepts</a>
             <a href="#">Back to top</a>
             <a href="/docs/financialMath">Financial Math &raquo;</a>
           </div>
-          <hr />
         </v-col>
       </v-row>
     </v-container>
