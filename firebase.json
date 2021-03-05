@@ -8,6 +8,16 @@
         "**/.*",
         "**/node_modules/**"
       ],
+      "headers": [{
+        "source" : "**",
+        "headers" : [{
+          "key" : "Pragma",
+          "value" : "no-cache"
+        }, {
+          "key" : "Cache-Control",
+          "value" : "no-store, no-cache, must-revalidate"
+        }]
+      }],
       "rewrites": [
         {
           "source": "**",
@@ -23,6 +33,16 @@
         "**/.*",
         "**/node_modules/**"
       ],
+      "headers": [{
+        "source" : "**",
+        "headers" : [{
+          "key" : "Pragma",
+          "value" : "no-cache"
+        }, {
+          "key" : "Cache-Control",
+          "value" : "no-store, no-cache, must-revalidate"
+        }]
+      }],
       "rewrites": [
         {
           "source": "**",
