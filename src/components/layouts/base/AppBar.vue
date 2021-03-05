@@ -16,6 +16,12 @@
       <br />
     </div>
     <v-app-bar class="app-bar ma-5" color="transparent" flat clipped-left>
+      <v-app-bar-nav-icon
+        v-if="isDrawer"
+        class=""
+        @click.stop="emitCloseDrawer"
+      ></v-app-bar-nav-icon>
+
       <v-toolbar flat fill-height align-center m-0 p-0>
         <v-btn large text class="title-button" @click="gotToLanding">
           <v-app-bar-title>
@@ -82,7 +88,7 @@
 </template>
 
 <script>
-import { mapActions, mapState, mapGetters } from 'vuex'
+import { mapActions, mapState, mapGetters, mapMutations } from 'vuex'
 import * as constants from '@/store/constants'
 import Vue from 'vue'
 import { ethers } from 'ethers'
@@ -115,6 +121,7 @@ export default {
     ...mapState({
       account: (state) => state.Session.account,
       isOwner: (state) => state.Session.isOwner,
+      isDrawer: (state) => state.Drawer.icon,
     }),
     title() {
       if (this.$route.path === '/supplyBorrow') return 'Supply/Borrow'
@@ -187,6 +194,12 @@ export default {
       }
       this.connectToWeb3()
     },
+    emitCloseDrawer() {
+      this.setDrawer()
+    },
+    ...mapMutations({
+      setDrawer: constants.DRAWER_SET,
+    }),
   },
 }
 </script>
