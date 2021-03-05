@@ -13,6 +13,7 @@
             type="number"
             required
             :rules="[
+              rules.mustEnterToSomeMarket,
               rules.required,
               rules.decimals,
               rules.marketCash,
@@ -124,6 +125,7 @@ export default {
   },
   data() {
     return {
+      hasEnteredToSomeMarket: true,
       waiting: false,
       isAmountMax: false,
       amount: 0,
@@ -133,6 +135,9 @@ export default {
       oldMaxBorrowAllowed: 0,
       maxBorrowAllowed: 0,
       rules: {
+        mustEnterToSomeMarket: () =>
+          this.hasEnteredToSomeMarket ||
+          'In order to borrow in a market, you must add collateral first.',
         required: () => !!Number(this.amount) || 'Required',
         allowed: () => this.isBorrowAllowed || "Borrow won't be allowed by the protocol",
         decimals: () =>
@@ -153,11 +158,12 @@ export default {
     }),
     validForm() {
       return (
+        typeof this.rules.mustEnterToSomeMarket() !== 'string' &&
         typeof this.rules.required() !== 'string' &&
         typeof this.rules.allowed() !== 'string' &&
-        typeof this.rules.liquidity() !== 'string' &&
         typeof this.rules.decimals() !== 'string' &&
-        typeof this.rules.marketCash() !== 'string'
+        typeof this.rules.marketCash() !== 'string' &&
+        typeof this.rules.liquidity() !== 'string'
       )
     },
     hasDecimals() {
@@ -194,6 +200,10 @@ export default {
 
     this.data.market.borrowBalanceCurrentFormatted(this.account).then((borrowBalance) => {
       this.userTotalBorrow = borrowBalance.toString()
+    })
+
+    this.$middleware.hasEnteredToSomeMarket(this.account).then((hasEnteredToSomeMarket) => {
+      this.hasEnteredToSomeMarket = hasEnteredToSomeMarket
     })
   },
   methods: {

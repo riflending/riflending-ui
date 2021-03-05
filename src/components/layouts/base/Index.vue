@@ -1,7 +1,7 @@
 <template>
   <v-app light class="index">
     <AppBar />
-    <v-main>
+    <v-main class="main-min-height">
       <v-container fluid>
         <slot></slot>
       </v-container>
