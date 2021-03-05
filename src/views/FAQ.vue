@@ -1,7 +1,7 @@
 <template>
   <div id="top" class="faq">
     <v-row>
-      <v-col cols="3">
+      <!-- <v-col cols="3">
         <v-navigation-drawer permanent>
           <v-list-item dense>
             <v-list-item-content
@@ -135,9 +135,9 @@
             >
           </v-list-item>
         </v-navigation-drawer>
-      </v-col>
-      <v-col cols="9">
-        <v-row class="d-flex align-center justify-left">
+      </v-col> -->
+      <v-col cols="12">
+        <v-row class="d-flex align-center justify-center">
           <v-col cols="10" class="flex-grow-0 flex-shrink-0">
             <center><h1 id="faq">FAQs</h1></center>
             <h1 id="whatIs">What exactly is rLending?</h1>
@@ -714,3 +714,22 @@
     </v-row>
   </div>
 </template>
+<script>
+import * as constants from '@/store/constants'
+import { mapMutations } from 'vuex'
+
+export default {
+  name: 'FAQ',
+  created() {
+    this.emitDrawer()
+  },
+  methods: {
+    emitDrawer() {
+      this.setDrawerProperty({ icon: true })
+    },
+    ...mapMutations({
+      setDrawerProperty: constants.DRAWER_SET_PROPERTY,
+    }),
+  },
+}
+</script>
