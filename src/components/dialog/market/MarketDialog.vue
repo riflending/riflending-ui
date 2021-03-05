@@ -84,6 +84,23 @@
             <span>{{ supplyAPY | formatPercentage }} </span>
           </v-col>
         </v-row>
+        <v-row class="ma-2 d-flex align-center">
+          <v-col cols="3">
+            <h3>Total Reserves</h3>
+          </v-col>
+          <v-col cols="2" class="item">
+            <span>{{ updatedTotalReserve | formatNumber }} </span>
+          </v-col>
+          <v-col cols="0">
+            <span class="ml-2 itemInfo">{{ data.token.symbol }}</span>
+          </v-col>
+          <v-col cols="3" class="d-flex align-center">
+            <h3>Reserve Factor</h3>
+          </v-col>
+          <v-col cols="2" class="item">
+            <span>{{ reserveFactor | formatPercentage }} </span>
+          </v-col>
+        </v-row>
 
         <v-row class="ma-2 d-flex align-center">
           <v-col cols="3">
@@ -103,10 +120,10 @@
 
         <v-row class="ma-2 d-flex align-center">
           <v-col cols="3">
-            <h3>Market Liquidity</h3>
+            <h3>Close Factor</h3>
           </v-col>
           <v-col cols="2" class="item">
-            <span>{{ mktLiqu | formatPrice }} </span>
+            <span>{{ closeFactor | formatToken(data.token.decimals) | formatPercentage }} </span>
           </v-col>
           <v-col cols="2" />
           <v-col cols="3" class="d-flex align-center">
@@ -114,23 +131,6 @@
           </v-col>
           <v-col cols="2" class="item">
             <span>{{ liqPen | formatPercentage }} </span>
-          </v-col>
-        </v-row>
-        <v-row class="ma-2 d-flex align-center">
-          <v-col cols="3">
-            <h3>Total Reserves</h3>
-          </v-col>
-          <v-col cols="2" class="item">
-            <span>{{ updatedTotalReserve | formatNumber }} </span>
-          </v-col>
-          <v-col cols="0">
-            <span class="ml-2 itemInfo">{{ data.token.symbol }}</span>
-          </v-col>
-          <v-col cols="3" class="d-flex align-center">
-            <h3>Reserve Factor</h3>
-          </v-col>
-          <v-col cols="2" class="item">
-            <span>{{ reserveFactor | formatPercentage }} </span>
           </v-col>
         </v-row>
       </div>
@@ -175,6 +175,7 @@ export default {
       mktLiqu: 0, // market liquidity in usd
       priceFlag: false,
       isCRBTC: false,
+      closeFactor: 0,
     }
   },
   computed: {
@@ -216,6 +217,8 @@ export default {
         : 0
     this.liqPen = await this.data.market.getLiquidationIncentiveMantissa()
     this.isCRBTC = this.data.market.isCRBTC
+    const closeFactor = await this.$middleware.getLiquidationFactor()
+    this.closeFactor = closeFactor.mul(100)
 
     this.reset()
   },
