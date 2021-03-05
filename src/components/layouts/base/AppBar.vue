@@ -8,7 +8,7 @@
           This website is still in <a target="_blank" href="/terms"> BETA</a>. This means rLending
           is in a testing phase and it is likely to contain errors
         </span>
-        <span class="d-sm-flex d-md-none d-lg-none d-xl-none d-xl-flex">
+        <span class="d-sm-flex d-md-none d-lg-none d-xl-none">
           This website is still in <a target="_blank" href="/terms"> BETA</a>.
         </span>
         <v-spacer></v-spacer>
