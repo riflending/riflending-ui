@@ -400,13 +400,17 @@ export default {
           )
         : this.$middleware.getWalletAccountBalanceForRBTC(this.account)
       walletBalancePromise.then((balanceOfToken) => {
-        this.$middleware.getGasPrice().then((price) => {
-          // balanceOfToken - (gasPrice * gasLimit)
-          const max = new BigNumber(balanceOfToken).minus(
-            price.multipliedBy(this.data.market.gasLimit),
-          )
-          this.funds = max.isNegative() ? 0 : max.toString()
-        })
+        if (this.data.market.isCRBTC) {
+          this.$middleware.getGasPrice().then((price) => {
+            // balanceOfToken - (gasPrice * gasLimit)
+            const max = new BigNumber(balanceOfToken).minus(
+              price.multipliedBy(this.data.market.gasLimit),
+            )
+            this.funds = max.isNegative() ? 0 : max.toString()
+          })
+        } else {
+          this.funds = new BigNumber(balanceOfToken).toString()
+        }
       })
     },
     getCollateralMarketMaxAssetSelected() {
