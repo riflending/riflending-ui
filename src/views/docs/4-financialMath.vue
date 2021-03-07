@@ -41,15 +41,15 @@
       <p>exchangeRate = (marketLiquidity + totalBorrows - totalReserves) / totalSupply</p>
       <p>Where:</p>
       <ul>
-        <li>
+        <li class="mb-4">
           <strong>marketLiquidity</strong> is the amount of underlying balance owned by this cToken
           contract.
         </li>
-        <li>
+        <li class="mb-4">
           <strong>totalBorrows</strong> is the amount of underlying currently loaned out by the
           market, and the amount upon which interest is accumulated to suppliers of the market.
         </li>
-        <li>
+        <li class="mb-4">
           <strong>totalReserves</strong> in each cToken represent a portion of interests set aside
           as liquidity which can be withdrawn or transferred. Reserves are a small portion of
           borrower interest accrues into the protocol, determined by the reserve factor.
@@ -145,11 +145,11 @@
         with the market’s cToken contract, calling one of these functions:
       </p>
       <ul>
-        <li>mint (supply)</li>
-        <li>redeem (withdraw)</li>
-        <li>borrow</li>
-        <li>repay</li>
-        <li>liquidate</li>
+        <li class="mb-4">mint (supply)</li>
+        <li class="mb-4">redeem (withdraw)</li>
+        <li class="mb-4">borrow</li>
+        <li class="mb-4">repay</li>
+        <li class="mb-4">liquidate</li>
       </ul>
       <p>
         Successful execution of one of these functions triggers the contract&#39;s method that
