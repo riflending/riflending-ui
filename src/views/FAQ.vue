@@ -148,18 +148,18 @@
             </p>
             <p>This means:</p>
             <ul>
-              <li>No single entity stores funds on behalf of the users.</li>
-              <li>
+              <li class="mb-4">No single entity stores funds on behalf of the users.</li>
+              <li class="mb-4">
                 Users are not required to wait long times for someone to process their transactions.
               </li>
-              <li>
+              <li class="mb-4">
                 Transactions are highly secure (thanks to
                 <a href="https://github.com/riflending/rlending-protocol" target="_blank"
                   >open protocols</a
                 >
                 and <a href="docs/securityAudits" target="_blank">independent auditors</a>).
               </li>
-              <li>24/7 accessibility from anywhere in the world.</li>
+              <li class="mb-4">24/7 accessibility from anywhere in the world.</li>
             </ul>
             <p>
               In other words, there is no central bank or government authority imposing rules on how
@@ -428,12 +428,12 @@
             </p>
 
             <ul>
-              <li>Function Typical Gas Cost Mint &lt; 150K</li>
-              <li>cUSDT &lt; 300k</li>
-              <li>Redeem, Transfer &lt; 250K if borrowing, otherwise &lt; 90K</li>
-              <li>Borrow &lt; 300K</li>
-              <li>Repay Borrow &lt; 90K</li>
-              <li>Liquidate Borrow &lt; 400K</li>
+              <li class="mb-4">Function Typical Gas Cost Mint &lt; 150K</li>
+              <li class="mb-4">cUSDT &lt; 300k</li>
+              <li class="mb-4">Redeem, Transfer &lt; 250K if borrowing, otherwise &lt; 90K</li>
+              <li class="mb-4">Borrow &lt; 300K</li>
+              <li class="mb-4">Repay Borrow &lt; 90K</li>
+              <li class="mb-4">Liquidate Borrow &lt; 400K</li>
             </ul>
             <p>
               <em
@@ -610,12 +610,12 @@
             </p>
             <ul>
               Generally speaking:
-              <li>HealthFactor &gt; 50% means your account is safe</li>
-              <li>
+              <li class="mb-4">HealthFactor &gt; 50% means your account is safe</li>
+              <li class="mb-4">
                 HealthFactor &gt; 15% and &lt; 50% means you should keep an eye on your collaterals
               </li>
-              <li>HealthFactor &lt; 15% means you should probably provide more collateral</li>
-              <li>
+              <li class="mb-4">HealthFactor &lt; 15% means you should probably provide more collateral</li>
+              <li class="mb-4">
                 HealthFactor &lt; 0% means you are prone to liquidation, because you have incured in
                 more debt than collateral provided.
               </li>
