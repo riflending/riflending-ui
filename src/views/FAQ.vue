@@ -614,7 +614,9 @@
               <li class="mb-4">
                 HealthFactor &gt; 15% and &lt; 50% means you should keep an eye on your collaterals
               </li>
-              <li class="mb-4">HealthFactor &lt; 15% means you should probably provide more collateral</li>
+              <li class="mb-4">
+                HealthFactor &lt; 15% means you should probably provide more collateral
+              </li>
               <li class="mb-4">
                 HealthFactor &lt; 0% means you are prone to liquidation, because you have incured in
                 more debt than collateral provided.
