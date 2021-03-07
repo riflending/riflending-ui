@@ -63,12 +63,12 @@
         The following rights in the protocol are controlled by the Multi-signature smart contract:
       </p>
       <ul>
-        <li>The ability to list a new cToken market</li>
-        <li>The ability to update the interest rate model per market</li>
-        <li>The ability to update the oracle or any adapter address</li>
-        <li>The ability to withdraw the reserve of a cToken</li>
-        <li>The ability to update the Comptroller contract</li>
-        <li>The ability to choose a new admin</li>
+        <li class="mb-4">The ability to list a new cToken market</li>
+        <li class="mb-4">The ability to update the interest rate model per market</li>
+        <li class="mb-4">The ability to update the oracle or any adapter address</li>
+        <li class="mb-4">The ability to withdraw the reserve of a cToken</li>
+        <li class="mb-4">The ability to update the Comptroller contract</li>
+        <li class="mb-4">The ability to choose a new admin</li>
       </ul>
     </section>
     <div class="pan-container">

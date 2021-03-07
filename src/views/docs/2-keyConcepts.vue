@@ -346,16 +346,16 @@
       </p>
       <p>The following rights in the protocol are controlled by the Multi-sig:</p>
       <ul>
-        <li>
+        <li class="mb-4">
           The ability to list a new <a href="#ctokens">cToken</a> <a href="#markets">market</a>
         </li>
-        <li>The ability to update the interest rate model per market</li>
-        <li>
+        <li class="mb-4">The ability to update the interest rate model per market</li>
+        <li class="mb-4">
           The ability to update the <a href="oracles#oracle">oracle</a> or any adapter address
         </li>
-        <li>The ability to withdraw the reserve of a <a href="#ctokens">cToken</a></li>
-        <li>The ability to update the Comptroller contract</li>
-        <li>The ability to choose a new admin</li>
+        <li class="mb-4">The ability to withdraw the reserve of a <a href="#ctokens">cToken</a></li>
+        <li class="mb-4">The ability to update the Comptroller contract</li>
+        <li class="mb-4">The ability to choose a new admin</li>
       </ul>
     </section>
 
