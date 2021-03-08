@@ -18,10 +18,10 @@
     <v-app-bar class="app-bar ma-5" color="transparent" flat clipped-left>
       <v-toolbar flat fill-height align-center m-0 p-0>
         <v-btn large text class="title-button" @click="gotToLanding">
-          <v-app-bar-title>
+          <v-toolbar-title>
             <h1 class="pr-2">rLending</h1>
             <h2 v-show="isTestnet" class="red--text text--darken-1">Testnet</h2>
-          </v-app-bar-title>
+          </v-toolbar-title>
           <v-img class="title-logo" :src="require(`@/assets/rlending.png`)" alt="rLending logo" />
         </v-btn>
         <v-spacer></v-spacer>
