@@ -18,7 +18,7 @@ export default class FactoryContract {
   }
 
   createContract(address, abi, provider) {
-    return new ethers.Contract(address, abi, provider)
+    if (!!address && !!abi && !!provider) return new ethers.Contract(address, abi, provider)
   }
 
   validateContractName(name) {
