@@ -39,7 +39,7 @@
         <v-col cols="2" class="px-0">
           <v-row class="ma-0">
             <v-list-item-subtitle class="item" :class="{ 'v-btn--disabled': !getFunds }">
-              <ToggleMarketButton :market="market" />
+              <ToggleMarketButton :market="market" :disabled="!getFunds" />
             </v-list-item-subtitle>
           </v-row>
         </v-col>

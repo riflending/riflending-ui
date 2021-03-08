@@ -92,7 +92,6 @@
   }
 }
 
-.disconnected-btn,
 .connected-btn {
   word-break: normal;
   tab-size: 4;
@@ -139,6 +138,19 @@
   border-color: rgb(0, 140, 255);
 }
 
+.disconnected-btn {
+  @extend .connected-btn;
+  cursor: default;
+}
+
 .v-toolbar__items > .v-btn {
   height: 36px !important;
+}
+
+.system-var-beta{
+  span{
+    color:white!important;
+    font-family: "Rubik", sans-serif;
+    font-style: italic;
+  }
 }
