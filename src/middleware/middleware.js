@@ -40,7 +40,6 @@ export default class Middleware {
         underlyingName: cTokensDetail.underlying.name,
         underlyingDecimals: cTokensDetail.underlying.decimals,
         logo: cTokensDetail.logo,
-        interestRateModel: cTokensDetail.interestRateModel,
         collateralFactorMantissa,
         exchangeRateCurrent,
         reserveFactorMantissa,

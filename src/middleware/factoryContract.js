@@ -19,6 +19,7 @@ export default class FactoryContract {
 
   createContract(address, abi, provider) {
     if (!!address && !!abi && !!provider) return new ethers.Contract(address, abi, provider)
+    console.error(`createContract failed with address:`, address, `abi`, abi)
   }
 
   validateContractName(name) {
@@ -60,5 +61,10 @@ export default class FactoryContract {
     ) {
       return this.createContract(this.addressContract[nameContract], abi[nameAbi], Vue.web3Provider)
     }
+  }
+
+  async getCtokenInterestModel(ctoken) {
+    const modelAddress = await ctoken.interestRateModel()
+    return this.createContract(modelAddress, abi['JumpRateModelV2'], Vue.web3Provider)
   }
 }

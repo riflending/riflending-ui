@@ -19,7 +19,6 @@ export default class Market {
       underlyingName,
       underlyingDecimals,
       logo,
-      interestRateModel,
       account,
       collateralFactorMantissa,
       exchangeRateCurrent,
@@ -53,7 +52,7 @@ export default class Market {
     this.token.decimals = underlyingDecimals
     this.token.logo = logo
     //set interest rate model
-    this.interestRateModel = this.factoryContract.getContract(interestRateModel)
+    this.interestRateModel = this.factoryContract.getCtokenInterestModel(this.instance)
     // set borrow rate
     this.factor = 1e18
     this.blocksPerYear = 1051200
