@@ -599,7 +599,8 @@ export default class Market {
     const totalBorrow = this.totalBorrows
     const totalReseves = await this.instance.callStatic.totalReserves()
     const factor = this.reserveFactorMantissa.multipliedBy(this.factor).toString()
-    const rateModel = this.interestRateModel.connect(this.factoryContract.getSigner())
+    const rateModelContract = await this.interestRateModel
+    const rateModel = rateModelContract.connect(this.factoryContract.getSigner())
 
     const calculateTotalSupply = cash
       .plus(supplyAmount)
@@ -626,7 +627,8 @@ export default class Market {
     const cash = await this.getMarketCash(true)
     const totalBorrow = this.totalBorrows
     const totalReseves = await this.instance.callStatic.totalReserves()
-    const rateModel = this.interestRateModel.connect(this.factoryContract.getSigner())
+    const rateModelContract = await this.interestRateModel
+    const rateModel = rateModelContract.connect(this.factoryContract.getSigner())
     const calculateTotalSupply = cash
       .plus(supplyAmount)
       .multipliedBy(10 ** this.token.decimals)
