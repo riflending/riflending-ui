@@ -111,7 +111,8 @@
       <p>
         All right, when a user supplies balance they immediately start earning interests... but
         where do those interests come from? Short answer: <em>Borrowers</em>! Those accounts that
-        borrow crypto assets from the <strong>rLending</strong> protocol pay a varying interest rate
+        borrow crypto assets from the <strong>rLending</strong> protocol pay a varying
+        <a href="/docs/keyConcepts#interestModel">interest rate</a>
         every rBTC block. The interest that borrowers pay produces the interest that suppliers earn.
       </p>
       <p>
@@ -160,7 +161,8 @@
       <p>
         Head over to the <strong>Borrow tab</strong>. Notice that the APR column has changed values.
         This is because you are now viewing the current borrow interest rates. Borrowing rates will
-        always be higher than Supplying Interest Rates.
+        always be higher than Supplying Interest Rates. See
+        <a href="/docs/keyConcepts#interestModel">Utilization rate</a>.
       </p>
       <p align="center">
         <v-img
@@ -329,7 +331,9 @@
     <section>
       <h2 id="howInterest">How do tokens earn interests?:</h2>
       <p>
-        Each market has its own Supply interest rate (APR). Interest isn&#39;t distributed; instead,
+        Each market has its own
+        <a href="/docs/keyConcepts#interestModel">Supply interest rate</a> (APR). Interest isn&#39;t
+        distributed; instead,
         <strong>simply by holding cTokens, you&#39;ll earn interest!</strong>
         <strong>cTokens</strong> accumulates interest through their exchange rate — over time, each
         cToken

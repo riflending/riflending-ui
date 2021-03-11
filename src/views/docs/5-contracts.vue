@@ -38,7 +38,8 @@
       <h2 id="riskManagement">Risk Management:</h2>
       <p>
         The risk management layer of the <strong>rLending</strong> protocol is comprised of
-        <strong>Comptroller</strong>, <strong>Unitroller</strong> and the interest rate models.
+        <strong>Comptroller</strong>, <strong>Unitroller</strong> and the
+        <a href="/docs/keyConcepts#interestModel">interest rate models</a>.
         <strong>Comptroller</strong> is the main contract that determines how much collateral a user
         is required to maintain and whether (and by how much) a user can be liquidated. Each time a
         user interacts with a cToken, the <strong>Comptroller</strong> is asked to approve or deny
