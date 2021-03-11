@@ -1,7 +1,7 @@
 <template>
-  <div id="top" class="faq">
+  <v-container id="top">
     <v-row>
-      <!-- <v-col cols="3">
+      <v-col cols="3">
         <v-navigation-drawer permanent>
           <v-list-item dense>
             <v-list-item-content
@@ -135,32 +135,31 @@
             >
           </v-list-item>
         </v-navigation-drawer>
-      </v-col> -->
-      <v-col cols="12">
-        <v-row class="d-flex align-center justify-center">
-          <v-col cols="10" class="flex-grow-0 flex-shrink-0">
-            <center><h1 id="faq">FAQs</h1></center>
-            <h1 id="whatIs">What exactly is rLending?</h1>
+      </v-col>
+      <v-col cols="9">
+        <section>
+          <h1 id="faq" align="center">FAQs</h1>
+          <section>
+            <h2 id="whatIs">What exactly is rLending?</h2>
             <p>
               <strong>rLending</strong> is a decentralized investment and finance (better known as
               <em>DEFI</em>) platform. rLending is predicated on the tenants of non-custodial,
               trustless and secure systems with 100% uptime.
             </p>
             <p>This means:</p>
-
             <ul>
-              <li>No single entity stores funds on behalf of the users.</li>
-              <li>
+              <li class="mb-4">No single entity stores funds on behalf of the users.</li>
+              <li class="mb-4">
                 Users are not required to wait long times for someone to process their transactions.
               </li>
-              <li>
+              <li class="mb-4">
                 Transactions are highly secure (thanks to
                 <a href="https://github.com/riflending/rlending-protocol" target="_blank"
                   >open protocols</a
                 >
                 and <a href="docs/securityAudits" target="_blank">independent auditors</a>).
               </li>
-              <li>24/7 accessibility from anywhere in the world.</li>
+              <li class="mb-4">24/7 accessibility from anywhere in the world.</li>
             </ul>
             <p>
               In other words, there is no central bank or government authority imposing rules on how
@@ -184,7 +183,9 @@
                 and demand.</strong
               >
             </p>
-            <h1 id="canTrade">Is rLending a Distributed Exchange (DEX)?</h1>
+          </section>
+          <section>
+            <h2 id="canTrade">Is rLending a Distributed Exchange (DEX)?</h2>
             <p>
               <strong>No.</strong> <em>Distributed Exchanges</em> allow users to exchange one
               cryptocurrency for another. Instead, at a high level, <strong>rLending</strong> is a
@@ -195,7 +196,9 @@
               <a href="https://coinmarketcap.com/currencies/tether/" target="_blank">USDT</a> in
               exchange for interest or debt.
             </p>
-            <h1 id="howWorks">How does it work?</h1>
+          </section>
+          <section>
+            <h2 id="howWorks">How does it work?</h2>
             <p>
               <strong>rLending</strong> leverages
               <a
@@ -238,7 +241,9 @@
                 >this article</a
               >.
             </p>
-            <h1 id="howCost">How much does it cost? Can I try it for free?</h1>
+          </section>
+          <section>
+            <h2 id="howCost">How much does it cost? Can I try it for free?</h2>
             <p>
               All of the
               <a href="https://github.com/riflending/" target="_blank">rLending platform</a> is open
@@ -263,7 +268,9 @@
               >
               helpful.
             </p>
-            <h1 id="howProfit">How much does using rLending cost?</h1>
+          </section>
+          <section>
+            <h2 id="howProfit">How much does using rLending cost?</h2>
             <p>
               <strong>rLending doesn't charge users.</strong> The project was built on the basis for
               a more inclusive, stronger, smarter, non-custodial, and trustless distributed
@@ -276,7 +283,9 @@
               <a href="docs/howTo#integration" target="_blank">Integration Section</a> in the
               <a href="docs" target="_blank">Documentation</a> to learn more about this.
             </p>
-            <h1 id="getWallet">How do I get a wallet?</h1>
+          </section>
+          <section>
+            <h2 id="getWallet">How do I get a wallet?</h2>
             <p>
               <strong>rLending</strong> supports both
               <a href="https://www.poa.network/for-users/nifty-wallet" target="_blank">Nifty</a> and
@@ -295,7 +304,9 @@
               To read more about wallets and how they work, visit
               <a href="https://developers.rsk.co/wallet/" target="_blank">this article</a>
             </p>
-            <h1 id="testnet">How do I connect to rLending in Test Network?</h1>
+          </section>
+          <section>
+            <h2 id="testnet">How do I connect to rLending in Test Network?</h2>
             <p>
               If you wish to try the platform, and get comfortable with the features it provides,
               but at the same time you are hesitant about moving valued cryptocurrencies, you can
@@ -350,7 +361,9 @@
                 <a href="https://developers.rsk.co/wallet/use/metamask/" target="_blank">here</a>
               </em>
             </p>
-            <h1 id="mainnet">How do I connect to rLending in main net?</h1>
+          </section>
+          <section>
+            <h2 id="mainnet">How do I connect to rLending in main net?</h2>
             <p>
               Assuming you have your wallet extension installed (in this example we are using
               <em>Metamask</em>, but Nifty is also supported), you will have to make certain you
@@ -366,9 +379,10 @@
               />
             </p>
             <p>
-              Head over to <a href="https://rlending.app" target="_blank">https://rlending.app</a>.
-              Click on the blue boton at the top right corner. From here, users are prompted to
-              connect with their
+              Head over to
+              <a href="https://rlending.app" target="_blank">https://rlending.app</a>. Click on the
+              blue boton at the top right corner. From here, users are prompted to connect with
+              their
               <a href="#getWallet">web3 wallet.</a>
             </p>
             <p>
@@ -394,7 +408,9 @@
                 <a href="https://developers.rsk.co/wallet/use/metamask/" target="_blank">here</a>
               </em>
             </p>
-            <h1 id="gasPrice">Why is gas price so high?</h1>
+          </section>
+          <section>
+            <h2 id="gasPrice">Why is gas price so high?</h2>
             <p>
               The gas usage of
               <a href="https://github.com/riflending/rlending-protocol" target="_blank"
@@ -412,12 +428,12 @@
             </p>
 
             <ul>
-              <li>Function Typical Gas Cost Mint &lt; 150K</li>
-              <li>cUSDT &lt; 300k</li>
-              <li>Redeem, Transfer &lt; 250K if borrowing, otherwise &lt; 90K</li>
-              <li>Borrow &lt; 300K</li>
-              <li>Repay Borrow &lt; 90K</li>
-              <li>Liquidate Borrow &lt; 400K</li>
+              <li class="mb-4">Function Typical Gas Cost Mint &lt; 150K</li>
+              <li class="mb-4">cUSDT &lt; 300k</li>
+              <li class="mb-4">Redeem, Transfer &lt; 250K if borrowing, otherwise &lt; 90K</li>
+              <li class="mb-4">Borrow &lt; 300K</li>
+              <li class="mb-4">Repay Borrow &lt; 90K</li>
+              <li class="mb-4">Liquidate Borrow &lt; 400K</li>
             </ul>
             <p>
               <em
@@ -427,7 +443,9 @@
                 >
               </em>
             </p>
-            <h1 id="earnings">How do users earn money with rLending?</h1>
+          </section>
+          <section>
+            <h2 id="earnings">How do users earn money with rLending?</h2>
             <p>
               Each <a href="docs/keyConcepts#markets" target="_blank">market</a> has its own Supply
               interest rate (APR). Interest isn&#39;t distributed by a centralized authority;
@@ -450,7 +468,9 @@
               <a href="docs/keyConcepts#howInterests" target="_blank">a good example</a> on how this
               works.
             </p>
-            <h1 id="howMuchEarnings">How much earnings can I expect?</h1>
+          </section>
+          <section>
+            <h2 id="howMuchEarnings">How much earnings can I expect?</h2>
             <p>
               Earnings depend upon many factors, and it is always impossible to predict the future.
               A good starting point is to run your own predictions based upon the
@@ -458,14 +478,18 @@
               <a href="docs/keyConcepts" target="_blank">Market Data</a>, before performing any
               transaction.
             </p>
-            <h1 id="canBorrow">Can I borrow without a deposit?</h1>
+          </section>
+          <section>
+            <h2 id="canBorrow">Can I borrow without a deposit?</h2>
             <p>
               <strong> No.</strong> In order to manage the risk factor, the platform does not allow
               for users to borrow funds without providing collateral first. This is a common
               practice among <em>DEFI</em> implementations. We encourage you to read more about this
               topic in <a href="docs" target="_blank">the documentation</a>.
             </p>
-            <h1 id="howBorrow">How does borrowing work?</h1>
+          </section>
+          <section>
+            <h2 id="howBorrow">How does borrowing work?</h2>
             <p>
               In order to borrow you will be required to
               <a href="#whyDeposit">provide liquidity</a>. The percentage of
@@ -481,24 +505,31 @@
               wallet will receive the
               <a href="docs/keyConcepts#underlying" target="_blank"> underlying asset</a>.
             </p>
-
-            <h1 id="borrowFee">What are the fees for borrowing?</h1>
+          </section>
+          <section>
+            <h2 id="borrowFee">What are the fees for borrowing?</h2>
             <p>
               You can check the current borrowing fees in the
               <a href="https://rlending.app/status" target="_blank">Market Data</a>. If you wish to
               know more about these values, we encourage you to check
               <a href="docs/keyConcepts" target="_blank">the documentation</a>.
             </p>
-            <h1 id="howColFact">How does Collateral Factor work?</h1>
+          </section>
+          <section>
+            <h2 id="howColFact">How does Collateral Factor work?</h2>
             <p>
               <strong>Collateral Factor</strong> is the percentage of supplied assets in a
               <a href="docs/keyConcepts#markets" target="_blank">market,</a> that is locked as
               collateral for borrowing. If you wish to know more about these values, we encourage
               you to check <a href="docs/keyConcepts" target="_blank">the documentation</a>.
             </p>
-            <h1 id="crossBorrow">Can I borrow from a market I have not supplied to?</h1>
+          </section>
+          <section>
+            <h2 id="crossBorrow">Can I borrow from a market I have not supplied to?</h2>
             <p><strong>Yes!</strong> This is one of the most used transactions.</p>
-            <h1 id="whatDebt">What happens if someone doesn't pay their debt?</h1>
+          </section>
+          <section>
+            <h2 id="whatDebt">What happens if someone doesn't pay their debt?</h2>
             <p>
               Users incur in <a href="docs/keyConcepts#debt" target="_blank">debt</a> by borrowing
               assets. In order to borrow they have to
@@ -518,9 +549,11 @@
               <strong>Getting liquidated is very bad</strong>How Can I Have More Debt T because the
               liquidated user looses a part of their underlying collateral provided.
             </p>
-            <h1 id="reserves">
+          </section>
+          <section>
+            <h2 id="reserves">
               What is preventing someone from withdrawing all of the balance in the contracts?
-            </h1>
+            </h2>
             <p>
               <strong>rLending</strong> is self-regulating and it has mechanisms in place to prevent
               abuses. <em>Self-regulating</em> means there is an automated balance that runs the
@@ -547,7 +580,9 @@
               <a href="docs/keyConcepts#reserveFactor" target="_blank">Reserve Factor</a> and the
               <a href="docs/securityAudits" target="_blank">Multi-Sig system</a>.
             </p>
-            <h1 id="priceVariation">How can I have more debt than before?</h1>
+          </section>
+          <section>
+            <h2 id="priceVariation">How can I have more debt than before?</h2>
             <p>
               <a href="docs/keyConcepts#debt" target="_blank">Debt</a> and
               <a href="docs/keyConcepts#liquidity" target="_blank">liquidity</a> are calculated in
@@ -564,7 +599,9 @@
               <a href="docs/keyConcepts#markets" target="_blank">markets</a> that are more volatile,
               and lower for those with more stability.
             </p>
-            <h1 id="healthFactor">What is a Health Factor?</h1>
+          </section>
+          <section>
+            <h2 id="healthFactor">What is a Health Factor?</h2>
             <p>
               <a href="docs/keyConcepts#healthFactor" target="_blank">Health Factor</a> is the
               result of a formula that is used to predict how close to
@@ -573,17 +610,21 @@
             </p>
             <ul>
               Generally speaking:
-              <li>HealthFactor &gt; 50% means your account is safe</li>
-              <li>
+              <li class="mb-4">HealthFactor &gt; 50% means your account is safe</li>
+              <li class="mb-4">
                 HealthFactor &gt; 15% and &lt; 50% means you should keep an eye on your collaterals
               </li>
-              <li>HealthFactor &lt; 15% means you should probably provide more collateral</li>
-              <li>
+              <li class="mb-4">
+                HealthFactor &lt; 15% means you should probably provide more collateral
+              </li>
+              <li class="mb-4">
                 HealthFactor &lt; 0% means you are prone to liquidation, because you have incured in
                 more debt than collateral provided.
               </li>
             </ul>
-            <h1 id="liquidation">What happens if my Health Factor becomes negative?</h1>
+          </section>
+          <section>
+            <h2 id="liquidation">What happens if my Health Factor becomes negative?</h2>
             <p>
               <strong
                 >This is serious, but nothing happens immediately. You are still able to correct the
@@ -597,7 +638,9 @@
               <a href="docs/keyConcepts#healthFactor" target="_blank"> Health Factor</a> for more
               information.
             </p>
-            <h1 id="security">How secure is rLending?</h1>
+          </section>
+          <section>
+            <h2 id="security">How secure is rLending?</h2>
             <p>
               <strong>The rLending Protocol is compliant with modern security practices. </strong>
               This means the <a href="docs/contracts" target="_blank">smart contracts</a> have been
@@ -617,21 +660,26 @@
               challenges for ethical hackers who wish to audit the source-code, and find any
               vulnerability.
             </p>
-            <hr />
-            <center><h1 id="dev">I am a developer</h1></center>
-            <h1 id="contracts">How do I interact with the smart contracts?</h1>
+          </section>
+          <h1 id="dev" align="center">I am a developer</h1>
+          <section>
+            <h2 id="contracts">How do I interact with the smart contracts?</h2>
             <p>
               All of the smart contracts are listed and verified. You may find a list in
               <a href="docs/contracts" target="_blank">the documentation</a>, both for testnet and
               mainnet.
             </p>
-            <h1 id="docs">Where can I find more info on...</h1>
+          </section>
+          <section>
+            <h2 id="docs">Where can I find more info on...</h2>
             <p>
               We are currently working on building the social media communities, to create a hub
               connecting users. For now, you will find most technical information by reading
               <a href="docs">the documentation</a>.
             </p>
-            <h1 id="howToDev">How can I contribute?</h1>
+          </section>
+          <section>
+            <h2 id="howToDev">How can I contribute?</h2>
             <p>
               The
               <a href="https://github.com/riflending/rlending-protocol" target="_blank"
@@ -647,21 +695,27 @@
               challenges to ethical hackers who wish to audit the source-code and find any
               vulnerability.
             </p>
-            <hr />
-            <center><h1 id="help">Troubleshooting</h1></center>
-            <h1>The website looks weird on my mobile phone:</h1>
+          </section>
+          <h1 id="help" align="center">Troubleshooting</h1>
+          <section>
+            <h2>The website looks weird on my mobile phone:</h2>
             <p>
               Yes, while in Beta, the rLending platform is not designed to be used on mobile phones
               or tablets. Using a PC with a web browser is recommended.
             </p>
-            <h1>I can't connect:</h1>
+          </section>
+          <section>
+            <h2>I can't connect:</h2>
             <p>
               This is most likely due to a missconfiguration of the web3 wallet. We recommend you
               follow <a href="#mainnet">these steps</a>. If you are still unable to connect, feel
               free to <a href="mailto:support@rlending.app" target="_blank">email us</a> or reach
-              out to us over <a href="https://t.me/rLendingCommunity" target="_blank"> Telegram.</a>
+              out to us over
+              <a href="https://t.me/rLendingCommunity" target="_blank"> Telegram.</a>
             </p>
-            <h1>Transaction Reverted:</h1>
+          </section>
+          <section>
+            <h2>Transaction Reverted:</h2>
             <p>
               This means the blockchain has not been able to process your transaction. Whether you
               were trying to supply, withdraw, borrow or enter market, this is a common error that
@@ -669,21 +723,25 @@
               make. If the error persists, feel free to <a href="">contact us</a> or
               <a href="">join the Discord community</a>.
             </p>
-            <h1>Why my health factor low?:</h1>
+          </section>
+          <section>
+            <h2>Why my health factor low?:</h2>
             <p>
               See <a href="docs/keyConcepts#healthFactor" target="_blank"> Health Factor</a> and
               <a href="#priceVariation"> How can I have more debt than before?</a>
             </p>
             <!-- <h1>Can't see accounts when trying to liquidate:</h1>
-            <p>
-              The liquidation tab is not yet optimized and it will take a couple of minutes to load
-              the proper data. Keep in mind that we are still in Beta, and there is a chance no
-              <a href="docs/keyConcepts#account" target="_blank">account</a> is prone to
-              <a href="docs/keyConcepts#liquidation" target="_blank">liquidation</a>
-              yet. Liquidations are very rare.
-            </p>
-            <hr /> -->
-            <h1>How can I liquidate underwater accounts?</h1>
+              <p>
+                The liquidation tab is not yet optimized and it will take a couple of minutes to load
+                the proper data. Keep in mind that we are still in Beta, and there is a chance no
+                <a href="docs/keyConcepts#account" target="_blank">account</a> is prone to
+                <a href="docs/keyConcepts#liquidation" target="_blank">liquidation</a>
+                yet. Liquidations are very rare.
+              </p>
+              <hr /> -->
+          </section>
+          <section>
+            <h2>How can I liquidate underwater accounts?</h2>
             <p>
               The liquidation tab is not yet implemented. Keep in mind that we are still in Beta,
               and there is a chance no
@@ -695,8 +753,9 @@
                 >rLending Protocol</a
               >
             </p>
-            <hr />
-            <h1 id="support">How do I contact Support?</h1>
+          </section>
+          <section>
+            <h2 id="support">How do I contact Support?</h2>
             <p>
               You can reach out to us on any of our social media. You can
               <a href="mailto:support@rlending.app" target="_blank">email us</a> or reach out to us
@@ -704,15 +763,14 @@
               want to join us on
               <a href="https://t.me/rLendingCommunity" target="_blank"> Telegram.</a>
             </p>
-            <hr />
-            <div class="pan-container" align="right">
-              <a href="#">Back to top</a>
-            </div>
-          </v-col>
-        </v-row>
+          </section>
+          <div class="pan-container" align="right">
+            <a href="#">Back to top</a>
+          </div>
+        </section>
       </v-col>
     </v-row>
-  </div>
+  </v-container>
 </template>
 <script>
 import * as constants from '@/store/constants'
