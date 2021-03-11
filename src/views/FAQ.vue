@@ -247,11 +247,9 @@
             <p>
               All of the
               <a href="https://github.com/riflending/" target="_blank">rLending platform</a> is open
-              sourced. The only costs involved in using the platform are related to the
-              <a href="https://www.investopedia.com/terms/g/gas-ethereum.asp" target="_blank">
-                GAS price,
-              </a>
-              and they vary for each transaction.
+              sourced. The only costs involved in using it are related to the <em> GAS price</em>,
+              and they vary for each transaction. You can check the historical GAS values using
+              <a href="https://rskgasstation.info/" target="_blank"> RSK Gas Station. </a>
             </p>
             <p>
               You can always try <strong>rLending</strong> for free, since there is a

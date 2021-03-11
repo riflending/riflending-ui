@@ -110,6 +110,47 @@
       </p>
     </section>
     <section>
+      <h2 id="interestModel">Utilization Rate:</h2>
+      <p>
+        The <strong>rLending Protocol</strong> utilizes an interest rate model that achieves an
+        interest rate equilibrium, in each listed market, based on supply and demand. Following
+        economic theory, interest rates should increase as a function of demand. When demand is low,
+        interest rates should be low, and vice versa when demand is high.
+      </p>
+      <p>
+        The utilization ratio <strong><em>U</em></strong> for each market
+        <strong><em>a</em></strong>
+        unifies supply and demand into a single variable that functions as a measure of current
+        interest rates for the asset.
+      </p>
+      <p>
+        <center>
+          <em> U<sub>a</sub> = Borrows<sub>a</sub> / (Cash<sub>a</sub> + Borrows<sub>a</sub>) </em>
+        </center>
+      </p>
+      <p>
+        Each market has independent Interest Rate Models. As an example, borrowing interest rates
+        may resemble the following equation:
+      </p>
+      <p>
+        <center>
+          <em> BorrowInterestRate<sub>a</sub> = 2.5% + U<sub>a</sub> * 20% </em>
+        </center>
+      </p>
+      <p>
+        In this scenario, the SupplyInterestRate is equal to the borrow interest rate, multiplied by
+        the utilization rate (<strong
+          ><em>U<sub>a</sub></em></strong
+        >).
+      </p>
+      <p>
+        <strong>The protocol does not guarantee liquidity.</strong> Instead, it relies on the
+        interest rate model to incentivize it. In periods of extreme demand for an asset, the
+        liquidity of the protocol (the tokens available to with draw or borrow) will decline; when
+        this occur, interest rates rise, incentivizing supply and disincentivizing borrowing.
+      </p>
+    </section>
+    <section>
       <h2 id="earningInterests">Earning Interests:</h2>
       <p>
         When users and applications supply an asset to the <strong>rLending Protocol</strong>, they
