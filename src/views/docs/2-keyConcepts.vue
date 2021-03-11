@@ -386,9 +386,10 @@
       </p>
       <p>
         <strong>rLending</strong> started with partially decentralized control of the protocol (such
-        as choosing the interest rate model per asset). The protocol is protected by a
-        multi-signature smart contract, requiring the agreement of several
-        <a href="#account">accounts</a> in order to perform changes to the protocol.
+        as choosing the <a href="/docs/keyConcepts#interestModel">interest rate</a> model per
+        asset). The protocol is protected by a multi-signature smart contract, requiring the
+        agreement of several <a href="#account">accounts</a> in order to perform changes to the
+        protocol.
       </p>
       <p>The following rights in the protocol are controlled by the Multi-sig:</p>
       <ul>
