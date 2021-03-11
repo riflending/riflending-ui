@@ -3,7 +3,8 @@
     <section>
       <h2 id="marketDynamics">Market Dynamics:</h2>
       <p>
-        <strong>rLending</strong> markets are defined by an interest rate equation, applied to all
+        <strong>rLending</strong> markets are defined by an
+        <a href="/docs/keyConcepts#interestModel">interest rate equation</a>, applied to all
         borrowers uniformly, which adjust over time as the relationship between supply and demand
         evolves.
       </p>
@@ -135,10 +136,11 @@
     <section>
       <h2 id="accruingInterests">Accruing Interests:</h2>
       <p>
-        Interest rates for each market update on any block in which the ratio of borrowed assets to
-        supplied assets in the market has changed. The amount interest rates are changed depends on
-        the specific interest rate model smart contract implemented for the market, and the amount
-        of change in the ratio of borrowed assets to supplied assets in the market.
+        <a href="/docs/keyConcepts#interestModel">Interest rates</a> for each market update on any
+        block in which the ratio of borrowed assets to supplied assets in the market has changed.
+        The amount interest rates are changed depends on the specific interest rate model smart
+        contract implemented for the market, and the amount of change in the ratio of borrowed
+        assets to supplied assets in the market.
       </p>
       <p>
         Interest accrues to all suppliers and borrowers in a market when any rBTC address interacts
