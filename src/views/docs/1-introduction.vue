@@ -18,10 +18,11 @@
               <strong>rLending-protocol</strong> is based upon our own core of
               <a href="https://github.com/riflending/rlending-protocol">Smart Contracts</a>
               which form an algorithmic distributed protocol deployed on the RSK network. This
-              protocol defines pools of assets with algorithmically derived interest rates, based on
-              the supply and demand for the assets. Suppliers (and borrowers) of an asset interact
-              directly with the protocol, earning (and paying) a floating interest rate, without
-              having to negotiate terms such as maturity, interest rate or collateral with a peer or
+              protocol defines pools of assets with algorithmically derived
+              <a href="/docs/keyConcepts#interestModel">interest rates</a>, based on the supply and
+              demand for the assets. Suppliers (and borrowers) of an asset interact directly with
+              the protocol, earning (and paying) a floating interest rate, without having to
+              negotiate terms such as maturity, interest rate or collateral with a peer or
               counterparty.
             </p>
             <p>

@@ -16,13 +16,13 @@
           <h2 id="markets">Markets:</h2>
           <p>
             The smart contracts that power the <strong>rLending Protocol</strong> are deployed to
-            the RSK blockchain. This means that at the time of this guide’s writing, the only types
-            of assets that <strong>rLending</strong> can support are rBTC and ERC-20 tokens deployed
-            on RSK.
+            theRSK blockchain. This means that at the time of this guide’s writing, the only types
+            ofassets that <strong>rLending</strong> can support are rBTC and ERC-20 tokens deployed
+            onRSK.
           </p>
           <p>
             <strong>Markets</strong> are the internal architecture <strong>rLending</strong> uses
-            for representing each asset listed in the protocol. They are essentially
+            forrepresenting each asset listed in the protocol. They are essentially
             <em>a large pool of liquidity</em> that is formed by users providing liquidity and at
             the same time it is available for other users to <a href="#borrowingAssets">borrow</a>.
             Borrowers pay back their interests to the pool as they share in the interest with
@@ -40,7 +40,7 @@
           <h2 id="supplyingAssets">Supplying Assets:</h2>
           <p>
             Unlike an exchange or peer-to-peer platform, where a user’s assets are matched and lent
-            to another user, the <strong>rLending Protocol</strong> aggregates the supply of each
+            toanother user, the <strong>rLending Protocol</strong> aggregates the supply of each
             <a href="#account">account</a>, effectively generating a pool from each listed
             <a href="#markets">market</a>. In other words:
             <strong>when a user supplies an asset, it becomes a fungible resource</strong>. This
@@ -74,7 +74,7 @@
             <a href="#ctokens">cTokens</a> as <a href="#collateral">collateral</a>,
             <em>for use anywhere in the RSK ecosystem</em>. Unlike peer-to-peer protocols, borrowing
             from <strong>rLending</strong> simply requires a user to specify a desired asset; there
-            are no terms to negotiate, maturity dates, or funding periods;
+            areno terms to negotiate, maturity dates, or funding periods;
             <strong>borrowing is instant and predictable</strong>.
           </p>
           <p align="center">
@@ -100,7 +100,7 @@
             >
             is integrated through a <strong>cToken Smart Contract subsystem</strong>, which is an
             <strong>EIP-20</strong> compliant representation of balances supplied to the protocol.
-            By minting cTokens, users may: 1) Earn interest through the cToken&#39;s exchange rate,
+            Byminting cTokens, users may: 1) Earn interest through the cToken&#39;s exchange rate,
             which increases in value relative to the <a href="#underlying">underlying asset</a>, and
             2) Gain the ability to use cTokens as collateral for
             <a href="#borrowingAssets">borrowing assets</a>.
@@ -111,14 +111,58 @@
           <p>
             We say an asset is <strong> Underlying</strong> if it is integrated through a
             <a href="#ctokens">cToken</a>. For instance, <strong>RIF</strong> is the underlying
-            token for the <strong>cRIF</strong> cToken.
+            tokenfor the <strong>cRIF</strong> cToken.
+          </p>
+        </section>
+        <section>
+          <h2 id="interestModel">Utilization Rate:</h2>
+          <p>
+            The <strong>rLending Protocol</strong> utilizes an interest rate model that achieves an
+            interest rate equilibrium, in each listed market, based on supply and demand. Following
+            economic theory, interest rates should increase as a function of demand. When demand is
+            low, interest rates should be low, and vice versa when demand is high.
+          </p>
+          <p>
+            The utilization ratio <strong><em>U</em></strong> for each market
+            <strong><em>a</em></strong>
+            unifies supply and demand into a single variable that functions as a measure of current
+            interest rates for the asset.
+          </p>
+          <p>
+            <center>
+              <em>
+                U<sub>a</sub> = Borrows<sub>a</sub> / (Cash<sub>a</sub> + Borrows<sub>a</sub>)
+              </em>
+            </center>
+          </p>
+          <p>
+            Each market has independent Interest Rate Models. As an example, borrowing interest
+            rates may resemble the following equation:
+          </p>
+          <p>
+            <center>
+              <em> BorrowInterestRate<sub>a</sub> = 2.5% + U<sub>a</sub> * 20% </em>
+            </center>
+          </p>
+          <p>
+            In this scenario, the SupplyInterestRate is equal to the borrow interest rate,
+            multiplied by the utilization rate (<strong
+              ><em>U<sub>a</sub></em></strong
+            >).
+          </p>
+          <p>
+            <strong>The protocol does not guarantee liquidity.</strong> Instead, it relies on the
+            interest rate model to incentivize it. In periods of extreme demand for an asset, the
+            liquidity of the protocol (the tokens available to with draw or borrow) will decline;
+            when this occur, interest rates rise, incentivizing supply and disincentivizing
+            borrowing.
           </p>
         </section>
         <section>
           <h2 id="earningInterests">Earning Interests:</h2>
           <p>
             When users and applications supply an asset to the <strong>rLending Protocol</strong>,
-            they begin <strong>earning a variable interest rate instantly</strong>. Interest accrues
+            theybegin <strong>earning a variable interest rate instantly</strong>. Interest accrues
             every block (currently ~30 seconds) and users can
             <a href="#withdrawal">withdraw</a> their principal plus interest anytime. Under the
             hood, users are contributing their assets to a large pool of liquidity (a “<a
@@ -132,7 +176,7 @@
             <strong>rLending</strong> in exchange. cTokens are ERC20 tokens that can be redeemed for
             their underlying assets at any time. As interest accrues to the assets supplied, cTokens
             are redeemable at an exchange rate (relative to the underlying asset) that constantly
-            increases over time, based on the rate of interest earned by the underlying asset.
+            increasesover time, based on the rate of interest earned by the underlying asset.
           </p>
         </section>
         <section>
@@ -142,7 +186,7 @@
             <a href="#ctokens">cToken</a>) are used as collateral to
             <a href="#borrowingAssets">borrow</a> from the protocol. Each
             <a href="#markets">market</a> has a collateral factor, ranging from 0 to 1, that
-            represents the portion of the underlying asset value that can be borrowed.
+            representsthe portion of the underlying asset value that can be borrowed.
             <strong
               >The sum of the value of an <a href="#account">accounts</a> underlying token balances,
               multiplied by the collateral factors, equals a user’s borrowing capacity.</strong
@@ -151,13 +195,13 @@
           <p>
             Users are able to borrow up to, <em>but not exceeding</em>, their borrowing capacity,
             and an <a href="#account">account</a> can take no action (e.g. borrow, transfer cToken
-            collateral, or redeem cToken collateral) that would raise the total value of borrowed
+            collateral,or redeem cToken collateral) that would raise the total value of borrowed
             assets above their borrowing capacity (<a href="#borrowlimit">borrow limit</a>); this
             protects the protocol from default risk.
           </p>
           <p>
             <strong>Collateral</strong> is the guarantee that users provide that allows them to
-            borrow on any given <a href="#markets">market</a>. In order to supply collateral, users
+            borrowon any given <a href="#markets">market</a>. In order to supply collateral, users
             must first activate the <em>Enter Market</em> toggle.
           </p>
           <p>
@@ -187,7 +231,7 @@
           <p>
             The <a href="#account">account&#39;s</a> supply balance is given by
             <strong>the amount of <a href="#ctoken">cTokens</a> the account has</strong>, converted
-            to underlying by the current <a href="#exchangeRate">exchange rate</a>.
+            tounderlying by the current <a href="#exchangeRate">exchange rate</a>.
           </p>
           <p>
             Remember that when users supply assets, they receive cTokens from
@@ -202,7 +246,7 @@
           <p>
             The rate at which the protocol is currently converting between
             <strong><a href="#ctokens">cToken</a></strong> and <strong>Underlying assets</strong>.
-            This rate is ever increasing with each new block passing and this is how suppliers earn
+            Thisrate is ever increasing with each new block passing and this is how suppliers earn
             they interests.
           </p>
         </section>
@@ -232,7 +276,7 @@
           <h2 id="liquidation">Liquidation:</h2>
           <p>
             A <a href="#borrowingAssets">borrowing</a> <a href="#account">account</a> becomes
-            insolvent when the Borrow Balance exceeds the amount allowed by the collateral factor.
+            insolventwhen the Borrow Balance exceeds the amount allowed by the collateral factor.
             When an <a href="#account">account</a> becomes insolvent, other users can repay a
             portion of its outstanding borrow in exchange for a portion of its collateral, with a
             liquidation incentive — currently set at 8\% but subject to change through
@@ -244,7 +288,7 @@
           </p>
           <p>
             A user who has negative <a href="#liquidity">account liquidity</a> is subject to
-            liquidation by other users of the protocol to return his/her
+            liquidationby other users of the protocol to return his/her
             <a href="#liquidity">account liquidity</a> back to positive (i.e. above the collateral
             requirement). When a liquidation occurs, a liquidator may repay some or all of an
             outstanding borrow on behalf of a borrower and in return receive a discounted amount of
@@ -255,7 +299,7 @@
             individual outstanding borrow of the <a href="#liquidation">underwater account</a>.
             Liquidators must interact with each cToken contract in which they wish to repay a borrow
             and seize another asset as collateral. When collateral is seized, the liquidator is
-            transferred cTokens, which they may redeem the same as if they had supplied the asset
+            transferredcTokens, which they may redeem the same as if they had supplied the asset
             themselves. Users must approve each cToken contract before calling liquidate (i.e. on
             the borrowed asset which they are repaying), as they are transferring funds into the
             contract.
@@ -266,10 +310,10 @@
           <p>
             The percent, ranging from 0% to 100%, of <a href="#debt">debt</a> eligible to be closed
             in a single liquidate transaction, after an <a href="#account">account</a> has gone
-            underwater. Accounts go underwater when they run out of
+            underwater.Accounts go underwater when they run out of
             <a href="#liquidity">liquidity</a> or their
             <a href="#healthFactor">Health Factor</a> becomes negative. If a user has multiple
-            borrowed assets, the Close Factor applies to any single borrowed asset, not the
+            borrowedassets, the Close Factor applies to any single borrowed asset, not the
             aggregated value of a user’s outstanding borrowing.
           </p>
         </section>
@@ -345,7 +389,7 @@
           <h2 id="governance">Governance and Administrators:</h2>
           <p>
             The <strong>rLending protocol</strong> does not support specific tokens by default;
-            instead, markets must be whitelisted. This is accomplished with an admin function,
+            instead,markets must be whitelisted. This is accomplished with an admin function,
             supportMarket(address market, address interest rate model) that allows users to begin
             interacting with the asset. In order to <a href="#borrowingAssets">borrow</a> an asset,
             there must be a valid price from the <a href="oracles#oracle">price oracle</a>. In order
@@ -356,9 +400,10 @@
           </p>
           <p>
             <strong>rLending</strong> started with partially decentralized control of the protocol
-            (such as choosing the interest rate model per asset). The protocol is protected by a
-            multi-signature smart contract, requiring the agreement of several
-            <a href="#account">accounts</a> in order to perform changes to the protocol.
+            (suchas choosing the <a href="/docs/keyConcepts#interestModel">interest rate</a> model
+            per asset). The protocol is protected by a multi-signature smart contract, requiring the
+            agreement of several <a href="#account">accounts</a> in order to perform changes to the
+            protocol.
           </p>
           <p>The following rights in the protocol are controlled by the Multi-sig:</p>
           <ul>

@@ -9,15 +9,16 @@
           <h2 id="oracle">Oracles:</h2>
           <p>
             A Price Oracle maintains the current exchange rate of each supported asset. These values
-            are used to determine borrowing capacity, collateral requirements and for all functions
-            which require calculating the value equivalent of an account.
+            areused to determine borrowing capacity, collateral requirements and for all functions
+            whichrequire calculating the value equivalent of an account.
           </p>
           <p>
-            Although interest rates are determined by the balance between supply and demand,
-            <strong>rLending</strong> relies partially on market prices. Since the protocol has the
-            ability of listing dozens of markets, each requiring it&#39;s own Oracle with it&#39;s
-            own set of rules, <strong>we created a customizable Oracle subsystem</strong> as part of
-            the <strong>rLending Protocol</strong>.
+            Although <a href="/docs/keyConcepts#interestModel">interest rates</a> are determined by
+            the balance between supply and demand, <strong>rLending</strong> relies partially on
+            market prices. Since the protocol has the ability of listing dozens of markets, each
+            requiring it&#39;s own Oracle with it&#39;s own set of rules,
+            <strong>we created a customizable Oracle subsystem</strong> as part of the
+            <strong>rLending Protocol</strong>.
           </p>
         </section>
         <section>

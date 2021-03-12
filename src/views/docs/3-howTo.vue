@@ -25,7 +25,7 @@
           </p>
           <p>
             This will prompt you to choose your account within <em>Metamask/Nifty</em>. After you
-            have accepted the connection, you will be redirected to the <em>Home Dashboard</em>.
+            haveaccepted the connection, you will be redirected to the <em>Home Dashboard</em>.
           </p>
           <p align="center">
             <v-img
@@ -45,12 +45,12 @@
           <h2 id="howDeposit">How to make a deposit:</h2>
           <p>
             <strong>rLending</strong> deposits are easy! After you have connected your Metamask or
-            Nifty wallet you will be logged in and ready to supply funds.
+            Niftywallet you will be logged in and ready to supply funds.
           </p>
           <p>
             When you are ready to make a deposit, you will have to click on the
             <strong>Supply / Borrow</strong> tab, where you will be able to see the current status
-            of your supplied assets.
+            ofyour supplied assets.
           </p>
           <p align="center">
             <v-img
@@ -80,7 +80,7 @@
           </p>
           <p>
             At the top of this screen you will find the asset&#39;s data, current price and the
-            amount of this token you have supplied <strong>converted to USD</strong>.
+            amountof this token you have supplied <strong>converted to USD</strong>.
           </p>
           <p>
             Select the amount you wish to provide, and then click on
@@ -89,7 +89,7 @@
           </p>
           <p>
             After the transaction has been broadcasted you will receive confirmation and your funds
-            will be credited to your account.
+            willbe credited to your account.
           </p>
           <p align="center">
             <v-img
@@ -104,8 +104,7 @@
             In this last screen we double check the amount we have supplied in
             <strong>Supply Balance</strong>. We can also see the current liquidity the contract is
             holding in <strong>Supplied to contract</strong>. The <strong>Borrow Limit</strong> will
-            not show unless the account has provided collateral. We will do this in the next
-            section.
+            notshow unless the account has provided collateral. We will do this in the next section.
           </p>
           <p>
             When a user supplies balance they immediately start earning interests, so
@@ -118,12 +117,12 @@
             All right, when a user supplies balance they immediately start earning interests... but
             where do those interests come from? Short answer: <em>Borrowers</em>! Those accounts
             that borrow crypto assets from the <strong>rLending</strong> protocol pay a varying
-            interest rate every rBTC block. The interest that borrowers pay produces the interest
-            that suppliers earn.
+            <a href="/docs/keyConcepts#interestModel">interest rate </a> every rBTC block. The
+            interest that borrowers pay produces the interest that suppliers earn.
           </p>
           <p>
             Before you can borrow you need to collateralize your account! An asset that is supplied
-            to the protocol is not usable as collateral initially. In order to inform the protocol
+            tothe protocol is not usable as collateral initially. In order to inform the protocol
             that you wish to use an asset as collateral, you must “enter the market” for that asset.
           </p>
           <p>
@@ -162,15 +161,16 @@
             you would like to operate with.
             <strong
               >It is important to notice that in order to borrow from a market, you also need to
-              enter that market, even if your account hasn&#39;t supplied balance to that
+              enterthat market, even if your account hasn&#39;t supplied balance to that
               market.</strong
             >
           </p>
           <p>In this example we will be borrowing <strong>RIF</strong></p>
           <p>
             Head over to the <strong>Borrow tab</strong>. Notice that the APR column has changed
-            values. This is because you are now viewing the current borrow interest rates. Borrowing
-            rates will always be higher than Supplying Interest Rates.
+            values.This is because you are now viewing the current borrow interest rates. Borrowing
+            rates will always be higher than Supplying Interest Rates.See
+            <a href="/docs/keyConcepts#interestModel">Utilization rate</a>.
           </p>
           <p align="center">
             <v-img
@@ -196,16 +196,16 @@
           </p>
           <p>
             Input the amount you wish to borrow (in this example, 13.37 RIF). It is important to
-            notice that
+            noticethat
             <strong
               >you should never borrow close to your max borrow allowed, otherwise you run the risk
-              of getting liquidated when the interests accrue and your account incurs in
+              ofgetting liquidated when the interests accrue and your account incurs in
               shortfall</strong
             >. After you have confirmed the transaction, the borrow list will show the updated
             values. Notice that your borrow starts increasing in interests as soon as the next block
-            accrues them. We borrowed 13.37 RIF and a few blocks after, or debt is now 13.3701 RIF.
+            accruesthem. We borrowed 13.37 RIF and a few blocks after, or debt is now 13.3701 RIF.
             Also, notice that your borrowed asset (in this example RIF) is now also marked as a
-            collateralized market. Lastly, notice that your <strong>Health Factor</strong> has
+            collateralizedmarket. Lastly, notice that your <strong>Health Factor</strong> has
             decreased.
           </p>
           <p align="center">
@@ -223,7 +223,7 @@
           <p>
             If at some point you decide you want to withdraw your funds, you should know you will be
             reedming your cToken balance in exchange for their respective underlying assets.
-            Withdrawals are accessed through the Supply menu, in the Supply/Borrow page.
+            Withdrawalsare accessed through the Supply menu, in the Supply/Borrow page.
           </p>
           <p>First, log in. Then go to the Supply/Borrow market list.</p>
           <p align="center">
@@ -272,8 +272,8 @@
           <h2 id="howRepay">How to repay debt:</h2>
           <p>
             Borrows can be repaid using a function on the respective cToken contract. Once a borrow
-            has been repaid, the account’s collateral can be entirely redeemed or transferred. There
-            are also functions in the cToken contracts to repay a borrow on behalf of another
+            hasbeen repaid, the account’s collateral can be entirely redeemed or transferred. There
+            arealso functions in the cToken contracts to repay a borrow on behalf of another
             account.
           </p>
         </section>
@@ -342,8 +342,9 @@
         <section>
           <h2 id="howInterest">How do tokens earn interests?:</h2>
           <p>
-            Each market has its own Supply interest rate (APR). Interest isn&#39;t distributed;
-            instead,
+            Each market has its own
+            <a href="/docs/keyConcepts#interestModel">Supply interest rate</a> (APR). Interest
+            isn&#39;t distributed; instead,
             <strong>simply by holding cTokens, you&#39;ll earn interest!</strong>
             <strong>cTokens</strong> accumulates interest through their exchange rate — over time,
             each cToken
