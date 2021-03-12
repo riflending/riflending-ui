@@ -19,7 +19,6 @@ export default class Market {
       underlyingName,
       underlyingDecimals,
       logo,
-      interestRateModel,
       account,
       collateralFactorMantissa,
       exchangeRateCurrent,
@@ -52,8 +51,7 @@ export default class Market {
     this.token.name = underlyingName
     this.token.decimals = underlyingDecimals
     this.token.logo = logo
-    //set interest rate model
-    this.interestRateModel = this.factoryContract.getContract(interestRateModel)
+
     // set borrow rate
     this.factor = 1e18
     this.blocksPerYear = 1051200
@@ -600,7 +598,9 @@ export default class Market {
     const totalBorrow = this.totalBorrows
     const totalReseves = await this.instance.callStatic.totalReserves()
     const factor = this.reserveFactorMantissa.multipliedBy(this.factor).toString()
-    const rateModel = this.interestRateModel.connect(this.factoryContract.getSigner())
+    //get interest rate model
+    const rateModelContract = await this.factoryContract.getCtokenInterestModel(this.instance)
+    const rateModel = rateModelContract.connect(this.factoryContract.getSigner())
 
     const calculateTotalSupply = cash
       .plus(supplyAmount)
@@ -627,7 +627,10 @@ export default class Market {
     const cash = await this.getMarketCash(true)
     const totalBorrow = this.totalBorrows
     const totalReseves = await this.instance.callStatic.totalReserves()
-    const rateModel = this.interestRateModel.connect(this.factoryContract.getSigner())
+    //get interest rate model
+    const rateModelContract = await this.factoryContract.getCtokenInterestModel(this.instance)
+    const rateModel = rateModelContract.connect(this.factoryContract.getSigner())
+
     const calculateTotalSupply = cash
       .plus(supplyAmount)
       .multipliedBy(10 ** this.token.decimals)

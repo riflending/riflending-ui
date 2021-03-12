@@ -2,6 +2,7 @@ import { ethers } from 'ethers'
 import Vue from 'vue'
 import { constants, address, abi } from './constants'
 import { NETWORK_ID } from '../config/constants'
+import * as Sentry from '@sentry/browser'
 
 export default class FactoryContract {
   constructor() {
@@ -18,6 +19,9 @@ export default class FactoryContract {
   }
 
   createContract(address, abi, provider) {
+    if (!address || !abi || !provider) {
+      Sentry.captureException(new Error(`createContract failed with address:`, address, `abi`, abi))
+    }
     return new ethers.Contract(address, abi, provider)
   }
 
@@ -60,5 +64,10 @@ export default class FactoryContract {
     ) {
       return this.createContract(this.addressContract[nameContract], abi[nameAbi], Vue.web3Provider)
     }
+  }
+
+  async getCtokenInterestModel(ctoken) {
+    const modelAddress = await ctoken.interestRateModel()
+    return this.createContract(modelAddress, abi['JumpRateModelV2'], Vue.web3Provider)
   }
 }
