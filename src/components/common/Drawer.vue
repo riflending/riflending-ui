@@ -2,20 +2,22 @@
   <v-navigation-drawer v-model="show" absolute temporary>
     <v-list nav dense>
       <v-list-item-group v-model="group" active-class="deep-purple--text text--accent-4">
-        <FaqItems v-if="isFaq" />
+        <DocSideItems v-if="isDoc" />
+        <FaqSideItems v-if="isFaq" />
       </v-list-item-group>
     </v-list>
   </v-navigation-drawer>
 </template>
 
 <script>
-import * as constants from '@/store/constants'
-import FaqItems from '@/components/common/FaqItems.vue'
+import DocSideItems from '@/views/docs/DocSideItems.vue'
+import FaqSideItems from '@/views/faqs/FAQSideItems.vue'
 
 export default {
-  name: 'Snackbar',
+  name: 'Drawer',
   components: {
-    FaqItems,
+    DocSideItems,
+    FaqSideItems,
   },
   data() {
     return {
@@ -34,16 +36,15 @@ export default {
     this.$store.watch(
       (state) => state.Drawer.drawer,
       () => {
-        this.cleanSnack()
+        this.cleanDrawer()
         this.show = true
         this.isFaq = this.$store.state.Drawer.isFaq
         this.isDoc = this.$store.state.Drawer.isDoc
-        this.$store.commit(constants.SNACK_SET, null)
       },
     )
   },
   methods: {
-    cleanSnack() {
+    cleanDrawer() {
       this.show = false
       this.group = null
       this.isDoc = false
