@@ -16,13 +16,12 @@
       <br />
     </div>
     <v-app-bar class="app-bar ma-5" color="transparent" flat clipped-left>
-      <v-app-bar-nav-icon
-        v-if="isDrawer"
-        class=""
-        @click.stop="emitCloseDrawer"
-      ></v-app-bar-nav-icon>
-
       <v-toolbar flat fill-height align-center m-0 p-0>
+        <v-app-bar-nav-icon
+          v-if="$route.path.includes('doc') || $route.path.includes('faq')"
+          class="hidden-md-and-up"
+          @click.stop="emitCloseDrawer"
+        ></v-app-bar-nav-icon>
         <v-btn large text class="title-button" @click="gotToLanding">
           <v-app-bar-title>
             <h1 class="pr-2">rLending</h1>
@@ -36,7 +35,7 @@
           <v-btn text to="/myActivity" active-class="is-active" exact>Dashboard</v-btn>
           <v-btn text to="/supplyBorrow" active-class="is-active" exact>Supply/Borrow</v-btn>
           <v-btn text to="/status" active-class="is-active" exact>Markets</v-btn>
-          <DocsMenu />
+          <v-btn text to="/docs/introduction" active-class="is-active" exact>Docs</v-btn>
           <v-btn text to="/faq" active-class="is-active" exact>FAQs</v-btn>
           <v-btn rounded outlined class="disconnected-btn">
             {{ accountCutOff }}
@@ -45,7 +44,7 @@
 
         <v-toolbar-items v-if="!isLogged" class="hidden-sm-and-down align-center">
           <v-btn text to="/" active-class="is-active" exact>Home</v-btn>
-          <DocsMenu />
+          <v-btn text to="/docs/introduction" active-class="is-active" exact>Docs</v-btn>
           <v-btn text to="/faq" active-class="is-active" exact>FAQs</v-btn>
           <v-btn
             id="connectButton"
@@ -95,7 +94,6 @@ import { ethers } from 'ethers'
 import { Fragment } from 'vue-fragment'
 import { NETWORK_ID } from '@/config/constants'
 import Snackbar from '@/components/common/Snackbar.vue'
-import DocsMenu from '@/components/layouts/base/menues/docs.vue'
 import DisconnectedDropdown from '@/components/layouts/base/menues/disconnectedDropdown.vue'
 import ConnectedDropdown from '@/components/layouts/base/menues/connectedDropdown.vue'
 
@@ -104,7 +102,6 @@ export default {
   components: {
     Fragment,
     Snackbar,
-    DocsMenu,
     ConnectedDropdown,
     DisconnectedDropdown,
   },
@@ -121,7 +118,6 @@ export default {
     ...mapState({
       account: (state) => state.Session.account,
       isOwner: (state) => state.Session.isOwner,
-      isDrawer: (state) => state.Drawer.icon,
     }),
     title() {
       if (this.$route.path === '/supplyBorrow') return 'Supply/Borrow'

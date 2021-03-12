@@ -3,9 +3,8 @@ import * as constants from '@/store/constants'
 const state = () => ({
   drawer: false,
   dataDrawer: null,
-  isFaq: true,
+  isFaq: false,
   isDoc: false,
-  icon: false,
 })
 
 const mutations = {

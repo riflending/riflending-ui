@@ -1,38 +1,36 @@
 <template>
-  <v-menu open-on-hover offset-y transition="slide-x-transition" bottom right>
-    <template v-slot:activator="{ on, attrs }">
-      <v-btn
-        text
-        :class="$route.path.startsWith('/docs') ? 'is-active' : ''"
-        v-bind="attrs"
-        v-on="on"
-      >
-        Docs
-      </v-btn>
-    </template>
-    <v-list dense>
+  <v-list-item-group>
+    <v-list-item>
+      <v-list-item-content>
+        <v-list-item-title class="title"> Documentation </v-list-item-title>
+      </v-list-item-content>
+    </v-list-item>
+    <v-divider></v-divider>
+    <v-list dense nav>
       <v-list-item
-        v-for="(item, index) in docsSubsections"
-        :key="index"
+        v-for="item in items"
+        :key="item.path"
+        link
         :class="item.path === $route.path ? 'highlight' : ''"
         @click="item.method"
       >
-        <v-list-item-action>
-          <v-list-item-title>{{ item.title }}</v-list-item-title>
-        </v-list-item-action>
+        <v-list-item-content>
+          <v-list-item-title>
+            {{ item.title }}
+          </v-list-item-title>
+        </v-list-item-content>
       </v-list-item>
     </v-list>
-  </v-menu>
+  </v-list-item-group>
 </template>
-
 <script>
 export default {
-  name: 'DocsMenu',
+  name: 'DocSideItems',
   data() {
     return {
-      docsSubsections: [
+      items: [
         {
-          title: 'About',
+          title: 'Introduction',
           path: '/docs/introduction',
           method: () => this.$router.push({ name: 'Introduction' }),
         },
