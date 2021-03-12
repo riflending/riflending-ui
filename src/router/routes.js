@@ -79,7 +79,7 @@ export default [
   {
     path: '/faq',
     name: 'FAQ',
-    component: () => import(/* webpackChunkName: "faq" */ '@/views/FAQ.vue'),
+    component: () => import(/* webpackChunkName: "faq" */ '@/views/faqs/FAQ.vue'),
   },
   {
     path: '/terms',
