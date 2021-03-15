@@ -3,7 +3,9 @@
     <v-list nav dense>
       <v-list-item-group v-model="group" active-class="deep-purple--text text--accent-4">
         <DocSideItems v-if="isDoc" />
-        <FaqSideItems v-if="isFaq" />
+        <VuePerfectScrollbar v-if="isFaq" class="scroll-area">
+          <FaqSideItems />
+        </VuePerfectScrollbar>
       </v-list-item-group>
     </v-list>
   </v-navigation-drawer>
@@ -12,12 +14,14 @@
 <script>
 import DocSideItems from '@/views/docs/DocSideItems.vue'
 import FaqSideItems from '@/views/faqs/FAQSideItems.vue'
+import VuePerfectScrollbar from 'vue-perfect-scrollbar'
 
 export default {
   name: 'Drawer',
   components: {
     DocSideItems,
     FaqSideItems,
+    VuePerfectScrollbar,
   },
   data() {
     return {
