@@ -164,10 +164,6 @@ export default {
 
         this.validateNetwork(chainId)
 
-        if (NETWORK_ID !== parseInt(chainId)) {
-          throw new Error('Wrong network')
-        }
-
         const rLoginResponse = await this.$rLogin.connect()
         this.$provider = rLoginResponse.provider
 
