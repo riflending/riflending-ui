@@ -160,10 +160,17 @@ export default {
     async connect() {
       try {
         // eslint-disable-next-line no-undef
-        // await ethereum.enable();
-        this.validateNetwork(window?.ethereum?.chainId ?? 0)
+        const chainId = window?.ethereum?.chainId ?? 0
 
-        this.$provider = await this.$rLogin.connect()
+        this.validateNetwork(chainId)
+
+        if (NETWORK_ID != parseInt(chainId)) {
+          throw new Error('Wrong network')
+        }
+
+        const rLoginResponse = await this.$rLogin.connect()
+        this.$provider = rLoginResponse.provider
+
         this.$provider.on('accountsChanged', () => {
           window.location.reload(false)
         })
@@ -185,10 +192,10 @@ export default {
         format.receipt.root = format.receipt.logsBloom
         Object.assign(this.$web3Provider.formatter, { format })
         Vue.web3Provider = this.$web3Provider
+        this.connectToWeb3()
       } catch (e) {
         this.$rLogin.clearCachedProvider()
       }
-      this.connectToWeb3()
     },
     emitCloseDrawer() {
       this.setDrawer()
