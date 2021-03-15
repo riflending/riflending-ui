@@ -164,7 +164,7 @@ export default {
 
         this.validateNetwork(chainId)
 
-        if (NETWORK_ID != parseInt(chainId)) {
+        if (NETWORK_ID !== parseInt(chainId)) {
           throw new Error('Wrong network')
         }
 
