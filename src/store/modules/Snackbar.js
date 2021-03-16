@@ -18,12 +18,15 @@ const mutations = {
     state.tx = 0
   },
   [constants.SNACK_SET_FAIL_TX]: (state, objSuccess) => {
+    const { error: errorMessage } = objSuccess
     state.snack = 'Fail !'
     state.color = 'error'
     state.tx = 0
     state.loader = false
-    state.subSnack = objSuccess.error
-    Sentry.captureException(new Error(objSuccess.error))
+    state.subSnack = errorMessage
+    if (!errorMessage.includes('User denied transaction signature')) {
+      Sentry.captureException(new Error(errorMessage))
+    }
   },
   [constants.SNACK_SET_SUCCESS_TX]: (state, objSuccess) => {
     state.snack = 'Success !'
