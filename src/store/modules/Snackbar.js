@@ -23,7 +23,6 @@ const mutations = {
     state.tx = 0
     state.loader = false
     state.subSnack = objSuccess.error
-    Sentry.captureException(new Error(objSuccess.error))
   },
   [constants.SNACK_SET_SUCCESS_TX]: (state, objSuccess) => {
     state.snack = 'Success !'
