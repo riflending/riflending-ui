@@ -11,10 +11,10 @@
             <h2 id="whatIs">What exactly is rLending?</h2>
             <p>
               <strong>rLending</strong> is a decentralized investment and finance (better known as
-              <em>DEFI</em>) platform. rLending is predicated on the tenants of non-custodial,
+              <em>DEFI</em>) platform. rLending is based upon the principles of non-custodial,
               trustless and secure systems with 100% uptime.
             </p>
-            <p>This means:</p>
+            <p>This means that:</p>
             <ul>
               <li class="mb-4">No single entity stores funds on behalf of the users.</li>
               <li class="mb-4">
@@ -138,7 +138,7 @@
           <section>
             <h2 id="howProfit">How much does using rLending cost?</h2>
             <p>
-              <strong>rLending doesn't charge users.</strong> The project was built on the basis for
+              <strong>rLending doesn't charge users.</strong> The project was built on the basis of
               a more inclusive, stronger, smarter, non-custodial, and trustless distributed
               ecosystem in the <a href="https://www.rsk.co" target="_blank">RSK Network</a>.
             </p>
@@ -166,17 +166,17 @@
               <a href="https://developers.rsk.co/wallet/use/metamask/" target="_blank">here</a>
             </p>
             <p>
-              Remember: wallets are just a tool that allows the user to interact with the network.
-              To read more about wallets and how they work, visit
+              Remember: wallets are just a tool that allow the user to interact with the network. To
+              read more about wallets and how they work visit
               <a href="https://developers.rsk.co/wallet/" target="_blank">this article</a>
             </p>
           </section>
           <section>
             <h2 id="testnet">How do I connect to rLending in Test Network?</h2>
             <p>
-              If you wish to try the platform, and get comfortable with the features it provides,
-              but at the same time you are hesitant about moving valued cryptocurrencies, you can
-              always connect through <a href="http://test.rlending.app" target="_blank">Testnet</a>.
+              If you wish to try the platform and get comfortable with the features it provides, but
+              at the same time you are hesitant about moving valued cryptocurrencies, you can always
+              connect through <a href="http://test.rlending.app" target="_blank">Testnet</a>.
               Assuming you have your wallet extension installed, you will have to make certain you
               have it switched to <strong>RSK Testnet</strong>
             </p>
@@ -200,7 +200,7 @@
             <p>
               Once you have your testnet funds (T-rBTC or t-RIF), head over to
               <a href="https://test.rlending.app" target="_blank">https://test.rlending.app</a>.
-              Click on the blue boton at the top right corner. From there, users are prompted to
+              Click on the blue button at the top right corner. From there, users are prompted to
               connect their <a href="#getWallet">web3 wallet</a> (in this example we are using Nifty
               but Metamask is also supported)
             </p>
@@ -247,7 +247,7 @@
             <p>
               Head over to
               <a href="https://rlending.app" target="_blank">https://rlending.app</a>. Click on the
-              blue boton at the top right corner. From here, users are prompted to connect with
+              blue button at the top right corner. From here, users are prompted to connect with
               their
               <a href="#getWallet">web3 wallet.</a>
             </p>
@@ -315,17 +315,16 @@
             <p>
               Each <a href="docs/keyConcepts#markets" target="_blank">market</a> has its own Supply
               interest rate (APR). Interest isn&#39;t distributed by a centralized authority;
-              instead,
+              instead, you&#39;ll earn interest
               <strong
                 >simply by holding <a href="docs/keyConcepts#ctokens" target="_blank">cTokens</a>,
-                you&#39;ll earn interest!</strong
+                !</strong
               >
             </p>
             <p>
               <a href="docs/keyConcepts#ctokens" target="_blank">cTokens</a> accumulate interest
               through their exchange rate — over time, each cToken
-              <strong
-                >becomes convertible into an increasing amount of it&#39;s underlying asset</strong
+              <strong>becomes convertible into an increasing amount of its underlying asset</strong
               >, even while the number of cTokens in your wallet stays the same.
             </p>
             <p>
@@ -341,7 +340,7 @@
               Earnings depend upon many factors, and it is always impossible to predict the future.
               A good starting point is to run your own predictions based upon the
               <a href="docs/keyConcepts#howInterest" target="_blank">APR</a> and
-              <a href="docs/keyConcepts" target="_blank">Market Data</a>, before performing any
+              <a href="docs/keyConcepts" target="_blank">Market Data</a> before performing any
               transaction.
             </p>
           </section>
@@ -385,7 +384,7 @@
             <h2 id="howColFact">How does Collateral Factor work?</h2>
             <p>
               <strong>Collateral Factor</strong> is the percentage of supplied assets in a
-              <a href="docs/keyConcepts#markets" target="_blank">market,</a> that is locked as
+              <a href="docs/keyConcepts#markets" target="_blank">market</a> that are locked as
               collateral for borrowing. If you wish to know more about these values, we encourage
               you to check <a href="docs/keyConcepts" target="_blank">the documentation</a>.
             </p>
@@ -407,13 +406,13 @@
             </p>
             <p>
               When an account is liquidated by another account, the liquidator buys a portion of the
-              liquidated's underlying at a discount, given by the
+              liquidated's underlying assets at a discount, given by the
               <a href="docs/keyConcepts#liquidation" target="_blank">Close Factor</a> (currently set
               to 8%).
             </p>
             <p>
-              <strong>Getting liquidated is very bad</strong>How Can I Have More Debt T because the
-              liquidated user looses a part of their underlying collateral provided.
+              <strong>Getting liquidated is very bad</strong> because the liquidated user loses a
+              part of their underlying collateral provided.
             </p>
           </section>
           <section>
@@ -426,7 +425,7 @@
               interest ratios for each
               <a href="docs/keyConcepts#markets" target="_blank">market</a>. If there is too much
               supply, and not enough borrows to pay for them, the borrowing fees will automatically
-              drop. This makes for a more attractive investment opportunity for borrowers. If on the
+              drop. This makes it a more attractive investment opportunity for borrowers. If on the
               other hand, demand is heavy on the borrows but supply is short, then the Supply Rate
               will rise to attract suppliers.
             </p>
@@ -484,8 +483,8 @@
                 HealthFactor &lt; 15% means you should probably provide more collateral
               </li>
               <li class="mb-4">
-                HealthFactor &lt; 0% means you are prone to liquidation, because you have incured in
-                more debt than collateral provided.
+                HealthFactor &lt; 0% means you are prone to liquidation, because you have incurred
+                in more debt than collateral provided.
               </li>
             </ul>
           </section>
@@ -511,7 +510,7 @@
               <strong>The rLending Protocol is compliant with modern security practices. </strong>
               This means the <a href="docs/contracts" target="_blank">smart contracts</a> have been
               <a href="docs/securityAudits" target="_blank">audited</a> both by internal, and
-              external third party professionals.
+              external third-party professionals.
             </p>
             <p>
               <strong>
@@ -540,7 +539,7 @@
             <h2 id="docs">Where can I find more info on...</h2>
             <p>
               We are currently working on building the social media communities, to create a hub
-              connecting users. For now, you will find most technical information by reading
+              connecting users. For now, you will find most the technical information by reading
               <a href="docs">the documentation</a>.
             </p>
           </section>
@@ -551,7 +550,7 @@
               <a href="https://github.com/riflending/rlending-protocol" target="_blank"
                 >rLending Protocol</a
               >
-              is open source and publicly available, hosted on GitHub. We encourage developers and
+              is open-sourced and publicly available, hosted on GitHub. We encourage developers and
               independent auditors to contribute by cloning the repository and creating Pull
               Requests.
             </p>
@@ -591,7 +590,7 @@
             </p>
           </section>
           <section>
-            <h2>Why my health factor low?:</h2>
+            <h2>Why is my health factor low?:</h2>
             <p>
               See <a href="docs/keyConcepts#healthFactor" target="_blank"> Health Factor</a> and
               <a href="#priceVariation"> How can I have more debt than before?</a>
@@ -599,7 +598,7 @@
             <!-- <h1>Can't see accounts when trying to liquidate:</h1>
               <p>
                 The liquidation tab is not yet optimized and it will take a couple of minutes to load
-                the proper data. Keep in mind that we are still in Beta, and there is a chance no
+                the proper data. Keep in mind that we are still in Beta, and there is a chance that no
                 <a href="docs/keyConcepts#account" target="_blank">account</a> is prone to
                 <a href="docs/keyConcepts#liquidation" target="_blank">liquidation</a>
                 yet. Liquidations are very rare.

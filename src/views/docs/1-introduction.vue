@@ -11,19 +11,18 @@
             <h2>Introduction:</h2>
             <p>
               <strong>rLending</strong> is a decentralized investment and finance (DEFI) platform
-              that takes advantage on <strong>Bitcoin</strong>&#39;s stability and the
+              that takes advantage of <strong>Bitcoin</strong>&#39;s stability and the
               <strong>RSK ecosystem</strong> to allow users to invest in a safe way.
             </p>
             <p>
-              <strong>rLending-protocol</strong> is based upon our own core of
+              <strong>rLending-protocol</strong> consists of our own core of
               <a href="https://github.com/riflending/rlending-protocol">Smart Contracts</a>
-              which form an algorithmic distributed protocol deployed on the RSK network. This
+              which forms an algorithmic distributed protocol deployed on the RSK network. This
               protocol defines pools of assets with algorithmically derived
               <a href="/docs/keyConcepts#interestModel">interest rates</a>, based on the supply and
-              demand for the assets. Suppliers (and borrowers) of an asset interact directly with
-              the protocol, earning (and paying) a floating interest rate, without having to
-              negotiate terms such as maturity, interest rate or collateral with a peer or
-              counterparty.
+              demand of the assets. Suppliers (and borrowers) of an asset interact directly with the
+              protocol, earning (and paying) a floating interest rate without having to negotiate
+              terms such as maturity, interest rate or collateral with a peer or counterparty.
             </p>
             <p>
               Our main motivation is to allow users to lend crypto assets as collateral and to
@@ -37,7 +36,7 @@
               >
             </p>
             <p>
-              In this pages we&#39;ll guide you through some of the basic features you will most
+              On these pages we&#39;ll guide you through some of the basic features you will most
               likely be interested in using.
             </p>
           </section>
