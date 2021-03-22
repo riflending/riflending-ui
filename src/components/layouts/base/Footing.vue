@@ -2,8 +2,8 @@
   <div>
     <v-footer class="footer" color="lighten-1" padless>
       <v-container fluid>
-        <v-row class="black-footer">
-          <v-col lg="2" sm="4" cols="12" offset-lg="1">
+        <v-row justify="center" class="black-footer">
+          <v-col lg="3" sm="4" cols="12" class="pl-5">
             <a href="/" class="text-center">
               <v-img src="@/assets/footing/logo_black.png" class="logo" contain alt="rLending logo">
                 rLending
