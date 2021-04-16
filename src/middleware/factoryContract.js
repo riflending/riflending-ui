@@ -8,6 +8,9 @@ export default class FactoryContract {
   constructor() {
     const chainId = +Vue?.web3Provider?.network?.chainId || NETWORK_ID
     this.addressContract = address[chainId]
+    this.provider = !process.env.VUE_APP_HTTP_PROVIDER
+      ? Vue.web3Provider
+      : new ethers.providers.JsonRpcProvider(process.env.VUE_APP_HTTP_PROVIDER)
   }
 
   getSigner() {
@@ -40,20 +43,20 @@ export default class FactoryContract {
 
   getContract(name) {
     if (this.validateContractName(name)) {
-      return this.createContract(this.addressContract[name], abi[name], Vue.web3Provider)
+      return this.createContract(this.addressContract[name], abi[name], this.provider)
     }
   }
 
   getContractToken(name) {
     if (this.validateContractName(name)) {
-      return this.createContract(this.addressContract[name], abi.Erc20, Vue.web3Provider)
+      return this.createContract(this.addressContract[name], abi.Erc20, this.provider)
     }
   }
 
   getContractCtoken(name) {
     if (this.validateContractName(name)) {
       const abiCtoken = name == 'cRBTC' ? abi.cRBTC : abi.cErc20
-      return this.createContract(this.addressContract[name], abiCtoken, Vue.web3Provider)
+      return this.createContract(this.addressContract[name], abiCtoken, this.provider)
     }
   }
 
@@ -62,12 +65,12 @@ export default class FactoryContract {
       this.validateContractName(nameContract) &&
       Object.prototype.hasOwnProperty.call(abi, nameAbi)
     ) {
-      return this.createContract(this.addressContract[nameContract], abi[nameAbi], Vue.web3Provider)
+      return this.createContract(this.addressContract[nameContract], abi[nameAbi], this.provider)
     }
   }
 
   async getCtokenInterestModel(ctoken) {
     const modelAddress = await ctoken.interestRateModel()
-    return this.createContract(modelAddress, abi['JumpRateModelV2'], Vue.web3Provider)
+    return this.createContract(modelAddress, abi['JumpRateModelV2'], this.provider)
   }
 }
