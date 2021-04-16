@@ -31,7 +31,6 @@ export default [
     path: '/status',
     name: 'Status',
     component: () => import(/* webpackChunkName: "status" */ '@/views/Status.vue'),
-    beforeEnter: requireAuth,
   },
   {
     path: '/docs/introduction',

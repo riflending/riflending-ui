@@ -44,6 +44,7 @@
 
         <v-toolbar-items v-if="!isLogged" class="hidden-sm-and-down align-center">
           <v-btn text to="/" active-class="is-active" exact>Home</v-btn>
+          <v-btn text to="/status" active-class="is-active" exact>Markets</v-btn>
           <v-btn text to="/docs/introduction" active-class="is-active" exact>Docs</v-btn>
           <v-btn text to="/faq" active-class="is-active" exact>FAQs</v-btn>
           <v-btn

@@ -6,6 +6,12 @@
       </v-list-item-icon>
       <v-list-item-title>Home</v-list-item-title>
     </v-list-item>
+    <v-list-item to="/status">
+      <v-list-item-icon>
+        <v-icon>mdi-store</v-icon>
+      </v-list-item-icon>
+      <v-list-item-title>Markets</v-list-item-title>
+    </v-list-item>
 
     <v-list-item to="/docs/introduction">
       <v-list-item-icon>
