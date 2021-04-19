@@ -9,6 +9,13 @@ const router = new VueRouter({
   mode: 'history',
   base: process.env.BASE_URL,
   routes,
+  scrollBehavior: function (to) {
+    if (to.hash) {
+      return {
+        selector: to.hash,
+      }
+    }
+  },
 })
 
 export default router

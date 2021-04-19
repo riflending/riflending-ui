@@ -1,9 +1,12 @@
 <template>
-  <div>
-    <v-container>
-      <v-row class="d-flex align-center justify-left">
-        <v-col cols="12">
-          <h1>Security and audits:</h1>
+  <v-container>
+    <v-row>
+      <v-col cols="3" class="hidden-sm-and-down">
+        <DocSideMenu />
+      </v-col>
+      <v-col :class="colSize">
+        <section>
+          <h2>Security and audits:</h2>
           <p>
             <strong>rLending</strong> is a decentralized investment and finance (<em>DEFI </em>)
             platform that takes advantage on <strong>Bitcoin</strong>&#39;s stability and the
@@ -15,17 +18,21 @@
             designed and were later audited by third party independent companies.
           </p>
           <p>
-            <strong
-              >Security is our top priority and we are constantly auditing and improving the
+            <strong>
+              Security is our top priority and we are constantly auditing and improving the
               <em>rLending Protocol</em>. Funds are stored on a non-custodial smart contract on the
               RSK blockchain.
-              <br />
-              You control your wallet and you decide when and how to interact with the
+            </strong>
+          </p>
+          <p>
+            <strong
+              >You control your wallet and you decide when and how to interact with the
               protocol.</strong
             >
           </p>
-          <hr />
-          <h1 id="audits">Audits:</h1>
+        </section>
+        <section>
+          <h2 id="audits">Audits:</h2>
           <p>
             As Compound is recognized to be one of the most audited and secure DEFI platforms
             deployed to the Ethereum Network, we decided to build up on it&#39;s basis and improve
@@ -37,10 +44,15 @@
           </p>
           <p>
             If you are interested in reading the auditor&#39;s report, you can find it
-            <a href="">here</a>
+            <a
+              href="https://github.com/riflending/rlending-protocol/blob/master/audit/rLending_Security_Audit_Final_Report_v210303.pdf"
+              target="_blank"
+              >here</a
+            >
           </p>
-          <hr />
-          <h1 id="eventualities">Eventualities:</h1>
+        </section>
+        <section>
+          <h2 id="eventualities">Eventualities:</h2>
           <p>
             In the eventual case that any of the smart contracts malfunction, the protocol has a
             fail-safe: a multi-signature smart contract (that requires several accounts to verify a
@@ -58,28 +70,38 @@
             contract:
           </p>
           <ul>
-            <li>The ability to list a new cToken market</li>
-            <li>The ability to update the interest rate model per market</li>
-            <li>The ability to update the oracle or any adapter address</li>
-            <li>The ability to withdraw the reserve of a cToken</li>
-            <li>The ability to update the Comptroller contract</li>
-            <li>The ability to choose a new admin</li>
+            <li class="mb-4">The ability to list a new cToken market</li>
+            <li class="mb-4">The ability to update the interest rate model per market</li>
+            <li class="mb-4">The ability to update the oracle or any adapter address</li>
+            <li class="mb-4">The ability to withdraw the reserve of a cToken</li>
+            <li class="mb-4">The ability to update the Comptroller contract</li>
+            <li class="mb-4">The ability to choose a new admin</li>
           </ul>
-          <hr />
-          <div class="pan-container">
-            <a href="/docs/oracles">&laquo; Oracles</a>
-            <a href="#">Back to top</a>
-            <a>- &raquo;</a>
-          </div>
-          <hr />
-        </v-col>
-      </v-row>
-    </v-container>
-  </div>
+        </section>
+        <div class="pan-container">
+          <a href="/docs/oracles">&laquo; Oracles</a>
+          <a href="#">Back to top</a>
+          <a>- &raquo;</a>
+        </div>
+      </v-col>
+    </v-row>
+  </v-container>
 </template>
 
 <script>
+import DocSideMenu from './DocSideMenu'
+
 export default {
   name: 'Audits',
+  components: {
+    DocSideMenu,
+  },
+  computed: {
+    colSize() {
+      const breakPoint = this.$vuetify.breakpoint.name
+      if (breakPoint === 'xs' || breakPoint === 'sm') return 'col-12'
+      return 'col-9'
+    },
+  },
 }
 </script>
